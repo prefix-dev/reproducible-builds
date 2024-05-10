@@ -55,6 +55,6 @@ with tempfile.TemporaryDirectory() as tmp_dir:
 
 
 today_date = datetime.datetime.now().strftime("%Y-%m-%d")
-with open(f'data/chart_data_{today_date}.txt', 'a') as f:
+with open(f'data/chart_data_{today_date}.txt', 'w') as f:
     f.write(f'{total_packages} {reproducible} {not_reproducible}\n')
     
