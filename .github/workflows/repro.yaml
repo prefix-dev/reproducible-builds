@@ -26,7 +26,7 @@ jobs:
         
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run build_recipes
+          pixi run plot_data
 
       - name: Commit and push changes
         env:
