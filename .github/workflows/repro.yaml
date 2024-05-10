@@ -1,0 +1,40 @@
+name: Track how repro we are
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+      
+
+jobs:
+  compare-sha256:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
+
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run build_recipes
+        
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run build_recipes
+
+      - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/chart_data.csv
+          git add data/chart.png
+          git commit -m "Update file via GitHub Action"
+          git push
