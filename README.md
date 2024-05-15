@@ -15,6 +15,5 @@
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
-
 | cloned/polarify-feedstock/recipe/recipe.yaml | No |
 | recipes/recipe.yaml | No |
