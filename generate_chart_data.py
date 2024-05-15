@@ -1,60 +1,134 @@
 import datetime
 import glob
 import os
+import json
+from pathlib import Path
 import subprocess
 import hashlib
 import shutil
 import tempfile
+import yaml
+from build import build_conda_recipe, rebuild_conda_package
+import conf
+from git import checkout_branch_or_commit, clone_repo
+from util import calculate_hash, find_conda_build, get_recipe_name, move_file
 
-recipes = ['recipes/recipe.yaml']
-total_packages = 0
-reproducible = 0
-not_reproducible = 0
 
+if __name__ == "__main__":
 
-with tempfile.TemporaryDirectory() as tmp_dir:
-    for recipe in recipes:
-        total_packages += 1
-        folder_path = f'{tmp_dir}/output'
-        subprocess.run(['rattler-build', 'build', "-r", recipe, "--output-dir", folder_path])
+    config = conf.load_config()
+
+    build_dir = Path('build_outputs')
+    build_dir.mkdir(exist_ok=True)
+
+    build_results = {}
+
+    for repo in config['repositories']:
+        repo_url = repo['url']
+        ref = repo.get('branch') or repo.get('commit')
+        clone_dir = Path('cloned').joinpath(repo_url.split('/')[-1].replace('.git', ''))
         
-        destination_directory = f'{tmp_dir}/rebuild_folder'
-        conda_file = glob.glob(folder_path + '/**/*.conda', recursive=True)[0]
-        filename = os.path.basename(conda_file)
+        if clone_dir.exists():
+            shutil.rmtree(clone_dir)
+        
+        print(f'Cloning repository: {repo_url}')
+
+        
+        clone_repo(repo_url, clone_dir)
+        
+        if ref:
+            print(f'Checking out {ref}')
+            checkout_branch_or_commit(clone_dir, ref)
+
+        
+        for recipe in repo['recipes']:
+            recipe_path = clone_dir / recipe['path']
+            recipe_name = recipe_path.name
+
+            print(f'Building recipe: {recipe_name}')
+            
+            # First build
+            first_build_dir = build_dir / f'{recipe_name}_first'
+            first_build_dir.mkdir(parents=True, exist_ok=True)
+            build_conda_recipe(recipe_path, first_build_dir)
+
+
+            # let's record first hash
+            conda_file = find_conda_build(first_build_dir)
+            print(conda_file)
+            first_build_hash = calculate_hash(conda_file)
+
+            # let's move the build
+            rebuild_directory = build_dir / f'{recipe_name}_rebuild'
+            rebuild_file_loc = move_file(conda_file, rebuild_directory)
+
+
+            # let's rebuild it
+            rebuild_conda_package(rebuild_file_loc, first_build_dir)
+
+            # let's record rebuild hash
+            re_conda_file = find_conda_build(first_build_dir)
+            print(re_conda_file)
+            re_build_hash = calculate_hash(re_conda_file)
+
+
+            if first_build_hash == re_build_hash:
+                build_results[str(recipe_path)] = True
+                print("they are the same!")
+            else:
+                print("they are not the same!")
+                build_results[str(recipe_path)] = False
+
+
+    for local in config['local']:
+        
+        recipe_path = Path(local['path'])
+        recipe_name = recipe_path.name
+        package_name = get_recipe_name(recipe_path)
+        print(f'Building recipe: {recipe_name}')
+        
+        # First build
+        first_build_dir = build_dir / f'{recipe_name}_first'
+        first_build_dir.mkdir(parents=True, exist_ok=True)
+        build_conda_recipe(recipe_path, first_build_dir)
+
+
+        # let's record first hash
+        conda_file = find_conda_build(first_build_dir)
         print(conda_file)
+        first_build_hash = calculate_hash(conda_file)
+
+        # let's move the build
+        rebuild_directory = build_dir / f'{recipe_name}_rebuild'
+        rebuild_file_loc = move_file(conda_file, rebuild_directory)
 
 
-        with open(conda_file, "rb") as f:
-            # Read the entire file
-            data = f.read()
-            # Calculate the SHA-256 hash
-            build_hash = hashlib.sha256(data).hexdigest()
+        # let's rebuild it
+        rebuild_conda_package(rebuild_file_loc, first_build_dir)
+
+        # let's record rebuild hash
+        re_conda_file = find_conda_build(first_build_dir)
+        print(re_conda_file)
+        re_build_hash = calculate_hash(re_conda_file)
 
 
+        if first_build_hash == re_build_hash:
+            print("they are the same!")
+            build_results[str(recipe_path)] = True
 
-        os.makedirs(destination_directory, exist_ok=True)
-
-        shutil.move(conda_file, f"{destination_directory}/{filename}")
-
-        subprocess.run(['rattler-build', 'rebuild', "--package-file", f"{destination_directory}/{filename}", "--output-dir", folder_path])
-
-        rebuilded_conda_file = glob.glob(folder_path + '/**/*.conda', recursive=True)[0]
-        rebuilded_filename = os.path.basename(conda_file)
-
-        with open(rebuilded_conda_file, "rb") as f:
-            # Read the entire file
-            data = f.read()
-            # Calculate the SHA-256 hash
-            re_build_hash = hashlib.sha256(data).hexdigest()
-
-        
-        if build_hash == re_build_hash:
-            reproducible += 1
         else:
-            not_reproducible += 1
+            print("they are not the same!")
+            build_results[str(recipe_path)] = False
 
-
-today_date = datetime.datetime.now().strftime("%Y-%m-%d")
-with open(f'data/chart_data_{today_date}.txt', 'w') as f:
-    f.write(f'{total_packages} {reproducible} {not_reproducible}\n')
     
+    total_packages = len(build_results)
+    reproducible = sum(value for value in build_results.values() if value)
+    not_reproducible = sum(value for value in build_results.values() if not value)
+
+    
+    today_date = datetime.datetime.now().strftime("%Y-%m-%d")
+    with open(f'data/chart_data_{today_date}.txt', 'w') as f:
+        f.write(f'{total_packages} {reproducible} {not_reproducible}\n')
+
+    with open(f'data/packages_info_{today_date}.json', 'w') as pkg_info:
+        json.dump(build_results, pkg_info)
