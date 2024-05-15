@@ -1,0 +1,9 @@
+repositories:
+  - url: https://github.com/conda-forge/polarify-feedstock.git
+    branch: rattler-build
+    recipes:
+      - path: recipe/recipe.yaml
+
+
+local:
+  - path: recipes/recipe.yaml
