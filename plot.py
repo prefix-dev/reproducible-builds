@@ -81,7 +81,7 @@ table = """
 ![Reproducibility Chart](data/chart.png)
 
 
-| Recipe Name | Is Reproducible |\n| --- | --- |\n
+| Recipe Name | Is Reproducible |\n| --- | --- |
 """
 for recipe, reproducible in results.items():
     table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
