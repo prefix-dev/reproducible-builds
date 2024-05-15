@@ -34,7 +34,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/chart_data.csv
+          git add data/history.json
           git add data/chart.png
+          git add README.md
           git commit -m "Update file via GitHub Action"
           git push
