@@ -15,5 +15,13 @@
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
-| cloned/polarify-feedstock/recipe/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/polarify-feedstock/recipe/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/xtensor/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/ros-humble-turtlebot4-msgs/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/rich/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/mamba/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/linking/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/curl/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/cmpcdt/recipe.yaml | No |
+| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/cargo-edit/recipe.yaml | No |
 | recipes/recipe.yaml | No |
