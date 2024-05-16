@@ -4,6 +4,18 @@ repositories:
     recipes:
       - path: recipe/recipe.yaml
 
+  - url: https://github.com/prefix-dev/rattler-build.git
+    branch: main
+    recipes:
+      - path: examples/xtensor/recipe.yaml
+      - path: examples/ros-humble-turtlebot4-msgs/recipe.yaml # is failing at build
+      - path: examples/rich/recipe.yaml
+      - path: examples/mamba/recipe.yaml # is failing at build
+      - path: examples/linking/recipe.yaml # is failing
+      - path: examples/curl/recipe.yaml
+      - path: examples/cmpcdt/recipe.yaml
+      - path: examples/cargo-edit/recipe.yaml
+
 
 local:
   - path: recipes/recipe.yaml
