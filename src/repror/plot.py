@@ -3,6 +3,8 @@ import matplotlib.pyplot as plt
 import datetime
 import json
 
+from repror.conf import load_config
+
 
 now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -64,9 +66,15 @@ plt.savefig('data/chart.png')
 
 
 
+config = load_config()
+
+build_text = f"""
+Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}
+"""
+
 
 # Generate the Markdown table
-table = """
+table = f"""
 # Are we reproducible yet?
 
 ![License][license-badge]
@@ -80,6 +88,7 @@ table = """
 
 ![Reproducibility Chart](data/chart.png)
 
+{build_text}
 
 | Recipe Name | Is Reproducible |\n| --- | --- |
 """

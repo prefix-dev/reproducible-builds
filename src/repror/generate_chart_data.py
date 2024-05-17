@@ -89,7 +89,6 @@ if __name__ == "__main__":
 
                 # let's record rebuild hash
                 re_conda_file = find_conda_build(first_build_dir)
-                print(re_conda_file)
                 re_build_hash = calculate_hash(re_conda_file)
 
                 if first_build_hash == re_build_hash:
