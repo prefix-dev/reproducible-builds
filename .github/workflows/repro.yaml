@@ -24,18 +24,18 @@ jobs:
         run: |
           pixi run build_recipes
         
-      # - name: Build recipes and track if hash is equal
-      #   run: |
-      #     pixi run plot_data
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run plot_data
 
-      # - name: Commit and push changes
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     git config --local user.email "action@github.com"
-      #     git config --local user.name "GitHub Action"
-      #     git add data/history.json
-      #     git add data/chart.png
-      #     git add README.md
-      #     git commit -m "Update file via GitHub Action"
-      #     git push
+      - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/history.json
+          git add data/chart.png
+          git add README.md
+          git commit -m "Update file via GitHub Action"
+          git push
