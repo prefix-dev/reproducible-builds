@@ -2,14 +2,15 @@ import datetime
 import glob
 import os
 import json
+import conf
 from pathlib import Path
 import subprocess
 import hashlib
 import shutil
 import tempfile
-from build import build_conda_recipe, rebuild_conda_package
-import conf
-from git import checkout_branch_or_commit, clone_repo
+from repror.build import build_conda_recipe, rebuild_conda_package, setup_rattler_build
+
+from repror.git import checkout_branch_or_commit, clone_repo
 from util import calculate_hash, find_conda_build, get_recipe_name, move_file
 
 
@@ -17,6 +18,12 @@ if __name__ == "__main__":
     config = conf.load_config()
 
     with tempfile.TemporaryDirectory() as tmp_dir:
+
+        rattler_clone_dir = Path(tmp_dir) / "rattler-clone"
+        rattler_config = config["rattler-build"]
+
+        setup_rattler_build(rattler_config, rattler_clone_dir)
+            
         build_dir = Path(tmp_dir) / "build_outputs"
         build_dir.mkdir(exist_ok=True)
 
