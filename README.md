@@ -13,15 +13,18 @@
 ![Reproducibility Chart](data/chart.png)
 
 
+Built with rattler-build https://github.com/nichmor/rattler-build.git at commit fix/conda-timestamp-affect-reproducibility
+
+
 | Recipe Name | Is Reproducible |
 | --- | --- |
-| /tmp/tmp2hfzvl3t/cloned/polarify-feedstock/recipe/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/xtensor/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/ros-humble-turtlebot4-msgs/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/rich/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/mamba/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/linking/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/curl/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/cmpcdt/recipe.yaml | No |
-| /tmp/tmp2hfzvl3t/cloned/rattler-build/examples/cargo-edit/recipe.yaml | No |
-| recipes/recipe.yaml | No |
+| /tmp/tmpq9ds1cur/cloned/polarify-feedstock/recipe/recipe.yaml | Yes |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/xtensor/recipe.yaml | Yes |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/ros-humble-turtlebot4-msgs/recipe.yaml | No |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/rich/recipe.yaml | Yes |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/mamba/recipe.yaml | No |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/linking/recipe.yaml | Yes |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/curl/recipe.yaml | Yes |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/cmpcdt/recipe.yaml | Yes |
+| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/cargo-edit/recipe.yaml | No |
+| recipes/boltons/recipe.yaml | Yes |
