@@ -28,7 +28,7 @@ jobs:
           pixi run python src/repror/build_recipe.py linux
       
       - name: Upload results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: artifacts
           path: |
@@ -59,11 +59,9 @@ jobs:
           pixi run python src/repror/rebuild_recipe.py linux macos
       
       - name: Upload build info
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: build-info
-          # overwrite for now
-          overwrite: true
           path: |
             build_info/
   
@@ -91,11 +89,10 @@ jobs:
           pixi run python src/repror/rebuild_recipe.py linux linux
       
       - name: Upload build info
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: build-info
-          # overwrite for now
-          overwrite: true
+
           path: |
             build_info/
 
