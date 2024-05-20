@@ -62,6 +62,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-info
+          # overwrite for now
+          overwrite: true
           path: |
             build_info/
   
@@ -92,6 +94,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-info
+          # overwrite for now
+          overwrite: true
           path: |
             build_info/
 
