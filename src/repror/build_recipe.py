@@ -56,9 +56,9 @@ if __name__ == "__main__":
 
         # cloned_prefix_dir = Path(tmp_dir) / "cloned"
 
-        build_dir = Path("/opt/bld/builds_outputs")
+        build_dir = Path("/tmp")
         # build_dir.mkdir(exist_ok=True)
-        # os.makedirs(build_dir, exist_ok=True)
+        os.makedirs("/tmp/rattler_build/build", exist_ok=True)
 
         build_results = {}
 

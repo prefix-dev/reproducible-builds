@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import tempfile
 from typing import Optional, cast
@@ -44,8 +45,9 @@ if __name__ == "__main__":
         # cloned_prefix_dir = Path(tmp_dir) / "cloned"
 
 
-        rebuild_dir = Path("/opt/bld/rebuild_outputs")
+        rebuild_dir = Path("/tmp/rattler_build/rebuild")
         # rebuild_dir.mkdir(exist_ok=True)
+        os.makedirs("/tmp/rattler_build/rebuild", exist_ok=True)
 
         
         with open("build_info/build_info.json", "r") as f:

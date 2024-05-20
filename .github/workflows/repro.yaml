@@ -23,7 +23,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          mkdir /opt/bld
+          # mkdir /opt/bld
           pixi run python src/repror/build_recipe.py
       
       - name: Upload results
@@ -53,6 +53,6 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
-          sudo mkdir -p /opt/bld/rebuild_outputs/boltons_rebuild
-          sudo chmod -R 777 /opt/bld/rebuild_outputs/boltons_rebuild
+          # sudo mkdir -p /opt/bld/rebuild_outputs/boltons_rebuild
+          # sudo chmod -R 777 /opt/bld/rebuild_outputs/boltons_rebuild
           pixi run python src/repror/rebuild_recipe.py
