@@ -53,4 +53,5 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
+          mkdir /opt/bld  
           pixi run python src/repror/rebuild_recipe.py
