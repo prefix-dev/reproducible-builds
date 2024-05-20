@@ -13,7 +13,7 @@ plot_data = "python src/repror/plot.py"
 [dependencies]
 python = "~=3.10"
 matplotlib = "*"
-# rattler-build = "*"
+rattler-build = "*"
 pyyaml = "*"
 pytest = "*"
 

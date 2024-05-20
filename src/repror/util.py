@@ -40,4 +40,8 @@ def get_recipe_name(recipe_file):
     with open(recipe_file, 'r') as file:
         recipe = yaml.safe_load(file)
     
+    if "name" in recipe.get("context", {}):
+        return recipe["context"]["name"]
+    
+
     return recipe["package"]["name"]
