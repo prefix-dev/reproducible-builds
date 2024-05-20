@@ -1,6 +1,7 @@
 import json
 import os
 from pathlib import Path
+import sys
 import tempfile
 from typing import Optional, cast
 
@@ -34,6 +35,8 @@ def rebuild_packages(build_infos: dict[str, Optional[BuildInfo]], rebuild_dir: P
 
 if __name__ == "__main__":
 
+    from_platform, to_platform = sys.argv[1], sys.argv[2]
+
     build_info = {}
 
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -50,11 +53,10 @@ if __name__ == "__main__":
         os.makedirs("/var/lib/rattler_build/build", exist_ok=True)
 
         
-        with open("build_info/build_info.json", "r") as f:
+        with open(f"build_info/{from_platform}_build_info.json", "r") as f:
             previous_build_info = json.load(f)
 
         rebuild_info = rebuild_packages(previous_build_info, rebuild_dir, tmp_dir)
 
-        with open("build_info/rebuild_info.json", "w") as f:
+        with open(f"build_info/{from_platform}_{to_platform}_rebuild_info.json", "w") as f:
             json.dump(rebuild_info, f)
-

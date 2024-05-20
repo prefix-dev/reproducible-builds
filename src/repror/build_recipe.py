@@ -2,6 +2,7 @@ import datetime
 import glob
 import os
 import json
+import sys
 from typing import Optional
 import conf
 from pathlib import Path
@@ -44,6 +45,12 @@ def build_recipes(repositories, local_recipes, tmp_dir, build_dir):
 
 
 if __name__ == "__main__":
+    platform = sys.argv[1]
+
+    if platform not in ["linux", "macos", "windows"]:
+        print("Invalid platform")
+        sys.exit(1)
+
     config = conf.load_config()
 
     build_info = {}
@@ -68,9 +75,10 @@ if __name__ == "__main__":
 
         remote_build_info.update(local_build_info)
 
+
         os.makedirs('build_info', exist_ok=True)
 
-        with open('build_info/build_info.json', 'w') as f:
+        with open(f'build_info/{platform}_build_info.json', 'w') as f:
             json.dump(remote_build_info, f)
 
         # rebuild_dir = Path("rebuild_outputs")
