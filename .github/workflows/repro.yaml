@@ -111,7 +111,8 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: build-info
-          path: .
+          path: build_info/
+      
       - run: ls -la build_info/
 
       - name: Rebuild recipes and track if hash is equal
