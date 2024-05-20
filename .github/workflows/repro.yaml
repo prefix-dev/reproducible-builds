@@ -23,7 +23,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run python src/repror/build_recipe.py
+          sudo pixi run python src/repror/build_recipe.py
       
       - name: Upload results
         uses: actions/upload-artifact@v4
