@@ -35,6 +35,7 @@ jobs:
 
   rebuild-recipes:
     runs-on: macos-latest
+    needs: build-recipes
 
     steps:
       - name: Checkout code
