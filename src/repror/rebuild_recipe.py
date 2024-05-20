@@ -43,10 +43,9 @@ if __name__ == "__main__":
 
         # cloned_prefix_dir = Path(tmp_dir) / "cloned"
 
-        build_dir = Path("build_outputs")
 
-        rebuild_dir = Path("rebuild_outputs")
-        rebuild_dir.mkdir(exist_ok=True)
+        rebuild_dir = Path("/opt/bld/rebuild_outputs")
+        # rebuild_dir.mkdir(exist_ok=True)
 
         
         with open("build_info/build_info.json", "r") as f:

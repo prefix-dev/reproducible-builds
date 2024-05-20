@@ -134,8 +134,8 @@ def build_local_recipe(local, build_dir):
     print(f"Building recipe: {recipe_name}")
     build_infos = {}
 
-    build_dir = build_dir / f"{recipe_name}_build"
-    build_dir.mkdir(parents=True, exist_ok=True)
+    # build_dir = build_dir / f"{recipe_name}_build"
+    # build_dir.mkdir(parents=True, exist_ok=True)
 
     build_info = build_recipe(recipe_path, build_dir)
 
