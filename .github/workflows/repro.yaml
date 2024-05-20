@@ -53,6 +53,6 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
-          sudo mkdir /opt/bld/rebuild_outputs
+          sudo mkdir -p /opt/bld/rebuild_outputs
           sudo chmod 755 /opt/bld/rebuild_outputs
           pixi run python src/repror/rebuild_recipe.py
