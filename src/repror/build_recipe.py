@@ -43,13 +43,12 @@ def build_recipes(repositories, local_recipes, tmp_dir, build_dir):
     return remote_build_info, local_build_info
 
 
-
 if __name__ == "__main__":
-    platform = sys.argv[1]
+    platform, version = sys.argv[1], sys.argv[2]
 
-    if platform not in ["linux", "macos", "windows"]:
-        print("Invalid platform")
-        sys.exit(1)
+    # if platform not in ["linux", "macos", "windows"]:
+    #     print("Invalid platform")
+    #     sys.exit(1)
 
     config = conf.load_config()
 
@@ -63,9 +62,9 @@ if __name__ == "__main__":
 
         # cloned_prefix_dir = Path(tmp_dir) / "cloned"
 
-        build_dir = Path("/var/lib/rattler_build/build")
-        # build_dir.mkdir(exist_ok=True)
-        os.makedirs("/var/lib/rattler_build/build", exist_ok=True)
+        build_dir = Path("build_outputs")
+        build_dir.mkdir(exist_ok=True)
+        # os.makedirs("/var/lib/rattler_build/build", exist_ok=True)
 
         build_results = {}
 
@@ -75,10 +74,9 @@ if __name__ == "__main__":
 
         remote_build_info.update(local_build_info)
 
+        os.makedirs("build_info", exist_ok=True)
 
-        os.makedirs('build_info', exist_ok=True)
-
-        with open(f'build_info/{platform}_build_info.json', 'w') as f:
+        with open(f"build_info/{platform}_{version}_build_info.json", "w") as f:
             json.dump(remote_build_info, f)
 
         # rebuild_dir = Path("rebuild_outputs")

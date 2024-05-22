@@ -7,10 +7,10 @@ from repror.git import clone_repo, checkout_branch_or_commit
 
 
 def get_rattler_build():
-    if 'RATTLER_BUILD_BIN' in os.environ:
-        return os.environ['RATTLER_BUILD_BIN']
+    if "RATTLER_BUILD_BIN" in os.environ:
+        return os.environ["RATTLER_BUILD_BIN"]
     else:
-        return 'rattler-build'
+        return "rattler-build"
 
 
 def setup_rattler_build(rattler_build_config: dict, clone_dir):
@@ -30,13 +30,14 @@ def setup_rattler_build(rattler_build_config: dict, clone_dir):
     # set binary path to it
 
     bin_path = Path(clone_dir) / "target" / "release" / "rattler-build"
-    os.environ['RATTLER_BUILD_BIN'] = str(bin_path)
+    os.environ["RATTLER_BUILD_BIN"] = str(bin_path)
 
 
 def build_rattler(clone_dir):
     build_command = ["cargo", "build", "--release"]
-    
+
     run_command(build_command, cwd=clone_dir)
+
 
 def rattler_build_version(cwd):
     rattler_bin = get_rattler_build()

@@ -1,4 +1,4 @@
-      
+import sys
 import matplotlib.pyplot as plt
 import datetime
 import json
@@ -9,19 +9,41 @@ from repror.conf import load_config
 now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
 
-with open(f'data/chart_data_{now_date}.txt', 'r') as f:
-    total_packages, reproducible, not_reproducible = map(int, f.read().split())
+platforms = sys.argv[1:]
 
-# Append the current date and total packages to a CSV file
-with open('data/history.json', 'r+') as history_file:
+
+by_platform = {}
+
+ubuntu_platform = {}
+
+for platform in platforms:
+    with open(f"data/{platform}_packages_info_{now_date}.json", "r") as f:
+        platform_build_info = json.load(f)
+
+    by_platform[platform] = platform_build_info
+
+    if platform == "ubuntu":
+        ubuntu_platform = platform_build_info
+
+
+with open("data/history.json", "r+") as history_file:
     previous_data = json.load(history_file)
 
     now_date = str(datetime.datetime.now().strftime("%Y-%m-%d"))
 
+    for platform in by_platform:
+        total_packages = len(by_platform[platform])
+        reproducible = sum(value for value in by_platform[platform].values() if value)
+        not_reproducible = sum(
+            value for value in by_platform[platform].values() if not value
+        )
+
     previous_data[now_date] = {
-        "total_packages": total_packages,
-        "repro": reproducible,
-        "not_repro": not_reproducible
+        platform: {
+            "total_packages": total_packages,
+            "repro": reproducible,
+            "not_repro": not_reproducible,
+        }
     }
 
     history_file.seek(0)
@@ -30,9 +52,6 @@ with open('data/history.json', 'r+') as history_file:
 
     history_file.truncate()
 
-with open(f'data/packages_info_{now_date}.json', 'r') as info:
-    results = json.load(info)
-
 
 # Read the CSV file to plot the data
 dates = []
@@ -40,30 +59,32 @@ total_packages = []
 reproducible = []
 not_reproducible = []
 
+# we take ubuntu as a base image
+
 
 for date in previous_data:
-    dates.append(date)
-    info = previous_data[date]
+    import pdb
 
+    pdb.set_trace()
+    info = previous_data[date]["ubuntu"]
+    dates.append(date)
     total_packages.append(info["total_packages"])
     reproducible.append(info["repro"])
     not_reproducible.append(info["not_repro"])
 
 plt.figure(figsize=(12, 6))
-plt.plot(dates, total_packages, marker='o', label='Total Packages', color='blue')
-plt.plot(dates, reproducible, marker='o', label='Reproducible', color='green')
-plt.plot(dates, not_reproducible, marker='o', label='Not Reproducible', color='red')
+plt.plot(dates, total_packages, marker="o", label="Total Packages", color="blue")
+plt.plot(dates, reproducible, marker="o", label="Reproducible", color="green")
+plt.plot(dates, not_reproducible, marker="o", label="Not Reproducible", color="red")
 
 
-plt.xlabel('Date')
-plt.ylabel('Number of Packages')
-plt.title('Is Rattler-Build reproducible yet?')
+plt.xlabel("Date")
+plt.ylabel("Number of Packages")
+plt.title("Is Rattler-Build reproducible yet?")
 plt.xticks(rotation=45)
 plt.legend()
 plt.tight_layout()
-plt.savefig('data/chart.png')
-
-
+plt.savefig("data/chart.png")
 
 
 config = load_config()
@@ -92,7 +113,7 @@ table = f"""
 
 | Recipe Name | Is Reproducible |\n| --- | --- |
 """
-for recipe, reproducible in results.items():
+for recipe, reproducible in platform_build_info.items():
     table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
 
 # Save the table to README.md
