@@ -18,13 +18,12 @@ Built with rattler-build https://github.com/nichmor/rattler-build.git at commit 
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
-| /tmp/tmpq9ds1cur/cloned/polarify-feedstock/recipe/recipe.yaml | Yes |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/xtensor/recipe.yaml | Yes |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/ros-humble-turtlebot4-msgs/recipe.yaml | No |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/rich/recipe.yaml | Yes |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/mamba/recipe.yaml | No |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/linking/recipe.yaml | Yes |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/curl/recipe.yaml | Yes |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/cmpcdt/recipe.yaml | Yes |
-| /tmp/tmpq9ds1cur/cloned/rattler-build/examples/cargo-edit/recipe.yaml | No |
-| recipes/boltons/recipe.yaml | Yes |
+| xtensor | No |
+| ros-humble-turtlebot4-msgs | No |
+| rich | No |
+| mamba | No |
+| zlink | No |
+| curl | Yes |
+| async-cairo | Yes |
+| cargo-edit | Yes |
+| boltons | Yes |

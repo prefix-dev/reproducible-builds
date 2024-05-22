@@ -10,7 +10,7 @@ def run_command(command, cwd=None, env=None):
     subprocess.run(command, cwd=cwd, env=env, check=True)
 
 
-def calculate_hash(conda_file):        
+def calculate_hash(conda_file):
     with open(conda_file, "rb") as f:
         # Read the entire file
         data = f.read()
@@ -22,9 +22,10 @@ def calculate_hash(conda_file):
 
 def find_conda_build(build_folder):
     # for now, we return only one
-    conda_file = glob.glob(str(build_folder) + '/**/*.conda', recursive=True)[0]
+    conda_file = glob.glob(str(build_folder) + "/**/*.conda", recursive=True)[0]
 
     return conda_file
+
 
 def move_file(conda_file, destination_directory):
     os.makedirs(destination_directory, exist_ok=True)
@@ -36,8 +37,12 @@ def move_file(conda_file, destination_directory):
 
     return file_loc
 
+
 def get_recipe_name(recipe_file):
-    with open(recipe_file, 'r') as file:
+    with open(recipe_file, "r") as file:
         recipe = yaml.safe_load(file)
-    
+
+    if "name" in recipe.get("context", {}):
+        return recipe["context"]["name"]
+
     return recipe["package"]["name"]
