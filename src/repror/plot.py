@@ -63,9 +63,6 @@ not_reproducible = []
 
 
 for date in previous_data:
-    import pdb
-
-    pdb.set_trace()
     info = previous_data[date]["ubuntu"]
     dates.append(date)
     total_packages.append(info["total_packages"])
