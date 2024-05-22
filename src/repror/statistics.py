@@ -61,7 +61,4 @@ if __name__ == "__main__":
             )
 
         with open(f"data/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
-            import pdb
-
-            pdb.set_trace()
             json.dump(build_results_by_platform[platform], pkg_info)
