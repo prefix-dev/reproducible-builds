@@ -44,8 +44,8 @@ if __name__ == "__main__":
     build_results_by_platform = {}
 
     for platform in build_info_by_platform:
+        build_results_by_platform[platform] = {}
         for recipe_name, info in build_info_by_platform[platform].items():
-            build_results_by_platform[platform] = {}
             if not info:
                 build_results_by_platform[platform][recipe_name] = False
                 continue
@@ -61,4 +61,7 @@ if __name__ == "__main__":
             )
 
         with open(f"data/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
+            import pdb
+
+            pdb.set_trace()
             json.dump(build_results_by_platform[platform], pkg_info)

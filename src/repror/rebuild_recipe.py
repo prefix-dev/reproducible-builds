@@ -30,6 +30,9 @@ def rebuild_packages(
 
         rebuild_info = rebuild_package(info["conda_loc"], output_dir)
 
+        import pdb
+
+        pdb.set_trace()
         rebuild_infos[recipe_name] = rebuild_info
 
     return rebuild_infos

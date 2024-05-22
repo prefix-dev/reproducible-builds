@@ -18,4 +18,12 @@ Built with rattler-build https://github.com/nichmor/rattler-build.git at commit 
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
+| xtensor | No |
+| ros-humble-turtlebot4-msgs | No |
+| rich | No |
+| mamba | No |
+| zlink | No |
+| curl | Yes |
+| async-cairo | Yes |
+| cargo-edit | Yes |
 | boltons | Yes |
