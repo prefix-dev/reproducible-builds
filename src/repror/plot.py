@@ -88,6 +88,8 @@ config = load_config()
 
 build_text = f"""
 Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}
+
+Built on ubunutu 22.04 and rebuild on 20.04
 """
 
 
@@ -110,7 +112,7 @@ table = f"""
 
 | Recipe Name | Is Reproducible |\n| --- | --- |
 """
-for recipe, reproducible in platform_build_info.items():
+for recipe, reproducible in ubuntu_platform.items():
     table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
 
 # Save the table to README.md
