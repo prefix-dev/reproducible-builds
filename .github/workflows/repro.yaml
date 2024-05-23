@@ -33,6 +33,30 @@ jobs:
             build_info/
             artifacts/
 
+
+  build-recipes-macos-14:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
+
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run python src/repror/build_recipe.py macos 14
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            build_info/
+            artifacts/
+
   rebuild-recipes-ubuntu-20-04:
     runs-on: ubuntu-20.04
     needs: build-recipes-ubunutu-22-04
@@ -61,10 +85,37 @@ jobs:
           path: |
             build_info/
   
+  rebuild-recipes-macos-13:
+    runs-on: macos-13
+    needs: build-recipes-macos-14
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
+      
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: .
+
+      - name: Rebuild recipes and track if hash is equal
+        run: |
+          pixi run python src/repror/rebuild_recipe.py macos 14 13
+      
+      - name: Upload build info
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-info
+          path: |
+            build_info/
 
   statistics:
     runs-on: ubuntu-latest
-    needs: rebuild-recipes-ubuntu-20-04
+    needs: [rebuild-recipes-ubuntu-20-04, rebuild-recipes-macos-13]
 
     steps:
       - name: Checkout code
@@ -83,7 +134,7 @@ jobs:
 
       - name: Calculate statistics
         run: |
-          pixi run python src/repror/statistics.py ubuntu_22.04_20.04
+          pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_14_13
       
       - name: Upload build info
         uses: actions/upload-artifact@v3
@@ -111,7 +162,7 @@ jobs:
       
       - name: Plot
         run: |
-          pixi run python src/repror/plot.py ubuntu
+          pixi run python src/repror/plot.py ubuntu macos
       
       - name: Commit and push changes
         env:
