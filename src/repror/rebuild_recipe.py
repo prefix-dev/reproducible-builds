@@ -104,3 +104,9 @@ if __name__ == "__main__":
             "w",
         ) as f:
             json.dump(rebuild_info, f)
+        
+        with open(
+            f"build_info/{platform}/{platform}_{previous_version}_build_info.json",
+            "w",
+        ) as f:
+            json.dump(previous_build_info, f)
