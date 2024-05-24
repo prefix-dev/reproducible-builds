@@ -112,6 +112,7 @@ jobs:
           name: build-info
           path: |
             build_info/
+            diffoscope_output/
 
   # statistics:
   #   runs-on: ubuntu-latest

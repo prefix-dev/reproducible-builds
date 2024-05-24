@@ -1,12 +1,13 @@
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 from typing import Optional, cast
 
 from repror.build import BuildInfo, rebuild_package
-from repror.util import move_file
+from repror.util import find_conda_build, move_file
 
 
 def rebuild_packages(
@@ -58,6 +59,28 @@ if __name__ == "__main__":
             previous_build_info = json.load(f)
 
         rebuild_info = rebuild_packages(previous_build_info, rebuild_dir, tmp_dir)
+
+
+        # get the diffoscope output
+        builded_boltons = find_conda_build("artifacts")
+        rebuilded = rebuild_info["boltons"]["conda_loc"]
+        
+        diffoscope_output = Path("diffoscope_output")
+        diffoscope_output.mkdir(exist_ok=True)
+
+        subprocess.run(
+            [
+                "diffoscope",
+                str(builded_boltons),
+                str(rebuilded),
+                "--json",
+                f"{diffoscope_output}/boltons_diff.json",
+            ],
+            check=True,
+        )
+
+
+
 
         with open(
             f"build_info/{platform}_{previous_version}_{current_version}_rebuild_info.json",
