@@ -23,6 +23,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
+          sudo apt-get install libssl-dev
           pixi run python src/repror/build_recipe.py ubuntu 22.04
       
       - name: Upload results
@@ -76,6 +77,7 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
+          sudo apt-get install libssl-dev
           pixi run python src/repror/rebuild_recipe.py ubuntu 22.04 20.04
       
       - name: Upload build info
