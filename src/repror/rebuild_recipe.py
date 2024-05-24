@@ -69,7 +69,7 @@ if __name__ == "__main__":
         all_builds = find_all_conda_build("artifacts")
 
         diffoscope_output = Path(f"diffoscope_output/{platform}")
-        diffoscope_output.mkdir(exist_ok=True)
+        diffoscope_output.mkdir(exist_ok=True, parents=True)
 
         
         for recipe_name in rebuild_info:
