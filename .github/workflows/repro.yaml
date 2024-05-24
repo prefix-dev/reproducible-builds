@@ -86,7 +86,7 @@ jobs:
   #           build_info/
   
   rebuild-recipes-macos-13:
-    runs-on: macos-13
+    runs-on: macos-13-xlarge
     needs: build-recipes-macos-14
 
     steps:
