@@ -21,16 +21,16 @@ jobs:
         with:
           pixi-version: "latest"
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y pkg-config libssl-dev
+      # - name: Install dependencies
+      #   run: |
+      #     sudo apt-get update
+      #     sudo apt-get install -y pkg-config libssl-dev
       
-      - name: Set OpenSSL environment variables
-        run: |
-          echo "OPENSSL_DIR=/usr/lib/ssl" >> $GITHUB_ENV
-          echo "OPENSSL_INCLUDE_DIR=/usr/include/openssl" >> $GITHUB_ENV
-          echo "OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu" >> $GITHUB_ENV
+      # - name: Set OpenSSL environment variables
+      #   run: |
+      #     echo "OPENSSL_DIR=/usr/lib/ssl" >> $GITHUB_ENV
+      #     echo "OPENSSL_INCLUDE_DIR=/usr/include/openssl" >> $GITHUB_ENV
+      #     echo "OPENSSL_LIB_DIR=/usr/lib/x86_64-linux-gnu" >> $GITHUB_ENV
 
       - name: Build recipes and track if hash is equal
         run: |
@@ -96,7 +96,7 @@ jobs:
           name: build-info
           path: |
             build_info/
-            diffoscope_output/
+            ci_artifacts/
       
       - name: Upload diffoscope
         uses: actions/upload-artifact@v3
@@ -104,6 +104,7 @@ jobs:
           name: diffoscope
           path: |
             diffoscope_output/
+            ci_artifacts/
             
   
   # rebuild-recipes-macos-12:

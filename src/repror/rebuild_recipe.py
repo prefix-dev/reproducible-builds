@@ -7,7 +7,7 @@ import tempfile
 from typing import Optional, cast
 
 from repror.build import BuildInfo, rebuild_package
-from repror.util import find_conda_build, move_file
+from repror.util import find_all_conda_build, find_conda_build, move_file
 
 
 def rebuild_packages(
@@ -51,6 +51,10 @@ if __name__ == "__main__":
 
         rebuild_dir = Path("build_outputs")
         rebuild_dir.mkdir(exist_ok=True)
+
+        Path("ci_artifacts/build").mkdir(exist_ok=True, parents=True)
+        Path("ci_artifacts/rebuild").mkdir(exist_ok=True, parents=True)
+
         # os.makedirs("/var/lib/rattler_build/build", exist_ok=True)
 
         with open(
@@ -62,27 +66,38 @@ if __name__ == "__main__":
 
 
         # get the diffoscope output
-        builded_boltons = find_conda_build("artifacts")
-        rebuilded = rebuild_info["cargo-edit"]["conda_loc"]
-        
+        all_builds = find_all_conda_build("artifacts")
+
         diffoscope_output = Path("diffoscope_output")
         diffoscope_output.mkdir(exist_ok=True)
 
-        print("getting diffoscope diff")
+        
+        for recipe_name in rebuild_info:
+            if not rebuild_info[recipe_name]:
+                continue
 
-        subprocess.run(
-            [
-                "diffoscope",
-                str(builded_boltons),
-                str(rebuilded),
-                "--json",
-                f"{diffoscope_output}/cargo_edit_diff.json",
-            ],
-            check=True,
-        )
+            rebuild_info = rebuild_info[recipe_name]
 
+            rebuilded_loc = rebuild_info[recipe_name]["conda_loc"]
 
+            if Path(rebuilded_loc).name in all_builds:
+                idx = all_builds.index(Path(rebuilded_loc).name)
+                builded = all_builds[idx]
+            else:
+                continue
+        
+            print("getting diffoscope diff")
 
+            subprocess.run(
+                [
+                    "diffoscope",
+                    str(builded),
+                    str(rebuilded_loc),
+                    "--json",
+                    f"{diffoscope_output}/{recipe_name}_diff.json",
+                ],
+                check=True,
+            )
 
         with open(
             f"build_info/{platform}_{previous_version}_{current_version}_rebuild_info.json",
