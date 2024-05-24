@@ -154,7 +154,9 @@ jobs:
           name: build-info
           path: .
       
-      - run: ls -la build_info/
+      - run: | 
+          ls -la build_info/
+          ls -la build_info/ubuntu
 
       - name: Calculate statistics
         run: |
