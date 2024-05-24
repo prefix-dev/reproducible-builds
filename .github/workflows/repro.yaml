@@ -85,6 +85,14 @@ jobs:
           path: |
             build_info/
             diffoscope_output/
+      
+      - name: Upload diffoscope
+        uses: actions/upload-artifact@v3
+        with:
+          name: diffoscope
+          path: |
+            diffoscope_output/
+            
   
   # rebuild-recipes-macos-13:
   #   runs-on: macos-13

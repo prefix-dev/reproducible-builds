@@ -68,6 +68,8 @@ if __name__ == "__main__":
         diffoscope_output = Path("diffoscope_output")
         diffoscope_output.mkdir(exist_ok=True)
 
+        print("getting diffoscope diff")
+
         subprocess.run(
             [
                 "diffoscope",
