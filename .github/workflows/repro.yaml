@@ -152,7 +152,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: build-info
-          path: build_info/
+          path: .
       
       - run: ls -la build_info/
 
@@ -182,7 +182,7 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: data
-          path: data/
+          path: .
       
       - name: Plot
         run: |
