@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
         # get the diffoscope output
         builded_boltons = find_conda_build("artifacts")
-        rebuilded = rebuild_info["cargo-edit"]["conda_loc"]
+        rebuilded = rebuild_info["async-cairo"]["conda_loc"]
         
         diffoscope_output = Path("diffoscope_output")
         diffoscope_output.mkdir(exist_ok=True)
