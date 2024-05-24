@@ -115,6 +115,28 @@ table = f"""
 for recipe, reproducible in ubuntu_platform.items():
     table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
 
+
+
+rebuild_table = f"""{table}\n\n
+
+"""
+
+
+for platform in by_platform:
+    build_text = f"Build on {platform}"
+    if platform == "macos":
+        build_text += " 13 and rebuild on 12"
+
+    rebuild_table += f"""
+{build_text}\n\n
+    
+| Recipe Name | Is Reproducible |\n| --- | --- |
+"""
+    for recipe, reproducible in by_platform[platform].items():
+        rebuild_table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
+
+
+
 # Save the table to README.md
 with open("README.md", "w") as file:
-    file.write(table)
+    file.write(rebuild_table)

@@ -15,15 +15,37 @@
 
 Built with rattler-build https://github.com/nichmor/rattler-build.git at commit fix/conda-timestamp-affect-reproducibility
 
+Built on ubunutu 22.04 and rebuild on 20.04
+
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
-| xtensor | Yes |
+| xtensor | No |
 | ros-humble-turtlebot4-msgs | No |
-| rich | Yes |
+| rich | No |
 | mamba | No |
 | zlink | No |
 | curl | Yes |
-| async-cairo | No |
-| cargo-edit | No |
+| async-cairo | Yes |
+| cargo-edit | Yes |
+| boltons | Yes |
+
+
+
+
+
+Build on ubuntu
+
+
+    
+    | Recipe Name | Is Reproducible |
+| --- | --- |
+| xtensor | No |
+| ros-humble-turtlebot4-msgs | No |
+| rich | No |
+| mamba | No |
+| zlink | No |
+| curl | Yes |
+| async-cairo | Yes |
+| cargo-edit | Yes |
 | boltons | Yes |
