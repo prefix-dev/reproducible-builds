@@ -76,8 +76,6 @@ if __name__ == "__main__":
             if not rebuild_info[recipe_name]:
                 continue
 
-            rebuild_info = rebuild_info[recipe_name]
-
             rebuilded_loc = rebuild_info[recipe_name]["conda_loc"]
 
             if Path(rebuilded_loc).name in all_builds:
