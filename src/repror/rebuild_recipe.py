@@ -63,7 +63,7 @@ if __name__ == "__main__":
 
         # get the diffoscope output
         builded_boltons = find_conda_build("artifacts")
-        rebuilded = rebuild_info["boltons"]["conda_loc"]
+        rebuilded = rebuild_info["cargo-edit"]["conda_loc"]
         
         diffoscope_output = Path("diffoscope_output")
         diffoscope_output.mkdir(exist_ok=True)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
                 str(builded_boltons),
                 str(rebuilded),
                 "--json",
-                f"{diffoscope_output}/boltons_diff.json",
+                f"{diffoscope_output}/cargo_edit_diff.json",
             ],
             check=True,
         )

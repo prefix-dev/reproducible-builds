@@ -13,8 +13,8 @@ repositories:
       # - path: examples/mamba/recipe.yaml # is failing at build
       # - path: examples/linking/recipe.yaml # is failing
       # - path: examples/curl/recipe.yaml
-      - path: examples/cmpcdt/recipe.yaml
-      # - path: examples/cargo-edit/recipe.yaml
+      # - path: examples/cmpcdt/recipe.yaml
+      - path: examples/cargo-edit/recipe.yaml
 
 
 # local:
