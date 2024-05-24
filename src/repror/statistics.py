@@ -22,12 +22,12 @@ if __name__ == "__main__":
         base_platform, from_version, to_version = platform_and_version.split("_")
 
         with open(
-            f"build_info/{base_platform}_{from_version}_build_info.json", "r"
+            f"build_info/{base_platform}/{base_platform}_{from_version}_build_info.json", "r"
         ) as f:
             build_info_by_platform[base_platform] = json.load(f)
 
         with open(
-            f"build_info/{base_platform}_{from_version}_{to_version}_rebuild_info.json",
+            f"build_info/{base_platform}/{base_platform}_{from_version}_{to_version}_rebuild_info.json",
             "r",
         ) as f:
             rebuild_info_by_platform[base_platform] = json.load(f)

@@ -95,7 +95,7 @@ jobs:
         with:
           name: build-info
           path: |
-            build_info/
+            build_info/ubuntu
             ci_artifacts/
       
       - name: Upload diffoscope
@@ -133,7 +133,7 @@ jobs:
         with:
           name: build-info
           path: |
-            build_info/
+            build_info/macos
             diffoscope_output/
             ci_artifacts/
 
