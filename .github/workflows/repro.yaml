@@ -22,7 +22,7 @@ jobs:
           pixi-version: "latest"
 
       - name: Set timezone to UTC
-        run: sudo timedatectl set-timezone Etc/UTC
+        run: sudo timedatectl set-timezone UTC
 
       - name: Build recipes and track if hash is equal
         run: |
@@ -49,7 +49,7 @@ jobs:
           pixi-version: "latest"
         
       - name: Set timezone to UTC
-        run: sudo systemsetup -settimezone UTC
+        run: sudo systemsetup -settimezone GMT
 
       - name: Build recipes and track if hash is equal
         run: |
