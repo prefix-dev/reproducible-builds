@@ -126,6 +126,8 @@ for platform in by_platform:
     build_text = f"Build on {platform}"
     if platform == "macos":
         build_text += " 13 and rebuild on 12"
+    elif platform == "ubuntu":
+        continue
 
     rebuild_table += f"""
 {build_text}\n\n

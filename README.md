@@ -33,19 +33,3 @@ Built on ubunutu 22.04 and rebuild on 20.04
 
 
 
-
-Build on ubuntu
-
-
-    
-    | Recipe Name | Is Reproducible |
-| --- | --- |
-| xtensor | No |
-| ros-humble-turtlebot4-msgs | No |
-| rich | No |
-| mamba | No |
-| zlink | No |
-| curl | Yes |
-| async-cairo | Yes |
-| cargo-edit | Yes |
-| boltons | Yes |
