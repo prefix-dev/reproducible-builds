@@ -12,7 +12,8 @@ class RecipeConfig:
     def __init__(self, config):
         self.config = config
 
-    def load_recipe(self, recipe_file) -> Self:
+    @staticmethod
+    def load_recipe(recipe_file) -> Self:
         with open(recipe_file, "r") as file:
             recipe = yaml.safe_load(file)
         return RecipeConfig(recipe)
