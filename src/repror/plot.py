@@ -31,20 +31,20 @@ with open("data/history.json", "r+") as history_file:
 
     now_date = str(datetime.datetime.now().strftime("%Y-%m-%d"))
 
+    now_platform = {}
     for platform in by_platform:
         total_packages = len(by_platform[platform])
         reproducible = sum(value for value in by_platform[platform].values() if value)
         not_reproducible = sum(
             value for value in by_platform[platform].values() if not value
         )
-
-    previous_data[now_date] = {
-        platform: {
+        now_platform[platform] = {
             "total_packages": total_packages,
             "repro": reproducible,
             "not_repro": not_reproducible,
         }
-    }
+
+    previous_data[now_date] = now_platform
 
     history_file.seek(0)
 
