@@ -16,10 +16,10 @@ def build_recipes(repositories, local_recipes, tmp_dir, build_dir):
     remote_build_info, local_build_info = {}, {}
 
     for repo in repositories:
-        remote_build_info = build_remote_recipes(repo, build_dir, cloned_prefix_dir)
+        remote_build_info.update(build_remote_recipes(repo, build_dir, cloned_prefix_dir))
 
     for local in local_recipes:
-        local_build_info = build_local_recipe(local, build_dir)
+        local_build_info.update(build_local_recipe(local, build_dir))
 
     return remote_build_info, local_build_info
 
