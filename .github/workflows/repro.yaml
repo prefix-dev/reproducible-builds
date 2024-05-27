@@ -187,22 +187,15 @@ jobs:
           ls -la stat_data/
           pixi run python src/repror/plot.py ubuntu macos
       
-      # - name: Commit and push changes
-      #   env:
-      #     GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     git config --local user.email "action@github.com"
-      #     git config --local user.name "GitHub Action"
-      #     git add data/history.json
-      #     git add data/chart.png
-      #     git add README.md
-      #     git commit -m "Update file via GitHub Action"
-      #     git push
-      - name: Upload build info
-        uses: actions/upload-artifact@v3
-        with:
-          name: data
-          path: |
-            data/
-            README.md
+      - name: Commit and push changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data/history.json
+          git add data/chart.png
+          git add README.md
+          git commit -m "Update file via GitHub Action"
+          git push
       
