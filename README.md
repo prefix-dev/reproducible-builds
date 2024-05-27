@@ -20,8 +20,15 @@ Built on ubunutu 22.04 and rebuild on 20.04
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
-| polarify | No |
-| boltons | No |
+| xtensor | Yes |
+| ros-humble-turtlebot4-msgs | No |
+| rich | No |
+| mamba | No |
+| zlink | No |
+| curl | Yes |
+| async-cairo | No |
+| cargo-edit | No |
+| boltons | Yes |
 
 
 
@@ -33,5 +40,12 @@ Build on macos 13 and rebuild on 12
     
 | Recipe Name | Is Reproducible |
 | --- | --- |
-| polarify | Yes |
+| xtensor | Yes |
+| ros-humble-turtlebot4-msgs | No |
+| rich | No |
+| mamba | No |
+| zlink | No |
+| curl | No |
+| async-cairo | No |
+| cargo-edit | No |
 | boltons | Yes |
