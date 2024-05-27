@@ -90,21 +90,15 @@ jobs:
           # sudo apt-get install libssl-dev
           pixi run python src/repror/rebuild_recipe.py ubuntu 22.04 20.04
       
-      - name: Upload build info
+      - name: Upload diffoscope
         uses: actions/upload-artifact@v3
         with:
           name: build-info
           path: |
             build_info/ubuntu
-            ci_artifacts/
-      
-      - name: Upload diffoscope
-        uses: actions/upload-artifact@v3
-        with:
-          name: diffoscope
-          path: |
             diffoscope_output/
             ci_artifacts/
+
             
   
   rebuild-recipes-macos-12:
@@ -188,6 +182,7 @@ jobs:
       
       - name: Plot
         run: |
+          ls -la data  
           pixi run python src/repror/plot.py ubuntu macos
       
       # - name: Commit and push changes
