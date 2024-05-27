@@ -183,7 +183,6 @@ jobs:
       
       - name: Plot
         run: |
-          ls -la reproducible-builds-rattler-build/
           ls -la stat_data/
           pixi run python src/repror/plot.py ubuntu macos
       
