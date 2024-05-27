@@ -152,7 +152,7 @@ jobs:
           ls -la build_info/
           ls -la build_info/ubuntu
 
-      - name: Calculate statistics
+      - name: Calculate statistics and plot output
         run: |
           pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_13_12
 

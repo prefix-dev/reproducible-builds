@@ -27,7 +27,7 @@ def build_recipes(repositories, local_recipes, tmp_dir, build_dir):
 if __name__ == "__main__":
     platform, version = sys.argv[1], sys.argv[2]
 
-    if platform not in ["linux", "macos", "windows"]:
+    if platform not in ["ubuntu", "macos", "windows"]:
         print("Invalid platform ", platform)
         sys.exit(1)
 
