@@ -156,6 +156,7 @@ jobs:
         run: |
           pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_13_12
           ls -la data/
+          ls -la stat_data
       
       - name: Upload build info
         uses: actions/upload-artifact@v3
@@ -183,7 +184,7 @@ jobs:
       
       - name: Plot
         run: |
-          ls -la stat_data  
+          ls -la stat_data/
           pixi run python src/repror/plot.py ubuntu macos
       
       # - name: Commit and push changes
