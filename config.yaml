@@ -17,8 +17,8 @@ repositories:
       - path: examples/cargo-edit/recipe.yaml # openssl issue
 
 
-local:
-  - path: recipes/boltons/recipe.yaml
+# local:
+#   - path: recipes/boltons/recipe.yaml
 
 rattler-build:
   url: https://github.com/nichmor/rattler-build.git

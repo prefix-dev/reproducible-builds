@@ -1,15 +1,13 @@
-import os
 from pathlib import Path
 import shutil
 import subprocess
-from typing import NamedTuple, Optional, TypedDict
+from typing import Optional, TypedDict
 
-from repror.conf import load_config
+from repror.conf import RecipeConfig
 from repror.rattler_build import get_rattler_build
 from repror.util import (
     calculate_hash,
     find_conda_build,
-    get_recipe_name,
     move_file,
     run_command,
 )
@@ -64,11 +62,9 @@ def build_recipe(recipe_path, output_dir) -> Optional[BuildInfo]:
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
-    print(conda_file)
 
     # move to artifacts
     # so we could upload it in github action
-
     new_file_loc = move_file(conda_file, "artifacts")
 
     first_build_hash = calculate_hash(new_file_loc)
@@ -83,8 +79,10 @@ def build_recipe(recipe_path, output_dir) -> Optional[BuildInfo]:
 
 def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
     # copy to ci artifacts
-    shutil.copyfile(conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}")
-    
+    shutil.copyfile(
+        conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}"
+    )
+
     try:
         rebuild_conda_package(conda_file, output_dir)
     except subprocess.CalledProcessError:
@@ -96,7 +94,9 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
-    shutil.copyfile(conda_file, f"ci_artifacts/{platform}/rebuild/{Path(conda_file).name}")
+    shutil.copyfile(
+        conda_file, f"ci_artifacts/{platform}/rebuild/{Path(conda_file).name}"
+    )
     print(conda_file)
     first_build_hash = calculate_hash(conda_file)
 
@@ -131,20 +131,14 @@ def build_remote_recipes(
         recipe_path = clone_dir / recipe["path"]
         # recipe_name = recipe_path.name
 
-        recipe_config = load_config(recipe_path)
+        recipe_config = RecipeConfig.load_recipe(recipe_path)
 
-        recipe_name = get_recipe_name(recipe_path)
-
-        is_noarch = recipe_config.get("build", {}).get("noarch", False)
-
-        print(f"Building recipe: {recipe_name}")
-
-        build_dir = build_dir / f"{recipe_name}_build"
+        build_dir = build_dir / f"{recipe_config.name}_build"
         build_dir.mkdir(parents=True, exist_ok=True)
 
         build_info = build_recipe(recipe_path, build_dir)
 
-        build_infos[recipe_name] = build_info
+        build_infos[recipe_config.name] = build_info
 
     return build_infos
 
@@ -154,20 +148,13 @@ def build_local_recipe(local, build_dir):
 
     recipe_path = Path(local["path"])
 
-    recipe_config = load_config(recipe_path)
+    recipe_config: RecipeConfig = RecipeConfig.load_recipe(recipe_path)
 
-    recipe_name = get_recipe_name(recipe_path)
-
-    is_noarch = recipe_config.get("build", {}).get("noarch", False)
-
-    print(f"Building recipe: {recipe_name}")
+    print(f"Building recipe: {recipe_config.name}")
     build_infos = {}
-
-    # build_dir = build_dir / f"{recipe_name}_build"
-    # build_dir.mkdir(parents=True, exist_ok=True)
 
     build_info = build_recipe(recipe_path, build_dir)
 
-    build_infos[recipe_name] = build_info
+    build_infos[recipe_config.name] = build_info
 
     return build_infos
