@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import sys
 
 
@@ -60,5 +61,6 @@ if __name__ == "__main__":
                 info["pkg_hash"] == re_info["pkg_hash"]
             )
 
+        os.makedirs(f"data/{platform}", exist_ok=True)
         with open(f"data/{platform}/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
             json.dump(build_results_by_platform[platform], pkg_info)
