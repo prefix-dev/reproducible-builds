@@ -155,6 +155,7 @@ jobs:
       - name: Calculate statistics
         run: |
           pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_13_12
+          ls -la data/
       
       - name: Upload build info
         uses: actions/upload-artifact@v3
