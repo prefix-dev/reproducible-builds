@@ -1,5 +1,6 @@
 import datetime
 import json
+import os
 import sys
 
 
@@ -22,12 +23,12 @@ if __name__ == "__main__":
         base_platform, from_version, to_version = platform_and_version.split("_")
 
         with open(
-            f"build_info/{base_platform}_{from_version}_build_info.json", "r"
+            f"build_info/{base_platform}/{base_platform}_{from_version}_build_info.json", "r"
         ) as f:
             build_info_by_platform[base_platform] = json.load(f)
 
         with open(
-            f"build_info/{base_platform}_{from_version}_{to_version}_rebuild_info.json",
+            f"build_info/{base_platform}/{base_platform}_{from_version}_{to_version}_rebuild_info.json",
             "r",
         ) as f:
             rebuild_info_by_platform[base_platform] = json.load(f)
@@ -42,6 +43,8 @@ if __name__ == "__main__":
     today_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
     build_results_by_platform = {}
+
+    os.makedirs("stat_data", exist_ok=True)
 
     for platform in build_info_by_platform:
         build_results_by_platform[platform] = {}
@@ -60,5 +63,5 @@ if __name__ == "__main__":
                 info["pkg_hash"] == re_info["pkg_hash"]
             )
 
-        with open(f"data/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
+        with open(f"stat_data/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
             json.dump(build_results_by_platform[platform], pkg_info)

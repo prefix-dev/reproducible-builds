@@ -1,16 +1,17 @@
 import json
 import os
 from pathlib import Path
+import subprocess
 import sys
 import tempfile
 from typing import Optional, cast
 
 from repror.build import BuildInfo, rebuild_package
-from repror.util import move_file
+from repror.util import find_all_conda_build, find_conda_build, move_file
 
 
 def rebuild_packages(
-    build_infos: dict[str, Optional[BuildInfo]], rebuild_dir: Path, tmp_dir: Path
+    build_infos: dict[str, Optional[BuildInfo]], rebuild_dir: Path, tmp_dir: Path, platform: str
 ):
     rebuild_infos: dict[str, Optional[BuildInfo]] = {}
 
@@ -28,7 +29,7 @@ def rebuild_packages(
 
         output_dir = rebuild_directory / "output"
 
-        rebuild_info = rebuild_package(info["conda_loc"], output_dir)
+        rebuild_info = rebuild_package(info["conda_loc"], output_dir, platform)
 
         rebuild_infos[recipe_name] = rebuild_info
 
@@ -50,6 +51,10 @@ if __name__ == "__main__":
 
         rebuild_dir = Path("build_outputs")
         rebuild_dir.mkdir(exist_ok=True)
+
+        Path(f"ci_artifacts/{platform}/build").mkdir(exist_ok=True, parents=True)
+        Path(f"ci_artifacts/{platform}/rebuild").mkdir(exist_ok=True, parents=True)
+
         # os.makedirs("/var/lib/rattler_build/build", exist_ok=True)
 
         with open(
@@ -57,10 +62,51 @@ if __name__ == "__main__":
         ) as f:
             previous_build_info = json.load(f)
 
-        rebuild_info = rebuild_packages(previous_build_info, rebuild_dir, tmp_dir)
+        rebuild_info = rebuild_packages(previous_build_info, rebuild_dir, tmp_dir, platform)
+
+
+        # get the diffoscope output
+        all_builds = find_all_conda_build("artifacts")
+
+        diffoscope_output = Path(f"diffoscope_output/{platform}")
+        diffoscope_output.mkdir(exist_ok=True, parents=True)
+
+        
+        for recipe_name in rebuild_info:
+            if not rebuild_info[recipe_name]:
+                continue
+
+            rebuilded_loc = rebuild_info[recipe_name]["conda_loc"]
+
+            if Path(rebuilded_loc).name in all_builds:
+                idx = all_builds.index(Path(rebuilded_loc).name)
+                builded = all_builds[idx]
+            else:
+                continue
+        
+            print("getting diffoscope diff")
+
+            subprocess.run(
+                [
+                    "diffoscope",
+                    str(builded),
+                    str(rebuilded_loc),
+                    "--json",
+                    f"{diffoscope_output}/{platform}/{recipe_name}_diff.json",
+                ],
+                check=True,
+            )
+
+        os.makedirs(f"build_info/{platform}", exist_ok=True)
 
         with open(
-            f"build_info/{platform}_{previous_version}_{current_version}_rebuild_info.json",
+            f"build_info/{platform}/{platform}_{previous_version}_{current_version}_rebuild_info.json",
             "w",
         ) as f:
             json.dump(rebuild_info, f)
+        
+        with open(
+            f"build_info/{platform}/{platform}_{previous_version}_build_info.json",
+            "w",
+        ) as f:
+            json.dump(previous_build_info, f)

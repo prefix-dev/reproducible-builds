@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Add a short description here"
 authors = ["nichmor <nmorkotilo@gmail.com>"]
 channels = ["conda-forge"]
-platforms = ["osx-arm64", "linux-64", "win-64", "osx-64"]
+platforms = ["osx-arm64", "linux-64", "osx-64"]
 
 [tasks]
 build_recipes = "python src/repror/generate_chart_data.py"
@@ -16,6 +16,7 @@ matplotlib = "*"
 rattler-build = "*"
 pyyaml = "*"
 pytest = "*"
+diffoscope = "*"
 
 [pypi-dependencies]
 repror = {path = ".", editable = true}

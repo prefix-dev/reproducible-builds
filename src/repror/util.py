@@ -26,6 +26,11 @@ def find_conda_build(build_folder):
 
     return conda_file
 
+def find_all_conda_build(build_folder):
+    # for now, we return all
+    return glob.glob(str(build_folder) + "/**/*.conda", recursive=True)
+
+
 
 def move_file(conda_file, destination_directory):
     os.makedirs(destination_directory, exist_ok=True)

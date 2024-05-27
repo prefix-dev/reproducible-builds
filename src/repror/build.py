@@ -81,7 +81,10 @@ def build_recipe(recipe_path, output_dir) -> Optional[BuildInfo]:
     )
 
 
-def rebuild_package(conda_file, output_dir) -> Optional[BuildInfo]:
+def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
+    # copy to ci artifacts
+    shutil.copyfile(conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}")
+    
     try:
         rebuild_conda_package(conda_file, output_dir)
     except subprocess.CalledProcessError:
@@ -93,6 +96,7 @@ def rebuild_package(conda_file, output_dir) -> Optional[BuildInfo]:
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
+    shutil.copyfile(conda_file, f"ci_artifacts/{platform}/rebuild/{Path(conda_file).name}")
     print(conda_file)
     first_build_hash = calculate_hash(conda_file)
 
