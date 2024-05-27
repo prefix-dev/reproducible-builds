@@ -61,6 +61,7 @@ not_reproducible = []
 
 # we take ubuntu as a base image
 
+print(previous_data)
 
 for date in previous_data:
     info = previous_data[date]["ubuntu"]
