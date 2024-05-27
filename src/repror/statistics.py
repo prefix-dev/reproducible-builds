@@ -177,7 +177,7 @@ def plot(platforms, stat_dir: Path):
     | Recipe Name | Is Reproducible |\n| --- | --- |
     """
     for recipe, reproducible in ubuntu_platform.items():
-        table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
+        table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
 
     rebuild_table = f"""{table}\n\n
 
@@ -196,7 +196,7 @@ def plot(platforms, stat_dir: Path):
     | Recipe Name | Is Reproducible |\n| --- | --- |
     """
         for recipe, reproducible in by_platform[platform].items():
-            rebuild_table += f"| {recipe} | {'Yes' if reproducible else 'No'} |\n"
+            rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
 
     # Save the table to README.md
     with open("README.md", "w") as file:
