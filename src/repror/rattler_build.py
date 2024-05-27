@@ -13,9 +13,16 @@ def get_rattler_build():
         return "rattler-build"
 
 
-def setup_rattler_build(rattler_build_config: dict, clone_dir):
+def setup_rattler_build(rattler_build_config: dict, tmp_dir):
+    rattler_build_config = rattler_build_config.get("ratller-build", {})
+    if not rattler_build_config:
+        # using rattler-build defined in pixi.toml
+        return
+
     url = rattler_build_config["url"]
     branch = rattler_build_config["branch"]
+
+    clone_dir = Path(tmp_dir) / "rattler-clone"
 
     if clone_dir.exists():
         shutil.rmtree(clone_dir)

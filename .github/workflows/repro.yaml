@@ -155,38 +155,7 @@ jobs:
       - name: Calculate statistics
         run: |
           pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_13_12
-          ls -la data/
-          ls -la stat_data
-      
-      - name: Upload build info
-        uses: actions/upload-artifact@v3
-        with:
-          name: stat_data
-          path: |
-            stat_data/
 
-  plot:
-    runs-on: ubuntu-latest
-    needs: statistics
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-      
-      - uses: actions/download-artifact@v3
-        with:
-          name: stat_data
-          path: stat_data/
-      
-      - name: Plot
-        run: |
-          ls -la stat_data/
-          pixi run python src/repror/plot.py ubuntu macos
-      
       - name: Commit and push changes
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -198,4 +167,5 @@ jobs:
           git add README.md
           git commit -m "Update file via GitHub Action"
           git push
+
       

@@ -20,6 +20,6 @@ repositories:
 local:
   - path: recipes/boltons/recipe.yaml
 
-rattler-build:
-  url: https://github.com/nichmor/rattler-build.git
-  branch: fix/conda-timestamp-affect-reproducibility
+# rattler-build:
+#   url: https://github.com/nichmor/rattler-build.git
+#   branch: fix/conda-timestamp-affect-reproducibility

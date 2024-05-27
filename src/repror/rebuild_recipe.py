@@ -4,23 +4,22 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-from typing import Optional, cast
+from typing import Optional
 
 from repror.build import BuildInfo, rebuild_package
-from repror.util import find_all_conda_build, find_conda_build, move_file
+from repror.conf import load_config
+from repror.rattler_build import setup_rattler_build
+from repror.util import find_all_conda_build
 
 
 def rebuild_packages(
-    build_infos: dict[str, Optional[BuildInfo]], rebuild_dir: Path, tmp_dir: Path, platform: str
+    build_infos: dict[str, Optional[BuildInfo]],
+    rebuild_dir: Path,
+    platform: str,
 ):
     rebuild_infos: dict[str, Optional[BuildInfo]] = {}
 
-    # rattler_clone_dir = Path(tmp_dir) / "rattler-clone"
-    # rattler_config = config["rattler-build"]
-    # setup_rattler_build(rattler_config, rattler_clone_dir)
-
     for recipe_name, info in build_infos.items():
-        # let's move the build
         if not info:
             rebuild_infos[recipe_name] = None
             continue
@@ -42,12 +41,9 @@ if __name__ == "__main__":
     build_info = {}
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        # rattler_clone_dir = Path(tmp_dir) / "rattler-clone"
-        # rattler_config = config["rattler-build"]
+        config = load_config()
 
-        # setup_rattler_build(rattler_config, rattler_clone_dir)
-
-        # cloned_prefix_dir = Path(tmp_dir) / "cloned"
+        setup_rattler_build(config, Path(tmp_dir))
 
         rebuild_dir = Path("build_outputs")
         rebuild_dir.mkdir(exist_ok=True)
@@ -62,8 +58,7 @@ if __name__ == "__main__":
         ) as f:
             previous_build_info = json.load(f)
 
-        rebuild_info = rebuild_packages(previous_build_info, rebuild_dir, tmp_dir, platform)
-
+        rebuild_info = rebuild_packages(previous_build_info, rebuild_dir, platform)
 
         # get the diffoscope output
         all_builds = find_all_conda_build("artifacts")
@@ -71,7 +66,6 @@ if __name__ == "__main__":
         diffoscope_output = Path(f"diffoscope_output/{platform}")
         diffoscope_output.mkdir(exist_ok=True, parents=True)
 
-        
         for recipe_name in rebuild_info:
             if not rebuild_info[recipe_name]:
                 continue
@@ -83,7 +77,7 @@ if __name__ == "__main__":
                 builded = all_builds[idx]
             else:
                 continue
-        
+
             print("getting diffoscope diff")
 
             subprocess.run(
@@ -104,7 +98,7 @@ if __name__ == "__main__":
             "w",
         ) as f:
             json.dump(rebuild_info, f)
-        
+
         with open(
             f"build_info/{platform}/{platform}_{previous_version}_build_info.json",
             "w",
