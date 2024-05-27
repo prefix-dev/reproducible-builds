@@ -180,7 +180,6 @@ jobs:
       - uses: actions/download-artifact@v3
         with:
           name: stat_data
-          path: .
       
       - name: Plot
         run: |
