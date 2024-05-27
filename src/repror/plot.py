@@ -17,7 +17,7 @@ by_platform = {}
 ubuntu_platform = {}
 
 for platform in platforms:
-    with open(f"data/{platform}_packages_info_{now_date}.json", "r") as f:
+    with open(f"stat_data/{platform}_packages_info_{now_date}.json", "r") as f:
         platform_build_info = json.load(f)
 
     by_platform[platform] = platform_build_info

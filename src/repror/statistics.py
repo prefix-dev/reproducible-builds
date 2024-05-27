@@ -44,6 +44,8 @@ if __name__ == "__main__":
 
     build_results_by_platform = {}
 
+    os.makedirs("stat_data", exist_ok=True)
+
     for platform in build_info_by_platform:
         build_results_by_platform[platform] = {}
         for recipe_name, info in build_info_by_platform[platform].items():
@@ -61,5 +63,5 @@ if __name__ == "__main__":
                 info["pkg_hash"] == re_info["pkg_hash"]
             )
 
-        with open(f"data/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
+        with open(f"stat_data/{platform}_packages_info_{today_date}.json", "w") as pkg_info:
             json.dump(build_results_by_platform[platform], pkg_info)
