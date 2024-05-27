@@ -51,7 +51,6 @@ if __name__ == "__main__":
         Path(f"ci_artifacts/{platform}/build").mkdir(exist_ok=True, parents=True)
         Path(f"ci_artifacts/{platform}/rebuild").mkdir(exist_ok=True, parents=True)
 
-        # os.makedirs("/var/lib/rattler_build/build", exist_ok=True)
 
         with open(
             f"build_info/{platform}_{previous_version}_build_info.json", "r"
