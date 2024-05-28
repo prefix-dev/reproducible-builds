@@ -154,27 +154,27 @@ def plot(platforms, stat_dir: Path):
     build_text = f"""
     {rattler_tmpl_string}
 
-    Built on ubunutu 22.04 and rebuild on 20.04
+Built on ubunutu 22.04 and rebuild on 20.04
     """
 
     # Generate the Markdown table
     table = f"""
-    # Are we reproducible yet?
+# Are we reproducible yet?
 
-    ![License][license-badge]
-    [![Project Chat][chat-badge]][chat-url]
-
-
-    [license-badge]: https://img.shields.io/badge/license-BSD--3--Clause-blue?style=flat-square
-    [chat-badge]: https://img.shields.io/discord/1082332781146800168.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square
-    [chat-url]: https://discord.gg/kKV8ZxyzY4
+![License][license-badge]
+[![Project Chat][chat-badge]][chat-url]
 
 
-    ![Reproducibility Chart](data/chart.png)
+[license-badge]: https://img.shields.io/badge/license-BSD--3--Clause-blue?style=flat-square
+[chat-badge]: https://img.shields.io/discord/1082332781146800168.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square
+[chat-url]: https://discord.gg/kKV8ZxyzY4
+
+
+![Reproducibility Chart](data/chart.png)
 
     {build_text}
 
-    | Recipe Name | Is Reproducible |\n| --- | --- |
+| Recipe Name | Is Reproducible |\n| --- | --- |
     """
     for recipe, reproducible in ubuntu_platform.items():
         table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
@@ -193,7 +193,7 @@ def plot(platforms, stat_dir: Path):
         rebuild_table += f"""
     {build_text}\n\n
         
-    | Recipe Name | Is Reproducible |\n| --- | --- |
+| Recipe Name | Is Reproducible |\n| --- | --- |
     """
         for recipe, reproducible in by_platform[platform].items():
             rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
