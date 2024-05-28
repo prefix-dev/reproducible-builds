@@ -6,7 +6,7 @@ from repror import conf
 
 if __name__ == "__main__":
     # Prepare the matrix
-    matrix = []
+    matrix = {'include': []}
 
     config = conf.load_config()
 
@@ -16,7 +16,7 @@ if __name__ == "__main__":
         branch = repo['branch']
         for recipe in repo.get('recipes', []):
             path = recipe['path']
-            matrix.append({
+            matrix['include'].append({
                 'url': url,
                 'branch': branch,
                 'recipe': path
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     for local in config.get('local', []):
         path = local['path']
-        matrix.append({
+        matrix['include'].append({
             'url': 'local',
             'branch': 'local',
             'recipe': path
