@@ -26,8 +26,9 @@ jobs:
     - name: Generate matrix
       id: generate-matrix
       run: |
-        echo "::set-output name=matrix::$(pixi run python src/repror/matrix.py)"
-        echo $(pixi run python src/repror/matrix.py)
+        message=$(pixi run python src/repror/matrix.py)
+        echo $message
+        echo "matrix=$message" >> $GITHUB_OUTPUT
 
 
   build-recipes-ubunutu-22-04:
