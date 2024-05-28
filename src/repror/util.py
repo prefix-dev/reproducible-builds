@@ -41,13 +41,3 @@ def move_file(conda_file, destination_directory):
     shutil.move(conda_file, file_loc)
 
     return file_loc
-
-
-def get_recipe_name(recipe_file):
-    with open(recipe_file, "r") as file:
-        recipe = yaml.safe_load(file)
-
-    if "name" in recipe.get("context", {}):
-        return recipe["context"]["name"]
-
-    return recipe["package"]["name"]
