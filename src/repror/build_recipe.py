@@ -29,7 +29,12 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
 
 if __name__ == "__main__":
     platform, version = sys.argv[1], sys.argv[2]
-    recipe_obj: Recipe = json.loads(sys.argv[3])
+    recipe_string = sys.argv[3]
+
+    url, branch, path = recipe_string.split("::")
+
+
+    recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
 
     if platform not in ["ubuntu", "macos", "windows"]:
         print("Invalid platform ", platform)

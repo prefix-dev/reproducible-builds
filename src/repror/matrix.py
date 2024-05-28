@@ -16,19 +16,11 @@ if __name__ == "__main__":
         branch = repo['branch']
         for recipe in repo.get('recipes', []):
             path = recipe['path']
-            matrix.append({
-                'url': url,
-                'branch': branch,
-                'recipe': path
-            })
+            matrix.append(f"{url}::{branch}::{path}")
 
     for local in config.get('local', []):
         path = local['path']
-        matrix.append({
-            'url': 'local',
-            'branch': 'local',
-            'recipe': path
-        })
+        matrix.append(f"local::local::{path}")
 
     # Convert the matrix to JSON
     matrix_json = json.dumps(matrix)

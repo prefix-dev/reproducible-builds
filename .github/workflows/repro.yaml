@@ -58,7 +58,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run python src/repror/build_recipe.py ubuntu 22.04 ${{ toJSON(matrix.recipes) }}
+          pixi run python src/repror/build_recipe.py ubuntu 22.04 ${{ matrix.recipes }}
 
       # - name: echo
       #   run: echo ${{ matrix.recipes }}
