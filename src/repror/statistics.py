@@ -145,12 +145,12 @@ def plot(platforms, stat_dir: Path):
 
     config = load_config()
 
-    
+
     if "rattler-build" not in config:
         rattler_tmpl_string = "Built with latest rattler-build"
     else:
         rattler_tmpl_string = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
-    
+
     build_text = f"""
 {rattler_tmpl_string}
 
@@ -190,7 +190,7 @@ Built on ubunutu 22.04 and rebuild on 20.04
 
         rebuild_table += f"""
 {build_text}\n\n
-        
+
 | Recipe Name | Is Reproducible |
 | --- | --- |\n"""
 
