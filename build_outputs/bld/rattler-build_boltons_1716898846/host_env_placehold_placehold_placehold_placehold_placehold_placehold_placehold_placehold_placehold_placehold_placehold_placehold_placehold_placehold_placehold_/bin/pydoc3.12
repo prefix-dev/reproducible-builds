@@ -1,0 +1,5 @@
+#!/Users/graf/projects/oss/reproducible-builds/build_outputs/bld/rattler-build_boltons_1716898846/host_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_/bin/python3.12
+
+import pydoc
+if __name__ == '__main__':
+    pydoc.cli()

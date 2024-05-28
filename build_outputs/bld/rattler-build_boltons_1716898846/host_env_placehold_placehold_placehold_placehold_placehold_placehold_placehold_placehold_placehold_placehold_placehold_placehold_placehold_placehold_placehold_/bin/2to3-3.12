@@ -1,0 +1,5 @@
+#!/Users/graf/projects/oss/reproducible-builds/build_outputs/bld/rattler-build_boltons_1716898846/host_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_/bin/python3.12
+import sys
+from lib2to3.main import main
+
+sys.exit(main("lib2to3.fixes"))

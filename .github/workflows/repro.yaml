@@ -56,12 +56,12 @@ jobs:
       # - name: Verify LANG for Initial Build
       #   run: echo $LANG
 
-      # - name: Build recipes and track if hash is equal
-      #   run: |
-      #     pixi run python src/repror/build_recipe.py ubuntu 22.04
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run python src/repror/build_recipe.py ubuntu 22.04 ${{ matrix.recipes }}
 
-      - name: echo
-        run: echo ${{ matrix.recipes }}
+      # - name: echo
+      #   run: echo ${{ matrix.recipes }}
       
       # - name: Upload results
       #   uses: actions/upload-artifact@v3
