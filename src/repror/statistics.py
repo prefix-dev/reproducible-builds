@@ -152,7 +152,7 @@ def plot(platforms, stat_dir: Path):
         rattler_tmpl_string = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
     
     build_text = f"""
-    {rattler_tmpl_string}
+{rattler_tmpl_string}
 
 Built on ubunutu 22.04 and rebuild on 20.04
     """
@@ -175,14 +175,11 @@ Built on ubunutu 22.04 and rebuild on 20.04
 {build_text}
 
 | Recipe Name | Is Reproducible |
-| --- | --- |\n
-    """
+| --- | --- |\n"""
     for recipe, reproducible in ubuntu_platform.items():
         table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
 
-    rebuild_table = f"""{table}\n\n
-
-    """
+    rebuild_table = f"""{table}\n\n"""
 
     for platform in by_platform:
         build_text = f"Build on {platform}"
@@ -192,11 +189,11 @@ Built on ubunutu 22.04 and rebuild on 20.04
             continue
 
         rebuild_table += f"""
-    {build_text}\n\n
+{build_text}\n\n
         
 | Recipe Name | Is Reproducible |
-| --- | --- |\n
-"""
+| --- | --- |\n"""
+
         for recipe, reproducible in by_platform[platform].items():
             rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
 
