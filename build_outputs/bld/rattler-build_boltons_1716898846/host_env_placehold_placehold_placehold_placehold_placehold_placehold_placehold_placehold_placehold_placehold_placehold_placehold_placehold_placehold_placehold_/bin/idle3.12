@@ -1,5 +1,0 @@
-#!/Users/graf/projects/oss/reproducible-builds/build_outputs/bld/rattler-build_boltons_1716898846/host_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_/bin/python3.12
-
-from idlelib.pyshell import main
-if __name__ == '__main__':
-    main()
