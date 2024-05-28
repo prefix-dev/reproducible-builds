@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
             if Path(rebuilded_loc).name in all_builds:
                 idx = all_builds.index(Path(rebuilded_loc).name)
-                builded = all_builds[idx]
+                built = all_builds[idx]
             else:
                 continue
 
@@ -82,7 +82,7 @@ if __name__ == "__main__":
             subprocess.run(
                 [
                     "diffoscope",
-                    str(builded),
+                    str(built),
                     str(rebuilded_loc),
                     "--json",
                     f"{diffoscope_output}/{platform}/{recipe_name}_diff.json",
