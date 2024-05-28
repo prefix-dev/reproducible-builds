@@ -15,6 +15,14 @@ jobs:
     outputs:
       matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - uses: prefix-dev/setup-pixi@v0.5.1
+      with:
+        pixi-version: "latest"
+
     - name: Generate matrix
       id: generate-matrix
       run: |
