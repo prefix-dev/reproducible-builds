@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
 
         with open(
-            f"build_info/{platform}_{previous_version}_{recipe_string.replace("/", ":")}_build_info.json", "r"
+            f"build_info/{platform}_{previous_version}_{recipe_string.replace("/", "_").replace("::", "_")}_build_info.json", "r"
         ) as f:
             previous_build_info = json.load(f)
 
@@ -82,13 +82,13 @@ if __name__ == "__main__":
         os.makedirs(f"build_info/{platform}", exist_ok=True)
 
         with open(
-            f"build_info/{platform}/{platform}_{previous_version}_{current_version}_{recipe_string.replace("/", ":")}_rebuild_info.json",
+            f"build_info/{platform}/{platform}_{previous_version}_{current_version}_{recipe_string.replace("/", "_").replace("::", "_")}_rebuild_info.json",
             "w",
         ) as f:
             json.dump(rebuild_info, f)
 
         with open(
-            f"build_info/{platform}/{platform}_{previous_version}_{recipe_string.replace("/", ":")}_build_info.json",
+            f"build_info/{platform}/{platform}_{previous_version}_{recipe_string.replace("/", "_").replace("::", "_")}_build_info.json",
             "w",
         ) as f:
             json.dump(previous_build_info, f)
