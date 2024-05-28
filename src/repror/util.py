@@ -3,7 +3,6 @@ import hashlib
 import os
 import shutil
 import subprocess
-import yaml
 
 
 def run_command(command, cwd=None, env=None):

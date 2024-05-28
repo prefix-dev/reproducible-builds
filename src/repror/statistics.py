@@ -172,9 +172,10 @@ Built on ubunutu 22.04 and rebuild on 20.04
 
 ![Reproducibility Chart](data/chart.png)
 
-    {build_text}
+{build_text}
 
-| Recipe Name | Is Reproducible |\n| --- | --- |
+| Recipe Name | Is Reproducible |
+| --- | --- |\n
     """
     for recipe, reproducible in ubuntu_platform.items():
         table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
@@ -193,8 +194,9 @@ Built on ubunutu 22.04 and rebuild on 20.04
         rebuild_table += f"""
     {build_text}\n\n
         
-| Recipe Name | Is Reproducible |\n| --- | --- |
-    """
+| Recipe Name | Is Reproducible |
+| --- | --- |\n
+"""
         for recipe, reproducible in by_platform[platform].items():
             rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
 
