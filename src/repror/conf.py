@@ -3,7 +3,7 @@ import yaml
 
 
 def load_config(config_path: str = "config.yaml"):
-    with open(config_path, "r") as file:
+    with open(config_path, "r", encoding="utf8") as file:
         config = yaml.safe_load(file)
     return config
 
@@ -14,7 +14,7 @@ class RecipeConfig:
 
     @staticmethod
     def load_recipe(recipe_file) -> Self:
-        with open(recipe_file, "r") as file:
+        with open(recipe_file, "r", encoding="utf8") as file:
             recipe = yaml.safe_load(file)
         return RecipeConfig(recipe)
 
