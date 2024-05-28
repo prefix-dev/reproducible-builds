@@ -8,7 +8,8 @@ on:
   pull_request:
   workflow_dispatch:
 
-env: RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION=true
+env: 
+  RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
 
 jobs:
   build-recipes-ubunutu-22-04:
