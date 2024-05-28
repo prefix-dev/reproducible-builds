@@ -13,7 +13,7 @@ jobs:
   matrix:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.generate-matrix.outputs.matrix }}
+      recipes: ${{ steps.generate-matrix.outputs.recipes }}
     steps:
 
     - name: Checkout code
@@ -28,14 +28,15 @@ jobs:
       run: |
         message=$(pixi run python src/repror/matrix.py)
         echo $message
-        echo "matrix=$message" >> $GITHUB_OUTPUT
+        echo "recipes=$message" >> $GITHUB_OUTPUT
 
 
   build-recipes-ubunutu-22-04:
     runs-on: ubuntu-22.04
     needs: matrix
     strategy:
-      matrix: ${{ fromJson(needs.matrix.outputs.matrix) }}
+      matrix: 
+        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
 
     steps:
@@ -60,7 +61,7 @@ jobs:
       #     pixi run python src/repror/build_recipe.py ubuntu 22.04
 
       - name: echo
-        run: echo ${{ matrix}}
+        run: echo ${{ matrix.recipes }}
       
       # - name: Upload results
       #   uses: actions/upload-artifact@v3
