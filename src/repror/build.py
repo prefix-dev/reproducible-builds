@@ -149,7 +149,7 @@ def build_remote_recipes(
 
 
 def build_local_recipe(recipe: Recipe, build_dir):
-    recipe_path = Path(recipe["recipe"])
+    recipe_path = Path(recipe["path"])
 
     recipe_config: RecipeConfig = RecipeConfig.load_recipe(recipe_path)
 
