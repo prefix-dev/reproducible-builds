@@ -62,5 +62,5 @@ if __name__ == "__main__":
 
         # build_id = uuid.uuid4().hex
 
-        with open(f"build_info/{platform}_{version}_{recipe_string.replace("::", "")}_build_info.json", "w") as f:
+        with open(f"build_info/{platform}_{version}_{recipe_string.replace("/", ":")}_build_info.json", "w") as f:
             json.dump(build_info, f)
