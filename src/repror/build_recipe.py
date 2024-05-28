@@ -1,5 +1,6 @@
 import os
 import json
+import uuid
 import sys
 import conf
 from pathlib import Path
@@ -57,7 +58,9 @@ if __name__ == "__main__":
         )
 
 
-        # os.makedirs("build_info", exist_ok=True)
+        os.makedirs("build_info", exist_ok=True)
 
-        # with open(f"build_info/{platform}_{version}_build_info.json", "w") as f:
-        #     json.dump(remote_build_info, f)
+        # build_id = uuid.uuid4().hex
+
+        with open(f"build_info/{platform}_{version}_{hash(Recipe)}_build_info.json", "w") as f:
+            json.dump(build_info, f)

@@ -6,7 +6,7 @@ import sys
 import tempfile
 from typing import Optional
 
-from repror.build import BuildInfo, rebuild_package
+from repror.build import BuildInfo, Recipe, rebuild_package
 from repror.conf import load_config
 from repror.rattler_build import setup_rattler_build
 from repror.util import find_all_conda_build
@@ -37,6 +37,10 @@ def rebuild_packages(
 
 if __name__ == "__main__":
     platform, previous_version, current_version = sys.argv[1], sys.argv[2], sys.argv[3]
+    recipe_string = sys.argv[4]
+
+    url, branch, path = recipe_string.split("::")
+    recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
 
     build_info = {}
 
@@ -53,7 +57,7 @@ if __name__ == "__main__":
 
 
         with open(
-            f"build_info/{platform}_{previous_version}_build_info.json", "r"
+            f"build_info/{platform}_{previous_version}_{hash(recipe_obj)}_build_info.json", "r"
         ) as f:
             previous_build_info = json.load(f)
 
@@ -61,9 +65,6 @@ if __name__ == "__main__":
 
         # get the diffoscope output
         all_builds = find_all_conda_build("artifacts")
-
-        diffoscope_output = Path(f"diffoscope_output/{platform}")
-        diffoscope_output.mkdir(exist_ok=True, parents=True)
 
         for recipe_name in rebuild_info:
             if not rebuild_info[recipe_name]:
@@ -77,29 +78,17 @@ if __name__ == "__main__":
             else:
                 continue
 
-            print("getting diffoscope diff")
-
-            subprocess.run(
-                [
-                    "diffoscope",
-                    str(builded),
-                    str(rebuilded_loc),
-                    "--json",
-                    f"{diffoscope_output}/{platform}/{recipe_name}_diff.json",
-                ],
-                check=True,
-            )
 
         os.makedirs(f"build_info/{platform}", exist_ok=True)
 
         with open(
-            f"build_info/{platform}/{platform}_{previous_version}_{current_version}_rebuild_info.json",
+            f"build_info/{platform}/{platform}_{previous_version}_{current_version}_{hash(recipe_obj)}_rebuild_info.json",
             "w",
         ) as f:
             json.dump(rebuild_info, f)
 
         with open(
-            f"build_info/{platform}/{platform}_{previous_version}_build_info.json",
+            f"build_info/{platform}/{platform}_{previous_version}_{hash(recipe_obj)}_build_info.json",
             "w",
         ) as f:
             json.dump(previous_build_info, f)
