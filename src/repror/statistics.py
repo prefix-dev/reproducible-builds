@@ -1,4 +1,5 @@
 import datetime
+import glob
 import json
 import os
 from pathlib import Path
@@ -7,6 +8,18 @@ import tempfile
 import matplotlib.pyplot as plt
 
 from repror.conf import load_config
+
+
+def find_build_infos(folder_path, suffix):
+    # Use glob to find all .json files in the folder
+    json_files = glob.glob(os.path.join(folder_path, f"*{suffix}_build_info.json"))
+    return json_files
+
+
+def find_rebuild_info(folder_path, suffix):
+    # Use glob to find all .json files in the folder
+    json_files = glob.glob(os.path.join(folder_path, f"*{suffix}_rebuild_info.json"))
+    return json_files
 
 
 def make_statistics(platform_with_versions: list[str], temp_dir) -> Path:
@@ -19,17 +32,25 @@ def make_statistics(platform_with_versions: list[str], temp_dir) -> Path:
     for platform_and_version in platform_with_versions:
         base_platform, from_version, to_version = platform_and_version.split("_")
 
-        with open(
-            f"build_info/{base_platform}/{base_platform}_{from_version}_build_info.json",
-            "r",
-        ) as f:
-            build_info_by_platform[base_platform] = json.load(f)
+        build_info_by_platform[base_platform] = {}
+        build_info_files = find_build_infos(
+            f"build_info/{base_platform}", f"{base_platform}_{from_version}"
+        )
 
-        with open(
-            f"build_info/{base_platform}/{base_platform}_{from_version}_{to_version}_rebuild_info.json",
-            "r",
-        ) as f:
-            rebuild_info_by_platform[base_platform] = json.load(f)
+        for file in build_info_files:
+            with open(file, "r") as f:
+                build_info_by_platform[base_platform].update(json.load(f))
+
+        rebuild_info_files = find_rebuild_info(
+            f"build_info/{base_platform}",
+            f"{base_platform}_{from_version}_{to_version}",
+        )
+
+        rebuild_info_by_platform[base_platform] = {}
+
+        for file in rebuild_info_files:
+            with open(file, "r") as f:
+                rebuild_info_by_platform[base_platform].update(json.load(f))
 
         if base_platform == "ubuntu":
             total_build_info.update(build_info_by_platform["ubuntu"])
@@ -144,7 +165,6 @@ def plot(platforms, stat_dir: Path):
     plt.savefig("data/chart.png")
 
     config = load_config()
-
 
     if "rattler-build" not in config:
         rattler_tmpl_string = "Built with latest rattler-build"

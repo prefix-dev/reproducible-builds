@@ -5,27 +5,38 @@ import conf
 from pathlib import Path
 import tempfile
 from repror.build import (
+    Recipe,
     build_local_recipe,
     build_remote_recipes,
 )
 from repror.rattler_build import setup_rattler_build
 
 
-def build_recipes(repositories, local_recipes, tmp_dir, build_dir):
+def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
     cloned_prefix_dir = Path(tmp_dir) / "cloned"
-    remote_build_info, local_build_info = {}, {}
+    build_info = {}
 
-    for repo in repositories:
-        remote_build_info.update(build_remote_recipes(repo, build_dir, cloned_prefix_dir))
+    for recipe in recipes:
+        url = recipe["url"]
+        if url == "local":
+            build_info.update(build_local_recipe(recipe, build_dir))
+        else:
+            build_info.update(
+                build_remote_recipes(recipe, build_dir, cloned_prefix_dir)
+            )
 
-    for local in local_recipes:
-        local_build_info.update(build_local_recipe(local, build_dir))
-
-    return remote_build_info, local_build_info
+    return build_info
 
 
 if __name__ == "__main__":
     platform, version = sys.argv[1], sys.argv[2]
+    # this should be optional
+    # so we could run it locally nice
+    recipe_string = sys.argv[3]
+
+    url, branch, path = recipe_string.split("::")
+
+    recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
 
     if platform not in ["ubuntu", "macos", "windows"]:
         print("Invalid platform ", platform)
@@ -43,13 +54,14 @@ if __name__ == "__main__":
 
         build_results = {}
 
-        remote_build_info, local_build_info = build_recipes(
-            config.get("repositories", []), config.get("local", []), tmp_dir, build_dir
-        )
-
-        remote_build_info.update(local_build_info)
+        build_info = build_recipes([recipe_obj], tmp_dir, build_dir)
 
         os.makedirs("build_info", exist_ok=True)
 
-        with open(f"build_info/{platform}_{version}_build_info.json", "w") as f:
-            json.dump(remote_build_info, f)
+        # build_id = uuid.uuid4().hex
+
+        with open(
+            f"build_info/{platform}_{version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            "w",
+        ) as f:
+            json.dump(build_info, f)
