@@ -15,7 +15,7 @@ package:
 
 source:
   url: https://github.com/conda/${{ name }}/releases/download/${{ version }}/${{ name }}-${{ version }}.tar.gz
-  sha256: ${{ sha256 }}
+  sha256: 27b9203fbf88a831058cb0ee1e558600b7d9dab248eaa53011c21517296defb2
   file_name: conda-${{ version }}.tar.gz
 
 build:
@@ -23,7 +23,8 @@ build:
   # so we have to exempt them from the list of initial files
   # for conda-build to realize they should be included.
   number: 0
-  script: ${{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv && ${{ PYTHON }} -m conda init --install
+  script:
+    - python -m pip install . --no-deps --no-build-isolation -vv && python -m conda init --install
   always_include_files:
     - if: unix
       then: bin/conda
