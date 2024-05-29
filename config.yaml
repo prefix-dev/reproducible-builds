@@ -4,40 +4,40 @@ local:
 - path: recipes/ca-certificates/recipe.yaml
 - path: recipes/conda/recipe.yaml
 - path: recipes/setuptools/recipe.yaml
-- path: recipes/zlib/recipe.yaml
+# - path: recipes/zlib/recipe.yaml # wrong conversion
 - path: recipes/pip/recipe.yaml
-- path: recipes/wheel/recipe.yaml
+- path: recipes/wheel/recipe.yaml # license filesystem error
 - path: recipes/pytz/recipe.yaml
 - path: recipes/six/recipe.yaml
 - path: recipes/python-dateutil/recipe.yaml
 - path: recipes/libpng/recipe.yaml
-- path: recipes/jpeg/recipe.yaml
+- path: recipes/jpeg/recipe.yaml # 9e invalid version
 - path: recipes/freetype/recipe.yaml
 - path: recipes/xz/recipe.yaml
-- path: recipes/_openmp_mutex/recipe.yaml
+- path: recipes/_openmp_mutex/recipe.yaml # broken pin_subpackage and recipe
 - path: recipes/libffi/recipe.yaml
 - path: recipes/_libgcc_mutex/recipe.yaml
 - path: recipes/pthread-stubs/recipe.yaml
 - path: recipes/lerc/recipe.yaml
-- path: recipes/libnsl/recipe.yaml
-- path: recipes/pcre2/recipe.yaml
+- path: recipes/libnsl/recipe.yaml # skiped on linux
+#- path: recipes/pcre2/recipe.yaml # bad recipe converter outputs
 - path: recipes/tomli/recipe.yaml
-- path: recipes/brotli/recipe.yaml
+#- path: recipes/brotli/recipe.yaml # bad recipe
 - path: recipes/pyparsing/recipe.yaml
 - path: recipes/pixman/recipe.yaml
-- path: recipes/kiwisolver/recipe.yaml
+# - path: recipes/kiwisolver/recipe.yaml skipped on linux
 - path: recipes/fonts-conda-forge/recipe.yaml
 - path: recipes/fonts-conda-ecosystem/recipe.yaml
 - path: recipes/cycler/recipe.yaml
 - path: recipes/font-ttf-source-code-pro/recipe.yaml
 - path: recipes/font-ttf-inconsolata/recipe.yaml
-- path: recipes/font-ttf-dejavu-sans-mono/recipe.yaml
+# - path: recipes/font-ttf-dejavu-sans-mono/recipe.yaml # bad checksum after downloading
 - path: recipes/font-ttf-ubuntu/recipe.yaml
 - path: recipes/xorg-kbproto/recipe.yaml
-- path: recipes/munkres/recipe.yaml
+- path: recipes/munkres/recipe.yaml # fails to run the tests ( import munkres missing)
 - path: recipes/xorg-xproto/recipe.yaml
-- path: recipes/toml/recipe.yaml
-- path: recipes/sqlite/recipe.yaml
+- path: recipes/toml/recipe.yaml # fail to run tests ( import toml )
+#- path: recipes/sqlite/recipe.yaml # bad conversion of multiple outputs
 rattler-build:
   branch: fix/conda-timestamp-affect-reproducibility
   url: https://github.com/nichmor/rattler-build.git

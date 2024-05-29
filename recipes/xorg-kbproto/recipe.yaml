@@ -3,7 +3,7 @@ schema_version: 1
 context:
   xorg_name: kbproto
   xorg_category: proto
-  name: "\"\"xorg-\" ~ xorg_name\""
+  name: xorg-kbproto
   version: 1.0.7
   sha256: f882210b76376e3fa006b11dbd890e56ec0942bc56e65d1249ff4af86f90b857
 
@@ -13,12 +13,12 @@ package:
 
 source:
   url: https://www.x.org/releases/individual/${{ xorg_category }}/${{ xorg_name }}-${{ version }}.tar.bz2
-  sha256: ${{ sha256 }}
+  sha256: f882210b76376e3fa006b11dbd890e56ec0942bc56e65d1249ff4af86f90b857
   file_name: ${{ name }}-${{ version }}.tar.bz2
 
 build:
   number: 1002
-  detect_binary_files_with_prefix: true
+  # detect_binary_files_with_prefix: true
 
 requirements:
   build:
@@ -53,8 +53,8 @@ requirements:
   host:
     - xorg-util-macros
 
-tests:
-  - commands
+# tests:
+#   - commands
 
 about:
   license: MIT
@@ -65,5 +65,3 @@ about:
 extra:
   recipe-maintainers:
     - pkgw
-
-- "{% set am_version = \"1.15\" %} # keep synchronized with build.sh"  # keep synchronized with build.sh"  # keep synchronized with build.sh

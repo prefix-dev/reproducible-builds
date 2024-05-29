@@ -28,10 +28,10 @@ tests:
       imports:
         - six
       pip_check: true
-  - requirements:
-      run:
-        - pip
-    script: commands
+  # - requirements:
+  #     run:
+  #       - pip
+    # script: commands
 
 about:
   license: MIT

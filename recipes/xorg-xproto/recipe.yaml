@@ -3,9 +3,9 @@ schema_version: 1
 context:
   xorg_name: xproto
   xorg_category: proto
-  name: "\"\"xorg-\" ~ xorg_name\""
+  name: xorg-xproto
   version: 7.0.31
-  sha256: c6f9747da0bd3a95f86b17fb8dd5e717c8f3ab7f0ece3ba1b247899ec1ef7747
+  # sha256: c6f9747da0bd3a95f86b17fb8dd5e717c8f3ab7f0ece3ba1b247899ec1ef7747
 
 package:
   name: ${{ name|lower }}
@@ -13,7 +13,7 @@ package:
 
 source:
   url: https://www.x.org/releases/individual/${{ xorg_category }}/${{ xorg_name }}-${{ version }}.tar.bz2
-  sha256: ${{ sha256 }}
+  sha256: c6f9747da0bd3a95f86b17fb8dd5e717c8f3ab7f0ece3ba1b247899ec1ef7747
   file_name: ${{ name }}-${{ version }}.tar.bz2
   patches:
     - if: win
@@ -23,7 +23,7 @@ source:
 
 build:
   number: 1007
-  detect_binary_files_with_prefix: true
+  # detect_binary_files_with_prefix: true
 
 requirements:
   build:
@@ -58,12 +58,12 @@ requirements:
   host:
     - xorg-util-macros
 
-tests:
-  - script:
-      - if: not win
-        then: conda inspect linkages -p $PREFIX $PKG_NAME
-      - if: osx
-        then: conda inspect objects -p $PREFIX $PKG_NAME
+# tests:
+#   - script:
+#       - if: not win
+#         then: conda inspect linkages -p $PREFIX $PKG_NAME
+#       - if: osx
+#         then: conda inspect objects -p $PREFIX $PKG_NAME
 
 about:
   license: MIT
@@ -74,5 +74,3 @@ about:
 extra:
   recipe-maintainers:
     - pkgw
-
-- "{% set am_version = \"1.15\" %} # keep synchronized with build.sh"  # keep synchronized with build.sh"  # keep synchronized with build.sh

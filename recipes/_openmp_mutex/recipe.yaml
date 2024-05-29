@@ -35,7 +35,8 @@ requirements:
   run_exports:
     - ${{ pin_subpackage('_openmp_mutex', max_pin=None) }}
   ignore_run_exports:
-    - _openmp_mutex
+    from_package:
+      - _openmp_mutex
 
 tests:
   - files:

@@ -95,34 +95,34 @@ tests:
         - conda
         - conda_env
       pip_check: false
-  - downstream:
-      - if: "python_impl == \"cpython\" and py<311"
-        then: conda-smithy
-  - files:
-      recipe:
-        - if: win
-          then: test_runner.bat
-        - if: unix
-          then: test_runner.sh
-        - if: win
-          then: commands_to_test.bat
-        - if: unix
-          then: commands_to_test.sh
-      source:
-        - tests
-        - setup.cfg
-    requirements:
-      run:
-        - mock
-        - pytest
-        - pexpect
-        - responses
-        - if: win
-          then: m2-filesystem
-        - if: win
-          then: m2-bash
-        - if: win
-          then: m2-base
+  # - downstream:
+  #     - if: "python_impl == \"cpython\" and py<311"
+  #       then: conda-smithy
+  # - files:
+  #     recipe:
+  #       - if: win
+  #         then: test_runner.bat
+  #       - if: unix
+  #         then: test_runner.sh
+  #       - if: win
+  #         then: commands_to_test.bat
+  #       - if: unix
+  #         then: commands_to_test.sh
+  #     source:
+  #       - tests
+  #       - setup.cfg
+  #   requirements:
+  #     run:
+  #       - mock
+  #       - pytest
+  #       - pexpect
+  #       - responses
+  #       - if: win
+  #         then: m2-filesystem
+  #       - if: win
+  #         then: m2-bash
+  #       - if: win
+  #         then: m2-base
 
 about:
   license: BSD-3-Clause

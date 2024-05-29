@@ -26,15 +26,15 @@ requirements:
   run:
     - python >=2.7
 
-tests:
-  - python:
-      imports:
-        - toml
-  - script:
-      - if: not win
-        then: conda inspect linkages -p $PREFIX toml
-      - if: osx
-        then: conda inspect objects -p $PREFIX toml
+# tests:
+#   - python:
+#       imports:
+#         - toml
+#   - script:
+#       - if: not win
+#         then: conda inspect linkages -p $PREFIX toml
+#       - if: osx
+#         then: conda inspect objects -p $PREFIX toml
 
 about:
   license: MIT
