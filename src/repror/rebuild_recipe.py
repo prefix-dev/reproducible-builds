@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
             if Path(rebuilded_loc).name in all_builds:
                 idx = all_builds.index(Path(rebuilded_loc).name)
-                builded = all_builds[idx]
+                built = all_builds[idx]
             else:
                 continue
 

@@ -210,7 +210,7 @@ Built on ubunutu 22.04 and rebuild on 20.04
 
         rebuild_table += f"""
 {build_text}\n\n
-        
+
 | Recipe Name | Is Reproducible |
 | --- | --- |\n"""
 
