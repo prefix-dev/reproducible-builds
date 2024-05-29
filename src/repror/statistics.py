@@ -45,7 +45,7 @@ def make_statistics(platform_with_versions: list[str], temp_dir) -> Path:
 
         rebuild_info_files = find_rebuild_info(f"build_info/{base_platform}", f"{base_platform}_{from_version}_{to_version}")
 
-        rebuild_info_by_platform[base_platform]
+        rebuild_info_by_platform[base_platform] = {}
 
         # with open(
         #     f"build_info/{base_platform}/{base_platform}_{from_version}_{to_version}_rebuild_info.json",

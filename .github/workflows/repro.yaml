@@ -264,7 +264,7 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_13_12
+          pixi run python src/repror/statistics.py ubuntu_22.04_20.04
 
       # - name: Commit and push changes
       #   env:
