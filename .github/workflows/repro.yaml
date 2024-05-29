@@ -33,43 +33,43 @@ jobs:
         echo "recipes=$message" >> $GITHUB_OUTPUT
 
 
-  # build-recipes-ubunutu-22-04:
-  #   runs-on: ubuntu-22.04
-  #   needs: matrix
-  #   continue-on-error: true
-  #   strategy:
-  #     matrix:
-  #       recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+  build-recipes-ubunutu-22-04:
+    runs-on: ubuntu-22.04
+    needs: matrix
+    continue-on-error: true
+    strategy:
+      matrix:
+        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - uses: prefix-dev/setup-pixi@v0.5.1
-  #       with:
-  #         pixi-version: "latest"
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
 
-  #     - name: Set timezone to UTC
-  #       run: sudo timedatectl set-timezone UTC
+      - name: Set timezone to UTC
+        run: sudo timedatectl set-timezone UTC
 
-  #     - name: Set LANG
-  #       run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
+      - name: Set LANG
+        run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
 
-  #     - name: Verify LANG for Initial Build
-  #       run: echo $LANG
+      - name: Verify LANG for Initial Build
+        run: echo $LANG
 
-  #     - name: Build recipes and track if hash is equal
-  #       run: |
-  #         pixi run python src/repror/build_recipe.py ubuntu 22.04 ${{ matrix.recipes }}
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run python src/repror/build_recipe.py ubuntu 22.04 ${{ matrix.recipes }}
 
-  #     - name: Upload results
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: artifacts
-  #         path: |
-  #           build_info/
-  #           artifacts/
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            build_info/
+            artifacts/
 
   build-recipes-macos-13:
     runs-on: macos-13
@@ -108,76 +108,76 @@ jobs:
             build_info/
             artifacts/
 
-  # build-recipes-windows-2022:
-  #   runs-on: windows-latest
-  #   needs: matrix
-  #   continue-on-error: true
-  #   strategy:
-  #     matrix:
-  #       recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+  build-recipes-windows-2022:
+    runs-on: windows-latest
+    needs: matrix
+    continue-on-error: true
+    strategy:
+      matrix:
+        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - uses: prefix-dev/setup-pixi@v0.5.1
-  #       with:
-  #         pixi-version: "latest"
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
 
-  #     - name: Build recipes and track if hash is equal
-  #       run: |
-  #         pixi run python src/repror/build_recipe.py windows 2022 ${{ matrix.recipes }}
+      - name: Build recipes and track if hash is equal
+        run: |
+          pixi run python src/repror/build_recipe.py windows 2022 ${{ matrix.recipes }}
 
-  #     - name: Upload results
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: artifacts
-  #         path: |
-  #           build_info/
-  #           artifacts/
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: |
+            build_info/
+            artifacts/
 
-  # rebuild-recipes-ubuntu-20-04:
-  #   runs-on: ubuntu-20.04
-  #   needs: [build-recipes-ubunutu-22-04, matrix]
-  #   continue-on-error: true
-  #   strategy:
-  #     matrix:
-  #       recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+  rebuild-recipes-ubuntu-20-04:
+    runs-on: ubuntu-20.04
+    needs: [build-recipes-ubunutu-22-04, matrix]
+    continue-on-error: true
+    strategy:
+      matrix:
+        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - uses: prefix-dev/setup-pixi@v0.5.1
-  #       with:
-  #         pixi-version: "latest"
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
 
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: artifacts
-  #         path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: .
 
-  #     - name: Set timezone to PST
-  #       run: sudo timedatectl set-timezone America/Los_Angeles
+      - name: Set timezone to PST
+        run: sudo timedatectl set-timezone America/Los_Angeles
 
-  #     - name: Set LANG
-  #       run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
+      - name: Set LANG
+        run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
 
-  #     - name: Verify LANG for Initial Build
-  #       run: echo $LANG
+      - name: Verify LANG for Initial Build
+        run: echo $LANG
 
-  #     - name: Rebuild recipes and track if hash is equal
-  #       run: |
-  #         # sudo apt-get install libssl-dev
-  #         pixi run python src/repror/rebuild_recipe.py ubuntu 22.04 20.04 ${{ matrix.recipes }}
+      - name: Rebuild recipes and track if hash is equal
+        run: |
+          # sudo apt-get install libssl-dev
+          pixi run python src/repror/rebuild_recipe.py ubuntu 22.04 20.04 ${{ matrix.recipes }}
 
-  #     - name: Upload artifacts
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: build-info
-  #         path: |
-  #           build_info/ubuntu
-  #           ci_artifacts/
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-info
+          path: |
+            build_info/ubuntu
+            ci_artifacts/
 
   rebuild-recipes-macos-12:
     runs-on: macos-12
@@ -222,39 +222,39 @@ jobs:
             diffoscope_output/
             ci_artifacts/
 
-  # rebuild-recipes-windows-2019:
-  #   runs-on: windows-2019
-  #   needs: [build-recipes-windows-2022, matrix]
-  #   continue-on-error: true
-  #   strategy:
-  #     matrix:
-  #       recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+  rebuild-recipes-windows-2019:
+    runs-on: windows-2019
+    needs: [build-recipes-windows-2022, matrix]
+    continue-on-error: true
+    strategy:
+      matrix:
+        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
-  #   steps:
-  #     - name: Checkout code
-  #       uses: actions/checkout@v2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-  #     - uses: prefix-dev/setup-pixi@v0.5.1
-  #       with:
-  #         pixi-version: "latest"
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
 
-  #     - uses: actions/download-artifact@v3
-  #       with:
-  #         name: artifacts
-  #         path: .
+      - uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: .
 
-  #     - name: Rebuild recipes and track if hash is equal
-  #       run: |
-  #         # sudo apt-get install libssl-dev
-  #         pixi run python src/repror/rebuild_recipe.py windows 2022 2019 ${{ matrix.recipes }}
+      - name: Rebuild recipes and track if hash is equal
+        run: |
+          # sudo apt-get install libssl-dev
+          pixi run python src/repror/rebuild_recipe.py windows 2022 2019 ${{ matrix.recipes }}
 
-  #     - name: Upload diffoscope
-  #       uses: actions/upload-artifact@v3
-  #       with:
-  #         name: build-info
-  #         path: |
-  #           build_info/ubuntu
-  #           ci_artifacts/
+      - name: Upload diffoscope
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-info
+          path: |
+            build_info/ubuntu
+            ci_artifacts/
 
   statistics:
     runs-on: ubuntu-latest
@@ -275,7 +275,6 @@ jobs:
 
       - run: |
           ls -la build_info/
-          ls -la build_info/ubuntu
 
       - name: Calculate statistics and plot output
         run: |

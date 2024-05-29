@@ -11,10 +11,10 @@ local:
 - path: recipes/six/recipe.yaml
 - path: recipes/python-dateutil/recipe.yaml
 - path: recipes/libpng/recipe.yaml
-- path: recipes/jpeg/recipe.yaml # 9e invalid version
+# - path: recipes/jpeg/recipe.yaml # 9e invalid version
 - path: recipes/freetype/recipe.yaml
 - path: recipes/xz/recipe.yaml
-- path: recipes/_openmp_mutex/recipe.yaml # broken pin_subpackage and recipe
+# - path: recipes/_openmp_mutex/recipe.yaml # broken pin_subpackage and recipe
 - path: recipes/libffi/recipe.yaml
 - path: recipes/_libgcc_mutex/recipe.yaml
 - path: recipes/pthread-stubs/recipe.yaml
