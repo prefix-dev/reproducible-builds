@@ -1,0 +1,66 @@
+schema_version: 1
+
+context:
+  name: lerc
+  version: 4.0.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  # CMakeLists.txt taken from master, and adapted for better compatibility
+  # PR made: https://github.com/Esri/lerc/pull/128
+  url: https://github.com/Esri/lerc/archive/v${{ version }}.tar.gz
+  sha256: 91431c2b16d0e3de6cbaea188603359f87caed08259a645fd5a3805784ee30a0
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - cmake
+    - if: unix
+      then: make
+    - if: win
+      then: ninja
+  <conda_recipe_manager.types.SentinelType object at 0x1059b1b50>:  #host:
+    # TODO: add support for
+    # gdal
+    # geotiff
+  run_exports:
+    - ${{ pin_subpackage('lerc', max_pin='x') }}
+
+tests:
+  - script:
+      - if: win
+        then: if not exist %LIBRARY_INC%\Lerc_types.h exit 1
+      - if: win
+        then: if not exist %LIBRARY_BIN%\Lerc.dll exit 1
+      - if: win
+        then: if not exist %LIBRARY_LIB%\Lerc.lib exit 1
+      - if: unix
+        then: test -f ${PREFIX}/lib/libLerc${SHLIB_EXT}
+      - if: unix
+        then: test -f ${PREFIX}/include/Lerc_types.h
+
+about:
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: LERC - Limited Error Raster Compression
+  description: |
+    LERC is an open-source image or raster format which
+    supports rapid encoding and decoding for any pixel type
+    (not just RGB or Byte). Users set the maximum compression
+    error per pixel while encoding, so the precision of the
+    original input image is preserved (within user defined
+    error bounds).
+
+
+  homepage: https://github.com/Esri/lerc
+
+extra:
+  recipe-maintainers:
+    - hmaarrfk

@@ -1,0 +1,53 @@
+schema_version: 1
+
+context:
+  version: 0.43.0
+
+package:
+  name: wheel
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/w/wheel/wheel-${{ version }}.tar.gz
+  sha256: 465ef92c69fa5c5da2d1cf8ac40559a8c940886afcef87dcf14b9470862f1d85
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -c "import flit_core.buildapi; flit_core.buildapi.build_wheel('.')" && ${{ PYTHON }} -m installer --no-compile-bytecode wheel-*.whl
+  python:
+    entry_points:
+      - wheel = wheel.cli:main
+
+requirements:
+  host:
+    - flit-core
+    - python >=3.8
+    - python-installer
+  run:
+    - python >=3.8
+
+tests:
+  - python:
+      imports:
+        - wheel
+        - wheel.cli
+  - requirements:
+      run:
+        - pip
+    script:
+      - pip check
+      - wheel --help
+
+about:
+  license: MIT
+  license_file: LICENSE.txt
+  summary: A built-package format for Python.
+  homepage: https://github.com/pypa/wheel
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - pelson
+    - ocefpaf
+    - mingwandroid

@@ -1,0 +1,58 @@
+{% set name = "_openmp_mutex" %}
+{% set version = "4.5" %}
+{% set build = "2" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: .
+
+build:
+  number: {{ build }}
+  string: {{ build }}_kmp_llvm
+  skip: true  # [not linux]
+  always_include_files:
+    # this major version has to match the libgomp version from gcc
+    - lib/libgomp.so.1
+  # Remove track_features because directly depending on mutex=*=*llvm
+  # would make the downstream package have low priority
+  # For eg: newer blas packages are not used by the solver
+  # track_features:
+  #  - llvm_openmp
+  ignore_run_exports:
+    - _openmp_mutex
+  run_exports:
+    - {{ pin_subpackage('_openmp_mutex', max_pin=None) }}
+
+requirements:
+  host:
+  run:
+    - llvm-openmp >=9.0.1
+    - _libgcc_mutex {{ _libgcc_mutex }}  # [linux64 or ppc64le]
+
+test:
+  requires:
+    - {{ compiler('c') }}
+    - {{ compiler('cxx') }}
+  commands:
+    - test -f $PREFIX/lib/libgomp.so.1
+    - if [ ! "$PREFIX/lib/libgomp.so.1" -ef "$PREFIX/lib/libomp.so" ]; then exit 1; fi
+    - rm -f omp_hello && ${CC} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello
+    - ldd omp_hello  # [linux]
+    - rm -f omp_hello && ${CXX} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello
+    - ldd omp_hello  # [linux]
+  files:
+    - omp_hello.c
+
+about:
+  summary: OpenMP Implementation Mutex
+  license: BSD-3-Clause
+  license_file: LICENSE
+  home: https://github.com/conda-forge/openmp-feedstock
+
+extra:
+  recipe-maintainers:
+    - isuruf
+    - beckermr

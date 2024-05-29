@@ -1,0 +1,68 @@
+python_abi_tag:
+ - cp37m
+ - cp38
+ - cp39
+ - cp310
+ - cp311
+ - cp312
+ - pypy38_pp73
+ - pypy39_pp73
+ - graalpy230_310_native
+ - graalpy231_310_native
+
+python_impl_version:
+ - 3.7
+ - 3.8
+ - 3.9
+ - 3.10
+ - 3.11
+ - 3.12
+ - 7.3
+ - 7.3
+ - 23.0
+ - 23.1
+
+python_version:
+ - 3.7
+ - 3.8
+ - 3.9
+ - 3.10
+ - 3.11
+ - 3.12
+ - 3.8
+ - 3.9
+ - 3.10
+ - 3.10
+
+python_implementation:
+ - cpython
+ - cpython
+ - cpython
+ - cpython
+ - cpython
+ - cpython
+ - pypy
+ - pypy
+ - graalpy
+ - graalpy
+
+# Following are dummy keys to fix rerendering
+python:
+ - "2.7"
+python_impl:
+ - '*'
+numpy:
+ - '1.16'
+c_compiler:
+ - "*"
+cxx_compiler:
+ - "*"
+vc:
+ - "*"
+
+zip_keys:
+ -
+   - python_abi_tag
+   - python_version
+   - python_impl_version
+   - python_implementation

@@ -205,6 +205,8 @@ Built on ubunutu 22.04 and rebuild on 20.04
         build_text = f"Build on {platform}"
         if platform == "macos":
             build_text += " 13 and rebuild on 12"
+        elif platform == "windows":
+            build_text += " 2022 and rebuild on 2019"
         elif platform == "ubuntu":
             continue
 

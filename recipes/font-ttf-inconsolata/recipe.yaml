@@ -1,0 +1,36 @@
+schema_version: 1
+
+context:
+  version: 3.000
+
+package:
+  name: font-ttf-inconsolata
+  version: ${{ version|replace("-", "_") }}
+
+source:
+  url: https://github.com/googlefonts/Inconsolata/archive/refs/tags/v${{ version }}.tar.gz
+  sha256: f2d8d8ba6caa785a966ef17996822ab14ba91ec423431a29e1b6c4b14bc4cda5
+
+build:
+  number: 0
+  noarch: generic
+
+tests:
+  - requirements:
+      run:
+        - bzip2
+    script:
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Inconsolata-Regular.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Inconsolata-Bold.ttf
+
+about:
+  summary: Monospace font for pretty code listings
+  license: OFL-1.1
+  license_file: OFL.txt
+  homepage: https://fonts.google.com/specimen/Inconsolata
+
+extra:
+  recipe-maintainers:
+    - dbast

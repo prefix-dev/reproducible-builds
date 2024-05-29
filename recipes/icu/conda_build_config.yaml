@@ -1,0 +1,9 @@
+c_compiler_version:    # [ppc64le]
+- '7'                  # [ppc64le]
+cxx_compiler_version:  # [ppc64le]
+- '7'                  # [ppc64le]
+
+c_compiler:        # [osx]
+- clang_bootstrap  # [osx]
+cxx_compiler:      # [osx]
+- clang_bootstrap  # [osx]

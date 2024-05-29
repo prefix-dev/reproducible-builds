@@ -1,0 +1,79 @@
+From e11f7bc727a6a3029c2f5b8f3002cd70817b2a8c Mon Sep 17 00:00:00 2001
+From: Peter Williams <peter@newton.cx>
+Date: Mon, 3 Sep 2018 17:32:14 -0400
+Subject: [PATCH 2/8] Prevent libtool from worrying about dependent libraries
+ too much.
+
+Dependent libraries on Windows can take on a lot of names, depending on how
+packagers mix and match "lib" prefixes, ".lib" vs. ".a" suffixes, and so on.
+Libtool isn't great at guessing them. By hacking cache variables in the
+`configure.ac` scripts, we can force it to just go ahead and pass everything
+and not worry about it.
+---
+ configure.ac                             | 1 +
+ gettext-runtime/configure.ac             | 1 +
+ gettext-runtime/libasprintf/configure.ac | 1 +
+ gettext-tools/configure.ac               | 1 +
+ gettext-tools/examples/configure.ac      | 1 +
+ 5 files changed, 5 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index ef64e67..05a7d18 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -22,6 +22,7 @@ AC_INIT([gettext],
+ 	[bug-gettext@gnu.org])
+ AC_CONFIG_SRCDIR([gettext-tools/src/msgfmt.c])
+ AC_CONFIG_AUX_DIR([build-aux])
++lt_cv_deplibs_check_method=pass_all
+ ac_cv_func_snprintf=yes
+ ac_cv_func_vsnprintf=yes
+ AM_INIT_AUTOMAKE([1.13 silent-rules parallel-tests tar-ustar])
+diff --git a/gettext-runtime/configure.ac b/gettext-runtime/configure.ac
+index 66f26fa..7e914f8 100644
+--- a/gettext-runtime/configure.ac
++++ b/gettext-runtime/configure.ac
+@@ -22,6 +22,7 @@ AC_INIT([gettext-runtime],
+ 	[bug-gettext@gnu.org])
+ AC_CONFIG_SRCDIR([intl/dcigettext.c])
+ AC_CONFIG_AUX_DIR([../build-aux])
++lt_cv_deplibs_check_method=pass_all
+ ac_cv_func_snprintf=yes
+ ac_cv_func_vsnprintf=yes
+ AM_INIT_AUTOMAKE([1.11.1 silent-rules parallel-tests])
+diff --git a/gettext-runtime/libasprintf/configure.ac b/gettext-runtime/libasprintf/configure.ac
+index 31a06db..3a89c61 100644
+--- a/gettext-runtime/libasprintf/configure.ac
++++ b/gettext-runtime/libasprintf/configure.ac
+@@ -20,6 +20,7 @@ AC_PREREQ([2.64])
+ AC_INIT([libasprintf], [1.0])
+ AC_CONFIG_SRCDIR([vasprintf.c])
+ AC_CONFIG_AUX_DIR([../../build-aux])
++lt_cv_deplibs_check_method=pass_all
+ ac_cv_func_snprintf=yes
+ ac_cv_func_vsnprintf=yes
+ AM_INIT_AUTOMAKE([silent-rules])
+diff --git a/gettext-tools/configure.ac b/gettext-tools/configure.ac
+index 6c75ccc..fa01857 100644
+--- a/gettext-tools/configure.ac
++++ b/gettext-tools/configure.ac
+@@ -22,6 +22,7 @@ AC_INIT([gettext-tools],
+ 	[bug-gettext@gnu.org])
+ AC_CONFIG_SRCDIR([src/msgfmt.c])
+ AC_CONFIG_AUX_DIR([../build-aux])
++lt_cv_deplibs_check_method=pass_all
+ ac_cv_func_snprintf=yes
+ ac_cv_func_vsnprintf=yes
+ AM_INIT_AUTOMAKE([1.11.1 silent-rules parallel-tests])
+diff --git a/gettext-tools/examples/configure.ac b/gettext-tools/examples/configure.ac
+index 4db994e..6a59715 100644
+--- a/gettext-tools/examples/configure.ac
++++ b/gettext-tools/examples/configure.ac
+@@ -22,6 +22,7 @@ AC_INIT([gettext-examples],
+ 	[bug-gettext@gnu.org])
+ AC_CONFIG_SRCDIR([installpaths.in])
+ AC_CONFIG_AUX_DIR([../../build-aux])
++lt_cv_deplibs_check_method=pass_all
+ ac_cv_func_snprintf=yes
+ ac_cv_func_vsnprintf=yes
+ AM_INIT_AUTOMAKE([silent-rules])
