@@ -37,6 +37,7 @@ local:
 - path: recipes/munkres/recipe.yaml
 - path: recipes/xorg-xproto/recipe.yaml
 - path: recipes/toml/recipe.yaml
+- path: recipes/sqlite/recipe.yaml
 rattler-build:
   branch: fix/conda-timestamp-affect-reproducibility
   url: https://github.com/nichmor/rattler-build.git

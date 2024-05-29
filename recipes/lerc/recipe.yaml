@@ -26,7 +26,7 @@ requirements:
       then: make
     - if: win
       then: ninja
-  <conda_recipe_manager.types.SentinelType object at 0x101a4db50>:  #host:
+  <conda_recipe_manager.types.SentinelType object at 0x1059b1b50>:  #host:
     # TODO: add support for
     # gdal
     # geotiff
