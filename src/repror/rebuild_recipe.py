@@ -82,13 +82,13 @@ if __name__ == "__main__":
         os.makedirs(f"build_info/{platform}", exist_ok=True)
 
         with open(
-            f"build_info/{platform}/{platform}_{previous_version}_{current_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_rebuild_info.json",
+            f"build_info/{platform}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_{platform}_{previous_version}_{current_version}_rebuild_info.json",
             "w",
         ) as f:
             json.dump(rebuild_info, f)
 
         with open(
-            f"build_info/{platform}/{platform}_{previous_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            f"build_info/{platform}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_{platform}_{previous_version}_build_info.json",
             "w",
         ) as f:
             json.dump(previous_build_info, f)
