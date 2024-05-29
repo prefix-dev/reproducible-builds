@@ -8,7 +8,7 @@ on:
   pull_request:
   workflow_dispatch:
 
-env: 
+env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
     needs: matrix
     continue-on-error: true
     strategy:
-      matrix: 
+      matrix:
         recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
 
@@ -76,7 +76,7 @@ jobs:
     needs: matrix
     continue-on-error: true
     strategy:
-      matrix: 
+      matrix:
         recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
     steps:
@@ -113,7 +113,7 @@ jobs:
     needs: matrix
     continue-on-error: true
     strategy:
-      matrix: 
+      matrix:
         recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
     steps:
@@ -141,7 +141,7 @@ jobs:
     needs: [build-recipes-ubunutu-22-04, matrix]
     continue-on-error: true
     strategy:
-      matrix: 
+      matrix:
         recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
     steps:
@@ -170,7 +170,7 @@ jobs:
         run: |
           # sudo apt-get install libssl-dev
           pixi run python src/repror/rebuild_recipe.py ubuntu 22.04 20.04 ${{ matrix.recipes }}
-      
+
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -184,7 +184,7 @@ jobs:
     needs: [build-recipes-macos-13, matrix]
     continue-on-error: true
     strategy:
-      matrix: 
+      matrix:
         recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
     steps:
@@ -212,7 +212,7 @@ jobs:
       - name: Rebuild recipes and track if hash is equal
         run: |
           pixi run python src/repror/rebuild_recipe.py macos 13 12 ${{ matrix.recipes }}
-      
+
       - name: Upload build info
         uses: actions/upload-artifact@v3
         with:
@@ -227,7 +227,7 @@ jobs:
     needs: [build-recipes-windows-2022, matrix]
     continue-on-error: true
     strategy:
-      matrix: 
+      matrix:
         recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
 
     steps:
@@ -247,7 +247,7 @@ jobs:
         run: |
           # sudo apt-get install libssl-dev
           pixi run python src/repror/rebuild_recipe.py windows 2022 2019 ${{ matrix.recipes }}
-      
+
       - name: Upload diffoscope
         uses: actions/upload-artifact@v3
         with:
@@ -292,4 +292,3 @@ jobs:
           git add README.md
           git commit -m "Update file via GitHub Action"
           git push
-
