@@ -1,0 +1,93 @@
+schema_version: 1
+
+context:
+  version: 3.4.2
+  posix: "'m2-' if win else ''"
+  native: "'m2w64-' if win else ''"
+
+package:
+  name: libffi
+  version: ${{ version }}
+
+source:
+  url: https://github.com/libffi/libffi/releases/download/v${{ version }}/libffi-${{ version }}.tar.gz
+  sha256: 540fb721619a6aba3bdeef7d940d8e9e0e6d2c193595bc243241b77ff9e93620
+  patches:
+    - 0001-arm64-use-a-dedicated-dylib-for-trampolines-so-it-ca.patch
+    - 0002-Add-support-for-ffi_find_closure_for_code_np-on-Appl.patch
+    # Windows-specific:
+    - if: win
+      then: 0002-Don-t-define-FFI_COMPLEX_TYPEDEF-ifndef-FFI_TARGET_H.patch
+
+build:
+  number: 5
+
+requirements:
+  build:
+    - if: win
+      then: autotools_clang_conda
+    - if: unix
+      then: make
+    - if: unix
+      then: autoconf
+    - if: unix
+      then: libtool
+    - if: unix
+      then: patch
+    - if: unix
+      then: automake
+    - ${{ posix }}texinfo
+    - ${{ compiler('c') }}
+  host:
+  run:
+  run_exports:
+    - ${{ pin_subpackage('libffi', "x.x") }}
+
+tests:
+  - requirements:
+      run:
+        - if: win
+          then: llvm-tools
+        - if: win
+          then: m2-grep
+    script:
+      - if: not win
+        then: test -e $PREFIX/lib/libffi${SHLIB_EXT}
+      - if: not win
+        then: test -e $PREFIX/lib/libffi.a
+      - if: not win
+        then: test -e $PREFIX/include/ffi.h
+      - if: not win
+        then: test -e $PREFIX/include/ffitarget.h
+      - if: win
+        then: if not exist %LIBRARY_PREFIX%/bin/ffi-8.dll exit /b 1
+      - if: win
+        then: if not exist %LIBRARY_PREFIX%/lib/libffi.lib exit /b 1
+      - if: win
+        then: if not exist %LIBRARY_PREFIX%/lib/ffi.lib exit /b 1
+      - if: win
+        then: if not exist %LIBRARY_PREFIX%/include/ffi.h exit /b 1
+      - if: win
+        then: if not exist %LIBRARY_PREFIX%/include/ffitarget.h exit /b 1
+      - if: win
+        then: "llvm-nm %LIBRARY_PREFIX%/lib/libffi.lib | grep \"__imp_ffi_type_void\""
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: A Portable Foreign Function Interface Library.
+  description: |
+    The libffi library provides a portable, high level programming interface
+    to various calling conventions. This allows a programmer to call any
+    function specified by a call interface description at run-time.
+  homepage: https://sourceware.org/libffi/
+  repository: https://github.com/libffi/libffi
+  documentation: https://sourceware.org/libffi/
+
+extra:
+  recipe-maintainers:
+    - stefan-balke
+    - scopatz
+    - isuruf
+
+- "{% set am_version = \"1.15\" %} # keep synchronized with build.sh"  # keep synchronized with build.sh"  # keep synchronized with build.sh

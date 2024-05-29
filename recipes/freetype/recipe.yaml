@@ -1,0 +1,61 @@
+schema_version: 1
+
+context:
+  version: 2.12.1
+
+package:
+  name: freetype
+  version: ${{ version }}
+
+source:
+  url: https://download.savannah.gnu.org/releases/freetype/freetype-${{ version }}.tar.gz
+  sha256: efe71fd4b8246f1b0b1b9bfca13cfff1c9ad85930340c27df469733bbb620938
+  patches:
+    - CVE-2022-37434.patch
+
+build:
+  number: 2
+
+requirements:
+  build:
+    - if: unix
+      then: libtool
+    - ${{ compiler('c') }}
+    - if: win
+      then: cmake
+    - if: not win
+      then: make
+    - if: win
+      then: ninja
+  host:
+    - libpng
+    - zlib
+  run_exports:
+    - ${{ pin_subpackage('freetype') }}
+
+tests:
+  - script:
+      - if: not win
+        then: ${PREFIX}/bin/freetype-config --version
+      - if: win
+        then: if exist %LIBRARY_BIN%\freetype.dll (exit 0) else (exit 1)
+
+about:
+  license: GPL-2.0-only OR FTL
+  license_file:
+    - docs/GPLv2.TXT
+    - docs/FTL.TXT
+  summary: A Free, High-Quality, and Portable Font Engine
+  description: |
+    FreeType is designed to be small, efficient, highly customizable
+    and portable while capable of producing high-quality output (glyph images)
+    of most vector and bitmap font formats.
+  homepage: https://www.freetype.org/
+  repository: http://git.savannah.gnu.org/cgit/freetype/
+  documentation: http://freetype.sourceforge.net/freetype2/documentation.html
+
+extra:
+  recipe-maintainers:
+    - ccordoba12
+    - msarahan
+    - ocefpaf

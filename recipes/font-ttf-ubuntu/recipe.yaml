@@ -1,0 +1,63 @@
+schema_version: 1
+
+context:
+  version: 0.83
+
+package:
+  name: font-ttf-ubuntu
+  version: ${{ version }}
+
+source:
+  url: https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-${{ version }}.zip
+  sha256: 61a2b342526fd552f19fef438bb9211a8212de19ad96e32a1209c039f1d68ecf
+
+build:
+  number: 2
+  noarch: generic
+
+tests:
+  - requirements:
+      run:
+        - bzip2
+    script:
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-B.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-BI.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-C.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-L.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-LI.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-M.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-MI.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-R.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-RI.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/Ubuntu-Th.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/UbuntuMono-B.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/UbuntuMono-BI.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/UbuntuMono-R.ttf
+      - if: unix
+        then: test -f ${PREFIX}/fonts/UbuntuMono-RI.ttf
+
+about:
+  summary: The Ubuntu Font Family
+  description: |
+    A unique, custom designed font that has a very distinctive look and feel.
+  license: LicenseRef-Ubuntu-Font-Licence-Version-1.0
+  license_file: LICENCE.txt
+  homepage: https://design.ubuntu.com/font/
+
+extra:
+  recipe-maintainers:
+    - dbast
+    - xhochy
