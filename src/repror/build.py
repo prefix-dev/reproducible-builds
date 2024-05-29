@@ -56,14 +56,8 @@ def rebuild_conda_package(conda_file, output_dir):
 
 
 def build_recipe(recipe_path, output_dir) -> Optional[BuildInfo]:
-    try:
-        build_conda_package(recipe_path, output_dir)
-    except subprocess.CalledProcessError:
-        # something went wrong with building it
-        # for now we record it as not rebuildable
-        # and skip to next recipe
-        # build_results[str(recipe_path)] = False
-        return None
+    # bypass exception on top
+    build_conda_package(recipe_path, output_dir)
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
@@ -88,14 +82,8 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
         conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}"
     )
 
-    try:
-        rebuild_conda_package(conda_file, output_dir)
-    except subprocess.CalledProcessError:
-        # something went wrong with building it
-        # for now we record it as not rebuildable
-        # and skip to next recipe
-        # build_results[str(recipe_path)] = False
-        return None
+    # raise exception to top
+    rebuild_conda_package(conda_file, output_dir)
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
