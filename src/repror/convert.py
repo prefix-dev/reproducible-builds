@@ -1,11 +1,12 @@
 import os
 from pathlib import Path
 import subprocess
+import sys
 import tempfile
 import shutil
 from repror import conf
 
-def checkout_feedstock(package_name, dest_dir):
+def checkout_feedstock(package_name, dest_recipe_dir):
     """
     Check out the feedstock repository for the given package name.
     """
@@ -14,7 +15,6 @@ def checkout_feedstock(package_name, dest_dir):
         try:
             subprocess.run(["git", "clone", repo_url, temp_dir], check=True)
             recipe_dir = os.path.join(temp_dir, "recipe")
-            dest_recipe_dir = os.path.join(dest_dir, "recipes", package_name)
             # os.makedirs(dest_recipe_dir, exist_ok=True)
             shutil.copytree(recipe_dir, dest_recipe_dir, dirs_exist_ok=True)
             return dest_recipe_dir
@@ -45,52 +45,29 @@ def process_packages(package_names):
     all_existing_paths = {recipe['path'] for recipe in config['local']}
     for package_name in package_names:
         print(f"Processing package: {package_name}")
-        dest_recipe_dir = checkout_feedstock(package_name, base_dest_dir)
+        dest_recipe_dir = os.path.join(base_dest_dir, "recipes", package_name)
+        recipe_path = Path(os.path.join(dest_recipe_dir, "recipe.yaml"))
+        if recipe_path.exists():
+            continue
+        dest_recipe_dir = checkout_feedstock(package_name, dest_recipe_dir)
         if dest_recipe_dir:
             save_new_recipe(dest_recipe_dir)
         else:
             print(f"Skipping package: {package_name} due to checkout failure")
             continue
 
-        recipe_path = Path(os.path.join(dest_recipe_dir, "recipe.yaml"))
-        if recipe_path.exists():
-            rel_path = os.path.relpath(recipe_path, base_dest_dir)
-            if rel_path not in all_existing_paths:
-                config['local'].append({'path': rel_path})
+        rel_path = os.path.relpath(recipe_path, base_dest_dir)
+        if rel_path not in all_existing_paths:
+            config['local'].append({'path': rel_path})
 
     conf.save_config(config)
 
 if __name__ == "__main__":
-    package_names = [
-        "certifi",
-    "openssl",
-    "ca-certificates",
-    "conda",
-    "python",
-    "setuptools",
-    "zlib",
-    "pip",
-    "sqlite",
-    "wheel",
-    "tk",
-    "pytz",
-    "six",
-    "python-dateutil",
-    "libpng",
-    "jpeg",
-    "numpy",
-    "icu",
-    "freetype",
-    "openblas",
-    "libzlib", "xz", "libblas", "_openmp_mutex", "liblapack", "libgcc-ng", "libcblas", "tk",
-    "zlib", "libffi", "libgomp", "ncurses", "python-dateutil", "_libgcc_mutex", "six",
-    "libopenblas", "libstdcxx-ng", "libgfortran-ng", "libgfortran5", "pthread-stubs",
-    "xorg-libxdmcp", "bzip2", "lerc", "gettext", "python", "libnsl", "libbrotlienc",
-    "libbrotlicommon", "libbrotlidec", "pcre2", "tomli", "libxcb", "brotli", "brotli-bin",
-    "pyparsing", "pixman", "kiwisolver", "fonts-conda-forge", "fonts-conda-ecosystem",
-    "cycler", "font-ttf-source-code-pro", "font-ttf-inconsolata", "font-ttf-dejavu-sans-mono",
-    "font-ttf-ubuntu", "xorg-kbproto", "joblib", "munkres", "python_abi", "xorg-xproto", "toml"
-]
+    some_names = sys.argv[1:]
+
+    example_names = ["boltons"]
+
+    package_names = some_names or example_names
 
 
     process_packages(package_names)

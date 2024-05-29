@@ -2,8 +2,9 @@ schema_version: 1
 
 context:
   version: 3.4.2
-  posix: "'m2-' if win else ''"
-  native: "'m2w64-' if win else ''"
+  posix: ${{ "m2-" if win else "" }}
+  native: ${{ "m2w64-" if win else "" }}
+  am_version: '1.15'
 
 package:
   name: libffi
@@ -89,5 +90,3 @@ extra:
     - stefan-balke
     - scopatz
     - isuruf
-
-- "{% set am_version = \"1.15\" %} # keep synchronized with build.sh"  # keep synchronized with build.sh"  # keep synchronized with build.sh

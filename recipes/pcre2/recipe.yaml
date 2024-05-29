@@ -134,8 +134,10 @@ outputs:
             then:
               - if not exist %LIBRARY_PREFIX%\\cmake\\pcre2-config-version.cmake exit
               - 1
-    script: build-shared.sh  # [unix]
-    script: bld-shared.bat  # [win]
+          - if: unix
+            then: build-shared.sh
+          - if: win
+            then: bld-shared.bat
   - package:
       name: pcre2-static
     requirements:
@@ -165,8 +167,10 @@ outputs:
             then: if not exist %LIBRARY_LIB%\pcre2-32-static.lib exit 1
           - if: win
             then: if not exist %LIBRARY_LIB%\pcre2-posix-static.lib exit 1
-    script: build-static.sh  # [unix]
-    script: bld-static.bat  # [win]
+          - if: unix
+            then: build-static.sh
+          - if: win
+            then: bld-static.bat
 
 about:
   license: BSD-3-Clause

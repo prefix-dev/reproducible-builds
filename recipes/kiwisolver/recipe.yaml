@@ -15,7 +15,7 @@ build:
   number: 1
   skip:
     - py<37
-  script: ${{ PYTHON }} -m pip install . -vv
+  script: python -m pip install . -vv
 
 requirements:
   build:

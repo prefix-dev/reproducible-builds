@@ -14,7 +14,7 @@ source:
 build:
   number: 0
   noarch: python
-  script: ${{ PYTHON }} -m pip install . -vv
+  script: python -m pip install . -vv
 
 requirements:
   host:
@@ -28,10 +28,10 @@ tests:
       imports:
         - six
       pip_check: true
-  - requirements:
-      run:
-        - pip
-    script: commands
+  # - requirements:
+  #     run:
+  #       - pip
+    # script: commands
 
 about:
   license: MIT

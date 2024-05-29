@@ -14,7 +14,7 @@ source:
 build:
   number: 1
   noarch: python
-  script: ${{ PYTHON }} -c "import flit_core.buildapi; flit_core.buildapi.build_wheel('.')" && ${{ PYTHON }} -m installer --no-compile-bytecode wheel-*.whl
+  script: python -c "import flit_core.buildapi; flit_core.buildapi.build_wheel('.')" && python -m installer --no-compile-bytecode wheel-*.whl
   python:
     entry_points:
       - wheel = wheel.cli:main

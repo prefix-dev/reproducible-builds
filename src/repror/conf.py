@@ -28,4 +28,4 @@ class RecipeConfig:
         if "name" in self.config.get("context", {}):
             return self.config["context"]["name"]
 
-        return self.config["package"]["name"]
+        return self.config["package"]["name"] if "package" in self.config else self.config["recipe"]["name"]
