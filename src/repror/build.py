@@ -1,6 +1,5 @@
 from pathlib import Path
 import shutil
-import subprocess
 from typing import Optional, TypedDict
 
 from repror.conf import RecipeConfig
@@ -18,6 +17,7 @@ class Recipe(TypedDict):
     url: str
     branch: str
     recipe: str
+
 
 class BuildInfo(TypedDict):
     recipe_path: str
@@ -105,7 +105,7 @@ def build_remote_recipes(
     recipe: Recipe, build_dir, cloned_prefix_dir
 ) -> dict[str, Optional[BuildInfo]]:
     repo_url = recipe["url"]
-    ref = recipe["branch"] # or repo.get("commit")
+    ref = recipe["branch"]  # or repo.get("commit")
     clone_dir = cloned_prefix_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
 
     if clone_dir.exists():

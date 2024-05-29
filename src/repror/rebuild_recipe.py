@@ -1,7 +1,6 @@
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 from typing import Optional
@@ -55,9 +54,9 @@ if __name__ == "__main__":
         Path(f"ci_artifacts/{platform}/build").mkdir(exist_ok=True, parents=True)
         Path(f"ci_artifacts/{platform}/rebuild").mkdir(exist_ok=True, parents=True)
 
-
         with open(
-            f"build_info/{platform}_{previous_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json", "r"
+            f"build_info/{platform}_{previous_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            "r",
         ) as f:
             previous_build_info = json.load(f)
 
@@ -77,7 +76,6 @@ if __name__ == "__main__":
                 builded = all_builds[idx]
             else:
                 continue
-
 
         os.makedirs(f"build_info/{platform}", exist_ok=True)
 

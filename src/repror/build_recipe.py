@@ -1,6 +1,5 @@
 import os
 import json
-import uuid
 import sys
 import conf
 from pathlib import Path
@@ -22,18 +21,20 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
         if url == "local":
             build_info.update(build_local_recipe(recipe, build_dir))
         else:
-            build_info.update(build_remote_recipes(recipe, build_dir, cloned_prefix_dir))
-
+            build_info.update(
+                build_remote_recipes(recipe, build_dir, cloned_prefix_dir)
+            )
 
     return build_info
 
 
 if __name__ == "__main__":
     platform, version = sys.argv[1], sys.argv[2]
+    # this should be optional
+    # so we could run it locally nice
     recipe_string = sys.argv[3]
 
     url, branch, path = recipe_string.split("::")
-
 
     recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
 
@@ -53,14 +54,14 @@ if __name__ == "__main__":
 
         build_results = {}
 
-        build_info = build_recipes(
-            [recipe_obj], tmp_dir, build_dir
-        )
-
+        build_info = build_recipes([recipe_obj], tmp_dir, build_dir)
 
         os.makedirs("build_info", exist_ok=True)
 
         # build_id = uuid.uuid4().hex
 
-        with open(f"build_info/{platform}_{version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json", "w") as f:
+        with open(
+            f"build_info/{platform}_{version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            "w",
+        ) as f:
             json.dump(build_info, f)
