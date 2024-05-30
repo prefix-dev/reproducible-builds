@@ -1,0 +1,113 @@
+schema_version: 1
+
+context:
+  version: 5.2.9
+
+recipe:
+  name: xz
+  version: ${{ version }}
+
+source:
+  url: http://downloads.sourceforge.net/project/lzmautils/xz-${{ version }}.tar.bz2
+  sha256: b194507fba3a462a753c553149ccdaa168337bcb7deefddd067ba987c83dfce6
+  patches:
+    - 0002-Add-gettimeofday-for-VS2008.patch
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - if: win and vc<14
+      then: c99-to-c89
+    - if: win
+      then: cmake
+    - if: win
+      then: ninja
+    - if: not win
+      then: make
+    - if: not win
+      then: automake
+    - if: not win
+      then: libtool
+  host:
+    - if: win and vc<14
+      then: msinttypes
+  run_exports:
+    - ${{ pin_subpackage('xz') }}
+
+outputs:
+  - package:
+      name: xz
+    tests:
+      - script:
+          - if: not win
+            then: xz --help
+          - if: not win
+            then: unxz --help
+          - if: not win
+            then: lzma --help
+          - if: win
+            then: xz.exe --help
+          - if: win
+            then: unxz.exe --help
+          - if: win
+            then: if not exist %LIBRARY_PREFIX%\bin\liblzma.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_PREFIX%\lib\liblzma.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_PREFIX%\include\lzma.h exit 1
+          - if: unix
+            then: test -f ${PREFIX}/lib/liblzma${SHLIB_EXT}
+          - if: unix
+            then: test ! -f ${PREFIX}/lib/liblzma.a
+    script: install.sh  # [unix]
+    script: install.bat  # [win]
+  - package:
+      name: xz-static
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - if: win and vc<14
+          then: c99-to-c89
+        - if: win
+          then: cmake
+        - if: win
+          then: ninja
+        - if: not win
+          then: make
+        - if: not win
+          then: automake
+      host:
+        - if: win and vc<14
+          then: msinttypes
+        - ${{ pin_subpackage('xz', exact=True) }}
+      run:
+        - ${{ pin_subpackage('xz', exact=True) }}
+    tests:
+      - script:
+          - if: unix
+            then: test -f ${PREFIX}/lib/liblzma.a
+    script: install.sh  # [unix]
+    script: install.bat  # [win]
+
+about:
+  license: LGPL-2.1 and GPL-2.0
+  license_file: COPYING
+  summary: Data compression software with high compression ratio
+  description: |
+    XZ Utils is free general-purpose data compression software with a high
+    compression ratio. XZ Utils were written for POSIX-like systems, but also
+    work on some not-so-POSIX systems.
+  homepage: http://tukaani.org/xz/
+  repository: http://git.tukaani.org/
+  documentation: http://tukaani.org/xz/
+
+extra:
+  recipe-maintainers:
+    - msarahan
+    - ocefpaf
+    - mingwandroid
+    - nehaljwani
+    - scopatz

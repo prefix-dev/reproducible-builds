@@ -1,0 +1,76 @@
+schema_version: 1
+
+context:
+  xorg_name: xproto
+  xorg_category: proto
+  name: xorg-xproto
+  version: 7.0.31
+  # sha256: c6f9747da0bd3a95f86b17fb8dd5e717c8f3ab7f0ece3ba1b247899ec1ef7747
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://www.x.org/releases/individual/${{ xorg_category }}/${{ xorg_name }}-${{ version }}.tar.bz2
+  sha256: c6f9747da0bd3a95f86b17fb8dd5e717c8f3ab7f0ece3ba1b247899ec1ef7747
+  file_name: ${{ name }}-${{ version }}.tar.bz2
+  patches:
+    - if: win
+      then: windows-fd_bits.patch
+    - if: win
+      then: windows-64bit.patch
+
+build:
+  number: 1007
+  # detect_binary_files_with_prefix: true
+
+requirements:
+  build:
+    - if: unix
+      then: gnuconfig
+    - if: win
+      then: m2-autoconf
+    - if: win
+      then: m2-automake${{ am_version }}
+    - if: win
+      then: m2-libtool
+    - if: win
+      then: m2w64-pkg-config
+    - if: not win
+      then: pkg-config
+    - if: win
+      then: posix
+    - if: unix
+      then: ${{ compiler('c') }}
+    - if: win
+      then: ${{ compiler('m2w64_c') }}
+    - if: unix
+      then: make
+    - if: unix
+      then: autoconf
+    - if: unix
+      then: automake
+    - if: unix
+      then: gettext
+    - if: unix
+      then: libtool
+  host:
+    - xorg-util-macros
+
+# tests:
+#   - script:
+#       - if: not win
+#         then: conda inspect linkages -p $PREFIX $PKG_NAME
+#       - if: osx
+#         then: conda inspect objects -p $PREFIX $PKG_NAME
+
+about:
+  license: MIT
+  license_file: COPYING
+  summary: Core X Windows C prototypes.
+  homepage: https://www.x.org/
+
+extra:
+  recipe-maintainers:
+    - pkgw

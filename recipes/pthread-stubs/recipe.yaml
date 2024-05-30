@@ -1,0 +1,62 @@
+# NOTE: no Visual Studio dependent features, since this package does not build
+# or install any binary code on Windows. It needs m2w64-toolchain for the
+# configure script to run, but msys2 provides sufficient pthreads bits for
+# downstream packages.
+schema_version: 1
+
+context:
+  xorg_name: libpthread-stubs
+  xorg_category: xcb
+  name: pthread-stubs
+  version: 0.4
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://www.x.org/releases/individual/${{ xorg_category }}/${{ xorg_name }}-${{ version }}.tar.bz2
+  sha256: e4d05911a3165d3b18321cc067fdd2f023f06436e391c6a28dff618a78d2e733
+  file_name: ${{ xorg_name }}-${{ version }}.tar.bz2
+
+build:
+  number: 1001
+  # detect_binary_files_with_prefix: true
+
+requirements:
+  build:
+    - if: win
+      then: m2-autoconf
+    - if: win
+      then: m2-automake${{ am_version }}
+    - if: win
+      then: m2-libtool
+    - if: win
+      then: m2w64-pkg-config
+    - if: not win
+      then: pkg-config
+    - if: win
+      then: posix
+    - if: unix
+      then: ${{ compiler('c') }}
+    - if: win
+      then: ${{ compiler('m2w64_c') }}
+    - if: unix
+      then: make
+  host:
+    - xorg-util-macros
+
+# tests:
+#   - commands
+
+about:
+  license: MIT
+  license_file: COPYING
+  summary: Stubs missing from libc for standard pthread functions
+  homepage: https://xcb.freedesktop.org/
+
+extra:
+  recipe-maintainers:
+    - ccordoba12
+    - mingwandroid
+    - pkgw

@@ -1,0 +1,229 @@
+schema_version: 1
+
+context:
+  version: 1.1.0
+
+recipe:
+  name: brotli-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/google/brotli/archive/v${{ version }}.tar.gz
+  sha256: e720a6ca29428b803f4ad165371771f5398faba397edf6778837a18599ea13ff
+  file_name: brotli-${{ version }}.tar.gz
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - cmake
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - ninja
+  host:
+  run_exports:
+    - ${{ pin_subpackage('brotli', max_pin='x.x') }}
+
+outputs:
+  - package:
+      name: libbrotlicommon
+    build:
+    requirements:
+      build:
+        - cmake
+        - ${{ compiler('c') }}
+        - ninja
+      run_exports:
+        - ${{ pin_subpackage("libbrotlicommon", max_pin="x.x") }}
+    tests:
+      - script:
+          - if: unix
+            then: test -f $PREFIX/lib/libbrotlicommon$SHLIB_EXT
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotlicommon.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\brotlicommon.lib exit 1
+          - if: unix
+            then: test ! -f $PREFIX/lib/libbrotlicommon-static.a
+          - if: win
+            then: if exist %LIBRARY_LIB%\\brotlicommon-static.lib exit 1
+    script: install_library.sh  # [unix]
+    script: install_library.bat  # [win]
+  - package:
+      name: libbrotlienc
+    build:
+    requirements:
+      build:
+        - cmake
+        - ${{ compiler('c') }}
+        - ninja
+      host:
+        - ${{ pin_subpackage("libbrotlicommon", exact=True) }}
+      run:
+        - ${{ pin_subpackage("libbrotlicommon", exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage("libbrotlienc", max_pin="x.x") }}
+    tests:
+      - script:
+          - if: unix
+            then: test -f $PREFIX/lib/libbrotlienc$SHLIB_EXT
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotlienc.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\brotlienc.lib exit 1
+          - if: unix
+            then: test ! -f $PREFIX/lib/libbrotlienc-static.a
+          - if: win
+            then: if exist %LIBRARY_LIB%\\brotlienc-static.lib exit 1
+    script: install_library.sh  # [unix]
+    script: install_library.bat  # [win]
+  - package:
+      name: libbrotlidec
+    build:
+    requirements:
+      build:
+        - cmake
+        - ${{ compiler('c') }}
+        - ninja
+      host:
+        - ${{ pin_subpackage("libbrotlicommon", exact=True) }}
+      run:
+        - ${{ pin_subpackage("libbrotlicommon", exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage("libbrotlidec", max_pin="x.x") }}
+    tests:
+      - script:
+          - if: unix
+            then: test -f $PREFIX/lib/libbrotlidec$SHLIB_EXT
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotlidec.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\brotlidec.lib exit 1
+          - if: unix
+            then: test ! -f $PREFIX/lib/libbrotlidec-static.a
+          - if: win
+            then: if exist %LIBRARY_LIB%\\brotlidec-static.lib exit 1
+    script: install_library.sh  # [unix]
+    script: install_library.bat  # [win]
+  - package:
+      name: brotli-bin
+    requirements:
+      build:
+        - cmake
+        - ${{ compiler('c') }}
+        - ninja
+      host:
+        - ${{ pin_subpackage("libbrotlienc", exact=True) }}
+        - ${{ pin_subpackage("libbrotlidec", exact=True) }}
+      run:
+        - ${{ pin_subpackage("libbrotlienc", exact=True) }}
+        - ${{ pin_subpackage("libbrotlidec", exact=True) }}
+    tests:
+      - script:
+          - brotli --help
+    script: install_library.sh  # [unix]
+    script: install_library.bat  # [win]
+  - package:
+      name: brotli
+    build:
+    requirements:
+      build:
+        - cmake
+        - ${{ compiler('c') }}
+        - ninja
+      host:
+        - ${{ pin_subpackage("libbrotlienc", exact=True) }}
+        - ${{ pin_subpackage("libbrotlidec", exact=True) }}
+        - ${{ pin_subpackage("brotli-bin", exact=True) }}
+      run:
+        - ${{ pin_subpackage("libbrotlienc", exact=True) }}
+        - ${{ pin_subpackage("libbrotlidec", exact=True) }}
+        - ${{ pin_subpackage("brotli-bin", exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage("libbrotlicommon", max_pin="x.x") }}
+        - ${{ pin_subpackage("libbrotlienc", max_pin="x.x") }}
+        - ${{ pin_subpackage("libbrotlidec", max_pin="x.x") }}
+    tests:
+      - script:
+          - brotli --help
+          - if: unix
+            then: test -f $PREFIX/lib/libbrotlienc$SHLIB_EXT
+          - if: unix
+            then: test -f $PREFIX/lib/libbrotlidec$SHLIB_EXT
+          - if: unix
+            then: test -f $PREFIX/lib/libbrotlicommon$SHLIB_EXT
+          - if: unix
+            then: test -f $PREFIX/include/brotli/encode.h
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotli.exe exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotlicommon.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotlidec.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\brotlienc.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\brotlicommon.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\brotlidec.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\brotlienc.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_INC%\\brotli\\encode.h exit 1
+          - if: unix
+            then: test ! -f $PREFIX/lib/libbrotlienc-static.a
+          - if: unix
+            then: test ! -f $PREFIX/lib/libbrotlidec-static.a
+          - if: unix
+            then: test ! -f $PREFIX/lib/libbrotlicommon-static.a
+          - if: win
+            then: if exist %LIBRARY_LIB%\\brotlicommon-static.lib exit 1
+          - if: win
+            then: if exist %LIBRARY_LIB%\\brotlidec-static.lib exit 1
+          - if: win
+            then: if exist %LIBRARY_LIB%\\brotlienc-static.lib exit 1
+    script: install_library.sh  # [unix]
+    script: install_library.bat  # [win]
+  - package:
+      name: brotli-python
+    build:
+      ignore_run_exports_from:
+        - brotli
+    requirements:
+      build:
+        - cmake
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - if: build_platform != target_platform
+          then: python
+        - if: build_platform != target_platform
+          then: cross-python_${{ target_platform }}
+        - ninja
+      host:
+        - python
+        - pip
+        - ${{ pin_subpackage('brotli', exact=True) }}
+      run:
+        - python
+      run_constraints:
+        - ${{ pin_subpackage('libbrotlicommon', exact=True) }}
+    tests:
+      - python:
+          imports:
+            - brotli
+          pip_check: false
+    script: install_python.sh  # [unix]
+    script: install_python.bat  # [win]
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: Brotli compression format
+  homepage: http://github.com/google/brotli
+
+extra:
+  recipe-maintainers:
+    - wesm
+    - xhochy
+    - CJ-Wright

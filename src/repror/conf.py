@@ -7,6 +7,11 @@ def load_config(config_path: str = "config.yaml"):
         config = yaml.safe_load(file)
     return config
 
+def save_config(data, config_path: str = "config.yaml"):
+    with open(config_path, "w", encoding="utf8") as file:
+        yaml.safe_dump(data, file)
+
+
 
 class RecipeConfig:
     def __init__(self, config):
@@ -23,4 +28,4 @@ class RecipeConfig:
         if "name" in self.config.get("context", {}):
             return self.config["context"]["name"]
 
-        return self.config["package"]["name"]
+        return self.config["package"]["name"] if "package" in self.config else self.config["recipe"]["name"]

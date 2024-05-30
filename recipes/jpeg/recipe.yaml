@@ -1,0 +1,51 @@
+schema_version: 1
+
+context:
+  version: 9e
+
+package:
+  name: jpeg
+  version: ${{ version }}
+
+source:
+  url: http://www.ijg.org/files/jpegsrc.v${{ version }}.tar.gz
+  sha256: 4077d6a6a75aeb01884f708919d25934c93305e49f7e3f36db9129320e6f4f3d
+  patches:
+    - if: win
+      then: CMakeLists.txt.patch
+
+build:
+  number: 3
+
+requirements:
+  build:
+    - if: win
+      then: cmake
+    - if: unix
+      then: libtool
+    - ${{ compiler('c') }}
+    - make
+  run_exports:
+    - ${{ pin_subpackage('jpeg') }}
+  run_constraints:
+    - libjpeg-turbo <0.0.0a
+
+tests:
+  - files:
+      recipe:
+        - testorig.jpg
+    script:
+      - djpeg -dct int -ppm -outfile testout.ppm testorig.jpg
+
+about:
+  license: IJG
+  license_file: ${{ RECIPE_DIR }}/LICENSE.txt
+  summary: read/write jpeg COM, EXIF, IPTC medata
+  homepage: http://www.ijg.org/
+
+extra:
+  recipe-maintainers:
+    - ocefpaf
+    - gillins
+    - jakirkham
+    - msarahan

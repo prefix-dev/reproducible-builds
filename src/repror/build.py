@@ -1,6 +1,5 @@
 from pathlib import Path
 import shutil
-import subprocess
 from typing import Optional, TypedDict
 
 from repror.conf import RecipeConfig
@@ -12,6 +11,12 @@ from repror.util import (
     run_command,
 )
 from repror.git import clone_repo, checkout_branch_or_commit
+
+
+class Recipe(TypedDict):
+    url: str
+    branch: str
+    recipe: str
 
 
 class BuildInfo(TypedDict):
@@ -51,14 +56,8 @@ def rebuild_conda_package(conda_file, output_dir):
 
 
 def build_recipe(recipe_path, output_dir) -> Optional[BuildInfo]:
-    try:
-        build_conda_package(recipe_path, output_dir)
-    except subprocess.CalledProcessError:
-        # something went wrong with building it
-        # for now we record it as not rebuildable
-        # and skip to next recipe
-        # build_results[str(recipe_path)] = False
-        return None
+    # bypass exception on top
+    build_conda_package(recipe_path, output_dir)
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
@@ -83,14 +82,8 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
         conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}"
     )
 
-    try:
-        rebuild_conda_package(conda_file, output_dir)
-    except subprocess.CalledProcessError:
-        # something went wrong with building it
-        # for now we record it as not rebuildable
-        # and skip to next recipe
-        # build_results[str(recipe_path)] = False
-        return None
+    # raise exception to top
+    rebuild_conda_package(conda_file, output_dir)
 
     # let's record first hash
     conda_file = find_conda_build(output_dir)
@@ -109,10 +102,10 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
 
 
 def build_remote_recipes(
-    repo, build_dir, cloned_prefix_dir
+    recipe: Recipe, build_dir, cloned_prefix_dir
 ) -> dict[str, Optional[BuildInfo]]:
-    repo_url = repo["url"]
-    ref = repo.get("branch") or repo.get("commit")
+    repo_url = recipe["url"]
+    ref = recipe["branch"]  # or repo.get("commit")
     clone_dir = cloned_prefix_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
 
     if clone_dir.exists():
@@ -127,26 +120,24 @@ def build_remote_recipes(
         print(f"Checking out {ref}")
         checkout_branch_or_commit(clone_dir, ref)
 
-    for recipe in repo["recipes"]:
-        recipe_path = clone_dir / recipe["path"]
-        # recipe_name = recipe_path.name
+    # for recipe in repo["recipes"]:
+    recipe_path = clone_dir / recipe["path"]
+    # recipe_name = recipe_path.name
 
-        recipe_config = RecipeConfig.load_recipe(recipe_path)
+    recipe_config = RecipeConfig.load_recipe(recipe_path)
 
-        build_dir = build_dir / f"{recipe_config.name}_build"
-        build_dir.mkdir(parents=True, exist_ok=True)
+    build_dir = build_dir / f"{recipe_config.name}_build"
+    build_dir.mkdir(parents=True, exist_ok=True)
 
-        build_info = build_recipe(recipe_path, build_dir)
+    build_info = build_recipe(recipe_path, build_dir)
 
-        build_infos[recipe_config.name] = build_info
+    build_infos[recipe_config.name] = build_info
 
     return build_infos
 
 
-def build_local_recipe(local, build_dir):
-    recipe_path = Path(local["path"])
-
-    recipe_path = Path(local["path"])
+def build_local_recipe(recipe: Recipe, build_dir):
+    recipe_path = Path(recipe["path"])
 
     recipe_config: RecipeConfig = RecipeConfig.load_recipe(recipe_path)
 

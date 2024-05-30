@@ -1,0 +1,30 @@
+schema_version: 1
+
+package:
+  name: fonts-conda-ecosystem
+  version: 1
+
+build:
+  number: 0
+  noarch: generic
+
+requirements:
+  build:
+    - fonts-conda-forge
+  run:
+    - fonts-conda-forge
+
+tests:
+  - script:
+      - if: unix
+        then: ls -alh ${PREFIX}/fonts/
+
+about:
+  summary: Meta package pointing to the ecosystem specific font package
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  homepage: https://conda.io
+
+extra:
+  recipe-maintainers:
+    - dbast

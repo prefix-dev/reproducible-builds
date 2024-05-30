@@ -1,0 +1,31 @@
+schema_version: 1
+
+context:
+  version: 0.1
+
+package:
+  name: _libgcc_mutex
+  version: ${{ version }}
+
+build:
+  number:
+    - 0
+    track_features:
+    - free_channel_libgcc
+  string: ${{ libgcc_mutex_build_string }}
+  skip:
+    - not (linux64 or ppc64le)
+
+tests:
+  - script:
+      - "echo \"Hello World!\""
+
+about:
+  license: Noweb
+  summary: Mutex for libgcc and libgcc-ng
+  homepage: https://github.com/AnacondaRecipes/_libgcc_mutex-feedstock
+
+extra:
+  recipe-maintainers:
+    - isuruf
+    - beckermr

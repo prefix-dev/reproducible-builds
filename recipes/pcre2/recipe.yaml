@@ -1,0 +1,192 @@
+schema_version: 1
+
+context:
+  name: pcre2-split-recipe
+  version: 10.43
+
+recipe:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/PCRE2Project/pcre2/archive/refs/tags/pcre2-${{ version }}.tar.gz
+  sha256: f0048e26b02bdfaf43b8cec75030a9c2fe28552bf5caa693d3ccbf4d886fa930
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - cmake
+    - ninja
+    - if: win
+      then: posix
+    - if: win
+      then: m2-sed
+  host:
+    - bzip2
+    - zlib
+  run_exports:
+    - ${{ pin_subpackage("pcre2", max_pin="x.x") }}
+
+outputs:
+  - package:
+      name: pcre2
+    build:
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - cmake
+        - ninja
+        - if: win
+          then: posix
+      host:
+        - bzip2
+        - zlib
+      run_exports:
+        - ${{ pin_subpackage("pcre2", max_pin="x.x") }}
+    tests:
+      - script:
+          - pcre2test --version
+          - pcre2grep --version
+          - if: not win
+            then: pcre2-config --version
+          - if: not win
+            then: test -f ${PREFIX}/include/pcre2.h
+          - if: not win
+            then: test -f ${PREFIX}/include/pcre2posix.h
+          - if: not win
+            then: test -f ${PREFIX}/lib/libpcre2-posix${SHLIB_EXT}
+          - if: osx
+            then: test -f ${PREFIX}/lib/libpcre2-posix.3${SHLIB_EXT}
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-posix${SHLIB_EXT}.3
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-posix${SHLIB_EXT}.3.0.5
+          - if: not win
+            then: test -f ${PREFIX}/lib/libpcre2-8${SHLIB_EXT}
+          - if: osx
+            then: test -f ${PREFIX}/lib/libpcre2-8.0${SHLIB_EXT}
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-8${SHLIB_EXT}.0
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-8${SHLIB_EXT}.0.12.0
+          - if: not win
+            then: test -f ${PREFIX}/lib/libpcre2-16${SHLIB_EXT}
+          - if: osx
+            then: test -f ${PREFIX}/lib/libpcre2-16.0${SHLIB_EXT}
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-16${SHLIB_EXT}.0
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-16${SHLIB_EXT}.0.12.0
+          - if: not win
+            then: test -f ${PREFIX}/lib/libpcre2-32${SHLIB_EXT}
+          - if: osx
+            then: test -f ${PREFIX}/lib/libpcre2-32.0${SHLIB_EXT}
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-32${SHLIB_EXT}.0
+          - if: linux
+            then: test -f ${PREFIX}/lib/libpcre2-32${SHLIB_EXT}.0.12.0
+          - if: not win
+            then: test -f ${PREFIX}/lib/pkgconfig/libpcre2-8.pc
+          - if: not win
+            then: test -f ${PREFIX}/lib/pkgconfig/libpcre2-16.pc
+          - if: not win
+            then: test -f ${PREFIX}/lib/pkgconfig/libpcre2-32.pc
+          - if: not win
+            then: test -f ${PREFIX}/lib/pkgconfig/libpcre2-posix.pc
+          - if: not win
+            then: test -f ${PREFIX}/cmake/pcre2-config.cmake
+          - if: not win
+            then: test -f ${PREFIX}/cmake/pcre2-config-version.cmake
+          - if: win
+            then: if not exist %LIBRARY_INC%\\pcre2.h exit 1
+          - if: win
+            then: if not exist %LIBRARY_INC%\\pcre2posix.h exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\pcre2-8.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\pcre2-16.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\pcre2-32.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_BIN%\\pcre2-posix.dll exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pcre2-8.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pcre2-16.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pcre2-32.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pcre2-posix.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pkgconfig\\libpcre2-posix.pc exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pkgconfig\\libpcre2-8.pc exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pkgconfig\\libpcre2-16.pc exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\\pkgconfig\\libpcre2-32.pc exit 1
+          - if: win
+            then: if not exist %LIBRARY_PREFIX%\\cmake\\pcre2-config.cmake exit 1
+          - if: win
+            then:
+              - if not exist %LIBRARY_PREFIX%\\cmake\\pcre2-config-version.cmake exit
+              - 1
+          - if: unix
+            then: build-shared.sh
+          - if: win
+            then: bld-shared.bat
+  - package:
+      name: pcre2-static
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+      host:
+        - bzip2
+        - zlib
+        - ${{ pin_subpackage('pcre2', exact=True) }}
+      run:
+        - ${{ pin_subpackage('pcre2', exact=True) }}
+    tests:
+      - script:
+          - if: unix
+            then: test -f $PREFIX/lib/libpcre2-8.a
+          - if: unix
+            then: test -f $PREFIX/lib/libpcre2-16.a
+          - if: unix
+            then: test -f $PREFIX/lib/libpcre2-32.a
+          - if: unix
+            then: test -f $PREFIX/lib/libpcre2-posix.a
+          - if: win
+            then: if not exist %LIBRARY_LIB%\pcre2-8-static.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\pcre2-16-static.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\pcre2-32-static.lib exit 1
+          - if: win
+            then: if not exist %LIBRARY_LIB%\pcre2-posix-static.lib exit 1
+          - if: unix
+            then: build-static.sh
+          - if: win
+            then: bld-static.bat
+
+about:
+  license: BSD-3-Clause
+  license_file: LICENCE
+  summary: Regular expression pattern matching using Perl 5 syntax and semantics.
+  description: |
+    The PCRE library is a set of functions that implement regular expression pattern matching
+    using the same syntax and semantics as Perl 5. PCRE has its own native API, as well as a set of
+    wrapper functions that correspond to the POSIX regular expression API. The PCRE library is
+    free, even for building proprietary software.
+  homepage: http://www.pcre.org/
+  documentation: http://www.pcre.org/current/doc/html/
+
+extra:
+  feedstock-name: pcre2
+  recipe-maintainers:
+    - dfornika
+    - mariusvniekerk
+    - xhochy

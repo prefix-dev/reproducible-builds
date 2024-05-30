@@ -1,0 +1,61 @@
+schema_version: 1
+
+context:
+  name: munkres
+  version: 1.1.4
+  sha256: 6a297282895e4f7c27902bb5ad045d06458905daafb80a9ce14b9d87ca391205
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/bmc/${{ name }}/archive/release-${{ version }}.tar.gz
+  sha256: 6a297282895e4f7c27902bb5ad045d06458905daafb80a9ce14b9d87ca391205
+  file_name: ${{ name }}-${{ version }}.tar.gz
+
+build:
+  number: 0
+  noarch: python
+  script: python -m pip install .
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - pip
+  run:
+    - python
+
+# tests:
+#   # - python:
+#   #     imports:
+#   #       - munkres
+#   - files:
+#       source:
+#         - test/*
+#     requirements:
+#       run:
+#         - pytest
+#     script:
+#       - py.test
+
+about:
+  license: Apache-2.0
+  license_file: LICENSE.md
+  summary: The Munkres module provides an O(n^3) implementation of the Munkres algorithm (also called the Hungarian algorithm or the Kuhn-Munkres algorithm).
+  description: |
+    The Munkres module provides an O(n^3) implementation of the Munkres
+    algorithm (also called the Hungarian algorithm or the Kuhn-Munkres
+    algorithm). The algorithm models an assignment problem as an NxM cost
+    matrix, where each element represents the cost of assigning the ith worker
+    to the jth job, and it figures out the least-cost solution, choosing a
+    single item from each row and column in the matrix, such that no row and
+    no column are used more than once.
+  homepage: https://github.com/bmc/munkres
+  repository: https://github.com/bmc/munkres
+  documentation: http://software.clapper.org/munkres/
+
+extra:
+  recipe-maintainers:
+    - CJ-Wright
