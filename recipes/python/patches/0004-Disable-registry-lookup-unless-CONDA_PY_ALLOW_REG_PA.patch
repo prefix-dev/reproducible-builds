@@ -31,13 +31,13 @@ index 9913fcba49..15a06c7e44 100644
  # ENV_PYTHONEXECUTABLE    -- [in] getenv(...)
  # ENV___PYVENV_LAUNCHER__ -- [in] getenv(...)
 +# ENV_CONDA_PY_ALLOW_REG_PATHS -- [in] getenv(...)
- 
+
  # ** Values calculated at runtime **
  # config            -- [in/out] dict of the PyConfig structure
 @@ -673,7 +674,7 @@ def search_up(prefix, *landmarks, test=isfile):
      else:
          pythonpath.append(joinpath(prefix, ZIP_LANDMARK))
- 
+
 -    if os_name == 'nt' and use_environment and winreg:
 +    if os_name == 'nt' and use_environment and winreg and ENV_CONDA_PY_ALLOW_REG_PATHS and ENV_CONDA_PY_ALLOW_REG_PATHS != '0':
          # QUIRK: Windows also lists paths in the registry. Paths are stored

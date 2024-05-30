@@ -19,4 +19,3 @@ touch "${PREFIX}/ssl/certs/.keep"
 # remove the static libraries
 rm ${PREFIX}/lib/libcrypto.a
 rm ${PREFIX}/lib/libssl.a
-

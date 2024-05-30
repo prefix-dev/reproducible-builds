@@ -29,6 +29,11 @@ outputs:
   - package:
       name: libbrotlicommon
     build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
       build:
         - cmake
@@ -48,11 +53,14 @@ outputs:
             then: test ! -f $PREFIX/lib/libbrotlicommon-static.a
           - if: win
             then: if exist %LIBRARY_LIB%\\brotlicommon-static.lib exit 1
-    script: install_library.sh  # [unix]
-    script: install_library.bat  # [win]
   - package:
       name: libbrotlienc
     build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
       build:
         - cmake
@@ -76,11 +84,14 @@ outputs:
             then: test ! -f $PREFIX/lib/libbrotlienc-static.a
           - if: win
             then: if exist %LIBRARY_LIB%\\brotlienc-static.lib exit 1
-    script: install_library.sh  # [unix]
-    script: install_library.bat  # [win]
   - package:
       name: libbrotlidec
     build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
       build:
         - cmake
@@ -104,10 +115,14 @@ outputs:
             then: test ! -f $PREFIX/lib/libbrotlidec-static.a
           - if: win
             then: if exist %LIBRARY_LIB%\\brotlidec-static.lib exit 1
-    script: install_library.sh  # [unix]
-    script: install_library.bat  # [win]
   - package:
       name: brotli-bin
+    build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
       build:
         - cmake
@@ -122,11 +137,14 @@ outputs:
     tests:
       - script:
           - brotli --help
-    script: install_library.sh  # [unix]
-    script: install_library.bat  # [win]
   - package:
       name: brotli
     build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
       build:
         - cmake
@@ -183,14 +201,18 @@ outputs:
             then: if exist %LIBRARY_LIB%\\brotlidec-static.lib exit 1
           - if: win
             then: if exist %LIBRARY_LIB%\\brotlienc-static.lib exit 1
-    script: install_library.sh  # [unix]
-    script: install_library.bat  # [win]
   - package:
       name: brotli-python
     build:
-      ignore_run_exports_from:
-        - brotli
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
+      ignore_run_exports:
+        from_package:
+          - brotli
       build:
         - cmake
         - ${{ compiler('c') }}
@@ -213,8 +235,6 @@ outputs:
           imports:
             - brotli
           pip_check: false
-    script: install_python.sh  # [unix]
-    script: install_python.bat  # [win]
 
 about:
   license: MIT

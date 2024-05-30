@@ -5,7 +5,7 @@ index 652cda3..0d93014 100644
 @@ -117,6 +117,13 @@ if cpu_features_path != ''
    cpu_features_inc = include_directories(cpu_features_path)
  endif
- 
+
 +# conda-forge: maintain versioning compatibility with the previous
 +# Autotools-based binaries
 +version_arr = meson.project_version().split('.')
@@ -23,4 +23,3 @@ index 652cda3..0d93014 100644
 +  darwin_versions : darwin_versions,
    install : true,
  )
- 

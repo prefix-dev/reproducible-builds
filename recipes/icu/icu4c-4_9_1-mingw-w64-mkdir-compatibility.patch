@@ -3,7 +3,7 @@
 @@ -40,9 +40,11 @@
  #   include <sys/types.h>
  #endif
- 
+
 -/* In MinGW environment, io.h needs to be included for _mkdir() */
 +/* In MinGW environment, io.h needs to be included for _mkdir() for
 + * the mingw.org toolchain and direct.h for the mingw-w64 toolchain */
@@ -11,5 +11,5 @@
  #include <io.h>
 +#include <direct.h>
  #endif
- 
+
  #include <errno.h>

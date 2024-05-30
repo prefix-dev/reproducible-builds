@@ -13,4 +13,3 @@ else
   ln -s libgettextpo.so.0 libgettextpo.so
 fi
 popd
-

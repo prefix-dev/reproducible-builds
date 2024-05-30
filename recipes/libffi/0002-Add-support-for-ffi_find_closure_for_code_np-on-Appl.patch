@@ -24,7 +24,7 @@ index 72c69d2..ca524bc 100644
 +FFI_API ffi_closure *ffi_find_closure_for_code_np(void *code);
 +#endif
  #endif
- 
+
  #ifdef __sgi
 diff --git a/src/aarch64/ffi.c b/src/aarch64/ffi.c
 index 376e447..a13b8e3 100644
@@ -33,12 +33,12 @@ index 376e447..a13b8e3 100644
 @@ -883,6 +883,10 @@ ffi_find_closure_for_code(void *codeloc)
  #endif
  }
- 
+
 +#ifdef __APPLE__
 +ffi_closure *ffi_find_closure_for_code_np(void *codeloc) { return ffi_find_closure_for_code(codeloc); }  /* Apple renamed this entry ... */
 +#endif
 +
- 
+
  #ifdef FFI_GO_CLOSURES
  extern void ffi_go_closure_SYSV (void) FFI_HIDDEN;
 diff --git a/src/x86/ffi64.c b/src/x86/ffi64.c
@@ -48,7 +48,7 @@ index 8b4572f..857535e 100644
 @@ -794,6 +794,10 @@ ffi_find_closure_for_code(void *code)
      return (ffi_closure *) code;
  }
- 
+
 +#ifdef __APPLE__
 +ffi_closure *ffi_find_closure_for_code_np(void *code) { return ffi_find_closure_for_code(code); }  /* Apple renamed ... */
 +#endif
@@ -56,6 +56,5 @@ index 8b4572f..857535e 100644
  int FFI_HIDDEN
  ffi_closure_unix64_inner(ffi_cif *cif,
  			 void (*fun)(ffi_cif*, void*, void**, void*),
--- 
+--
 2.30.2
-

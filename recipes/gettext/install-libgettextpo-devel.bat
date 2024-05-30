@@ -15,4 +15,3 @@ if errorlevel 1 exit 1
 @rem Enforce dynamic linkage
 copy gettext-tools\libgettextpo\.libs\gettextpo.dll.lib %LIBRARY_PREFIX%\lib\gettextpo.lib
 if errorlevel 1 exit 1
-

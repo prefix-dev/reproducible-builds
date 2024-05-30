@@ -40,6 +40,12 @@ requirements:
 outputs:
   - package:
       name: xz
+    build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     tests:
       - script:
           - if: not win
@@ -62,10 +68,14 @@ outputs:
             then: test -f ${PREFIX}/lib/liblzma${SHLIB_EXT}
           - if: unix
             then: test ! -f ${PREFIX}/lib/liblzma.a
-    script: install.sh  # [unix]
-    script: install.bat  # [win]
   - package:
       name: xz-static
+    build:
+      script:
+        - if: unix
+          then: install.sh
+        - if: win
+          then: install.bat
     requirements:
       build:
         - ${{ compiler('c') }}
@@ -89,8 +99,6 @@ outputs:
       - script:
           - if: unix
             then: test -f ${PREFIX}/lib/liblzma.a
-    script: install.sh  # [unix]
-    script: install.bat  # [win]
 
 about:
   license: LGPL-2.1 and GPL-2.0

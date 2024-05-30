@@ -3,7 +3,7 @@
 @@ -20,6 +20,18 @@
  #ifndef UMUTEX_H
  #define UMUTEX_H
- 
+
 +// Workaround for multithreading on XCode 9, see
 +// https://github.com/tensorflow/tensorflow/issues/13220#issuecomment-331579775
 +#ifdef __APPLE__

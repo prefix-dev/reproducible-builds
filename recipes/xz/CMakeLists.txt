@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 project(
-    xz 
+    xz
     VERSION 5.2.1
     LANGUAGES C
 )
@@ -9,8 +9,8 @@ project(
 include(FeatureSummary)
 
 set (SOVERSION 7.1.2)
-#option (BUILD_SHARED_LIBS "Build Shared Libraries" ON) 
-#option (BUILD_TESTS "Build Tests" ON) 
+#option (BUILD_SHARED_LIBS "Build Shared Libraries" ON)
+#option (BUILD_TESTS "Build Tests" ON)
 
 if (MSVC)
     if (NOT DEFINED ARCH)
@@ -24,7 +24,7 @@ if (MSVC)
     if (NOT DEFINED MSVCVER)
         math(EXPR MSVCVER "(${MSVC_VERSION} / 10) - 60")
     endif()
-    
+
     # add the runtime version and target architecture into the DLL name per MS
     # guidelines
     set(MSVC_SHARED_SUFFIX_BASE "-${PROJECT_VERSION_MAJOR}-vc${MSVCVER}-mt-${ARCH}")
@@ -35,18 +35,18 @@ if (MSVC)
     set(VER_STR "${PROJECT_VERSION}")
     set(VER_NUM "${PROJECT_VERSION_MAJOR},${PROJECT_VERSION_MINOR},${PROJECT_VERSION_PATCH},0")
 
-    file(COPY 
+    file(COPY
             windows/msvc2013/config.h
-            windows/msvc2013/unistd.h 
+            windows/msvc2013/unistd.h
           DESTINATION ${CMAKE_BINARY_DIR}
         )
-        
+
     configure_file(
         lib/getopt.in.h
         ${CMAKE_BINARY_DIR}/getopt.h
          @ONLY
         )
-    
+
 endif()
 
 function(add_win32_rc target)
@@ -71,7 +71,7 @@ function(add_win32_rc target)
          ${CMAKE_SOURCE_DIR}/windows/version.rc.cmakein
          ${OUT_FNAME}
          @ONLY
-     )         
+     )
 
     target_sources(${target} PRIVATE ${OUT_FNAME})
 
@@ -272,7 +272,7 @@ set(xz_src
 set (xzdec_src
     src/xzdec/xzdec.c
 	src/common/tuklib_progname.c
-	src/common/tuklib_exit.c 
+	src/common/tuklib_exit.c
 	src/common/tuklib_progname.h
 	src/common/tuklib_exit.h
  )
@@ -280,7 +280,7 @@ set (xzdec_src
 set (lzmainfo_src
     src/lzmainfo/lzmainfo.c
 	src/common/tuklib_progname.c
-	src/common/tuklib_exit.c 
+	src/common/tuklib_exit.c
 	src/common/tuklib_progname.h
 	src/common/tuklib_exit.h
 )
@@ -297,10 +297,10 @@ set (get_opt_src
 
 # lzma shared lib
 add_library(lzma SHARED ${lzma_src})
- 
+
 set_property(TARGET lzma PROPERTY DESCRIPTION "LZMA data compression dynamic link library")
 
-set_target_properties(lzma PROPERTIES 
+set_target_properties(lzma PROPERTIES
           SOVERSION ${PROJECT_VERSION}
           VERSION ${PROJECT_VERSION_MAJOR}
 )
@@ -310,15 +310,15 @@ target_compile_definitions(lzma
 )
 
 target_include_directories(lzma
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         src/liblzma
-        src/liblzma/common 
-        src/liblzma/lzma 
-        src/liblzma/lz 
-        src/liblzma/check 
-        src/liblzma/rangecoder 
-        src/liblzma/simple 
+        src/liblzma/common
+        src/liblzma/lzma
+        src/liblzma/lz
+        src/liblzma/check
+        src/liblzma/rangecoder
+        src/liblzma/simple
         src/liblzma/delta
         src/liblzma/api
         ${CMAKE_BINARY_DIR}
@@ -329,21 +329,21 @@ add_win32_rc(lzma)
 
 # lzma static lib
 add_library(lzma-static STATIC ${lzma_src})
- 
+
 target_compile_definitions(lzma
     PRIVATE DLL_EXPORT HAVE_CONFIG_H
 )
 
 target_include_directories(lzma-static
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         src/liblzma
-        src/liblzma/common 
-        src/liblzma/lzma 
-        src/liblzma/lz 
-        src/liblzma/check 
-        src/liblzma/rangecoder 
-        src/liblzma/simple 
+        src/liblzma/common
+        src/liblzma/lzma
+        src/liblzma/lz
+        src/liblzma/check
+        src/liblzma/rangecoder
+        src/liblzma/simple
         src/liblzma/delta
         src/liblzma/api
         ${CMAKE_BINARY_DIR}
@@ -362,8 +362,8 @@ target_compile_definitions(xz-static
 target_link_libraries(xz-static lzma-static)
 
 target_include_directories(xz-static
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         lib
         ${CMAKE_BINARY_DIR}
 )
@@ -378,8 +378,8 @@ target_compile_definitions(xz
 target_link_libraries(xz lzma)
 
 target_include_directories(xz
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         lib
         ${CMAKE_BINARY_DIR}
 )
@@ -397,8 +397,8 @@ target_compile_definitions(xzdec
 target_link_libraries(xzdec lzma)
 
 target_include_directories(xzdec
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         lib
         ${CMAKE_BINARY_DIR}
 )
@@ -416,8 +416,8 @@ target_compile_definitions(lzmadec
 target_link_libraries(lzmadec lzma)
 
 target_include_directories(lzmadec
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         lib
         ${CMAKE_BINARY_DIR}
 )
@@ -435,8 +435,8 @@ target_compile_definitions(lzmainfo
 target_link_libraries(lzmainfo lzma)
 
 target_include_directories(lzmainfo
-    PRIVATE 
-        src/common 
+    PRIVATE
+        src/common
         lib
         ${CMAKE_BINARY_DIR}
 )

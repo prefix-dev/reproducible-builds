@@ -3,7 +3,7 @@
 @@ -39,6 +39,16 @@
  # undef XFree86Server
  #endif
- 
+
 +/* Xmd.h defines LONG64 (with no expansion) if a 'long' is 64-bits,
 + * so we need to jump through some extra hoops to be consistent and
 + * not name-clash with the Windows LONG64 type.
@@ -40,12 +40,12 @@
  #undef CreateWindowA
  #undef RT_FONT
  #undef RT_CURSOR
- 
+
 +#undef LONG64
 +#ifdef __xwinsock_long64_was_defined
 +#define LONG64
 +#undef __xwinsock_long64_was_defined
-+#endif 
++#endif
 +
  /*
   * Older version of this header used to name the windows API bool type wBOOL,
@@ -55,7 +55,7 @@
 @@ -55,6 +55,15 @@
   */
  #define NOMINMAX
- 
+
 +/* Xmd.h defines LONG64 (with no expansion) if a 'long' is 64-bits,
 + * so we need to jump through some extra hoops to be consistent and
 + * not name-clash with the Windows LONG64 type.
@@ -71,7 +71,7 @@
 @@ -85,6 +94,11 @@
  #undef FreeResource
  #undef CreateWindowA
- 
+
 +#ifdef __xwindows_long64_was_defined
 +#define LONG64
 +#undef __xwindows_long64_was_defined

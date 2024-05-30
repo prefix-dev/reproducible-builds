@@ -26,7 +26,7 @@ index d16f307..72c69d2 100644
 @@ -362,6 +362,11 @@ ffi_prep_closure_loc (ffi_closure*,
  		      void *user_data,
  		      void*codeloc);
- 
+
 +#if defined(__x86_64__) || defined(__arm64__)
 +FFI_API ffi_closure *
 +ffi_find_closure_for_code(void *code);
@@ -54,7 +54,7 @@ index 5c85fcd..376e447 100644
 @@ -864,6 +868,22 @@ out:
    return FFI_OK;
  }
- 
+
 +ffi_closure *
 +ffi_find_closure_for_code(void *codeloc)
 +{
@@ -131,7 +131,7 @@ index f7bead6..460606f 100644
 @@ -164,7 +164,13 @@ ffi_tramp_is_present (__attribute__((unused)) void *ptr)
  #include <stdio.h>
  #include <stdlib.h>
- 
+
 +#ifdef FFI_TRAMPOLINE_WHOLE_DYLIB
 +#include <assert.h>
 +#include <dispatch/dispatch.h>
@@ -139,13 +139,13 @@ index f7bead6..460606f 100644
 +#else
  extern void *ffi_closure_trampoline_table_page;
 +#endif
- 
+
  typedef struct ffi_trampoline_table ffi_trampoline_table;
  typedef struct ffi_trampoline_table_entry ffi_trampoline_table_entry;
 @@ -192,6 +198,21 @@ struct ffi_trampoline_table_entry
  /* Total number of trampolines that fit in one trampoline table */
  #define FFI_TRAMPOLINE_COUNT (PAGE_MAX_SIZE / FFI_TRAMPOLINE_SIZE)
- 
+
 +/* The trampoline dylib has one page for the MACHO_HEADER and one page for the
 + * trampolines. iOS 12.0 and later, and macOS on Apple Silicon require that
 + * the entire dylib needs to be remapped as a unit.
@@ -163,11 +163,11 @@ index f7bead6..460606f 100644
 +
  static pthread_mutex_t ffi_trampoline_lock = PTHREAD_MUTEX_INITIALIZER;
  static ffi_trampoline_table *ffi_trampoline_tables = NULL;
- 
+
 @@ -207,35 +228,63 @@ ffi_trampoline_table_alloc (void)
    kern_return_t kt;
    uint16_t i;
- 
+
 -  /* Allocate two pages -- a config page and a placeholder page */
    config_page = 0x0;
 -  kt = vm_allocate (mach_task_self (), &config_page, PAGE_MAX_SIZE * 2,
@@ -183,7 +183,7 @@ index f7bead6..460606f 100644
  		    VM_FLAGS_ANYWHERE);
    if (kt != KERN_SUCCESS)
      return NULL;
- 
+
 -  /* Remap the trampoline table on top of the placeholder page */
 -  trampoline_page = config_page + PAGE_MAX_SIZE;
 +  static void *trampoline_table_page;
@@ -201,7 +201,7 @@ index f7bead6..460606f 100644
 +#else
 +  trampoline_table_page = &ffi_closure_trampoline_table_page;
 +#endif
- 
+
  #ifdef HAVE_PTRAUTH
 -  trampoline_page_template = (vm_address_t)(uintptr_t)ptrauth_auth_data((void *)&ffi_closure_trampoline_table_page, ptrauth_key_function_pointer, 0);
 +  trampoline_page_template = (uintptr_t)ptrauth_auth_data(trampoline_table_page, ptrauth_key_function_pointer, 0);
@@ -209,7 +209,7 @@ index f7bead6..460606f 100644
 -  trampoline_page_template = (vm_address_t)&ffi_closure_trampoline_table_page;
 +  trampoline_page_template = (uintptr_t)trampoline_table_page;
  #endif
- 
+
  #ifdef __arm__
    /* ffi_closure_trampoline_table_page can be thumb-biased on some ARM archs */
    trampoline_page_template &= ~1UL;
@@ -231,7 +231,7 @@ index f7bead6..460606f 100644
 +      vm_deallocate (mach_task_self (), config_page, FFI_TRAMPOLINE_ALLOCATION_PAGE_COUNT * PAGE_MAX_SIZE);
        return NULL;
      }
- 
+
 +  trampoline_page = trampoline_segment + FFI_TRAMPOLINE_PAGE_SEGMENT_OFFSET;
 +
    /* We have valid trampoline and config pages */
@@ -244,7 +244,7 @@ index 438b374..8b4572f 100644
 @@ -788,6 +788,12 @@ out:
    return FFI_OK;
  }
- 
+
 +ffi_closure *
 +ffi_find_closure_for_code(void *code)
 +{
@@ -254,6 +254,5 @@ index 438b374..8b4572f 100644
  int FFI_HIDDEN
  ffi_closure_unix64_inner(ffi_cif *cif,
  			 void (*fun)(ffi_cif*, void*, void**, void*),
--- 
+--
 2.30.2
-

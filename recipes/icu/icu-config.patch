@@ -6,6 +6,6 @@
  PACKAGE = @PACKAGE@
 -LIBICU = lib$(ICUPREFIX)
 +LIBICU = $(ICUPREFIX)
- 
+
  # Static library prefix and file extension
  STATIC_PREFIX = s
