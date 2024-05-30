@@ -8,7 +8,7 @@ on:
   pull_request:
   workflow_dispatch:
 
-env: 
+env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
 
 jobs:
@@ -99,8 +99,8 @@ jobs:
             build_info/
             artifacts/
 
-  rebuild-recipes-ubuntu-20-04:
-    runs-on: ubuntu-20.04
+  rebuild-recipes-ubuntu-22-04:
+    runs-on: ubuntu-22.04
     needs: build-recipes-ubunutu-22-04
 
     steps:
@@ -139,8 +139,8 @@ jobs:
             diffoscope_output/
             ci_artifacts/
 
-  rebuild-recipes-macos-12:
-    runs-on: macos-12
+  rebuild-recipes-macos-13:
+    runs-on: macos-13
     needs: build-recipes-macos-13
 
     steps:
@@ -178,8 +178,8 @@ jobs:
             diffoscope_output/
             ci_artifacts/
 
-  rebuild-recipes-windows-2019:
-    runs-on: windows-2019
+  rebuild-recipes-windows-2022:
+    runs-on: windows-2022
     needs: build-recipes-windows-2022
 
     steps:
