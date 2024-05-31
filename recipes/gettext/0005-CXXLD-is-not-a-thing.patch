@@ -85,4 +85,3 @@ index 0f77ee8..2a8c9d8 100644
 +	$(CCLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(xgettext_LDFLAGS) $(LDFLAGS) \
  	-o $@
  endif
- 

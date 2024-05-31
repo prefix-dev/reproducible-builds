@@ -25,7 +25,7 @@ index 7bb222088d..0b1cbc98e2 100755
 +                return None
 +        else:
 +            return None
- 
+
      try:
          import plistlib
 diff --git a/configure b/configure

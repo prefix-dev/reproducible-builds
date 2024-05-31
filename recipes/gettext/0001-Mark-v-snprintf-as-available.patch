@@ -28,7 +28,7 @@ index f4e54ea..ef64e67 100644
 +ac_cv_func_snprintf=yes
 +ac_cv_func_vsnprintf=yes
  AM_INIT_AUTOMAKE([1.13 silent-rules parallel-tests tar-ustar])
- 
+
  dnl Override automake's tar command used for creating distributions.
 diff --git a/gettext-runtime/configure.ac b/gettext-runtime/configure.ac
 index 126d069..66f26fa 100644
@@ -42,7 +42,7 @@ index 126d069..66f26fa 100644
 +ac_cv_func_vsnprintf=yes
  AM_INIT_AUTOMAKE([1.11.1 silent-rules parallel-tests])
  AC_CONFIG_HEADERS([config.h])
- 
+
 diff --git a/gettext-runtime/libasprintf/configure.ac b/gettext-runtime/libasprintf/configure.ac
 index 2fe76cf..31a06db 100644
 --- a/gettext-runtime/libasprintf/configure.ac
@@ -55,7 +55,7 @@ index 2fe76cf..31a06db 100644
 +ac_cv_func_vsnprintf=yes
  AM_INIT_AUTOMAKE([silent-rules])
  AC_CONFIG_HEADERS([config.h])
- 
+
 diff --git a/gettext-tools/configure.ac b/gettext-tools/configure.ac
 index 3610ee3..6c75ccc 100644
 --- a/gettext-tools/configure.ac
@@ -68,7 +68,7 @@ index 3610ee3..6c75ccc 100644
 +ac_cv_func_vsnprintf=yes
  AM_INIT_AUTOMAKE([1.11.1 silent-rules parallel-tests])
  AC_CONFIG_HEADERS([config.h])
- 
+
 diff --git a/gettext-tools/examples/configure.ac b/gettext-tools/examples/configure.ac
 index 249fd14..4db994e 100644
 --- a/gettext-tools/examples/configure.ac
@@ -80,5 +80,5 @@ index 249fd14..4db994e 100644
 +ac_cv_func_snprintf=yes
 +ac_cv_func_vsnprintf=yes
  AM_INIT_AUTOMAKE([silent-rules])
- 
+
  dnl Installation directories.

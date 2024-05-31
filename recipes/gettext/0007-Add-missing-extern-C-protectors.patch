@@ -25,7 +25,7 @@ index 4514fb0..b5760f9 100644
 @@ -15,4 +15,12 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
- 
+
 +#ifdef __cplusplus
 +extern "C" {
 +#endif
@@ -42,7 +42,7 @@ index 4514fb0..b5760f9 100644
 @@ -15,4 +15,12 @@
     You should have received a copy of the GNU Lesser General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
- 
+
 +#ifdef __cplusplus
 +extern "C" {
 +#endif
@@ -57,9 +57,9 @@ index e6c52bb..d736ef0 100644
 --- a/gettext-tools/src/plural-table.h
 +++ b/gettext-tools/src/plural-table.h
 @@ -20,6 +20,10 @@
- 
+
  #include <stddef.h>
- 
+
 +#ifdef __cplusplus
 +extern "C" {
 +#endif
@@ -70,7 +70,7 @@ index e6c52bb..d736ef0 100644
 @@ -30,4 +34,8 @@ struct plural_table_entry
  extern DLL_VARIABLE struct plural_table_entry plural_table[];
  extern DLL_VARIABLE const size_t plural_table_size;
- 
+
 +#ifdef __cplusplus
 +}
 +#endif
@@ -81,7 +81,7 @@ index 5fbf6b8..de41183 100644
 --- a/gettext-tools/src/po-gram-gen2.h
 +++ b/gettext-tools/src/po-gram-gen2.h
 @@ -37,6 +37,11 @@
- 
+
  #ifndef YY_PO_GRAM_PO_GRAM_GEN_TAB_H_INCLUDED
  # define YY_PO_GRAM_PO_GRAM_GEN_TAB_H_INCLUDED
 +
@@ -94,8 +94,8 @@ index 5fbf6b8..de41183 100644
  # if defined YYDEBUG
 @@ -109,4 +114,8 @@ extern DLL_VARIABLE PO_GRAM_STYPE po_gram_lval;
  int po_gram_parse (void);
- 
- 
+
+
 +#ifdef __cplusplus
 +}
 +#endif

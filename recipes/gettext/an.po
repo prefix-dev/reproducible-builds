@@ -142,4 +142,3 @@ msgstr "ID d'a ranura"
 #: ../tls/pkcs11/gpkcs11slot.c:455
 msgid "PKCS#11 Slot Identifier"
 msgstr "Identificador d'a ranura de PKCS#11"
-

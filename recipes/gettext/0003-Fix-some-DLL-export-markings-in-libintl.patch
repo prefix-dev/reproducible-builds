@@ -30,7 +30,7 @@ index 5da9efe..42168e9 100644
 @@ -48,6 +48,15 @@
  # undef gettext
  #endif
- 
+
 +
 +#if HAVE_VISIBILITY && BUILDING_DLL
 +# define DLL_EXPORTED __attribute__((__visibility__("default")))
@@ -69,4 +69,3 @@ index 5da9efe..42168e9 100644
 +extern DLL_EXPORTED void
         libintl_set_relocation_prefix (const char *orig_prefix,
                                        const char *curr_prefix);
- 

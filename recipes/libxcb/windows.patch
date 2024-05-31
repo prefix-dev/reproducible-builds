@@ -12,7 +12,7 @@ index 4eb3e88..1df995e 100644
          lt_enable_auto_import="-Wl,--enable-auto-import"
          ;;
 @@ -211,7 +211,7 @@ esac
- 
+
  dnl Link with winsock for socket functions on MinGW
  case $host_os in
 -        *mingw*)
@@ -21,9 +21,9 @@ index 4eb3e88..1df995e 100644
                  ;;
          *)
 @@ -251,16 +251,14 @@ AC_ARG_WITH(serverside-support, AS_HELP_STRING([--with-serverside-support], [Bui
- 
+
  AM_CONDITIONAL(XCB_SERVERSIDE_SUPPORT, test "x$XCB_SERVERSIDE_SUPPORT" = "xyes")
- 
+
 -AC_CONFIG_FILES([
 -Makefile
 +AC_CONFIG_FILES([Makefile
@@ -32,7 +32,7 @@ index 4eb3e88..1df995e 100644
  src/Makefile
  tests/Makefile
  ])
- 
+
 -AC_CONFIG_FILES([
 -xcb.pc
 +AC_CONFIG_FILES([xcb.pc
@@ -42,12 +42,12 @@ index 4eb3e88..1df995e 100644
 @@ -291,8 +289,7 @@ xcb-xv.pc
  xcb-xvmc.pc
  ])
- 
+
 -AC_CONFIG_FILES([
 -doc/xcb.doxygen
 +AC_CONFIG_FILES([doc/xcb.doxygen
  ])
- 
+
  AC_OUTPUT
 diff --git a/src/xcb_util.c b/src/xcb_util.c
 index 5b1f495..eb21653 100644
@@ -56,7 +56,7 @@ index 5b1f495..eb21653 100644
 @@ -244,6 +244,7 @@ static int _xcb_open(const char *host, char *protocol, const int display)
      char *file = NULL;
      int actual_filelen;
- 
+
 +#ifndef _WIN32
      if (protocol && strcmp("unix", protocol) == 0 && host && host[0] == '/') {
          /* Full path to socket provided, ignore everything else */

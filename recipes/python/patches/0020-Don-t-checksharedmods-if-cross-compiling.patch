@@ -19,7 +19,7 @@ index df08b7461a..d3e0878335 100644
  checksharedmods: sharedmods $(PYTHON_FOR_BUILD_DEPS) $(BUILDPYTHON)
 -	@$(RUNSHARED) $(PYTHON_FOR_BUILD) $(srcdir)/Tools/build/check_extension_modules.py
 +	@$(RUNSHARED) $(srcdir)/if_runnable.sh $(PYTHON_FOR_BUILD) $(srcdir)/Tools/build/check_extension_modules.py
- 
+
  .PHONY: rundsymutil
  rundsymutil: sharedmods $(PYTHON_FOR_BUILD_DEPS) $(BUILDPYTHON)
 diff --git a/if_runnable.sh b/if_runnable.sh
