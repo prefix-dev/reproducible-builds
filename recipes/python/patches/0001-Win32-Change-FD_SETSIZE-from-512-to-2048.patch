@@ -19,5 +19,5 @@ index 97f1db20f6..166222bafb 100644
 -#define FD_SETSIZE 512
 +#define FD_SETSIZE 2048
  #endif
- 
+
  #if defined(HAVE_POLL_H)

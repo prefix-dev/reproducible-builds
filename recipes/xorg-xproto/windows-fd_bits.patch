@@ -8,4 +8,3 @@
 +	mingw*|*msys*)		fds_bits_found=true;;
  	*)		fds_bits_found=false;;
  esac
- 

@@ -9,7 +9,7 @@ greet_name(PyObject *self, PyObject *args)
     {
         return NULL;
     }
-    
+
     printf("Hello %s!\n", name);
 
     Py_RETURN_NONE;
@@ -33,4 +33,3 @@ PyMODINIT_FUNC PyInit_greet(void)
 {
     return PyModule_Create(&greet);
 }
-

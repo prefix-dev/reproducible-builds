@@ -8,17 +8,22 @@ package:
   version: ${{ version }}
 
 build:
-  number:
-    - 0
-    track_features:
-    - free_channel_libgcc
+  number: 0
   string: ${{ libgcc_mutex_build_string }}
-  skip:
-    - not (linux64 or ppc64le)
+  variant:
+    use_keys: libgcc_mutex_build_string
+    down_prioritize_variant: ${{ 1 if free else 0 }}
+
+  # TODO: need to think what to do with this
+  #
+  #   track_features:
+  #   - free_channel_libgcc
+  # skip:
+  #   - not (linux64 or ppc64le)
 
 tests:
   - script:
-      - "echo \"Hello World!\""
+      - 'echo "Hello World!"'
 
 about:
   license: Noweb

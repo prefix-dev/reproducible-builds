@@ -3,7 +3,7 @@
 @@ -55,6 +55,12 @@
  # Checks for libraries.
  AC_SEARCH_LIBS([recvfrom],[socket])
- 
+
 +case $host_os in
 +        *mingw*|*msys*)
 +                AC_CHECK_LIB([ws2_32],[main])

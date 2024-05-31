@@ -13,4 +13,3 @@ else
   ln -s libasprintf.so.0 libasprintf.so
 fi
 popd
-

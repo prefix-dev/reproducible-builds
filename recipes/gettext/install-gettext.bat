@@ -22,4 +22,3 @@ FOR /F "delims=" %%i IN ('cygpath.exe -u "%STDLIB_DIR%"') DO set "STDLIB_DIR=%%i
 bash -lxc "${RECIPE_DIR}/install-gettext.sh"
 if errorlevel 1 exit 1
 exit 0
-

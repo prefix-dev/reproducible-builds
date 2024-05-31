@@ -11,7 +11,7 @@ export cc=$CC
 
 ./configure --prefix=${PREFIX}  \
     --shared || (cat configure.log && false)
-    
+
 cat configure.log
 
 make -j${CPU_COUNT} ${VERBOSE_AT}
