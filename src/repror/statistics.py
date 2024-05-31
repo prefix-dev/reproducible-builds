@@ -10,19 +10,23 @@ import matplotlib.pyplot as plt
 from repror.conf import load_config
 
 
-def find_build_infos(folder_path, suffix):
-    # Use glob to find all .json files in the folder
+def find_build_infos(folder_path: str, suffix: str):
+    """
+    Use glob to find all .json files in the folder
+    """
     json_files = glob.glob(os.path.join(folder_path, f"*{suffix}_build_info.json"))
     return json_files
 
 
-def find_rebuild_info(folder_path, suffix):
-    # Use glob to find all .json files in the folder
+def find_rebuild_info(folder_path: str, suffix: str):
+    """
+    Use glob to find all .json files in the folder
+    """
     json_files = glob.glob(os.path.join(folder_path, f"*{suffix}_rebuild_info.json"))
     return json_files
 
 
-def make_statistics(platform_with_versions: list[str], temp_dir) -> Path:
+def make_statistics(platform_with_versions: list[str], temp_dir: str) -> Path:
     build_info_by_platform = {}
     rebuild_info_by_platform = {}
 
@@ -174,7 +178,7 @@ def plot(platforms, stat_dir: Path):
     build_text = f"""
 {rattler_tmpl_string}
 
-Built on ubunutu 22.04 and rebuild on 20.04
+Built on ubunutu 22.04 and rebuild
     """
 
     # Generate the Markdown table
@@ -202,11 +206,11 @@ Built on ubunutu 22.04 and rebuild on 20.04
     rebuild_table = f"""{table}\n\n"""
 
     for platform in by_platform:
-        build_text = f"Build on {platform}"
+        build_text = f"Built on {platform}"
         if platform == "macos":
-            build_text += " 13 and rebuild on 12"
+            build_text += " 13 and rebuilt"
         elif platform == "windows":
-            build_text += " 2022 and rebuild on 2019"
+            build_text += " 2022 and rebuilt"
         elif platform == "ubuntu":
             continue
 
@@ -229,7 +233,7 @@ if __name__ == "__main__":
 
     if "ubuntu_22.04_20.04" not in platform_with_versions:
         print(
-            "ubuntu_22.04_20.04 platform is required ,for now, to calculate total statistics"
+            "ubuntu_22.04_20.04 platform is required, for now, to calculate total statistics"
         )
         sys.exit(1)
 
