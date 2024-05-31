@@ -4,7 +4,7 @@ from repror import conf
 
 if __name__ == "__main__":
     # Prepare the matrix
-    matrix = []
+    recipe_list = []
 
     config = conf.load_config()
 
@@ -14,12 +14,12 @@ if __name__ == "__main__":
         branch = repo["branch"]
         for recipe in repo.get("recipes", []):
             path = recipe["path"]
-            matrix.append(f"{url}::{branch}::{path}")
+            recipe_list.append(f"{url}::{branch}::{path}")
 
     for local in config.get("local", []):
         path = local["path"]
-        matrix.append(f"local::local::{path}")
+        recipe_list.append(f"local::local::{path}")
 
     # Convert the matrix to JSON
-    matrix_json = json.dumps(matrix)
-    print(matrix_json)
+    recipe_list = json.dumps(recipe_list)
+    print(recipe_list)

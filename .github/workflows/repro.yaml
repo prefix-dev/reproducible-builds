@@ -1,4 +1,4 @@
-name: Track how repro we are
+name: Building and Rebuilding
 
 on:
   push:
@@ -12,10 +12,10 @@ env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
 
 jobs:
-  matrix:
+  generate-recipes:
     runs-on: ubuntu-latest
     outputs:
-      recipes: ${{ steps.generate-matrix.outputs.recipes }}
+      recipes: ${{ steps.generate-recipes.outputs.recipes }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -27,17 +27,17 @@ jobs:
       - name: Generate matrix
         id: generate-matrix
         run: |
-          message=$(pixi run python src/repror/matrix.py)
+          message=$(pixi r generate-recipes)
           echo $message
           echo "recipes=$message" >> $GITHUB_OUTPUT
 
   build-recipes-ubunutu-22-04:
     runs-on: ubuntu-22.04
-    needs: matrix
+    needs: generate-recipes
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
 
     steps:
       - name: Checkout code
@@ -74,7 +74,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+        recipes: ${{ fromJson(needs.genrate-build-recipes.outputs.recipes) }}
 
     steps:
       - name: Checkout code
@@ -95,7 +95,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run python src/repror/build_recipe.py macos 13 ${{ matrix.recipes }}
+          pixi run build-recipe macos 13 ${{ matrix.recipes }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
@@ -111,7 +111,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
 
     steps:
       - name: Checkout code
@@ -123,7 +123,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run python src/repror/build_recipe.py windows 2022 ${{ matrix.recipes }}
+          pixi run generate-recipe windows 2022 ${{ matrix.recipes }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
@@ -139,7 +139,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
 
     steps:
       - name: Checkout code
@@ -182,7 +182,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
 
     steps:
       - name: Checkout code
@@ -208,7 +208,7 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
-          pixi run python src/repror/rebuild_recipe.py macos 13 12 ${{ matrix.recipes }}
+          pixi run python src/repror/rebuild_recipe.py macos 13 13 ${{ matrix.recipes }}
 
       - name: Upload build info
         uses: actions/upload-artifact@v3
@@ -225,7 +225,7 @@ jobs:
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.matrix.outputs.recipes) }}
+        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
 
     steps:
       - name: Checkout code
@@ -243,7 +243,7 @@ jobs:
       - name: Rebuild recipes and track if hash is equal
         run: |
           # sudo apt-get install libssl-dev
-          pixi run python src/repror/rebuild_recipe.py windows 2022 2019 ${{ matrix.recipes }}
+          pixi run python src/repror/rebuild_recipe.py windows 2022 2022 ${{ matrix.recipes }}
 
       - name: Upload diffoscope
         uses: actions/upload-artifact@v3
@@ -280,7 +280,7 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          pixi run python src/repror/statistics.py ubuntu_22.04_20.04 macos_13_12 windows_2022_2019
+          pixi run python src/repror/rewrite_readme.py ubuntu_22.04_20.04 macos_13_12 windows_2022_2019
 
       - name: Commit and push changes
         env:
@@ -291,5 +291,5 @@ jobs:
           git add data/history.json
           git add data/chart.png
           git add README.md
-          git commit -m "Update file via GitHub Action"
+          git commit -m "Update README.md with latest build statistics"
           git push
