@@ -84,7 +84,7 @@ jobs:
         with:
           pixi-version: "latest"
 
-      - name: Set timezone to UTC
+      - name: Set timezone to GMT
         run: sudo systemsetup -settimezone GMT
 
       - name: Set LANG
@@ -255,7 +255,12 @@ jobs:
 
   statistics:
     runs-on: ubuntu-latest
-    needs: [rebuild-recipes-macos-12]
+    needs:
+      [
+        rebuild-recipes-macos-13,
+        rebuild-recipes-windows-2022,
+        rebuild-recipes-ubuntu-22-04,
+      ]
 
     steps:
       - name: Checkout code
