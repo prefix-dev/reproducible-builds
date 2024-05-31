@@ -15,27 +15,27 @@
 
 Built with rattler-build https://github.com/nichmor/rattler-build.git at commit fix/conda-timestamp-affect-reproducibility
 
-Built on ubunutu 22.04 and rebuild on 20.04
-
+Built on ubunutu 22.04 and rebuild
+    
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
 | async-cairo | Yes 🟢 |
 | xorg-xproto | Yes 🟢 |
+| _libgcc_mutex | Yes 🟢 |
 | conda | No 🔴 |
 | pthread-stubs | No 🔴 |
-| pixman | No 🔴 |
+| setuptools | Yes 🟢 |
 | curl | No 🔴 |
 | ca-certificates | No 🔴 |
 | lerc | No 🔴 |
-| xtensor | Yes 🟢 |
 | xorg-kbproto | Yes 🟢 |
 | libffi | No 🔴 |
 | libnsl | Yes 🟢 |
 
 
 
-Build on macos 13 and rebuild on 12
+Built on macos 13 and rebuilt
 
 
 
@@ -45,12 +45,13 @@ Build on macos 13 and rebuild on 12
 | six | Yes 🟢 |
 | font-ttf-inconsolata | Yes 🟢 |
 | fonts-conda-ecosystem | Yes 🟢 |
-| cargo-edit | No 🔴 |
+| cargo-edit | Yes 🟢 |
 | xorg-xproto | Yes 🟢 |
 | pyparsing | Yes 🟢 |
 | pytz | Yes 🟢 |
 | tomli | Yes 🟢 |
 | munkres | Yes 🟢 |
+| _libgcc_mutex | Yes 🟢 |
 | fonts-conda-forge | Yes 🟢 |
 | setuptools | Yes 🟢 |
 | font-ttf-ubuntu | Yes 🟢 |
@@ -62,15 +63,14 @@ Build on macos 13 and rebuild on 12
 | ca-certificates | No 🔴 |
 | fastapi | Yes 🟢 |
 | conda | No 🔴 |
-| curl | No 🔴 |
+| curl | Yes 🟢 |
 | python-dateutil | Yes 🟢 |
 | cycler | Yes 🟢 |
 | toml | Yes 🟢 |
-| pixman | No 🔴 |
 | boltons | Yes 🟢 |
 | libffi | No 🔴 |
 
-Build on windows 2022 and rebuild on 2019
+Built on windows 2022 and rebuilt
 
 
 
