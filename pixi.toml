@@ -8,15 +8,16 @@ platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 
 [tasks]
 # Rewrite the readme with the updated data
-rewrite-readme = "python src/repror/rewrite_readme.py"
+rewrite-readme = "repor rewrite-readme"
 # Used to generate build matrix for github
-generate-recipes = "python src/repror/generate_recipes.py"
+generate-recipes = "repror generate-recipes"
 # Build recipes using rattler-build for the current platform
+# TODO: make something different for this command
 build-all-recipes = "rattler-build build --recipe-dir recipes --output-dir recipes/outputs"
 # Build a single recipe using the python script
-build-recipe = "python src/repror/build_recipe.py"
+build-recipe = "repror build-recipe"
 # Rebuild a single recipe using the python script
-rebuild-recipe = "python src/repror/rebuild_recipe.py"
+rebuild-recipe = "repror rebuild-recipe"
 
 [dependencies]
 python = "~=3.10"
@@ -24,6 +25,7 @@ matplotlib = "*"
 rattler-build = "*"
 pyyaml = "*"
 pytest = "*"
+typer = ">=0.12.3,<0.13"
 
 [pypi-dependencies]
 repror = { path = ".", editable = true }

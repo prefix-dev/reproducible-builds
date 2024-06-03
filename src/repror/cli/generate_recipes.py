@@ -1,8 +1,9 @@
 import json
-from repror import conf
+from repror.internals import conf
 
 
-if __name__ == "__main__":
+def generate_recipes():
+    """Generate list of recipes from the configuration file."""
     # Prepare the matrix
     recipe_list = []
 
