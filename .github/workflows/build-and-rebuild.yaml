@@ -111,7 +111,7 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          pixi run python src/repror/rewrite_readme.py
+          pixi run rewrite-readme
 
       - name: Commit and push changes
         env:
