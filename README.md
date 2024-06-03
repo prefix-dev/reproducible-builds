@@ -13,7 +13,7 @@
 ![Reproducibility Chart](data/chart.png)
 
 
-Built with rattler-build https://github.com/nichmor/rattler-build.git at commit fix/conda-timestamp-affect-reproducibility
+Built with rattler-build https://github.com/prefix-dev/rattler-build.git at commit main
 
 Built on ubuntu 22.04 and rebuild
     
