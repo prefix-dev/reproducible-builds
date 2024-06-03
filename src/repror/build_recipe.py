@@ -32,7 +32,7 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
 if __name__ == "__main__":
     # this should be optional
     # so we could run it locally nice
-    recipe_obj = Recipe(**json.load(sys.argv[1]))
+    recipe_obj = Recipe(**json.loads(sys.argv[1]))
 
     platform_name, platform_version = platform.system().lower(), platform.release()
     # print(f"Recipe string is {recipe_string}")
