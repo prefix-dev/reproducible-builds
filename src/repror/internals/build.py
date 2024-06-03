@@ -16,6 +16,7 @@ class Recipe(TypedDict):
     url: str
     branch: str
     recipe: str
+    path: str
 
 
 class BuildInfo(TypedDict):

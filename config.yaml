@@ -39,8 +39,8 @@ local:
 - path: recipes/toml/recipe.yaml # fail to run tests ( import toml )
 #- path: recipes/sqlite/recipe.yaml # bad conversion of multiple outputs
 rattler-build:
-  branch: fix/conda-timestamp-affect-reproducibility
-  url: https://github.com/nichmor/rattler-build.git
+  branch: main
+  url: https://github.com/prefix-dev/rattler-build.git
 repositories:
 - branch: rattler-build
   recipes:
