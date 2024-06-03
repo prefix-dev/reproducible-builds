@@ -31,13 +31,15 @@ jobs:
           echo $message
           echo "recipes=$message" >> $GITHUB_OUTPUT
 
-  build-and-rebuild-recipes-ubunutu-22-04:
-    runs-on: ubuntu-22.04
+  build-and-rebuild-recipes:
     needs: generate-recipes
     continue-on-error: true
     strategy:
       matrix:
         recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -47,114 +49,31 @@ jobs:
         with:
           pixi-version: "latest"
 
-      - name: Set timezone to UTC
-        run: sudo timedatectl set-timezone UTC
+      # - name: Set timezone to UTC
+      #   run: sudo timedatectl set-timezone UTC
 
-      - name: Set LANG
-        run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
+      # - name: Set LANG
+      #   run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
 
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
-      - name: Build recipes and track if hash is equal
-        run: |
-          pixi run python src/repror/build_recipe.py ${{ matrix.recipes }}
-
-      - name: Set timezone to PST
-        run: sudo timedatectl set-timezone America/Los_Angeles
-
-      - name: Set LANG
-        run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
-
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
-      - name: Rebuild recipes and track if hash is equal
-        run: |
-          pixi run python src/repror/rebuild_recipe.py ${{ matrix.recipes }}
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-info
-          path: |
-            build_info/
-            ci_artifacts/
-
-  build-and-rebuild-recipes-macos-13:
-    runs-on: macos-13
-    needs: generate-recipes
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.genrate-build-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
-      - name: Set timezone to GMT
-        run: sudo systemsetup -settimezone GMT
-
-      - name: Set LANG
-        run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
-
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
+      # - name: Verify LANG for Initial Build
+      #   run: echo $LANG
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run build-recipe macos 13 ${{ matrix.recipes }}
+          pixi run build-recipe ${{ matrix.recipes }}
 
-      - name: Set timezone to PST
-        run: sudo systemsetup -settimezone America/Los_Angeles
+      # - name: Set timezone to PST
+      #   run: sudo timedatectl set-timezone America/Los_Angeles
 
-      - name: Set LANG
-        run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
+      # - name: Set LANG
+      #   run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
 
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
-      - name: Rebuild recipes and track if hash is equal
-        run: |
-          pixi run python src/repror/rebuild_recipe.py ${{ matrix.recipes }}
-
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-info
-          path: |
-            build_info/
-            ci_artifacts/
-
-  build-and-rebuild-recipes-windows-2022:
-    runs-on: windows-latest
-    needs: generate-recipes
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
-      - name: Build recipes and track if hash is equal
-        run: |
-          pixi run generate-recipe windows 2022 ${{ matrix.recipes }}
+      # - name: Verify LANG for Initial Build
+      #   run: echo $LANG
 
       - name: Rebuild recipes and track if hash is equal
         run: |
-          pixi run python src/repror/rebuild_recipe.py ${{ matrix.recipes }}
+          pixi run rebuild-recipe ${{ matrix.recipes }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
@@ -166,12 +85,7 @@ jobs:
 
   statistics:
     runs-on: ubuntu-latest
-    needs:
-      [
-        build-and-rebuild-recipes-macos-13,
-        build-and-rebuild-recipes-windows-2022,
-        build-and-rebuild-recipes-ubunutu-22-04,
-      ]
+    needs: build-and-rebuild-recipes
 
     steps:
       - name: Checkout code
