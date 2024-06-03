@@ -58,18 +58,33 @@ jobs:
       # - name: Verify LANG for Initial Build
       #   run: echo $LANG
 
+      - name: Set timezone to UTC
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo timedatectl set-timezone UTC
+
+      - name: Set timezone to GMT
+        if: matrix.os == 'macos-latest'
+        run: sudo systemsetup -settimezone GMT
+
+      - name: Set LANG
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
+
       - name: Build recipes and track if hash is equal
         run: |
           pixi run build-recipe ${{ matrix.recipes }}
 
-      # - name: Set timezone to PST
-      #   run: sudo timedatectl set-timezone America/Los_Angeles
+      - name: Set timezone to Los Angeles
+        if: matrix.os == 'ubuntu-latest'
+        run: sudo timedatectl set-timezone America/Los_Angeles
 
-      # - name: Set LANG
-      #   run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
+      - name: Set timezone to Los Angeles
+        if: matrix.os == 'macos-latest'
+        run: sudo systemsetup -settimezone America/Los_Angeles
 
-      # - name: Verify LANG for Initial Build
-      #   run: echo $LANG
+      - name: Set LANG
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
+        run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
 
       - name: Rebuild recipes and track if hash is equal
         run: |
