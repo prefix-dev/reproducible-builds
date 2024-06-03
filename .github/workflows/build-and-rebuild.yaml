@@ -64,7 +64,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run build-recipe ${{ matrix.recipe }}
+          pixi run build-recipe ${{ toJson(matrix.recipe) }}
 
       - name: Set timezone to Los Angeles
         if: matrix.os == 'ubuntu-latest'
