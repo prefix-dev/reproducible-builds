@@ -1,19 +1,21 @@
 import os
 import json
-import sys
-import conf
+from repror.internals import conf
 import platform
 from pathlib import Path
 import tempfile
-from repror.build import (
+from repror.internals.build import (
     Recipe,
     build_local_recipe,
     build_remote_recipes,
 )
 from repror.rattler_build import setup_rattler_build
+import typer
+
+app = typer.Typer()
 
 
-def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
+def build_recipes(recipes: Recipe, tmp_dir: Path, build_dir: Path):
     cloned_prefix_dir = Path(tmp_dir) / "cloned"
     build_info = {}
 
@@ -29,11 +31,8 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
     return build_info
 
 
-if __name__ == "__main__":
-    # this should be optional
-    # so we could run it locally nice
-    recipe_string = sys.argv[1]
-
+@app.command()
+def build(recipe_string: str):
     platform_name, platform_version = platform.system().lower(), platform.release()
 
     url, branch, path = recipe_string.split("::")
@@ -50,14 +49,16 @@ if __name__ == "__main__":
         build_dir = Path("build_outputs")
         build_dir.mkdir(exist_ok=True)
 
-        build_results = {}
-
         build_info = build_recipes([recipe_obj], tmp_dir, build_dir)
 
         os.makedirs("build_info", exist_ok=True)
 
         with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
-            "w",
+                f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+                "w",
         ) as f:
             json.dump(build_info, f)
+
+
+if __name__ == "__main__":
+    app()

@@ -2,16 +2,15 @@ from pathlib import Path
 import shutil
 from typing import Optional, TypedDict
 
-from repror.conf import RecipeConfig
+from repror.internals.conf import RecipeConfig
 from repror.rattler_build import get_rattler_build
-from repror.util import (
+from repror.internals.commands import (
     calculate_hash,
     find_conda_build,
     move_file,
     run_command,
 )
-from repror.git import clone_repo, checkout_branch_or_commit
-
+from repror.internals.git import clone_repo, checkout_branch_or_commit
 
 class Recipe(TypedDict):
     url: str
@@ -25,8 +24,7 @@ class BuildInfo(TypedDict):
     output_dir: str
     conda_loc: str
 
-
-def build_conda_package(recipe_path, output_dir):
+def build_conda_package(recipe_path: str, output_dir: str):
     rattler_bin = get_rattler_build()
     build_command = [
         rattler_bin,
@@ -40,7 +38,7 @@ def build_conda_package(recipe_path, output_dir):
     run_command(build_command)
 
 
-def rebuild_conda_package(conda_file, output_dir):
+def rebuild_conda_package(conda_file: str, output_dir: str):
     rattler_bin = get_rattler_build()
 
     re_build_command = [

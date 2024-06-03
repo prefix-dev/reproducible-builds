@@ -7,7 +7,7 @@ import platform
 from typing import Optional
 
 from repror.build import BuildInfo, Recipe, rebuild_package
-from repror.conf import load_config
+from repror.internals.conf import load_config
 from repror.rattler_build import setup_rattler_build
 
 

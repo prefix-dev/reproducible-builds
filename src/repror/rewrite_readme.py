@@ -7,7 +7,7 @@ import os
 import tempfile
 import matplotlib.pyplot as plt
 
-from repror.conf import load_config
+from repror.internals.conf import load_config
 
 
 def find_infos(folder_path: str, suffix: str):

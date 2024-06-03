@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 import shutil
 
-from repror.util import run_command
-from repror.git import clone_repo, checkout_branch_or_commit
+from repror.internals.commands import run_command
+from repror.internals.git import clone_repo, checkout_branch_or_commit
 
 
 def get_rattler_build():

@@ -1,5 +1,5 @@
 import json
-from repror import conf
+from repror.internals import conf
 
 
 if __name__ == "__main__":
