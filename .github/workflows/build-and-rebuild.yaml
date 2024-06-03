@@ -33,6 +33,7 @@ jobs:
 
   build-and-rebuild-recipes:
     needs: generate-recipes
+    name: ${{ matrix.recipe }}-${{ matrix.os }}
     continue-on-error: true
     strategy:
       matrix:
