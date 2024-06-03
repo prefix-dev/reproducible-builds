@@ -12,7 +12,6 @@ if __name__ == "__main__":
     config = conf.load_config()
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        # Parse repositories and local paths
         for repo in config.get("repositories", []):
             url = repo["url"]
             branch = repo["branch"]
@@ -34,12 +33,9 @@ if __name__ == "__main__":
             recipe = Recipe(
                 url=None, branch=None, recipe_path=path, recipe_type="local"
             )
-            recipe_config = conf.RecipeConfig.load_recipe(recipe.recipe_path)
+            recipe_config = conf.RecipeConfig.load_local_recipe(recipe.recipe_path)
             recipe.name = recipe_config.name
 
             recipe_list.append(recipe.__dict__)
 
-    # Convert the matrix to JSON
-    # ci_dict = {"include": recipe_list}
-    # recipe_list = json.dumps(ci_dict)
     print(json.dumps(recipe_list))

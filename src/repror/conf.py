@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Literal, Optional, Self
+from typing import Literal, Optional
 import yaml
 
 from repror.git import checkout_branch_or_commit, clone_repo
@@ -25,13 +25,16 @@ class Recipe:
     recipe_path: str
     name: Optional[str] = None
 
+    def is_local(self) -> bool:
+        return self.recipe_type == "local"
+
 
 class RecipeConfig:
     def __init__(self, config):
         self.config = config
 
     @staticmethod
-    def load_recipe(recipe_file) -> Self:
+    def load_local_recipe(recipe_file) -> "RecipeConfig":
         with open(recipe_file, "r", encoding="utf8") as file:
             recipe = yaml.safe_load(file)
         return RecipeConfig(recipe)
@@ -51,7 +54,7 @@ class RecipeConfig:
             checkout_branch_or_commit(clone_dir, ref)
 
         recipe_path = clone_dir / recipe.recipe_path
-        return RecipeConfig.load_recipe(recipe_path)
+        return RecipeConfig.load_local_recipe(recipe_path)
 
     @property
     def name(self) -> str:

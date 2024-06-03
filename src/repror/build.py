@@ -114,10 +114,7 @@ def build_remote_recipes(
         print(f"Checking out {ref}")
         checkout_branch_or_commit(clone_dir, ref)
 
-    # for recipe in repo["recipes"]:
     recipe_path = clone_dir / recipe.recipe_path
-    # recipe_name = recipe_path.name
-
 
     build_dir = build_dir / f"{recipe.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
