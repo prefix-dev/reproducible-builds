@@ -178,7 +178,7 @@ def plot(platforms, stat_dir: Path):
     build_text = f"""
 {rattler_tmpl_string}
 
-Built on ubunutu 22.04 and rebuild
+Built on ubuntu 22.04 and rebuild
     """
 
     # Generate the Markdown table

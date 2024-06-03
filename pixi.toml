@@ -7,8 +7,16 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 
 [tasks]
-build_recipes = "python src/repror/generate_chart_data.py"
-plot_data = "python src/repror/plot.py"
+# Rewrite the readme with the updated data
+rewrite-readme = "python src/repror/rewrite_readme.py"
+# Used to generate build matrix for github
+generate-recipes = "python src/repror/generate_recipes.py"
+# Build recipes using rattler-build for the current platform
+build-all-recipes = "rattler-build build --recipe-dir recipes --output-dir recipes/outputs"
+# Build a single recipe using the python script
+build-recipe = "python src/repror/build_recipe.py"
+# Rebuild a single recipe using the python script
+rebuild-recipe = "python src/repror/rebuild_recipe.py"
 
 [dependencies]
 python = "~=3.10"
@@ -18,5 +26,5 @@ pyyaml = "*"
 pytest = "*"
 
 [pypi-dependencies]
-repror = {path = ".", editable = true}
+repror = { path = ".", editable = true }
 conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
