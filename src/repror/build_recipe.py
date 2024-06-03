@@ -2,6 +2,7 @@ import os
 import json
 import sys
 import conf
+import platform
 from pathlib import Path
 import tempfile
 from repror.build import (
@@ -29,18 +30,15 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
 
 
 if __name__ == "__main__":
-    platform, version = sys.argv[1], sys.argv[2]
     # this should be optional
     # so we could run it locally nice
-    recipe_string = sys.argv[3]
+    recipe_string = sys.argv[1]
+
+    platform_name, platform_version = platform.system().lower(), platform.release()
 
     url, branch, path = recipe_string.split("::")
 
     recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
-
-    if platform not in ["ubuntu", "macos", "windows"]:
-        print("Invalid platform ", platform)
-        sys.exit(1)
 
     config = conf.load_config()
 
@@ -58,10 +56,8 @@ if __name__ == "__main__":
 
         os.makedirs("build_info", exist_ok=True)
 
-        # build_id = uuid.uuid4().hex
-
         with open(
-            f"build_info/{platform}_{version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
             "w",
         ) as f:
             json.dump(build_info, f)

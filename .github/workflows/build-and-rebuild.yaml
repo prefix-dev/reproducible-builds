@@ -15,7 +15,7 @@ jobs:
   generate-recipes:
     runs-on: ubuntu-latest
     outputs:
-      recipes: ${{ steps.generate-matrix.outputs.recipes }}
+      recipe: ${{ steps.generate-matrix.outputs.recipes }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -31,13 +31,15 @@ jobs:
           echo $message
           echo "recipes=$message" >> $GITHUB_OUTPUT
 
-  build-recipes-ubunutu-22-04:
-    runs-on: ubuntu-22.04
+  build-and-rebuild-recipes:
     needs: generate-recipes
     continue-on-error: true
     strategy:
       matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
+        recipe: ${{ fromJson(needs.generate-recipes.outputs.recipe) }}
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Checkout code
@@ -48,219 +50,48 @@ jobs:
           pixi-version: "latest"
 
       - name: Set timezone to UTC
+        if: matrix.os == 'ubuntu-latest'
         run: sudo timedatectl set-timezone UTC
 
-      - name: Set LANG
-        run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
-
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
-      - name: Build recipes and track if hash is equal
-        run: |
-          pixi run python src/repror/build_recipe.py ubuntu 22.04 ${{ matrix.recipes }}
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: |
-            build_info/
-            artifacts/
-
-  build-recipes-macos-13:
-    runs-on: macos-13
-    needs: generate-recipes
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
       - name: Set timezone to GMT
+        if: matrix.os == 'macos-latest'
         run: sudo systemsetup -settimezone GMT
 
       - name: Set LANG
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
 
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run build-recipe macos 13 ${{ matrix.recipes }}
+          pixi run build-recipe ${{ matrix.recipe }}
 
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: |
-            build_info/
-            artifacts/
-
-  build-recipes-windows-2022:
-    runs-on: windows-latest
-    needs: generate-recipes
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
-      - name: Build recipes and track if hash is equal
-        run: |
-          pixi run generate-recipe windows 2022 ${{ matrix.recipes }}
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: |
-            build_info/
-            artifacts/
-
-  rebuild-recipes-ubuntu-22-04:
-    runs-on: ubuntu-22.04
-    needs: [build-recipes-ubunutu-22-04, generate-recipes]
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: artifacts
-          path: .
-
-      - name: Set timezone to PST
+      - name: Set timezone to Los Angeles
+        if: matrix.os == 'ubuntu-latest'
         run: sudo timedatectl set-timezone America/Los_Angeles
 
-      - name: Set LANG
-        run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
-
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
-      - name: Rebuild recipes and track if hash is equal
-        run: |
-          # sudo apt-get install libssl-dev
-          pixi run python src/repror/rebuild_recipe.py ubuntu 22.04 20.04 ${{ matrix.recipes }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-info
-          path: |
-            build_info/ubuntu
-            ci_artifacts/
-
-  rebuild-recipes-macos-13:
-    runs-on: macos-13
-    needs: [build-recipes-macos-13, generate-recipes]
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: artifacts
-          path: .
-
-      - name: Set timezone to PST
+      - name: Set timezone to Los Angeles
+        if: matrix.os == 'macos-latest'
         run: sudo systemsetup -settimezone America/Los_Angeles
 
       - name: Set LANG
+        if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
         run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
 
-      - name: Verify LANG for Initial Build
-        run: echo $LANG
-
       - name: Rebuild recipes and track if hash is equal
         run: |
-          pixi run python src/repror/rebuild_recipe.py macos 13 13 ${{ matrix.recipes }}
+          pixi run rebuild-recipe ${{ matrix.recipe }}
 
-      - name: Upload build info
+      - name: Upload results
         uses: actions/upload-artifact@v3
         with:
           name: build-info
           path: |
-            build_info/macos
-            diffoscope_output/
-            ci_artifacts/
-
-  rebuild-recipes-windows-2022:
-    runs-on: windows-2022
-    needs: [build-recipes-windows-2022, generate-recipes]
-    continue-on-error: true
-    strategy:
-      matrix:
-        recipes: ${{ fromJson(needs.generate-recipes.outputs.recipes) }}
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - uses: prefix-dev/setup-pixi@v0.5.1
-        with:
-          pixi-version: "latest"
-
-      - uses: actions/download-artifact@v3
-        with:
-          name: artifacts
-          path: .
-
-      - name: Rebuild recipes and track if hash is equal
-        run: |
-          # sudo apt-get install libssl-dev
-          pixi run python src/repror/rebuild_recipe.py windows 2022 2022 ${{ matrix.recipes }}
-
-      - name: Upload diffoscope
-        uses: actions/upload-artifact@v3
-        with:
-          name: build-info
-          path: |
-            build_info/ubuntu
+            build_info/
             ci_artifacts/
 
   statistics:
     runs-on: ubuntu-latest
-    needs:
-      [
-        rebuild-recipes-macos-13,
-        rebuild-recipes-windows-2022,
-        rebuild-recipes-ubuntu-22-04,
-      ]
+    needs: build-and-rebuild-recipes
 
     steps:
       - name: Checkout code
@@ -280,7 +111,7 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          pixi run python src/repror/rewrite_readme.py ubuntu_22.04_20.04 macos_13_12 windows_2022_2019
+          pixi run rewrite-readme
 
       - name: Commit and push changes
         env:

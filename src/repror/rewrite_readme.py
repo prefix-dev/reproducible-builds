@@ -1,76 +1,56 @@
+from collections import defaultdict
 import datetime
 import glob
 import json
+import logging
 import os
-from pathlib import Path
-import sys
 import tempfile
 import matplotlib.pyplot as plt
 
 from repror.conf import load_config
 
 
-def find_build_infos(folder_path: str, suffix: str):
+def find_infos(folder_path: str, suffix: str):
     """
     Use glob to find all .json files in the folder
     """
-    json_files = glob.glob(os.path.join(folder_path, f"*{suffix}_build_info.json"))
+    json_files = glob.glob(os.path.join(folder_path, f"*/**{suffix}.json"))
     return json_files
 
 
-def find_rebuild_info(folder_path: str, suffix: str):
-    """
-    Use glob to find all .json files in the folder
-    """
-    json_files = glob.glob(os.path.join(folder_path, f"*{suffix}_rebuild_info.json"))
-    return json_files
-
-
-def make_statistics(platform_with_versions: list[str], temp_dir: str) -> Path:
-    build_info_by_platform = {}
-    rebuild_info_by_platform = {}
+def make_statistics(build_info_dir: str = "build_info") -> dict:
+    build_info_by_platform = defaultdict(dict)
+    rebuild_info_by_platform = defaultdict(dict)
 
     total_build_info = {}
     total_rebuild_info = {}
 
-    for platform_and_version in platform_with_versions:
-        base_platform, from_version, to_version = platform_and_version.split("_")
+    build_infos = find_infos(build_info_dir, "build_info")
 
-        build_info_by_platform[base_platform] = {}
-        build_info_files = find_build_infos(
-            f"build_info/{base_platform}", f"{base_platform}_{from_version}"
-        )
+    for build_file in build_infos:
+        platform_and_version = build_file.split("platform_")[1]
+        platform, *_ = platform_and_version.split("_")
 
-        for file in build_info_files:
-            with open(file, "r") as f:
-                build_info_by_platform[base_platform].update(json.load(f))
+        with open(build_file, "r") as f:
+            build_info_by_platform[platform].update(json.load(f))
 
-        rebuild_info_files = find_rebuild_info(
-            f"build_info/{base_platform}",
-            f"{base_platform}_{from_version}_{to_version}",
-        )
+    rebuild_infos = find_infos(build_info_dir, "rebuild_info")
 
-        rebuild_info_by_platform[base_platform] = {}
+    for rebuild_file in rebuild_infos:
+        platform_and_version = build_file.split("platform_")[1]
+        platform, *_ = platform_and_version.split("_")
 
-        for file in rebuild_info_files:
-            with open(file, "r") as f:
-                rebuild_info_by_platform[base_platform].update(json.load(f))
+        with open(rebuild_file, "r") as f:
+            rebuild_info_by_platform[platform].update(json.load(f))
 
-        if base_platform == "ubuntu":
-            total_build_info.update(build_info_by_platform["ubuntu"])
-            total_rebuild_info.update(rebuild_info_by_platform["ubuntu"])
+        if platform == "linux":
+            total_build_info.update(build_info_by_platform["linux"])
+            total_rebuild_info.update(rebuild_info_by_platform["linux"])
 
     # calculate entire statistics that will be used to render main table
     assert len(total_build_info) == len(total_rebuild_info)
 
-    today_date = datetime.datetime.now().strftime("%Y-%m-%d")
-
     build_results_by_platform = {}
-
-    stat_data_dir = Path(os.path.join(temp_dir, "stat_data"))
-
-    # we should fail if it's already present
-    stat_data_dir.mkdir(parents=True)
 
     for platform in build_info_by_platform:
         build_results_by_platform[platform] = {}
@@ -89,29 +69,13 @@ def make_statistics(platform_with_versions: list[str], temp_dir: str) -> Path:
                 info["pkg_hash"] == re_info["pkg_hash"]
             )
 
-        with open(
-            f"{stat_data_dir}/{platform}_packages_info_{today_date}.json", "w"
-        ) as pkg_info:
-            json.dump(build_results_by_platform[platform], pkg_info)
-
-    return stat_data_dir
+    return build_results_by_platform
 
 
-def plot(platforms, stat_dir: Path):
+def plot(build_results_by_platform):
     now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
-    by_platform = {}
-
     ubuntu_platform = {}
-
-    for platform in platforms:
-        with open(f"{stat_dir}/{platform}_packages_info_{now_date}.json", "r") as f:
-            platform_build_info = json.load(f)
-
-        by_platform[platform] = platform_build_info
-
-        if platform == "ubuntu":
-            ubuntu_platform = platform_build_info
 
     with open("data/history.json", "r+") as history_file:
         previous_data = json.load(history_file)
@@ -119,13 +83,13 @@ def plot(platforms, stat_dir: Path):
         now_date = str(datetime.datetime.now().strftime("%Y-%m-%d"))
 
         now_platform = {}
-        for platform in by_platform:
-            total_packages = len(by_platform[platform])
+        for platform in build_results_by_platform:
+            total_packages = len(build_results_by_platform[platform])
             reproducible = sum(
-                value for value in by_platform[platform].values() if value
+                1 for value in build_results_by_platform[platform].values() if value
             )
             not_reproducible = sum(
-                value for value in by_platform[platform].values() if not value
+                1 for value in build_results_by_platform[platform].values() if not value
             )
             now_platform[platform] = {
                 "total_packages": total_packages,
@@ -149,7 +113,11 @@ def plot(platforms, stat_dir: Path):
 
     # we take ubuntu as a base image
     for date in previous_data:
-        info = previous_data[date]["ubuntu"]
+        if "linux" not in previous_data[date]:
+            logging.warning(f"Skipping date {date} as linux is missing ")
+            continue
+
+        info = previous_data[date]["linux"]
         dates.append(date)
         total_packages.append(info["total_packages"])
         reproducible.append(info["repro"])
@@ -205,7 +173,7 @@ Built on ubuntu 22.04 and rebuild
 
     rebuild_table = f"""{table}\n\n"""
 
-    for platform in by_platform:
+    for platform in build_results_by_platform:
         build_text = f"Built on {platform}"
         if platform == "macos":
             build_text += " 13 and rebuilt"
@@ -220,7 +188,7 @@ Built on ubuntu 22.04 and rebuild
 | Recipe Name | Is Reproducible |
 | --- | --- |\n"""
 
-        for recipe, reproducible in by_platform[platform].items():
+        for recipe, reproducible in build_results_by_platform[platform].items():
             rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
 
     # Save the table to README.md
@@ -229,15 +197,7 @@ Built on ubuntu 22.04 and rebuild
 
 
 if __name__ == "__main__":
-    platform_with_versions = sys.argv[1:]
-
-    if "ubuntu_22.04_20.04" not in platform_with_versions:
-        print(
-            "ubuntu_22.04_20.04 platform is required, for now, to calculate total statistics"
-        )
-        sys.exit(1)
-
     with tempfile.TemporaryDirectory() as tmp_dir:
-        stat_dir = make_statistics(platform_with_versions, tmp_dir)
-        platforms = [platform.split("_")[0] for platform in platform_with_versions]
-        plot(platforms, stat_dir)
+        build_results_by_platform = make_statistics(tmp_dir)
+
+        plot(build_results_by_platform)
