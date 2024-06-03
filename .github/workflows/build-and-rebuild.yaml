@@ -49,15 +49,6 @@ jobs:
         with:
           pixi-version: "latest"
 
-      # - name: Set timezone to UTC
-      #   run: sudo timedatectl set-timezone UTC
-
-      # - name: Set LANG
-      #   run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
-
-      # - name: Verify LANG for Initial Build
-      #   run: echo $LANG
-
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
         run: sudo timedatectl set-timezone UTC
