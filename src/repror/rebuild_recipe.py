@@ -23,7 +23,7 @@ def rebuild_packages(
             rebuild_infos[recipe_name] = None
             continue
 
-        rebuild_directory = rebuild_dir / f"{recipe_name}_rebuild"
+        rebuild_directory = Path(rebuild_dir) / f"{recipe_name}_rebuild"
 
         output_dir = rebuild_directory / "output"
 
