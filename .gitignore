@@ -164,3 +164,5 @@ mapping/*# pixi environments
 # pixi environments
 .pixi
 recipes/output/*
+
+.idea/*
