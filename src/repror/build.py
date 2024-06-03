@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 from typing import Optional, TypedDict
 
-from repror.conf import Recipe, RecipeConfig
+from repror.conf import Recipe
 from repror.rattler_build import get_rattler_build
 from repror.util import (
     calculate_hash,
@@ -98,8 +98,8 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
 def build_remote_recipes(
     recipe: Recipe, build_dir, cloned_prefix_dir
 ) -> dict[str, Optional[BuildInfo]]:
-    repo_url = recipe["url"]
-    ref = recipe["branch"]  # or repo.get("commit")
+    repo_url = recipe.url
+    ref = recipe.branch  # or repo.get("commit")
     clone_dir = cloned_prefix_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
 
     if clone_dir.exists():
@@ -115,31 +115,28 @@ def build_remote_recipes(
         checkout_branch_or_commit(clone_dir, ref)
 
     # for recipe in repo["recipes"]:
-    recipe_path = clone_dir / recipe["path"]
+    recipe_path = clone_dir / recipe.recipe_path
     # recipe_name = recipe_path.name
 
-    recipe_config = RecipeConfig.load_recipe(recipe_path)
 
-    build_dir = build_dir / f"{recipe_config.name}_build"
+    build_dir = build_dir / f"{recipe.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
 
     build_info = build_recipe(recipe_path, build_dir)
 
-    build_infos[recipe_config.name] = build_info
+    build_infos[recipe.name] = build_info
 
     return build_infos
 
 
 def build_local_recipe(recipe: Recipe, build_dir):
-    recipe_path = Path(recipe["path"])
+    recipe_path = Path(recipe.recipe_path)
 
-    recipe_config: RecipeConfig = RecipeConfig.load_recipe(recipe_path)
-
-    print(f"Building recipe: {recipe_config.name}")
+    print(f"Building recipe: {recipe.name}")
     build_infos = {}
 
     build_info = build_recipe(recipe_path, build_dir)
 
-    build_infos[recipe_config.name] = build_info
+    build_infos[recipe.name] = build_info
 
     return build_infos
