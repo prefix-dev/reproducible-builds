@@ -40,6 +40,6 @@ if __name__ == "__main__":
             recipe_list.append(recipe.__dict__)
 
     # Convert the matrix to JSON
-    ci_dict = {"include": recipe_list}
+    # ci_dict = {"include": recipe_list}
     # recipe_list = json.dumps(ci_dict)
-    print(json.dumps(ci_dict))
+    print(json.dumps(recipe_list))
