@@ -31,6 +31,7 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
 if __name__ == "__main__":
     # this should be optional
     # so we could run it locally nice
+    # print(sys.argv)
     recipe_obj = Recipe(**json.loads(sys.argv[1]))
 
     platform_name, platform_version = platform.system().lower(), platform.release()

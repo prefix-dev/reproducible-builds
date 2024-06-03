@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+import sys
 import tempfile
 from repror import conf
 from repror.build import Recipe
@@ -7,6 +8,7 @@ from repror.build import Recipe
 
 if __name__ == "__main__":
     # Prepare the matrix
+    only_one = True if len(sys.argv) == 2 and sys.argv[1] == "onle_one" else False
     recipe_list = []
 
     config = conf.load_config()
@@ -38,4 +40,7 @@ if __name__ == "__main__":
 
             recipe_list.append(recipe.__dict__)
 
-    print(json.dumps(recipe_list))
+    if only_one:
+        print(json.dumps(recipe_list[0]))
+    else:
+        print(json.dumps(recipe_list))

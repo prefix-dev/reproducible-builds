@@ -11,10 +11,14 @@ platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 rewrite-readme = "python src/repror/rewrite_readme.py"
 # Used to generate build matrix for github
 generate-recipes = "python src/repror/generate_recipes.py"
+# Used to generate one matrix for github
+generate-one-recipe = {cmd = "python src/repror/generate_recipes.py only_one > recipe.json", outputs = ["recipe.json"]}
 # Build recipes using rattler-build for the current platform
 build-all-recipes = "rattler-build build --recipe-dir recipes --output-dir recipes/outputs"
 # Build a single recipe using the python script
 build-recipe = "python src/repror/build_recipe.py"
+# build a local recipe
+build-local-recipe = { cmd = "cat recipe.json | python src/repror/build_recipe.py", depends-on = ["generate-one-recipe"]}
 # Rebuild a single recipe using the python script
 rebuild-recipe = "python src/repror/rebuild_recipe.py"
 
