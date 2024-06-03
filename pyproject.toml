@@ -18,7 +18,7 @@ classifiers = [
 ]
 
 [project.scripts]
-repror = "repror.cli:app"
+repror = "repror.app:app"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.

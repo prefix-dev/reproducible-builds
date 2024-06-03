@@ -1,4 +1,4 @@
-from repror.misc import run_command
+from .commands import run_command
 
 
 def clone_repo(repo_url, clone_dir):

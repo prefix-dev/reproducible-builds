@@ -5813,7 +5813,7 @@ packages:
   name: repror
   version: 0.0.1
   path: .
-  sha256: cd4f7cf7ba0cc6e0237c9e029781742f3a79daecb4b8223e7fa2ddb02d9be54b
+  sha256: 3d9900e5afa4bb124504c26a3c5fa15de42a397cfd35642c5e462957a981da0b
   requires_python: ~=3.10
   editable: true
 - kind: pypi

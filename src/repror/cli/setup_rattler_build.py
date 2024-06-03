@@ -2,19 +2,12 @@ import os
 from pathlib import Path
 import shutil
 
-from repror.internals.commands import run_command
 from repror.internals.git import clone_repo, checkout_branch_or_commit
+from repror.internals.rattler_build import build_rattler
 
 
-def get_rattler_build():
-    if "RATTLER_BUILD_BIN" in os.environ:
-        return os.environ["RATTLER_BUILD_BIN"]
-    else:
-        return "rattler-build"
-
-
-def setup_rattler_build(rattler_build_config: dict, tmp_dir):
-    rattler_build_config = rattler_build_config.get("ratller-build", {})
+def setup_rattler_build(rattler_build_config: dict, tmp_dir: Path):
+    rattler_build_config = rattler_build_config.get("rattler-build", {})
     if not rattler_build_config:
         # using rattler-build defined in pixi.toml
         return
@@ -38,17 +31,3 @@ def setup_rattler_build(rattler_build_config: dict, tmp_dir):
 
     bin_path = Path(clone_dir) / "target" / "release" / "rattler-build"
     os.environ["RATTLER_BUILD_BIN"] = str(bin_path)
-
-
-def build_rattler(clone_dir):
-    build_command = ["cargo", "build", "--release"]
-
-    run_command(build_command, cwd=clone_dir)
-
-
-def rattler_build_version(cwd):
-    rattler_bin = get_rattler_build()
-
-    command = [rattler_bin, "-V"]
-
-    run_command(command, cwd=str(cwd))

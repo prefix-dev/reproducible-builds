@@ -1,14 +1,10 @@
 import json
 import os
 from pathlib import Path
-import sys
-import tempfile
 import platform
 from typing import Optional
 
-from repror.build import BuildInfo, Recipe, rebuild_package
-from repror.internals.conf import load_config
-from repror.rattler_build import setup_rattler_build
+from repror.internals.build import BuildInfo, Recipe, rebuild_package
 
 
 def rebuild_packages(
@@ -34,9 +30,7 @@ def rebuild_packages(
     return rebuild_infos
 
 
-if __name__ == "__main__":
-    recipe_string = sys.argv[1]
-
+def rebuild_recipe(recipe_string: str, tmp_dir: Path):
     platform_name, platform_version = platform.system().lower(), platform.release()
 
     url, branch, path = recipe_string.split("::")
@@ -44,32 +38,27 @@ if __name__ == "__main__":
 
     build_info = {}
 
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        config = load_config()
+    Path(f"ci_artifacts/{platform_name}/build").mkdir(exist_ok=True, parents=True)
+    Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
-        setup_rattler_build(config, Path(tmp_dir))
-
-        Path(f"ci_artifacts/{platform_name}/build").mkdir(exist_ok=True, parents=True)
-        Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
-
-        with open(
+    with open(
             f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
             "r",
-        ) as f:
-            previous_build_info = json.load(f)
+    ) as f:
+        previous_build_info = json.load(f)
 
-        rebuild_info = rebuild_packages(previous_build_info, tmp_dir, platform_name)
+    rebuild_info = rebuild_packages(previous_build_info, tmp_dir, platform_name)
 
-        os.makedirs(f"build_info/{platform_name}", exist_ok=True)
+    os.makedirs(f"build_info/{platform_name}", exist_ok=True)
 
-        with open(
+    with open(
             f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_rebuild_info.json",
             "w",
-        ) as f:
-            json.dump(rebuild_info, f)
+    ) as f:
+        json.dump(rebuild_info, f)
 
-        with open(
+    with open(
             f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_build_info.json",
             "w",
-        ) as f:
-            json.dump(previous_build_info, f)
+    ) as f:
+        json.dump(previous_build_info, f)

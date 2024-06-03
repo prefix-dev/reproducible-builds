@@ -3,7 +3,7 @@ import shutil
 from typing import Optional, TypedDict
 
 from repror.internals.conf import RecipeConfig
-from repror.rattler_build import get_rattler_build
+from repror.internals.rattler_build import get_rattler_build
 from repror.internals.commands import (
     calculate_hash,
     find_conda_build,
@@ -12,10 +12,10 @@ from repror.internals.commands import (
 )
 from repror.internals.git import clone_repo, checkout_branch_or_commit
 
+
 class Recipe(TypedDict):
     url: str
     branch: str
-    recipe: str
     path: str
 
 
@@ -24,6 +24,7 @@ class BuildInfo(TypedDict):
     pkg_hash: str
     output_dir: str
     conda_loc: str
+
 
 def build_conda_package(recipe_path: str, output_dir: str):
     rattler_bin = get_rattler_build()
