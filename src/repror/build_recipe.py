@@ -32,13 +32,13 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
 if __name__ == "__main__":
     # this should be optional
     # so we could run it locally nice
-    recipe_string = sys.argv[1]
+    recipe_obj = Recipe(**json.load(sys.argv[1]))
 
     platform_name, platform_version = platform.system().lower(), platform.release()
-    print(f"Recipe string is {recipe_string}")
-    url, branch, path = recipe_string.split("::")
+    # print(f"Recipe string is {recipe_string}")
+    # url, branch, path = recipe_string.split("::")
 
-    recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
+    # recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
 
     config = conf.load_config()
 
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         os.makedirs("build_info", exist_ok=True)
 
         with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            f"build_info/{platform_name}_{platform_version}_{recipe_obj.name}_build_info.json",
             "w",
         ) as f:
             json.dump(build_info, f)

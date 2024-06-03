@@ -80,7 +80,7 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
-          pixi run rebuild-recipe ${{ matrix.recipe }}
+          pixi run rebuild-recipe '${{ toJson(matrix.recipe) }}'
 
       - name: Upload results
         uses: actions/upload-artifact@v3

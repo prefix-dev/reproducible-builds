@@ -35,12 +35,9 @@ def rebuild_packages(
 
 
 if __name__ == "__main__":
-    recipe_string = sys.argv[1]
+    recipe_obj = Recipe(**json.load(sys.argv[1]))
 
     platform_name, platform_version = platform.system().lower(), platform.release()
-
-    url, branch, path = recipe_string.split("::")
-    recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
 
     build_info = {}
 
@@ -53,7 +50,7 @@ if __name__ == "__main__":
         Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
         with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+            f"build_info/{platform_name}_{platform_version}_{recipe_obj.name}_build_info.json",
             "r",
         ) as f:
             previous_build_info = json.load(f)
@@ -63,13 +60,13 @@ if __name__ == "__main__":
         os.makedirs(f"build_info/{platform_name}", exist_ok=True)
 
         with open(
-            f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_rebuild_info.json",
+            f"build_info/{platform_name}/{recipe_obj.name}_platform_{platform_name}_{platform_version}_rebuild_info.json",
             "w",
         ) as f:
             json.dump(rebuild_info, f)
 
         with open(
-            f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_build_info.json",
+            f"build_info/{platform_name}/{recipe_obj.name}_platform_{platform_name}_{platform_version}_build_info.json",
             "w",
         ) as f:
             json.dump(previous_build_info, f)
