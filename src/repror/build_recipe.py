@@ -35,7 +35,7 @@ if __name__ == "__main__":
     recipe_string = sys.argv[1]
 
     platform_name, platform_version = platform.system().lower(), platform.release()
-
+    print(f"Recipe string is {recipe_string}")
     url, branch, path = recipe_string.split("::")
 
     recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
