@@ -18,8 +18,7 @@ def build_recipes(recipes: list[Recipe], tmp_dir, build_dir):
     build_info = {}
 
     for recipe in recipes:
-        url = recipe.url
-        if url == "local":
+        if recipe.recipe_type == "local":
             build_info.update(build_local_recipe(recipe, build_dir))
         else:
             build_info.update(
