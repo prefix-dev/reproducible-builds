@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 from typing import Optional, TypedDict
 
-from repror.conf import RecipeConfig
+from repror.conf import Recipe, RecipeConfig
 from repror.rattler_build import get_rattler_build
 from repror.util import (
     calculate_hash,
@@ -11,12 +11,6 @@ from repror.util import (
     run_command,
 )
 from repror.git import clone_repo, checkout_branch_or_commit
-
-
-class Recipe(TypedDict):
-    url: str
-    branch: str
-    recipe: str
 
 
 class BuildInfo(TypedDict):
