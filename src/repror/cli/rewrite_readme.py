@@ -1,12 +1,99 @@
+import base64
 from collections import defaultdict
 import datetime
 import glob
 import json
 import logging
 import os
+from pathlib import Path
+import re
+import subprocess
+from jinja2 import Environment, FileSystemLoader
 import matplotlib.pyplot as plt
+import requests
 
 from repror.internals.conf import load_config
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+REPROR_UPDATE_TOKEN = os.getenv("REPROR_UPDATE_TOKEN")
+README_PATH = "README.md"
+
+
+def get_git_remote_url():
+    result = subprocess.run(
+        ["git", "remote", "get-url", "origin"], stdout=subprocess.PIPE, text=True
+    )
+    return result.stdout.strip()
+
+
+def get_git_user_config():
+    user_name = subprocess.run(
+        ["git", "config", "user.name"], stdout=subprocess.PIPE, text=True
+    ).stdout.strip()
+    user_email = subprocess.run(
+        ["git", "config", "user.email"], stdout=subprocess.PIPE, text=True
+    ).stdout.strip()
+    return user_name, user_email
+
+
+def get_git_branch():
+    result = subprocess.run(
+        ["git", "rev-parse", "--abbrev-ref", "HEAD"], stdout=subprocess.PIPE, text=True
+    )
+    return result.stdout.strip()
+
+
+def extract_repo_owner():
+    remote_url = get_git_remote_url()
+
+    https_pattern = r"^https://github.com/([^/]+)/([^/]+)\.git$"
+    ssh_pattern = r"^git@github.com:([^/]+)/([^/]+)\.git$"
+
+    if re.match(https_pattern, remote_url):
+        return "/".join(re.findall(https_pattern, remote_url)[0])
+    elif re.match(ssh_pattern, remote_url):
+        return "/".join(re.findall(ssh_pattern, remote_url)[0])
+    else:
+        raise ValueError("Remote URL does not match expected GitHub patterns")
+
+
+def update_readme(content):
+    if not REPROR_UPDATE_TOKEN:
+        raise ValueError(
+            "REPROR_UPDATE_TOKEN is not set. Please set it in .env file or as an environment variable."
+        )
+
+    repo_owner = extract_repo_owner()
+
+    # Get the SHA of the existing README
+    url = f"https://api.github.com/repos/{repo_owner}/contents/{README_PATH}"
+    headers = {
+        "Authorization": f"token {REPROR_UPDATE_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+    data = response.json()
+    sha = data["sha"]
+
+    # Update the README
+    message = "Update README with latest reproducibility stats"
+    content_encoded = base64.b64encode(content.encode()).decode()
+
+    payload = {
+        "message": message,
+        "committer": {"name": "repror_bot", "email": "repror_bot@prefix.dev"},
+        "branch": get_git_branch(),
+        "content": content_encoded,
+        "sha": sha,
+    }
+
+    response = requests.put(url, headers=headers, json=payload)
+    response.raise_for_status()
 
 
 def find_infos(folder_path: str, suffix: str):
@@ -71,7 +158,7 @@ def make_statistics(build_info_dir: str = "build_info") -> dict:
     return build_results_by_platform
 
 
-def plot(build_results_by_platform):
+def plot(build_results_by_platform, update_remote: bool = False):
     now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
     with open("data/history.json", "r+") as history_file:
@@ -136,50 +223,23 @@ def plot(build_results_by_platform):
     config = load_config()
 
     if "rattler-build" not in config:
-        rattler_tmpl_string = "Built with latest rattler-build"
+        build_text = "Built with latest rattler-build"
     else:
-        rattler_tmpl_string = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
-
-    build_text = f"""
-{rattler_tmpl_string}
-"""
+        build_text = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
 
     # Generate the Markdown table
-    table = f"""
-# Are we reproducible yet?
-
-![License][license-badge]
-[![Project Chat][chat-badge]][chat-url]
-
-
-[license-badge]: https://img.shields.io/badge/license-BSD--3--Clause-blue?style=flat-square
-[chat-badge]: https://img.shields.io/discord/1082332781146800168.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square
-[chat-url]: https://discord.gg/kKV8ZxyzY4
-
-
-![Reproducibility Chart](data/chart.png)
-
-{build_text}
-\n"""
-    rebuild_table = f"""{table}\n\n"""
-
-    for platform in build_results_by_platform:
-        build_text = f"Built on {platform}"
-        if platform == "darwin":
-            build_text += " 13"
-        elif platform == "windows":
-            build_text += " 2022"
-        elif platform == "linux":
-            build_text += " 22.04"
-
-        rebuild_table += f"""\n
-{build_text}\n
-| Recipe Name | Is Reproducible |
-| --- | --- |\n"""
-
-        for recipe, reproducible in build_results_by_platform[platform].items():
-            rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
+    env = Environment(
+        loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
+    )
+    template = env.get_template("README.md")
+    readme_content = template.render(
+        build_text=build_text, build_results_by_platform=build_results_by_platform
+    )
 
     # Save the table to README.md
     with open("README.md", "w") as file:
-        file.write(rebuild_table)
+        file.write(readme_content)
+
+    if update_remote:
+        # Update the README.md using GitHub API
+        update_readme(readme_content)

@@ -74,10 +74,12 @@ def rebuild_recipe(
 
 
 @app.command()
-def rewrite_readme():
+def rewrite_readme(
+    update_remote: Annotated[Optional[bool], typer.Option()] = False,
+):
     """Rewrite the README.md file with updated statistics"""
     build_results_by_platform = rewrite.make_statistics()
-    rewrite.plot(build_results_by_platform)
+    rewrite.plot(build_results_by_platform, update_remote)
 
 
 @app.command()

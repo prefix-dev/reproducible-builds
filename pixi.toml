@@ -26,6 +26,8 @@ rattler-build = "*"
 pyyaml = "*"
 pytest = "*"
 typer = ">=0.12.3,<0.13"
+jinja2 = "*"
+python-dotenv = "*"
 
 [pypi-dependencies]
 repror = { path = ".", editable = true }
