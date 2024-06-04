@@ -37,7 +37,7 @@ jobs:
 
 
       - name: Build rattler-build
-        if: steps.rattler-build-${{ runner.os }}.outputs.cache-hit != 'true'
+        if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
         run: |
           pixi run repror setup-rattler-build
 
