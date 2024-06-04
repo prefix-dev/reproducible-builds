@@ -54,7 +54,7 @@ def _check_local_rattler_build(tmp_dir: Path):
 def build_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
     json_recipe: Annotated[
-        Optional[list[str]],
+        Optional[str],
         typer.Option(help="Recipe to build in json format. This option is used in CI"),
     ] = None,
 ):
@@ -70,7 +70,7 @@ def build_recipe(
 def rebuild_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
     json_recipe: Annotated[
-        Optional[list[str]],
+        Optional[str],
         typer.Option(
             help="Recipe to rebuild in json format. This option is used in CI"
         ),
