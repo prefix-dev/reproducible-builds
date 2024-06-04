@@ -18,9 +18,7 @@ def build_recipes(recipe: Recipe, tmp_dir: Path, build_dir: Path):
     if url == "local":
         build_info.update(build_local_recipe(recipe, build_dir))
     else:
-        build_info.update(
-            build_remote_recipes(recipe, build_dir, cloned_prefix_dir)
-        )
+        build_info.update(build_remote_recipes(recipe, build_dir, cloned_prefix_dir))
 
     return build_info
 
@@ -44,7 +42,7 @@ def build_recipe_from_str(recipe_string: str, tmp_dir: Path):
     os.makedirs("build_info", exist_ok=True)
 
     with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
-            "w",
+        f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+        "w",
     ) as f:
         json.dump(build_info, f)

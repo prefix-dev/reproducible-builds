@@ -42,8 +42,8 @@ def rebuild_recipe(recipe_string: str, tmp_dir: Path):
     Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
     with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
-            "r",
+        f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+        "r",
     ) as f:
         previous_build_info = json.load(f)
 
@@ -52,13 +52,13 @@ def rebuild_recipe(recipe_string: str, tmp_dir: Path):
     os.makedirs(f"build_info/{platform_name}", exist_ok=True)
 
     with open(
-            f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_rebuild_info.json",
-            "w",
+        f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_rebuild_info.json",
+        "w",
     ) as f:
         json.dump(rebuild_info, f)
 
     with open(
-            f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_build_info.json",
-            "w",
+        f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_build_info.json",
+        "w",
     ) as f:
         json.dump(previous_build_info, f)

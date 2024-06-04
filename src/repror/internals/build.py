@@ -6,7 +6,7 @@ from repror.internals.conf import RecipeConfig
 from repror.internals.rattler_build import get_rattler_build
 from repror.internals.commands import (
     calculate_hash,
-    find_conda_build,
+    find_conda_file,
     move_file,
     run_command,
 )
@@ -26,7 +26,7 @@ class BuildInfo(TypedDict):
     conda_loc: str
 
 
-def build_conda_package(recipe_path: str, output_dir: str):
+def build_conda_package(recipe_path: Path, output_dir: Path):
     rattler_bin = get_rattler_build()
     build_command = [
         rattler_bin,
@@ -40,7 +40,7 @@ def build_conda_package(recipe_path: str, output_dir: str):
     run_command(build_command)
 
 
-def rebuild_conda_package(conda_file: str, output_dir: str):
+def rebuild_conda_package(conda_file: Path, output_dir: Path):
     rattler_bin = get_rattler_build()
 
     re_build_command = [
@@ -55,12 +55,12 @@ def rebuild_conda_package(conda_file: str, output_dir: str):
     run_command(re_build_command)
 
 
-def build_recipe(recipe_path, output_dir) -> Optional[BuildInfo]:
+def build_recipe(recipe_path: Path, output_dir: Path) -> Optional[BuildInfo]:
     # bypass exception on top
     build_conda_package(recipe_path, output_dir)
 
     # let's record first hash
-    conda_file = find_conda_build(output_dir)
+    conda_file = find_conda_file(output_dir)
 
     # move to artifacts
     # so we could upload it in github action
@@ -86,7 +86,7 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
     rebuild_conda_package(conda_file, output_dir)
 
     # let's record first hash
-    conda_file = find_conda_build(output_dir)
+    conda_file = find_conda_file(output_dir)
     shutil.copyfile(
         conda_file, f"ci_artifacts/{platform}/rebuild/{Path(conda_file).name}"
     )
@@ -102,11 +102,11 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
 
 
 def build_remote_recipes(
-    recipe: Recipe, build_dir, cloned_prefix_dir
+    recipe: Recipe, build_dir: Path, cloned_prefix_dir: Path
 ) -> dict[str, Optional[BuildInfo]]:
     repo_url = recipe["url"]
     ref = recipe["branch"]  # or repo.get("commit")
-    clone_dir = cloned_prefix_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
+    clone_dir = cloned_prefix_dir.joinpath(repo_url.split("/")[:-1].replace(".git", ""))
 
     if clone_dir.exists():
         shutil.rmtree(clone_dir)
