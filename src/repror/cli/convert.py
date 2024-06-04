@@ -58,14 +58,15 @@ def generate_and_save_new_recipe(dest_recipe_dir: Optional[Path], save: bool = F
     apply_crm_convert(dest_recipe_dir, meta_yaml_path, save)
 
 
-def process_packages(package_names: list[str], save: bool):
+def process_packages(package_names: list[str], save: bool) -> int:
     """
     Process each package: check out feedstock, apply crm convert, and save new recipe.
     """
+    saved = 0
     base_dest_dir = os.getcwd()
     config = conf.load_config()
     all_existing_paths = {recipe["path"] for recipe in config["local"]}
-    for package_name in track(package_names, description="Processing packages"):
+    for package_name in track(package_names, description="Converting packages"):
         print(f"[green bold]Processing package: {package_name}[/green bold]")
 
         # Create the destination director
@@ -86,6 +87,8 @@ def process_packages(package_names: list[str], save: bool):
             # None means error in this case
             if dest_recipe_dir is not None:
                 generate_and_save_new_recipe(dest_recipe_dir, save)
+                if save:
+                    saved += 1
             else:
                 print(
                     f"[yellow bold]Skipping package: {package_name} due to checkout failure[/yellow bold]"
@@ -103,6 +106,8 @@ def process_packages(package_names: list[str], save: bool):
     if save:
         conf.save_config(config)
 
+    return saved
+
 
 @app.command()
 def run(
@@ -116,5 +121,6 @@ def run(
     Convert the feedstock meta.yaml to recipe.yaml using conda-recipe-manager (crm) convert.
     """
     package_names = package_names or ["boltons"]
-    process_packages(package_names, save)
-    print("[green bold]Converted feedstock(s)![/green bold]")
+    saved = process_packages(package_names, save)
+    if saved > 0:
+        print(f"[green]Successfully saved {saved} new[/green] :scroll:")
