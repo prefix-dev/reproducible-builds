@@ -1,3 +1,4 @@
+import os
 import tempfile
 from pathlib import Path
 from typing import Annotated, Optional
@@ -75,10 +76,14 @@ def _check_local_rattler_build(live: Optional[Live] = None):
 @app.command()
 def build_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
+    rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
 ):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
-        _check_local_rattler_build()
+        if not rattler_build_exe:
+            _check_local_rattler_build()
+        else:
+            os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.filter_recipes(recipe_names)
 
         build.build_recipe(recipes_to_build, tmp_dir)
@@ -87,10 +92,14 @@ def build_recipe(
 @app.command()
 def rebuild_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
+    rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
-        _check_local_rattler_build()
+        if not rattler_build_exe:
+            _check_local_rattler_build()
+        else:
+            os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.filter_recipes(recipe_names)
         rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir)
 
