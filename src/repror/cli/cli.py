@@ -76,9 +76,8 @@ def rebuild_recipe(
 @app.command()
 def rewrite_readme():
     """Rewrite the README.md file with updated statistics"""
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        build_results_by_platform = rewrite.make_statistics(tmp_dir)
-        rewrite.plot(build_results_by_platform)
+    build_results_by_platform = rewrite.make_statistics()
+    rewrite.plot(build_results_by_platform)
 
 
 @app.command()
