@@ -40,8 +40,8 @@ class GithubAPI:
         # Return the owner of the repository in owner/repo format
         remote_url = self._get_git_remote_url()
 
-        https_pattern = r"^https://github.com/([^/]+)/([^/]+)\.git$"
-        ssh_pattern = r"^git@github.com:([^/]+)/([^/]+)\.git$"
+        https_pattern = r'^https://github.com/([^/]+)/([^/]+?)(?:\.git)?$'
+        ssh_pattern = r'^git@github.com:([^/]+)/([^/]+?)(?:\.git)?$'
 
         if re.match(https_pattern, remote_url):
             return "/".join(re.findall(https_pattern, remote_url)[0])
