@@ -48,7 +48,7 @@ class GithubAPI:
         elif re.match(ssh_pattern, remote_url):
             return "/".join(re.findall(ssh_pattern, remote_url)[0])
         else:
-            raise ValueError("Remote URL does not match expected GitHub patterns")
+            raise ValueError(f"Remote URL does not match expected GitHub patterns {remote_url}")
 
     def get_git_branch(self):
         # Return the current branch name
