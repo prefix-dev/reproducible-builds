@@ -14,7 +14,7 @@ def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
 
 def calculate_hash(conda_file: Path):
     """Calculate the SHA-256 hash of a conda file."""
-    with conda_file.open() as f:
+    with conda_file.open(mode="rb") as f:
         # Read the entire file
         data = f.read()
         # Calculate the SHA-256 hash

@@ -9,6 +9,9 @@ from typing import Optional, Annotated
 from repror.internals import conf
 from repror.internals import git
 
+
+from rich.syntax import Syntax
+
 import typer
 from rich import print
 
@@ -36,32 +39,35 @@ def checkout_feedstock(
         return None
 
 
-def apply_crm_convert(dest_recipe_dir: Path, meta_yaml_path: Path, save: bool = False):
+def apply_crm_convert(dest_recipe_dir: Path, meta_yaml_path: Path, save: bool = False) -> bytes:
     """
     Apply the crm convert tool to the given meta.yaml file.
     """
     if save:
         dest_file = os.path.join(dest_recipe_dir, "recipe.yaml")
-        subprocess.run(
+        captured = subprocess.run(
             ["crm", "convert", meta_yaml_path, "--output", dest_file], check=False
         )
+        return captured.stdout
     # Don't save the output just use stdout
     else:
-        subprocess.run(["crm", "convert", meta_yaml_path], check=False)
+        captured = subprocess.run(["crm", "convert", meta_yaml_path], check=False, capture_output=True)
+        return captured.stdout
 
 
-def generate_and_save_new_recipe(dest_recipe_dir: Optional[Path], save: bool = False):
+def generate_and_save_new_recipe(dest_recipe_dir: Optional[Path], save: bool = False) -> bytes:
     """
     Save the new recipe in the specified directory.
     """
     meta_yaml_path = os.path.join(dest_recipe_dir, "meta.yaml")
-    apply_crm_convert(dest_recipe_dir, meta_yaml_path, save)
+    return apply_crm_convert(dest_recipe_dir, meta_yaml_path, save)
 
 
 def process_packages(package_names: list[str], save: bool) -> int:
     """
     Process each package: check out feedstock, apply crm convert, and save new recipe.
     """
+
     saved = 0
     base_dest_dir = os.getcwd()
     config = conf.load_config()
@@ -86,7 +92,9 @@ def process_packages(package_names: list[str], save: bool) -> int:
             )
             # None means error in this case
             if dest_recipe_dir is not None:
-                generate_and_save_new_recipe(dest_recipe_dir, save)
+                stdout = generate_and_save_new_recipe(dest_recipe_dir, save)
+                stdout = Syntax(f"\n{stdout.decode()}", "yaml")
+                print(stdout)
                 if save:
                     saved += 1
             else:
