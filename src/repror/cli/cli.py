@@ -1,5 +1,7 @@
 import tempfile
 from pathlib import Path
+from typing import Annotated, Optional
+from rich import print
 
 import typer
 
@@ -13,8 +15,6 @@ from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
 
 app = typer.Typer(no_args_is_help=True)
-
-from rich import print
 
 
 class GlobalOptions:
@@ -49,19 +49,29 @@ def _check_local_rattler_build(tmp_dir: Path):
         config = load_config()
         setup.setup_rattler_build(rattler_build_config=config, tmp_dir=Path(tmp_dir))
 
+
 @app.command()
-def build_recipe(recipe_str: str):
+def build_recipe(
+    recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
+):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
         _check_local_rattler_build(tmp_dir)
-        build.build_recipe_from_str(recipe_str, tmp_dir)
+        recipes_to_build = build.filter_recipes(recipe_names)
+
+        build.build_recipe(recipes_to_build, tmp_dir)
+
 
 @app.command()
-def rebuild_recipe(recipe_str: str):
+def rebuild_recipe(
+    recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
+):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
         _check_local_rattler_build(tmp_dir)
-        rebuild.rebuild_recipe(recipe_str, tmp_dir)
+        recipes_to_rebuild = build.filter_recipes(recipe_names)
+        rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir)
+
 
 @app.command()
 def rewrite_readme():
