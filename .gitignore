@@ -173,3 +173,5 @@ artifacts/*
 ci_artifacts/*
 build_info/*
 build_outputs/*
+# Local rattler-build clone
+.rb-clone/
