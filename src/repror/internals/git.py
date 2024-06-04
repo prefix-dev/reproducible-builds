@@ -14,20 +14,21 @@ load_dotenv()
 
 
 class GithubAPI:
-    token: str
     owner: str
     repo: str
     branch: str
 
     def __init__(self):
+        self.owner = self.extract_repo_owner()
+        self.branch = self.get_git_branch()
+
+    @property
+    def token(self):
         token = os.getenv("REPROR_UPDATE_TOKEN")
         if not token:
             raise ValueError(
                 "REPROR_UPDATE_TOKEN is not set. Please set it in .env file or as an environment variable."
             )
-        self.token = token
-        self.owner = self.extract_repo_owner()
-        self.branch = self.get_git_branch()
 
     def _get_git_remote_url(self):
         result = subprocess.run(
