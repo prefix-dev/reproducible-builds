@@ -1,4 +1,3 @@
-import base64
 from collections import defaultdict
 import datetime
 import glob
@@ -6,94 +5,15 @@ import json
 import logging
 import os
 from pathlib import Path
-import re
-import subprocess
 from jinja2 import Environment, FileSystemLoader
 import matplotlib.pyplot as plt
-import requests
 
 from repror.internals.conf import load_config
+from repror.internals.git import github_api
 
-from dotenv import load_dotenv
 
-load_dotenv()
-
-REPROR_UPDATE_TOKEN = os.getenv("REPROR_UPDATE_TOKEN")
 README_PATH = "README.md"
-
-
-def get_git_remote_url():
-    result = subprocess.run(
-        ["git", "remote", "get-url", "origin"], stdout=subprocess.PIPE, text=True
-    )
-    return result.stdout.strip()
-
-
-def get_git_user_config():
-    user_name = subprocess.run(
-        ["git", "config", "user.name"], stdout=subprocess.PIPE, text=True
-    ).stdout.strip()
-    user_email = subprocess.run(
-        ["git", "config", "user.email"], stdout=subprocess.PIPE, text=True
-    ).stdout.strip()
-    return user_name, user_email
-
-
-def get_git_branch():
-    result = subprocess.run(
-        ["git", "rev-parse", "--abbrev-ref", "HEAD"], stdout=subprocess.PIPE, text=True
-    )
-    return result.stdout.strip()
-
-
-def extract_repo_owner():
-    remote_url = get_git_remote_url()
-
-    https_pattern = r"^https://github.com/([^/]+)/([^/]+)\.git$"
-    ssh_pattern = r"^git@github.com:([^/]+)/([^/]+)\.git$"
-
-    if re.match(https_pattern, remote_url):
-        return "/".join(re.findall(https_pattern, remote_url)[0])
-    elif re.match(ssh_pattern, remote_url):
-        return "/".join(re.findall(ssh_pattern, remote_url)[0])
-    else:
-        raise ValueError("Remote URL does not match expected GitHub patterns")
-
-
-def update_readme(content):
-    if not REPROR_UPDATE_TOKEN:
-        raise ValueError(
-            "REPROR_UPDATE_TOKEN is not set. Please set it in .env file or as an environment variable."
-        )
-
-    repo_owner = extract_repo_owner()
-
-    # Get the SHA of the existing README
-    url = f"https://api.github.com/repos/{repo_owner}/contents/{README_PATH}"
-    headers = {
-        "Authorization": f"token {REPROR_UPDATE_TOKEN}",
-        "Accept": "application/vnd.github.v3+json",
-    }
-
-    response = requests.get(url, headers=headers)
-    response.raise_for_status()
-    data = response.json()
-    sha = data["sha"]
-
-    # Update the README
-    message = "Update README with latest reproducibility stats"
-    content_encoded = base64.b64encode(content.encode()).decode()
-
-    payload = {
-        "message": message,
-        "committer": {"name": "repror_bot", "email": "repror_bot@prefix.dev"},
-        "branch": get_git_branch(),
-        "content": content_encoded,
-        "sha": sha,
-    }
-
-    response = requests.put(url, headers=headers, json=payload)
-    response.raise_for_status()
+DATA_CHART_PATH = "data/chart.png"
 
 
 def find_infos(folder_path: str, suffix: str):
@@ -242,4 +162,8 @@ def plot(build_results_by_platform, update_remote: bool = False):
 
     if update_remote:
         # Update the README.md using GitHub API
-        update_readme(readme_content)
+        github_api.update_obj(readme_content, README_PATH, "Update statistics")
+        data_chart_bytes = Path("data/chart.png").read_bytes()
+        github_api.update_obj(
+            data_chart_bytes, DATA_CHART_PATH, "Update data chart graph"
+        )
