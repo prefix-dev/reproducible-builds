@@ -83,7 +83,6 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
     shutil.copyfile(
         conda_file, f"ci_artifacts/{platform}/rebuild/{Path(conda_file).name}"
     )
-    print(conda_file)
     first_build_hash = calculate_hash(conda_file)
 
     return BuildInfo(

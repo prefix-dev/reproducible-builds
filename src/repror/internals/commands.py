@@ -23,11 +23,11 @@ def calculate_hash(conda_file: Path):
     return build_hash
 
 
-def find_conda_file(build_folder: Path):
+def find_conda_file(build_folder: Path) -> Path:
     """Find the conda file in the build folder."""
     conda_file = glob.glob(str(build_folder) + "/**/*.conda", recursive=True)[0]
 
-    return conda_file
+    return Path(conda_file)
 
 
 def find_all_conda_files(build_folder: Path):
@@ -35,11 +35,11 @@ def find_all_conda_files(build_folder: Path):
     return glob.glob(str(build_folder) + "/**/*.conda", recursive=True)
 
 
-def move_file(conda_file: Path, destination_directory: Path):
+def move_file(conda_file: Path, destination_directory: Path) -> Path:
     # Make dirs if they don't exist
     os.makedirs(destination_directory, exist_ok=True)
     # Get the base filename
-    filename = os.path.basename(conda_file)
+    filename = Path(os.path.basename(conda_file))
 
     # Move the file to the destination directory
     file_loc = destination_directory / filename
