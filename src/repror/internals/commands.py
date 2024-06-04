@@ -7,9 +7,9 @@ from pathlib import Path
 from subprocess import CompletedProcess
 
 
-def run_command(command, cwd=None, env=None) -> CompletedProcess:
+def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
     """Run a specific command."""
-    return subprocess.run(command, cwd=cwd, env=env, check=True)
+    return subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=silent)
 
 
 def calculate_hash(conda_file: Path):
