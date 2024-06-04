@@ -38,9 +38,9 @@ local:
 - path: recipes/xorg-xproto/recipe.yaml
 - path: recipes/toml/recipe.yaml # fail to run tests ( import toml )
 #- path: recipes/sqlite/recipe.yaml # bad conversion of multiple outputs
-# rattler-build:
-#   branch: main
-#   url: https://github.com/prefix-dev/rattler-build.git
+rattler-build:
+  branch: main
+  url: https://github.com/prefix-dev/rattler-build.git
 repositories:
 - branch: rattler-build
   recipes:
