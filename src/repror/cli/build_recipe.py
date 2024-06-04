@@ -13,9 +13,17 @@ from repror.internals.conf import Recipe, load_all_recipes
 def filter_recipes(recipe_names: Optional[list[str]]) -> list[Recipe]:
     all_recipes = load_all_recipes()
     if recipe_names:
-        recipes_to_build = [
-            recipe for recipe in all_recipes if recipe.name in recipe_names
-        ]
+        recipes_to_build = []
+        all_recipes_names = [recipe.name for recipe in all_recipes]
+        for recipe_to_filter in recipe_names:
+            if recipe_to_filter not in all_recipes_names:
+                raise ValueError(
+                    f"Recipe {recipe_to_filter} not found in the configuration file"
+                )
+            recipes_to_build.append(
+                all_recipes[all_recipes_names.index(recipe_to_filter)]
+            )
+
     else:
         recipes_to_build = all_recipes
 

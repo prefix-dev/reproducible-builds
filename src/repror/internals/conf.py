@@ -52,8 +52,7 @@ class Recipe:
 
     def load_local_recipe_config(self, recipe_path: Optional[str] = None) -> dict:
         path = Path(recipe_path) if recipe_path else Path(self.path)
-
-        with open(path, "r", encoding="utf8") as file:
+        with path.open("r", encoding="utf8") as file:
             return yaml.safe_load(file)
 
     def load_remote_recipe_config(
@@ -103,15 +102,6 @@ class Recipe:
         config = self.load_recipe_config()
         self._config = config
         return self._config
-
-    def as_dict(self) -> dict:
-        return {
-            "recipe_type": self.recipe_type,
-            "url": self.url,
-            "branch": self.branch,
-            "path": self.path,
-            "_name": self.name,
-        }
 
 
 def load_all_recipes(config: str = "config.yaml") -> list[Recipe]:
