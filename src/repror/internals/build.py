@@ -57,7 +57,7 @@ def build_recipe(recipe_path: Path, output_dir: Path) -> Optional[BuildInfo]:
 
     # move to artifacts
     # so we could upload it in github action
-    new_file_loc = move_file(conda_file, "artifacts")
+    new_file_loc = move_file(conda_file, Path("artifacts"))
 
     first_build_hash = calculate_hash(new_file_loc)
 
