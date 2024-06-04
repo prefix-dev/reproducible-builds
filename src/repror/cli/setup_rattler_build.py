@@ -1,12 +1,16 @@
 import os
 from pathlib import Path
 from rich import print
+from rich.live import Live
 
 from repror.internals.git import clone_repo, checkout_branch_or_commit, pull
 from repror.internals.rattler_build import build_rattler
+from typing import Optional
 
 
-def setup_rattler_build(rattler_build_config: dict, root_folder: Path):
+def setup_rattler_build(
+    rattler_build_config: dict, root_folder: Path, _live: Optional[Live] = None
+):
     """
     Setup a local rattler-build environment
     this is used when using a custom rattler-build version
@@ -37,6 +41,7 @@ def setup_rattler_build(rattler_build_config: dict, root_folder: Path):
     print("Building rattler")
 
     # Build rattler
+    # TOOD use live later for streaming the spinner
     build_rattler(clone_dir)
 
     # Set to release binary
