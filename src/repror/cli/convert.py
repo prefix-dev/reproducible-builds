@@ -108,12 +108,12 @@ def process_packages(package_names: list[str], save: bool):
 def run(
     package_names: Annotated[
         Optional[list[str]],
-        typer.Option("-p", "--package-name", help="packages you would like to convert"),
+        typer.Option("-p", "--package-name", help="packages you would like to convert e.g `flask`"),
     ] = None,
-    save: Annotated[bool, typer.Option(help="save into project")] = False,
+    save: Annotated[bool, typer.Option(help="Add feedstock to recipes, update `config.yaml`")] = False,
 ):
     """
-    Convert the feedstock meta.yaml to recipe.yaml using crm convert.
+    Convert the feedstock meta.yaml to recipe.yaml using conda-recipe-manager (crm) convert.
     """
     package_names = package_names or ["boltons"]
     process_packages(package_names, save)
