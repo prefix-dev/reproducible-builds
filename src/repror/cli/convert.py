@@ -39,7 +39,9 @@ def checkout_feedstock(
         return None
 
 
-def apply_crm_convert(dest_recipe_dir: Path, meta_yaml_path: Path, save: bool = False) -> bytes:
+def apply_crm_convert(
+    dest_recipe_dir: Path, meta_yaml_path: Path, save: bool = False
+) -> bytes:
     """
     Apply the crm convert tool to the given meta.yaml file.
     """
@@ -51,11 +53,15 @@ def apply_crm_convert(dest_recipe_dir: Path, meta_yaml_path: Path, save: bool = 
         return captured.stdout
     # Don't save the output just use stdout
     else:
-        captured = subprocess.run(["crm", "convert", meta_yaml_path], check=False, capture_output=True)
+        captured = subprocess.run(
+            ["crm", "convert", meta_yaml_path], check=False, capture_output=True
+        )
         return captured.stdout
 
 
-def generate_and_save_new_recipe(dest_recipe_dir: Optional[Path], save: bool = False) -> bytes:
+def generate_and_save_new_recipe(
+    dest_recipe_dir: Optional[Path], save: bool = False
+) -> bytes:
     """
     Save the new recipe in the specified directory.
     """
@@ -121,9 +127,15 @@ def process_packages(package_names: list[str], save: bool) -> int:
 def run(
     package_names: Annotated[
         Optional[list[str]],
-        typer.Option("-p", "--package-name", help="packages you would like to convert e.g `flask`"),
+        typer.Option(
+            "-p",
+            "--package-name",
+            help="packages you would like to convert e.g `flask`",
+        ),
     ] = None,
-    save: Annotated[bool, typer.Option(help="Add feedstock to recipes, update `config.yaml`")] = False,
+    save: Annotated[
+        bool, typer.Option(help="Add feedstock to recipes, update `config.yaml`")
+    ] = False,
 ):
     """
     Convert the feedstock meta.yaml to recipe.yaml using conda-recipe-manager (crm) convert.

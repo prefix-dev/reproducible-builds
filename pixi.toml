@@ -11,14 +11,13 @@ platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 rewrite-readme = "repor rewrite-readme"
 # Used to generate build matrix for github
 generate-recipes = "repror generate-recipes"
-# Build recipes using rattler-build for the current platform
-# TODO: make something different for this command
-build-all-recipes = "rattler-build build --recipe-dir recipes --output-dir recipes/outputs"
-# Build a single recipe using the python script
+# Build recipes in the recipes folder
 build-recipe = "repror build-recipe"
+# Same as above but skip rattler-build setup
+build-recipe-skip = "repror --skip-setup-rattler-build build-recipe"
 # Rebuild a single recipe using the python script
 rebuild-recipe = "repror rebuild-recipe"
-
+# Convert a meta.yaml to a recipe.yaml
 convert-recipe = "convert-conda-recipe"
 
 
@@ -45,4 +44,4 @@ conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-
 
 
 [environments]
-dev = {features = ["dev"], solve-group = "default"}
+dev = {features = ["dev"], no-default-feature = true}

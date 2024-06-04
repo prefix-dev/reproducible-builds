@@ -11,3 +11,8 @@ def clone_repo(repo_url, clone_dir) -> CompletedProcess:
 def checkout_branch_or_commit(clone_dir, ref) -> CompletedProcess:
     """Checkout a branch or commit."""
     return run_command(["git", "checkout", ref], cwd=str(clone_dir), silent=True)
+
+
+def pull(clone_dir) -> CompletedProcess:
+    """Pull the latest changes from the remote."""
+    return run_command(["git", "checkout", clone_dir], cwd=str(clone_dir), silent=True)
