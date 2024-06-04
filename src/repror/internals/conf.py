@@ -35,7 +35,7 @@ class Recipe:
             return self.path.replace("/", "_")
         else:
             return (
-                self.url.replace("/", "_").replace(".git", "_")
+                self.url.replace("/", "_").replace(".git", "_").replace("https:", "")
                 + "_"
                 + self.branch.replace("/", "_")
                 + "_"
