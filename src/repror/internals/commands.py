@@ -1,3 +1,5 @@
+from typing import Optional
+
 import glob
 import hashlib
 import os
@@ -46,3 +48,11 @@ def move_file(conda_file: Path, destination_directory: Path) -> Path:
     shutil.move(conda_file, file_loc)
 
     return file_loc
+
+
+def pixi_root() -> Optional[Path]:
+    """Get the pixi root location"""
+    pixi_root = os.environ.get("PIXI_PROJECT_ROOT")
+    if pixi_root:
+        return Path(pixi_root)
+    return None
