@@ -4,6 +4,10 @@ import glob
 import json
 import logging
 import os
+
+from rich import print
+from rich.syntax import Syntax
+
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 import matplotlib.pyplot as plt
@@ -162,8 +166,12 @@ def plot(build_results_by_platform, update_remote: bool = False):
 
     if update_remote:
         # Update the README.md using GitHub API
+        print(":running: Updating README.md with new statistics")
         github_api.update_obj(readme_content, README_PATH, "Update statistics")
         data_chart_bytes = Path("data/chart.png").read_bytes()
+        print(":running: Updating data/chart.png with new plot")
         github_api.update_obj(
             data_chart_bytes, DATA_CHART_PATH, "Update data chart graph"
         )
+
+    print(Syntax(readme_content, "markdown"))
