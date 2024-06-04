@@ -112,16 +112,4 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          pixi run rewrite-readme
-
-      - name: Commit and push changes
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add data/history.json
-          git add data/chart.png
-          git add README.md
-          git commit -m "Update README.md with latest build statistics"
-          git push
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote

@@ -4,9 +4,20 @@ import glob
 import json
 import logging
 import os
+
+from rich import print
+from rich.syntax import Syntax
+
+from pathlib import Path
+from jinja2 import Environment, FileSystemLoader
 import matplotlib.pyplot as plt
 
 from repror.internals.conf import load_config
+from repror.internals.git import github_api
+
+
+README_PATH = "README.md"
+DATA_CHART_PATH = "data/chart.png"
 
 
 def find_infos(folder_path: str, suffix: str):
@@ -71,7 +82,7 @@ def make_statistics(build_info_dir: str = "build_info") -> dict:
     return build_results_by_platform
 
 
-def plot(build_results_by_platform):
+def plot(build_results_by_platform, update_remote: bool = False):
     now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
     with open("data/history.json", "r+") as history_file:
@@ -136,50 +147,31 @@ def plot(build_results_by_platform):
     config = load_config()
 
     if "rattler-build" not in config:
-        rattler_tmpl_string = "Built with latest rattler-build"
+        build_text = "Built with latest rattler-build"
     else:
-        rattler_tmpl_string = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
-
-    build_text = f"""
-{rattler_tmpl_string}
-"""
+        build_text = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
 
     # Generate the Markdown table
-    table = f"""
-# Are we reproducible yet?
-
-![License][license-badge]
-[![Project Chat][chat-badge]][chat-url]
-
-
-[license-badge]: https://img.shields.io/badge/license-BSD--3--Clause-blue?style=flat-square
-[chat-badge]: https://img.shields.io/discord/1082332781146800168.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2&style=flat-square
-[chat-url]: https://discord.gg/kKV8ZxyzY4
-
-
-![Reproducibility Chart](data/chart.png)
-
-{build_text}
-\n"""
-    rebuild_table = f"""{table}\n\n"""
-
-    for platform in build_results_by_platform:
-        build_text = f"Built on {platform}"
-        if platform == "darwin":
-            build_text += " 13"
-        elif platform == "windows":
-            build_text += " 2022"
-        elif platform == "linux":
-            build_text += " 22.04"
-
-        rebuild_table += f"""\n
-{build_text}\n
-| Recipe Name | Is Reproducible |
-| --- | --- |\n"""
-
-        for recipe, reproducible in build_results_by_platform[platform].items():
-            rebuild_table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
+    env = Environment(
+        loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
+    )
+    template = env.get_template("README.md")
+    readme_content = template.render(
+        build_text=build_text, build_results_by_platform=build_results_by_platform
+    )
 
     # Save the table to README.md
     with open("README.md", "w") as file:
-        file.write(rebuild_table)
+        file.write(readme_content)
+
+    if update_remote:
+        # Update the README.md using GitHub API
+        print(":running: Updating README.md with new statistics")
+        github_api.update_obj(readme_content, README_PATH, "Update statistics")
+        data_chart_bytes = Path("data/chart.png").read_bytes()
+        print(":running: Updating data/chart.png with new plot")
+        github_api.update_obj(
+            data_chart_bytes, DATA_CHART_PATH, "Update data chart graph"
+        )
+
+    print(Syntax(readme_content, "markdown"))
