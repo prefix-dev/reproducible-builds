@@ -30,18 +30,19 @@ jobs:
         with:
           pixi-version: "latest"
 
-      - name: read-yaml-file
-        uses: pietrobolcato/action-read-yaml@1.0.0
+      - name: Run YAML to Github Output Action
         id: read-yaml
+        uses: christian-ci/action-yaml-github-output@v2
         with:
-          config: ${{ github.workspace }}/config.yaml
+          file_path: ${{ github.workspace }}/config.yaml
+          main_key: rattler-build
 
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore
         uses: actions/cache@v4
         with:
           path: .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs.rev }}
 
 
       - name: Build rattler-build
@@ -57,7 +58,7 @@ jobs:
         with:
           path: |
             .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs.rev }}
 
 
 
@@ -103,18 +104,19 @@ jobs:
         with:
           pixi-version: "latest"
       
-      - name: read-yaml-file
-        uses: pietrobolcato/action-read-yaml@1.0.0
+      - name: Run YAML to Github Output Action
         id: read-yaml
+        uses: christian-ci/action-yaml-github-output@v2
         with:
-          config: ${{ github.workspace }}/config.yaml
+          file_path: ${{ github.workspace }}/config.yaml
+          main_key: rattler-build
 
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore
         uses: actions/cache@v4
         with:
           path: .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs.rev }}
 
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
