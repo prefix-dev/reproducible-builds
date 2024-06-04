@@ -4,10 +4,9 @@ import glob
 import json
 import logging
 import os
-import tempfile
 import matplotlib.pyplot as plt
 
-from repror.conf import load_config
+from repror.internals.conf import load_config
 
 
 def find_infos(folder_path: str, suffix: str):
@@ -194,10 +193,3 @@ Built on ubuntu 22.04 and rebuild
     # Save the table to README.md
     with open("README.md", "w") as file:
         file.write(rebuild_table)
-
-
-if __name__ == "__main__":
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        build_results_by_platform = make_statistics(tmp_dir)
-
-        plot(build_results_by_platform)

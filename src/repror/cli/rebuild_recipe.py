@@ -1,14 +1,10 @@
 import json
 import os
 from pathlib import Path
-import sys
-import tempfile
 import platform
 from typing import Optional
 
-from repror.build import BuildInfo, Recipe, rebuild_package
-from repror.conf import load_config
-from repror.rattler_build import setup_rattler_build
+from repror.internals.build import BuildInfo, Recipe, rebuild_package
 
 
 def rebuild_packages(
@@ -34,23 +30,15 @@ def rebuild_packages(
     return rebuild_infos
 
 
-if __name__ == "__main__":
-    recipe_obj = Recipe(**json.loads(sys.argv[1]))
-
+def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path):
     platform_name, platform_version = platform.system().lower(), platform.release()
 
-    build_info = {}
+    Path(f"ci_artifacts/{platform_name}/build").mkdir(exist_ok=True, parents=True)
+    Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
-    with tempfile.TemporaryDirectory() as tmp_dir:
-        config = load_config()
-
-        setup_rattler_build(config, Path(tmp_dir))
-
-        Path(f"ci_artifacts/{platform_name}/build").mkdir(exist_ok=True, parents=True)
-        Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
-
+    for recipe in recipes:
         with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_obj.name}_build_info.json",
+            f"build_info/{platform_name}_{platform_version}_{recipe.build_id}_build_info.json",
             "r",
         ) as f:
             previous_build_info = json.load(f)
@@ -60,13 +48,13 @@ if __name__ == "__main__":
         os.makedirs(f"build_info/{platform_name}", exist_ok=True)
 
         with open(
-            f"build_info/{platform_name}/{recipe_obj.name}_platform_{platform_name}_{platform_version}_rebuild_info.json",
+            f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_rebuild_info.json",
             "w",
         ) as f:
             json.dump(rebuild_info, f)
 
         with open(
-            f"build_info/{platform_name}/{recipe_obj.name}_platform_{platform_name}_{platform_version}_build_info.json",
+            f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_build_info.json",
             "w",
         ) as f:
             json.dump(previous_build_info, f)

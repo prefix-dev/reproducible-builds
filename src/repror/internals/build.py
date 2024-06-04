@@ -2,15 +2,14 @@ from pathlib import Path
 import shutil
 from typing import Optional, TypedDict
 
-from repror.conf import Recipe
-from repror.rattler_build import get_rattler_build
-from repror.util import (
+from repror.internals.conf import RecipeConfig, Recipe
+from repror.internals.rattler_build import get_rattler_build
+from repror.internals.commands import (
     calculate_hash,
     find_conda_build,
     move_file,
     run_command,
 )
-from repror.git import clone_repo, checkout_branch_or_commit
 
 
 class BuildInfo(TypedDict):
@@ -20,7 +19,7 @@ class BuildInfo(TypedDict):
     conda_loc: str
 
 
-def build_conda_package(recipe_path, output_dir):
+def build_conda_package(recipe_path: str, output_dir: str):
     rattler_bin = get_rattler_build()
     build_command = [
         rattler_bin,
@@ -34,7 +33,7 @@ def build_conda_package(recipe_path, output_dir):
     run_command(build_command)
 
 
-def rebuild_conda_package(conda_file, output_dir):
+def rebuild_conda_package(conda_file: str, output_dir: str):
     rattler_bin = get_rattler_build()
 
     re_build_command = [
@@ -98,41 +97,25 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
 def build_remote_recipes(
     recipe: Recipe, build_dir, cloned_prefix_dir
 ) -> dict[str, Optional[BuildInfo]]:
-    repo_url = recipe.url
-    ref = recipe.branch  # or repo.get("commit")
-    clone_dir = cloned_prefix_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
-
-    if clone_dir.exists():
-        shutil.rmtree(clone_dir)
-
-    print(f"Cloning repository: {repo_url}")
-    clone_repo(repo_url, clone_dir)
+    recipe_config = RecipeConfig.load_remote_recipe(recipe, Path(cloned_prefix_dir))
 
     build_infos: dict[str, Optional[BuildInfo]] = {}
 
-    if ref:
-        print(f"Checking out {ref}")
-        checkout_branch_or_commit(clone_dir, ref)
-
-    recipe_path = clone_dir / recipe.recipe_path
-
-    build_dir = build_dir / f"{recipe.name}_build"
+    build_dir = build_dir / f"{recipe_config.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
 
-    build_info = build_recipe(recipe_path, build_dir)
+    build_info = build_recipe(recipe_config.recipe_path, build_dir)
 
-    build_infos[recipe.name] = build_info
+    build_infos[recipe_config.name] = build_info
 
     return build_infos
 
 
 def build_local_recipe(recipe: Recipe, build_dir):
-    recipe_path = Path(recipe.recipe_path)
-
     print(f"Building recipe: {recipe.name}")
     build_infos = {}
 
-    build_info = build_recipe(recipe_path, build_dir)
+    build_info = build_recipe(recipe.path, build_dir)
 
     build_infos[recipe.name] = build_info
 

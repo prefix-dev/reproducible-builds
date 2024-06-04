@@ -41,11 +41,11 @@ local:
 # rattler-build:
 #   branch: main
 #   url: https://github.com/prefix-dev/rattler-build.git
-# repositories:
-# - branch: rattler-build
-#   recipes:
-#   - path: recipe/recipe.yaml
-#   url: https://github.com/conda-forge/polarify-feedstock.git
+repositories:
+- branch: rattler-build
+  recipes:
+  - path: recipe/recipe.yaml
+  url: https://github.com/conda-forge/polarify-feedstock.git
 # - branch: main
 #   recipes:
 #   - path: examples/xtensor/recipe.yaml
