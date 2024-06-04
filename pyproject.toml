@@ -18,7 +18,8 @@ classifiers = [
 ]
 
 [project.scripts]
-repror = "repror.app:app"
+repror = "repror.repror:app"
+convert-conda-recipe = "repror.convert_conda_recipe:app"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
