@@ -36,7 +36,7 @@ def make_statistics(build_info_dir: str = "build_info") -> dict:
     rebuild_infos = find_infos(build_info_dir, "rebuild_info")
 
     for rebuild_file in rebuild_infos:
-        platform_and_version = build_file.split("platform_")[1]
+        platform_and_version = rebuild_file.split("platform_")[1]
         platform, *_ = platform_and_version.split("_")
 
         with open(rebuild_file, "r") as f:
@@ -73,8 +73,6 @@ def make_statistics(build_info_dir: str = "build_info") -> dict:
 
 def plot(build_results_by_platform):
     now_date = datetime.datetime.now().strftime("%Y-%m-%d")
-
-    ubuntu_platform = {}
 
     with open("data/history.json", "r+") as history_file:
         previous_data = json.load(history_file)
@@ -144,9 +142,7 @@ def plot(build_results_by_platform):
 
     build_text = f"""
 {rattler_tmpl_string}
-
-Built on ubuntu 22.04 and rebuild
-    """
+"""
 
     # Generate the Markdown table
     table = f"""
@@ -164,26 +160,20 @@ Built on ubuntu 22.04 and rebuild
 ![Reproducibility Chart](data/chart.png)
 
 {build_text}
-
-| Recipe Name | Is Reproducible |
-| --- | --- |\n"""
-    for recipe, reproducible in ubuntu_platform.items():
-        table += f"| {recipe} | {'Yes 🟢' if reproducible else 'No 🔴'} |\n"
-
+\n"""
     rebuild_table = f"""{table}\n\n"""
 
     for platform in build_results_by_platform:
         build_text = f"Built on {platform}"
-        if platform == "macos":
-            build_text += " 13 and rebuilt"
+        if platform == "darwin":
+            build_text += " 13"
         elif platform == "windows":
-            build_text += " 2022 and rebuilt"
-        elif platform == "ubuntu":
-            continue
+            build_text += " 2022"
+        elif platform == "linux":
+            build_text += " 22.04"
 
-        rebuild_table += f"""
-{build_text}\n\n
-
+        rebuild_table += f"""\n
+{build_text}\n
 | Recipe Name | Is Reproducible |
 | --- | --- |\n"""
 
