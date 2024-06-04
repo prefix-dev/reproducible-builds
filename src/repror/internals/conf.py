@@ -93,11 +93,9 @@ class RecipeConfig:
         clone_dir = clone_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
 
         if not clone_dir.exists():
-            print(f"Cloning repository: {repo_url}")
             clone_repo(repo_url, clone_dir)
 
         if ref:
-            print(f"Checking out {ref}")
             checkout_branch_or_commit(clone_dir, ref)
 
         recipe_path = clone_dir / recipe.path
