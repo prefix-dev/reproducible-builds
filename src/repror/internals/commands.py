@@ -5,8 +5,8 @@ import shutil
 import subprocess
 
 
-def run_command(command, cwd=None, env=None):
-    subprocess.run(command, cwd=cwd, env=env, check=True)
+def run_command(command, cwd=None, env=None, silent=False):
+    subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=silent)
 
 
 def calculate_hash(conda_file):

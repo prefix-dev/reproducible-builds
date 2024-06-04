@@ -30,35 +30,31 @@ def rebuild_packages(
     return rebuild_infos
 
 
-def rebuild_recipe(recipe_string: str, tmp_dir: Path):
+def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path):
     platform_name, platform_version = platform.system().lower(), platform.release()
-
-    url, branch, path = recipe_string.split("::")
-    recipe_obj: Recipe = Recipe(url=url, branch=branch, path=path)
-
-    build_info = {}
 
     Path(f"ci_artifacts/{platform_name}/build").mkdir(exist_ok=True, parents=True)
     Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
-    with open(
-            f"build_info/{platform_name}_{platform_version}_{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_build_info.json",
+    for recipe in recipes:
+        with open(
+            f"build_info/{platform_name}_{platform_version}_{recipe.build_id}_build_info.json",
             "r",
-    ) as f:
-        previous_build_info = json.load(f)
+        ) as f:
+            previous_build_info = json.load(f)
 
-    rebuild_info = rebuild_packages(previous_build_info, tmp_dir, platform_name)
+        rebuild_info = rebuild_packages(previous_build_info, tmp_dir, platform_name)
 
-    os.makedirs(f"build_info/{platform_name}", exist_ok=True)
+        os.makedirs(f"build_info/{platform_name}", exist_ok=True)
 
-    with open(
-            f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_rebuild_info.json",
+        with open(
+            f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_rebuild_info.json",
             "w",
-    ) as f:
-        json.dump(rebuild_info, f)
+        ) as f:
+            json.dump(rebuild_info, f)
 
-    with open(
-            f"build_info/{platform_name}/{recipe_string.replace("/", "_").replace("::", "_").replace(":", "_")}_platform_{platform_name}_{platform_version}_build_info.json",
+        with open(
+            f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_build_info.json",
             "w",
-    ) as f:
-        json.dump(previous_build_info, f)
+        ) as f:
+            json.dump(previous_build_info, f)
