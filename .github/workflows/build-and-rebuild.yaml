@@ -115,4 +115,3 @@ jobs:
           pixi run rewrite-readme --update-remote
         env:
           REPROR_UPDATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
