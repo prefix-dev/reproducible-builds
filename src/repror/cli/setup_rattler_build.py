@@ -25,7 +25,7 @@ def setup_rattler_build(
 
     # Branch and url of the rattler-build repository
     url = rattler_build_config["url"]
-    branch = rattler_build_config["branch"]
+    branch = rattler_build_config["rev"]
 
     clone_dir = root_folder / ".rb-clone"
 
