@@ -14,6 +14,11 @@ load_dotenv()
 
 
 class GithubAPI:
+    """
+    Class to interact with the GitHub API.
+    It is used to update files in a GitHub repository.
+    """
+
     owner: str
     repo: str
     branch: str
@@ -31,27 +36,30 @@ class GithubAPI:
             )
 
     def _get_git_remote_url(self):
+        """Get the remote URL of the git repository."""
         result = subprocess.run(
             ["git", "remote", "get-url", "origin"], stdout=subprocess.PIPE, text=True
         )
         return result.stdout.strip()
 
     def extract_repo_owner(self):
-        # Return the owner of the repository in owner/repo format
+        """Return the owner of the repository in owner/repo format"""
         remote_url = self._get_git_remote_url()
 
-        https_pattern = r'^https://github.com/([^/]+)/([^/]+?)(?:\.git)?$'
-        ssh_pattern = r'^git@github.com:([^/]+)/([^/]+?)(?:\.git)?$'
+        https_pattern = r"^https://github.com/([^/]+)/([^/]+?)(?:\.git)?$"
+        ssh_pattern = r"^git@github.com:([^/]+)/([^/]+?)(?:\.git)?$"
 
         if re.match(https_pattern, remote_url):
             return "/".join(re.findall(https_pattern, remote_url)[0])
         elif re.match(ssh_pattern, remote_url):
             return "/".join(re.findall(ssh_pattern, remote_url)[0])
         else:
-            raise ValueError(f"Remote URL does not match expected GitHub patterns {remote_url}")
+            raise ValueError(
+                f"Remote URL does not match expected GitHub patterns {remote_url}"
+            )
 
     def get_git_branch(self):
-        # Return the current branch name
+        """Return the current branch name"""
         result = subprocess.run(
             ["git", "rev-parse", "--abbrev-ref", "HEAD"],
             stdout=subprocess.PIPE,
@@ -60,7 +68,7 @@ class GithubAPI:
         return result.stdout.strip()
 
     def update_obj(self, content: str | bytes, file_path: str, message: str):
-        # Get the SHA of the existing file at file_path
+        """Update a file in a GitHub repository and commit the changes."""
         url = f"https://api.github.com/repos/{self.owner}/contents/{file_path}"
         headers = {
             "Authorization": f"token {self.token}",
