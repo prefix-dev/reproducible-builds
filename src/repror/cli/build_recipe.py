@@ -10,19 +10,14 @@ from repror.internals.build import (
 from repror.internals.conf import Recipe, load_all_recipes
 
 
-def filter_recipes(
-    recipe_names: Optional[list[str]], json_recipe: Optional[str], tmp_dir: str
-) -> list[Recipe]:
-    if not json_recipe:
-        all_recipes = load_all_recipes(tmp_dir)
-        if recipe_names:
-            recipes_to_build = [
-                recipe for recipe in all_recipes if recipe.name in recipe_names
-            ]
-        else:
-            recipes_to_build = all_recipes
+def filter_recipes(recipe_names: Optional[list[str]]) -> list[Recipe]:
+    all_recipes = load_all_recipes()
+    if recipe_names:
+        recipes_to_build = [
+            recipe for recipe in all_recipes if recipe.name in recipe_names
+        ]
     else:
-        recipes_to_build = [Recipe(**json.loads(json_recipe))]
+        recipes_to_build = all_recipes
 
     return recipes_to_build
 

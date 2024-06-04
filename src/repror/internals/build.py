@@ -2,7 +2,7 @@ from pathlib import Path
 import shutil
 from typing import Optional, TypedDict
 
-from repror.internals.conf import RecipeConfig, Recipe
+from repror.internals.conf import Recipe
 from repror.internals.rattler_build import get_rattler_build
 from repror.internals.commands import (
     calculate_hash,
@@ -97,16 +97,16 @@ def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
 def build_remote_recipes(
     recipe: Recipe, build_dir, cloned_prefix_dir
 ) -> dict[str, Optional[BuildInfo]]:
-    recipe_config = RecipeConfig.load_remote_recipe(recipe, Path(cloned_prefix_dir))
+    _, recipe_location = recipe.load_remote_recipe_config(Path(cloned_prefix_dir))
 
     build_infos: dict[str, Optional[BuildInfo]] = {}
 
-    build_dir = build_dir / f"{recipe_config.name}_build"
+    build_dir = build_dir / f"{recipe.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
 
-    build_info = build_recipe(recipe_config.recipe_path, build_dir)
+    build_info = build_recipe(recipe_location, build_dir)
 
-    build_infos[recipe_config.name] = build_info
+    build_infos[recipe.name] = build_info
 
     return build_infos
 

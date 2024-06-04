@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from pathlib import Path
 import tempfile
-from typing import Literal, Optional
+from typing import Literal, Optional, Tuple
 import yaml
 
 from repror.internals.git import checkout_branch_or_commit, clone_repo
@@ -24,7 +24,8 @@ class Recipe:
     url: Optional[str]
     branch: Optional[str]
     path: str
-    name: Optional[str] = None
+    _name: Optional[str] = None
+    _config: Optional[dict] = None
 
     def is_local(self) -> bool:
         return self.recipe_type == "local"
@@ -42,54 +43,28 @@ class Recipe:
                 + self.path.replace("/", "_")
             )
 
+    def load_recipe_config(self, clone_dir: Optional[Path] = None) -> dict:
+        if self.is_local():
+            return self.load_local_recipe_config()
+        else:
+            conf, _ = self.load_remote_recipe_config(clone_dir)
+            return conf
 
-def load_all_recipes(
-    clone_dir: Optional[Path] = None, config: str = "config.yaml"
-) -> list[Recipe]:
-    config = load_config(config)
-    recipes = []
-    for repo in config.get("repositories", []):
-        url = repo["url"]
-        branch = repo["branch"]
-        for recipe in repo.get("recipes", []):
-            path = recipe["path"]
+    def load_local_recipe_config(self, recipe_path: Optional[str] = None) -> dict:
+        path = Path(recipe_path) if recipe_path else Path(self.path)
 
-            recipe = Recipe(url=url, branch=branch, path=path, recipe_type="remote")
-            if not clone_dir:
-                with tempfile.TemporaryDirectory() as tmp_dir:
-                    recipe_conf = RecipeConfig.load_remote_recipe(recipe, Path(tmp_dir))
-            else:
-                recipe_conf = RecipeConfig.load_remote_recipe(recipe, Path(clone_dir))
+        with open(path, "r", encoding="utf8") as file:
+            return yaml.safe_load(file)
 
-            recipe.name = recipe_conf.name
+    def load_remote_recipe_config(
+        self, clone_dir: Optional[Path] = None
+    ) -> Tuple[dict, Path]:
+        repo_url = self.url
+        ref = self.branch
+        if not clone_dir:
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                clone_dir = Path(tmp_dir)
 
-            recipes.append(recipe)
-
-    for local in config.get("local", []):
-        path = local["path"]
-        recipe = Recipe(url=None, branch=None, path=path, recipe_type="local")
-        recipe_conf = RecipeConfig.load_local_recipe(recipe.path)
-        recipe.name = recipe_conf.name
-        recipes.append(recipe)
-
-    return recipes
-
-
-class RecipeConfig:
-    def __init__(self, config, recipe_path: str = None):
-        self.config = config
-        self.recipe_path = recipe_path
-
-    @staticmethod
-    def load_local_recipe(recipe_file) -> "RecipeConfig":
-        with open(recipe_file, "r", encoding="utf8") as file:
-            recipe = yaml.safe_load(file)
-        return RecipeConfig(recipe)
-
-    @staticmethod
-    def load_remote_recipe(recipe: Recipe, clone_dir: Path) -> "RecipeConfig":
-        repo_url = recipe.url
-        ref = recipe.branch
         clone_dir = clone_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
 
         if not clone_dir.exists():
@@ -98,18 +73,61 @@ class RecipeConfig:
         if ref:
             checkout_branch_or_commit(clone_dir, ref)
 
-        recipe_path = clone_dir / recipe.path
-        conf = RecipeConfig.load_local_recipe(recipe_path)
-        conf.recipe_path = recipe_path
-        return conf
+        recipe_path = clone_dir / self.path
+        conf = self.load_local_recipe_config(recipe_path)
+        return (conf, recipe_path)
 
     @property
     def name(self) -> str:
-        if "name" in self.config.get("context", {}):
-            return self.config["context"]["name"]
+        if self._name:
+            return self._name
 
-        return (
-            self.config["package"]["name"]
-            if "package" in self.config
-            else self.config["recipe"]["name"]
-        )
+        config = self.config
+
+        if "name" in config.get("context", {}):
+            self._name = config["context"]["name"]
+        else:
+            self._name = (
+                config["package"]["name"]
+                if "package" in self.config
+                else self.config["recipe"]["name"]
+            )
+
+        return self._name
+
+    @property
+    def config(self) -> dict:
+        if self._config:
+            return self._config
+
+        config = self.load_recipe_config()
+        self._config = config
+        return self._config
+
+    def as_dict(self) -> dict:
+        return {
+            "recipe_type": self.recipe_type,
+            "url": self.url,
+            "branch": self.branch,
+            "path": self.path,
+            "_name": self.name,
+        }
+
+
+def load_all_recipes(config: str = "config.yaml") -> list[Recipe]:
+    config = load_config(config)
+    recipes = []
+    for repo in config.get("repositories", []):
+        url = repo["url"]
+        branch = repo["branch"]
+        for recipe in repo.get("recipes", []):
+            path = recipe["path"]
+            recipe = Recipe(url=url, branch=branch, path=path, recipe_type="remote")
+            recipes.append(recipe)
+
+    for local in config.get("local", []):
+        path = local["path"]
+        recipe = Recipe(url=None, branch=None, path=path, recipe_type="local")
+        recipes.append(recipe)
+
+    return recipes

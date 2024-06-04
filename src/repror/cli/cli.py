@@ -53,15 +53,11 @@ def _check_local_rattler_build(tmp_dir: Path):
 @app.command()
 def build_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
-    json_recipe: Annotated[
-        Optional[str],
-        typer.Option(help="Recipe to build in json format. This option is used in CI"),
-    ] = None,
 ):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
         _check_local_rattler_build(tmp_dir)
-        recipes_to_build = build.filter_recipes(recipe_names, json_recipe, tmp_dir)
+        recipes_to_build = build.filter_recipes(recipe_names)
 
         build.build_recipe(recipes_to_build, tmp_dir)
 
@@ -69,17 +65,11 @@ def build_recipe(
 @app.command()
 def rebuild_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
-    json_recipe: Annotated[
-        Optional[str],
-        typer.Option(
-            help="Recipe to rebuild in json format. This option is used in CI"
-        ),
-    ] = None,
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
         _check_local_rattler_build(tmp_dir)
-        recipes_to_rebuild = build.filter_recipes(recipe_names, json_recipe, tmp_dir)
+        recipes_to_rebuild = build.filter_recipes(recipe_names)
         rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir)
 
 

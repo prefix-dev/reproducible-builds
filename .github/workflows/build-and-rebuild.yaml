@@ -33,11 +33,11 @@ jobs:
 
   build-and-rebuild-recipes:
     needs: generate-recipes
-    name: ${{ matrix.recipe.name }}-${{ matrix.os }}
+    name: ${{ matrix.recipe_name }}-${{ matrix.os }}
     continue-on-error: true
     strategy:
       matrix:
-        recipe: ${{ fromJson(needs.generate-recipes.outputs.recipe) }}
+        recipe_name: ${{ fromJson(needs.generate-recipes.outputs.recipe) }}
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     runs-on: ${{ matrix.os }}
@@ -64,7 +64,7 @@ jobs:
 
       - name: Build recipes and track if hash is equal
         run: |
-          pixi run repror build-recipe --json-recipe '${{ toJson(matrix.recipe) }}'
+          pixi run repror build-recipe ${{ matrix.recipe_name }}
 
       - name: Set timezone to Los Angeles
         if: matrix.os == 'ubuntu-latest'
@@ -80,7 +80,7 @@ jobs:
 
       - name: Rebuild recipes and track if hash is equal
         run: |
-          pixi run rebuild-recipe '${{ toJson(matrix.recipe) }}'
+          pixi run rebuild-recipe ${{ matrix.recipe_name }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
