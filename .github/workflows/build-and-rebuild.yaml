@@ -45,6 +45,7 @@ jobs:
       - name: Save rattler-build
         id: cache-rattler-build-save
         uses: actions/cache/save@v4
+        if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
         with:
           path: |
             .rb-clone/target/release/rattler-build
