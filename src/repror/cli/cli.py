@@ -62,7 +62,6 @@ def build_recipe(
         build.build_recipe(recipes_to_build, tmp_dir)
 
 
-
 @app.command()
 def rebuild_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
@@ -72,7 +71,6 @@ def rebuild_recipe(
         _check_local_rattler_build(tmp_dir)
         recipes_to_rebuild = build.filter_recipes(recipe_names)
         rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir)
-
 
 
 @app.command()
