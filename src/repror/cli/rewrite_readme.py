@@ -48,7 +48,6 @@ def make_statistics(build_info_dir: str = "build_info") -> dict:
 
     for rebuild_file in rebuild_infos:
         platform_and_version = rebuild_file.split("platform_")[1]
-        platform_and_version = rebuild_file.split("platform_")[1]
         platform, *_ = platform_and_version.split("_")
 
         with open(rebuild_file, "r") as f:
