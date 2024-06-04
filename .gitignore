@@ -166,3 +166,10 @@ mapping/*# pixi environments
 recipes/output/*
 
 .idea/*
+
+# Build artifacts for this repo
+
+artifacts/*
+ci_artifacts/*
+build_info/*
+build_outputs/*
