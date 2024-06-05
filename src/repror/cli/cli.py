@@ -2,11 +2,11 @@ import os
 import tempfile
 from pathlib import Path
 from typing import Annotated, Optional
-from rich import print
 
 import typer
 
 from repror.internals.conf import load_config
+from repror.internals.print import print
 
 # Different CLI commands
 from . import build_recipe as build
@@ -14,6 +14,7 @@ from . import generate_recipes as generate
 from . import rewrite_readme as rewrite
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
+
 from ..internals.commands import pixi_root
 from rich.spinner import Spinner
 from rich.live import Live
