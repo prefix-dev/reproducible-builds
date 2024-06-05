@@ -54,7 +54,12 @@ jobs:
 
 
       - name: Build rattler-build
-        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true' || steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true'
+        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os != 'windows-latest'
+        run: |
+          pixi run repror setup-rattler-build
+
+      - name: Build rattler-build
+        if: steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
         run: |
           pixi run repror setup-rattler-build
 
