@@ -12,12 +12,14 @@
 Built with rattler-build https://github.com/prefix-dev/rattler-build.git at commit 6f2c48e6e490967f3c47253c092853ee8fce9d57
 
 
-Built on linux
+Built on windows
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
 
 | boltons | Yes 🟢 |
+
+| rich | Yes 🟢 |
 
 
 Built on darwin
@@ -25,13 +27,25 @@ Built on darwin
 | Recipe Name | Is Reproducible |
 | --- | --- |
 
+| curl | Yes 🟢 |
+
 | boltons | Yes 🟢 |
 
+| rich | Yes 🟢 |
 
-Built on windows
+| pthread-stubs | Yes 🟢 |
+
+
+Built on linux
 
 | Recipe Name | Is Reproducible |
 | --- | --- |
+
+| curl | Yes 🟢 |
+
+| rich | Yes 🟢 |
+
+| pthread-stubs | No 🔴 |
 
 | boltons | Yes 🟢 |
 
