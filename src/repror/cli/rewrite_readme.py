@@ -87,7 +87,6 @@ def plot(
     build_results_by_platform,
     update_remote: bool = False,
     remote_branch: Optional[str] = None,
-    remote_owner: Optional[str] = None,
 ):
     now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -178,7 +177,6 @@ def plot(
             README_PATH,
             "Update statistics",
             remote_branch,
-            remote_owner,
         )
         data_chart_bytes = Path("data/chart.png").read_bytes()
         print(":running: Updating data/chart.png with new plot")
@@ -187,7 +185,6 @@ def plot(
             DATA_CHART_PATH,
             "Update data chart graph",
             remote_branch,
-            remote_owner,
         )
 
     print(Syntax(readme_content, "markdown"))
