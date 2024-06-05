@@ -10,6 +10,8 @@ on:
 
 env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
+  # For windows builds
+  PYTHONUTF8: 1
 
 jobs:
   setup-rattler-build:
@@ -17,8 +19,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        # os: [ubuntu-latest]
-
 
     runs-on: ${{ matrix.os }}
 
