@@ -34,6 +34,7 @@ class GithubAPI:
             raise ValueError(
                 "REPROR_UPDATE_TOKEN is not set. Please set it in .env file or as an environment variable."
             )
+        return token
 
     def _get_git_remote_url(self):
         """Get the remote URL of the git repository."""
@@ -71,11 +72,11 @@ class GithubAPI:
         """Update a file in a GitHub repository and commit the changes."""
         url = f"https://api.github.com/repos/{self.owner}/contents/{file_path}"
         headers = {
-            "Authorization": f"token {self.token}",
+            "Authorization": f"Bearer {self.token}",
             "Accept": "application/vnd.github.v3+json",
         }
 
-        response = requests.get(url, headers=headers, params={"ref": self.branch})
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
         data = response.json()
         sha = data["sha"]
