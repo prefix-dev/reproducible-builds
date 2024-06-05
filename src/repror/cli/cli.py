@@ -1,11 +1,13 @@
+import os
+import platform
 import tempfile
 from pathlib import Path
 from typing import Annotated, Optional
-from rich import print
 
 import typer
 
 from repror.internals.conf import load_config
+from repror.internals.print import print
 
 # Different CLI commands
 from . import build_recipe as build
@@ -13,6 +15,7 @@ from . import generate_recipes as generate
 from . import rewrite_readme as rewrite
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
+
 from ..internals.commands import pixi_root
 from rich.spinner import Spinner
 from rich.live import Live
@@ -75,10 +78,14 @@ def _check_local_rattler_build(live: Optional[Live] = None):
 @app.command()
 def build_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
+    rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
 ):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
-        _check_local_rattler_build()
+        if not rattler_build_exe:
+            _check_local_rattler_build()
+        else:
+            os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.filter_recipes(recipe_names)
 
         build.build_recipe(recipes_to_build, tmp_dir)
@@ -87,10 +94,14 @@ def build_recipe(
 @app.command()
 def rebuild_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
+    rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
-        _check_local_rattler_build()
+        if not rattler_build_exe:
+            _check_local_rattler_build()
+        else:
+            os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.filter_recipes(recipe_names)
         rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir)
 
@@ -107,7 +118,10 @@ def rewrite_readme(
 @app.command()
 def setup_rattler_build():
     """Setup a source build environment for rattler. (currently for testing if this works)"""
-    spinner = Spinner("dots", "Setting up rattler build...")
+    spinner_type = "simpleDots" if platform.system() == "Windows" else "dots"
+
+    spinner = Spinner(spinner_type, "Setting up rattler build...")
     with Live(spinner) as live:
+        print(":dancer: Rattler build setup starting :dancer:")
         _check_local_rattler_build(live)
         print(":dancer: Rattler build setup complete :dancer:")

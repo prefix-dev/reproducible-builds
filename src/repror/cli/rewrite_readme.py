@@ -149,7 +149,7 @@ def plot(build_results_by_platform, update_remote: bool = False):
     if "rattler-build" not in config:
         build_text = "Built with latest rattler-build"
     else:
-        build_text = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["branch"]}"
+        build_text = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["rev"]}"
 
     # Generate the Markdown table
     env = Environment(

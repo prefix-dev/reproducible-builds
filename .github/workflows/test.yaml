@@ -1,0 +1,54 @@
+name: Building and Rebuilding
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+  workflow_dispatch:
+
+env:
+  RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
+
+jobs:
+  test-caching:
+    continue-on-error: false
+    strategy:
+      matrix:
+        os: [windows-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+
+      - name: Restore rattler-build cache
+        id: cache-rattler-build-restore-windows
+        uses: actions/cache@v4
+        if: matrix.os == 'windows-latest'
+        with:
+          path: .rb-test\target\test.exe
+          key: v2
+
+
+      - name: Build rattler-build
+        if: steps.cache-rattler-build-restore-windows.outputs.cache-hit != 'true'
+        run: |
+            # Ensure the target directory exists
+            New-Item -Path ".rb-test\target" -ItemType Directory -Force
+
+            # Create the test.exe file
+            New-Item -Path ".rb-test\target\test.exe" -ItemType File
+
+
+      - name: Save rattler-build
+        id: cache-rattler-build-save
+        uses: actions/cache/save@v4
+        if: steps.cache-rattler-build-restore-windows.outputs.cache-hit != 'true'
+        with:
+          path: |
+            .rb-test\target\test.exe
+          key: v2
