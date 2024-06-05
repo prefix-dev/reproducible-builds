@@ -44,7 +44,7 @@ def strip_emojis(text: str) -> str:
     return text
 
 
-def print(text: str) -> str:
+def print(text: str) -> None:
     if platform.system() == "Windows":
-        rich_print(strip_emojis(text))
+        return rich_print(strip_emojis(text))
     rich_print(text)
