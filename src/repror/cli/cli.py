@@ -118,5 +118,6 @@ def setup_rattler_build():
     """Setup a source build environment for rattler. (currently for testing if this works)"""
     spinner = Spinner("dots", "Setting up rattler build...")
     with Live(spinner) as live:
+        print(":dancer: Rattler build setup starting :dancer:")
         _check_local_rattler_build(live)
         print(":dancer: Rattler build setup complete :dancer:")

@@ -45,7 +45,9 @@ jobs:
 
       - name: Set utf-8 encoding
         if: matrix.os == 'windows-latest'
-        run: chcp 65001
+        run: |
+          chcp 65001
+          echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
 
       - name: Build rattler-build
         if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
