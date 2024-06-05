@@ -9,23 +9,7 @@
 
 ![Reproducibility Chart](data/chart.png)
 
-Built with rattler-build https://github.com/prefix-dev/rattler-build.git at commit main
-
-
-Built on linux
-
-| Recipe Name | Is Reproducible |
-| --- | --- |
-
-| boltons | Yes 🟢 |
-
-
-Built on darwin
-
-| Recipe Name | Is Reproducible |
-| --- | --- |
-
-| boltons | Yes 🟢 |
+Built with rattler-build https://github.com/prefix-dev/rattler-build.git at commit 6f2c48e6e490967f3c47253c092853ee8fce9d57
 
 
 Built on windows
@@ -34,3 +18,34 @@ Built on windows
 | --- | --- |
 
 | boltons | Yes 🟢 |
+
+| rich | Yes 🟢 |
+
+
+Built on darwin
+
+| Recipe Name | Is Reproducible |
+| --- | --- |
+
+| curl | Yes 🟢 |
+
+| boltons | Yes 🟢 |
+
+| rich | Yes 🟢 |
+
+| pthread-stubs | Yes 🟢 |
+
+
+Built on linux
+
+| Recipe Name | Is Reproducible |
+| --- | --- |
+
+| curl | Yes 🟢 |
+
+| rich | Yes 🟢 |
+
+| pthread-stubs | No 🔴 |
+
+| boltons | Yes 🟢 |
+

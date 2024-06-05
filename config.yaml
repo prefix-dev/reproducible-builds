@@ -1,8 +1,9 @@
 local:
 - path: recipes/boltons/recipe.yaml
 - path: recipes/pthread-stubs/recipe.yaml
+# - path: recipes/zlib/recipe.yaml
 rattler-build:
-  branch: main
+  rev: 6f2c48e6e490967f3c47253c092853ee8fce9d57
   url: https://github.com/prefix-dev/rattler-build.git
 repositories:
 - branch: main
