@@ -43,7 +43,7 @@ jobs:
         with:
           path: .rb-clone\target\release\rattler-build
           key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
-      
+
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore-windows
         uses: actions/cache@v4

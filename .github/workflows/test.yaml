@@ -24,7 +24,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      
+
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore-windows
         uses: actions/cache@v4
@@ -39,7 +39,7 @@ jobs:
         run: |
             # Ensure the target directory exists
             New-Item -Path ".rb-test\target" -ItemType Directory -Force
-            
+
             # Create the test.exe file
             New-Item -Path ".rb-test\target\test.exe" -ItemType File
 
@@ -50,5 +50,5 @@ jobs:
         if: steps.cache-rattler-build-restore-windows.outputs.cache-hit != 'true'
         with:
           path: |
-            .rb-clone\target\test.exe
+            .rb-test\target\test.exe
           key: v1
