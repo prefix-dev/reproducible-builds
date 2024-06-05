@@ -1,4 +1,5 @@
 import os
+import platform
 import tempfile
 from pathlib import Path
 from typing import Annotated, Optional
@@ -117,7 +118,9 @@ def rewrite_readme(
 @app.command()
 def setup_rattler_build():
     """Setup a source build environment for rattler. (currently for testing if this works)"""
-    spinner = Spinner("dots", "Setting up rattler build...")
+    spinner_type = "simpleDots" if platform.system() == "Windows" else "dots"
+
+    spinner = Spinner(spinner_type, "Setting up rattler build...")
     with Live(spinner) as live:
         print(":dancer: Rattler build setup starting :dancer:")
         _check_local_rattler_build(live)
