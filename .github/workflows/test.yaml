@@ -31,7 +31,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         with:
           path: .rb-test\target\test.exe
-          key: v1
+          key: v2
 
 
       - name: Build rattler-build
@@ -51,4 +51,4 @@ jobs:
         with:
           path: |
             .rb-test\target\test.exe
-          key: v1
+          key: v2
