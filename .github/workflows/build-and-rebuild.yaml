@@ -36,42 +36,44 @@ jobs:
         with:
           config: ${{ github.workspace }}/config.yaml
 
-      - name: Restore rattler-build cache unix
-        id: cache-rattler-build-restore-unix
+      - name: Restore unix rattler-build cache
+        id: unix-cache-rattler-build-restore
         uses: actions/cache@v4
         if: matrix.os != 'windows-latest'
         with:
           path: .rb-clone\target\release\rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
-      - name: Restore rattler-build cache
-        id: cache-rattler-build-restore-windows
+      - name: Restore windows rattler-build cache
+        id: windows-cache-rattler-build-restore
         uses: actions/cache@v4
         if: matrix.os == 'windows-latest'
         with:
           path: .rb-clone/target/release/rattler-build.exe
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
-      - name: Set utf-8 encoding
-        if: matrix.os == 'windows-latest'
-        run: |
-          chcp 65001
-          echo "PYTHONIOENCODING=utf-8" >> $GITHUB_ENV
 
       - name: Build rattler-build
-        if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
+        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true' || steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true'
         run: |
           pixi run repror setup-rattler-build
 
 
-      - name: Save rattler-build
-        id: cache-rattler-build-save
+      - name: Save unix rattler-build
         uses: actions/cache/save@v4
-        if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
+        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true'
         with:
           path: |
             .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+
+      - name: Save windows rattler-build
+        uses: actions/cache/save@v4
+        if: steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true'
+        with:
+          path: |
+            .rb-clone\target\release\rattler-build.exe
+          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
 
 
