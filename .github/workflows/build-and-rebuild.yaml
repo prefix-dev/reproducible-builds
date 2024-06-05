@@ -43,6 +43,9 @@ jobs:
           path: .rb-clone/target/release/rattler-build
           key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
+      - name: Set utf-8 encoding
+        if: matrix.os == 'windows-latest'
+        run: chcp 65001
 
       - name: Build rattler-build
         if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
