@@ -61,7 +61,7 @@ jobs:
 
       - name: Save unix rattler-build
         uses: actions/cache/save@v4
-        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true'
+        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os != 'windows-latest'
         with:
           path: |
             .rb-clone/target/release/rattler-build
@@ -69,13 +69,11 @@ jobs:
 
       - name: Save windows rattler-build
         uses: actions/cache/save@v4
-        if: steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true'
+        if: steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
         with:
           path: |
             .rb-clone\target\release\rattler-build.exe
           key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
-
-
 
 
   generate-recipes:
@@ -125,12 +123,19 @@ jobs:
         with:
           config: ${{ github.workspace }}/config.yaml
 
-      - name: Restore rattler-build cache
+      - name: Restore windows rattler-build cache
         id: cache-rattler-build-restore
         uses: actions/cache@v4
         with:
           path: .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+
+
+      - name: Restore windows rattler-build cache
+        uses: actions/cache@v4
+        with:
+          path: .rb-clone\target\release\rattler-build.exe
+          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
@@ -145,8 +150,14 @@ jobs:
         run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
 
       - name: Build recipes and track if hash is equal
+        if: matrix.os != 'windows-latest'
         run: |
           pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build
+
+      - name: Build recipes and track if hash is equal
+        if: matrix.os == 'windows-latest'
+        run: |
+          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe
 
       - name: Set timezone to Los Angeles
         if: matrix.os == 'ubuntu-latest'
@@ -161,8 +172,14 @@ jobs:
         run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
 
       - name: Rebuild recipes and track if hash is equal
+        if: matrix.os != 'windows-latest'
         run: |
           pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build
+
+      - name: Rebuild recipes and track if hash is equal
+        if: matrix.os == 'windows-latest'
+        run: |
+          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe
 
       - name: Upload results
         uses: actions/upload-artifact@v3
