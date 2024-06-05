@@ -4,6 +4,7 @@ import glob
 import json
 import logging
 import os
+from typing import Optional
 
 from rich import print
 from rich.syntax import Syntax
@@ -83,7 +84,10 @@ def make_statistics(build_info_dir: str = "build_info") -> dict:
 
 
 def plot(
-    build_results_by_platform, update_remote: bool = False, remote_branch: str = None
+    build_results_by_platform,
+    update_remote: bool = False,
+    remote_branch: Optional[str] = None,
+    remote_owner: Optional[str] = None,
 ):
     now_date = datetime.datetime.now().strftime("%Y-%m-%d")
 
@@ -170,12 +174,20 @@ def plot(
         # Update the README.md using GitHub API
         print(":running: Updating README.md with new statistics")
         github_api.update_obj(
-            readme_content, README_PATH, "Update statistics", remote_branch
+            readme_content,
+            README_PATH,
+            "Update statistics",
+            remote_branch,
+            remote_owner,
         )
         data_chart_bytes = Path("data/chart.png").read_bytes()
         print(":running: Updating data/chart.png with new plot")
         github_api.update_obj(
-            data_chart_bytes, DATA_CHART_PATH, "Update data chart graph", remote_branch
+            data_chart_bytes,
+            DATA_CHART_PATH,
+            "Update data chart graph",
+            remote_branch,
+            remote_owner,
         )
 
     print(Syntax(readme_content, "markdown"))

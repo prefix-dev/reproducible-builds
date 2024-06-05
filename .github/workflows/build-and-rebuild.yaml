@@ -216,4 +216,4 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote --remote-branch ${{ github.ref_name }}
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote --remote-branch ${{ github.ref_name }} --remote-owner ${{ github.repository }}"

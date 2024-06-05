@@ -75,9 +75,10 @@ class GithubAPI:
         file_path: str,
         message: str,
         remote_branch: Optional[str] = None,
+        remote_owner: Optional[str] = None,
     ):
         """Update a file in a GitHub repository and commit the changes."""
-        url = f"https://api.github.com/repos/{self.owner}/contents/{file_path}"
+        url = f"https://api.github.com/repos/{remote_owner or self.owner}/contents/{file_path}"
         headers = {
             "Authorization": f"Bearer {self.token}",
             "Accept": "application/vnd.github.v3+json",
