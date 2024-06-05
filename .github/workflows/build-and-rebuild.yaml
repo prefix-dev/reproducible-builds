@@ -201,8 +201,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
 
       - uses: prefix-dev/setup-pixi@v0.5.1
         with:
@@ -218,4 +216,4 @@ jobs:
 
       - name: Calculate statistics and plot output
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote --remote-branch ${{ github.ref_name }}

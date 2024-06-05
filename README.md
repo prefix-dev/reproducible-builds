@@ -9,7 +9,7 @@
 
 ![Reproducibility Chart](data/chart.png)
 
-Built with rattler-build https://github.com/prefix-dev/rattler-build.git at commit main
+Built with rattler-build https://github.com/prefix-dev/rattler-build.git at commit 6f2c48e6e490967f3c47253c092853ee8fce9d57
 
 
 Built on linux
@@ -34,3 +34,4 @@ Built on windows
 | --- | --- |
 
 | boltons | Yes 🟢 |
+
