@@ -32,17 +32,16 @@ jobs:
 
       - name: Run YAML to Github Output Action
         id: read-yaml
-        uses: christian-ci/action-yaml-github-output@v2
+        uses: nichmor/minimal-read-yaml@v0.0.2
         with:
-          file_path: ${{ github.workspace }}/config.yaml
-          main_key: rattler-build
+          config: ${{ github.workspace }}/config.yaml
 
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore
         uses: actions/cache@v4
         with:
           path: .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs.rev }}
+          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
 
       - name: Build rattler-build
@@ -58,7 +57,7 @@ jobs:
         with:
           path: |
             .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs.rev }}
+          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
 
 
@@ -106,17 +105,16 @@ jobs:
 
       - name: Run YAML to Github Output Action
         id: read-yaml
-        uses: christian-ci/action-yaml-github-output@v2
+        uses: nichmor/minimal-read-yaml@v0.0.2
         with:
-          file_path: ${{ github.workspace }}/config.yaml
-          main_key: rattler-build
+          config: ${{ github.workspace }}/config.yaml
 
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore
         uses: actions/cache@v4
         with:
           path: .rb-clone/target/release/rattler-build
-          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs.rev }}
+          key: ${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
