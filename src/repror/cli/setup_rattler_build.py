@@ -9,7 +9,7 @@ from typing import Optional
 
 
 def setup_rattler_build(
-    rattler_build_config: dict, root_folder: Path, _live: Optional[Live] = None
+    rattler_build_config: dict, root_folder: Path, live: Optional[Live] = None
 ):
     """
     Setup a local rattler-build environment

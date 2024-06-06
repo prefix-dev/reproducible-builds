@@ -7,11 +7,33 @@ import shutil
 import subprocess
 from pathlib import Path
 from subprocess import CompletedProcess
+import io
 
 
 def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
     """Run a specific command."""
     return subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=silent)
+
+
+def run_streaming_command_stderr(
+    command: list[str],
+    cwd: Optional[list[str]],
+    env: Optional[list[str]] = None,
+):
+    """Run a specific command and stream the output."""
+
+    # We can only capture of stdout or stderr, not both
+    # Otherwise it will block
+    # See: https://stackoverflow.com/questions/18421757/live-output-from-subprocess-command
+    process = subprocess.Popen(command, stderr=subprocess.PIPE, cwd=cwd, env=env)
+
+    for line in io.TextIOWrapper(
+        process.stderr, encoding="utf-8"
+    ):  # or another encoding
+        print(line, end="")
+
+    # Also print stderr if there is any
+    print(process.stdout.readline())
 
 
 def calculate_hash(conda_file: Path):

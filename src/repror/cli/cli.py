@@ -71,7 +71,7 @@ def _check_local_rattler_build(live: Optional[Live] = None):
     if not global_options.skip_setup_rattler_build:
         config = load_config()
         setup.setup_rattler_build(
-            rattler_build_config=config, root_folder=pixi_root_cli(), _live=live
+            rattler_build_config=config, root_folder=pixi_root_cli(), live=live
         )
 
 

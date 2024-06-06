@@ -1,6 +1,6 @@
 import os
 
-from repror.internals.commands import run_command
+from repror.internals.commands import run_command, run_streaming_command_stderr
 
 
 def get_rattler_build():
@@ -13,7 +13,7 @@ def get_rattler_build():
 def build_rattler(clone_dir):
     build_command = ["cargo", "build", "--release"]
 
-    run_command(build_command, cwd=clone_dir)
+    run_streaming_command_stderr(build_command, cwd=clone_dir)
 
 
 def rattler_build_version(cwd):
