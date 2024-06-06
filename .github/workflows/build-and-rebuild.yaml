@@ -36,50 +36,30 @@ jobs:
         with:
           config: ${{ github.workspace }}/config.yaml
 
-      - name: Restore unix rattler-build cache
-        id: unix-cache-rattler-build-restore
+      - name: Restore rattler-build cache
+        id: cache-rattler-build-restore
         uses: actions/cache@v4
-        if: matrix.os != 'windows-latest'
         with:
-          path: .rb-clone\target\release\rattler-build
-          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
-
-      - name: Restore windows rattler-build cache
-        id: windows-cache-rattler-build-restore
-        uses: actions/cache@v4
-        if: matrix.os == 'windows-latest'
-        with:
-          path: .rb-clone/target/release/rattler-build.exe
-          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          path: |
+            .rb-clone\target\release\rattler-build
+            .rb-clone\target\release\rattler-build.exe
+          key: v3-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
 
       - name: Build rattler-build
-        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os != 'windows-latest'
-        run: |
-          pixi run repror setup-rattler-build
-
-      - name: Build rattler-build
-        if: steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
+        if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
         run: |
           pixi run repror setup-rattler-build
 
 
       - name: Save unix rattler-build
         uses: actions/cache/save@v4
-        if: steps.unix-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os != 'windows-latest'
+        if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
         with:
           path: |
             .rb-clone/target/release/rattler-build
-          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
-
-      - name: Save windows rattler-build
-        uses: actions/cache/save@v4
-        if: steps.windows-cache-rattler-build-restore.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
-        with:
-          path: |
             .rb-clone\target\release\rattler-build.exe
-          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
-
+          key: v3-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
   generate-recipes:
     runs-on: ubuntu-latest
@@ -128,19 +108,14 @@ jobs:
         with:
           config: ${{ github.workspace }}/config.yaml
 
-      - name: Restore windows rattler-build cache
+      - name: Restore rattler-build cache
         id: cache-rattler-build-restore
         uses: actions/cache@v4
         with:
-          path: .rb-clone/target/release/rattler-build
-          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
-
-
-      - name: Restore windows rattler-build cache
-        uses: actions/cache@v4
-        with:
-          path: .rb-clone\target\release\rattler-build.exe
-          key: v1-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          path: |
+            .rb-clone/target/release/rattler-build
+            .rb-clone/target/release/rattler-build.exe
+          key: v3--${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
