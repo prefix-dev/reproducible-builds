@@ -14,6 +14,7 @@ from jinja2 import Environment, FileSystemLoader
 import matplotlib.pyplot as plt
 
 from repror.internals.conf import load_config
+from repror.internals.db import get_rebuild_data
 from repror.internals.git import github_api
 
 
@@ -160,9 +161,16 @@ def plot(
     env = Environment(
         loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
     )
-    template = env.get_template("README.md")
+    # template = env.get_template("README.md")
+    # readme_content = template.render(
+    #     build_text=build_text, build_results_by_platform=build_results_by_platform
+    # )
+
+    data = get_rebuild_data().to_dict(orient="records")
+    template = env.get_template("index.html")
     readme_content = template.render(
-        build_text=build_text, build_results_by_platform=build_results_by_platform
+        # build_text=build_text, build_results_by_platform=build_results_by_platform
+        data=data
     )
 
     # Save the table to README.md
@@ -188,3 +196,24 @@ def plot(
         )
 
     print(Syntax(readme_content, "markdown"))
+
+
+def rerender_html():
+    # Generate the Markdown table
+    env = Environment(
+        loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
+    )
+    # template = env.get_template("README.md")
+    # readme_content = template.render(
+    #     build_text=build_text, build_results_by_platform=build_results_by_platform
+    # )
+
+    data = get_rebuild_data().to_dict(orient="records")
+    template = env.get_template("index.html")
+    html_content = template.render(
+        # build_text=build_text, build_results_by_platform=build_results_by_platform
+        data=data
+    )
+    # Save the table to README.md
+    with open("docs/index.html", "w") as file:
+        file.write(html_content)

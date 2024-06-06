@@ -58,19 +58,48 @@ def rebuild_recipe(connection: Connection, recipes: list[Recipe], tmp_dir: Path)
         )
 
         latest_rebuild = (
-            get_latest_rebuild(connection, latest_build[-3]) if latest_build else None
+            get_latest_rebuild(connection, latest_build[0]) if latest_build else None
         )
         # if latest_rebuild:
         #     print("Found latest rebuild. Skipping rebuilding it again")
         #     continue
+        if latest_build[2] == "fail":
+            latest_rebuild = save_failed_rebuild(
+                connection, recipe.name, latest_build[0], latest_build[-2]
+            )
+
+            with open(
+                f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_info.json",
+                "w",
+            ) as f:
+                patch_info = {
+                    "build": latest_build,
+                    "rebuild": latest_rebuild[0],
+                }
+
+                json.dump(patch_info, f)
+
+            return None
 
         try:
             rebuild_info = rebuild_package(latest_build, recipe, tmp_dir, platform_name)
         except CalledProcessError as e:
             last_failed_logs = e.stderr[2500:].decode("utf-8")
-            save_failed_rebuild(
+            latest_rebuild = save_failed_rebuild(
                 connection, recipe.name, latest_build[-3], last_failed_logs
             )
+
+            with open(
+                f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_info.json",
+                "w",
+            ) as f:
+                patch_info = {
+                    "build": latest_build,
+                    "rebuild": latest_rebuild[0],
+                }
+
+                json.dump(patch_info, f)
+
             return None
 
         latest_rebuild = save_rebuild(

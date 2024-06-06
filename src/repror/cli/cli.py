@@ -129,8 +129,9 @@ def rewrite_readme(
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rewrite the README.md file with updated statistics"""
-    build_results_by_platform = rewrite.make_statistics()
-    rewrite.plot(build_results_by_platform, update_remote, remote_branch)
+    # build_results_by_platform = rewrite.make_statistics()
+    # rewrite.plot(build_results_by_platform, update_remote, remote_branch)
+    rewrite.rerender_html()
 
 
 @app.command()

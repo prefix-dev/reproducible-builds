@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rebuild Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Rebuild Status</h1>
+        <div id="plot-container" class="mb-4">
+            <!-- Plot will be added here by JavaScript -->
+            <canvas id="historicalChart" width="400" height="200"></canvas>
+        </div>
+        <table class="min-w-full bg-white border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 border-b">Recipe Name</th>
+                    <th class="py-2 px-4 border-b">Status</th>
+                    <th class="py-2 px-4 border-b">Reason</th>
+                    <th class="py-2 px-4 border-b">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr class="{{ 'bg-green-100' if row['hash'] == row['build_hash'] and row['state'] != 'fail' else 'bg-red-100' }}">
+                    <td class="py-2 px-4 border-b">{{ row['recipe_name'] }}</td>
+                    <td class="py-2 px-4 border-b">{{ 'Success' if row['hash'] == row['build_hash'] and row['state'] != 'fail' else 'Failed' }}</td>
+                    <td class="py-2 px-4 border-b">{{ row['reason'] }}</td>
+                    <!-- <td class="py-2 px-4 border-b">
+                        <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs({{ row['reason'] }}')">View Logs</button>
+                    </td> -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal for logs -->
+    <div id="logModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden">
+        <div class="bg-white p-4 rounded shadow-lg max-w-xl w-full">
+            <h2 class="text-xl font-bold mb-2">Logs</h2>
+            <pre id="logContent" class="bg-gray-200 p-2 rounded h-64 overflow-y-scroll"></pre>
+            <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 mt-2" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // document.addEventListener("DOMContentLoaded", function() {
+        //     const plotContainer = document.getElementById('plot-container');
+        //     const img = document.createElement('img');
+        //     img.src = '/static/plot.png';
+        //     img.alt = 'Plot';
+        //     plotContainer.appendChild(img);
+
+        //     fetch('/historical-data')
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             const ctx = document.getElementById('historicalChart').getContext('2d');
+        //             new Chart(ctx, {
+        //                 type: 'line',
+        //                 data: {
+        //                     labels: data.labels,
+        //                     datasets: [{
+        //                         label: 'Rebuild Successes',
+        //                         data: data.successes,
+        //                         borderColor: 'rgba(75, 192, 192, 1)',
+        //                         borderWidth: 1,
+        //                         fill: false
+        //                     }, {
+        //                         label: 'Rebuild Failures',
+        //                         data: data.failures,
+        //                         borderColor: 'rgba(255, 99, 132, 1)',
+        //                         borderWidth: 1,
+        //                         fill: false
+        //                     }]
+        //                 },
+        //                 options: {
+        //                     scales: {
+        //                         x: {
+        //                             type: 'time',
+        //                             time: {
+        //                                 unit: 'day'
+        //                             }
+        //                         },
+        //                         y: {
+        //                             beginAtZero: true
+        //                         }
+        //                     }
+        //                 }
+        //             });
+        //         });
+        // });
+
+        function viewLogs(logs) {
+            document.getElementById('logContent').textContent = logs;
+            document.getElementById('logModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('logModal').classList.add('hidden');
+        }
+    </script>
+</body>
+</html>

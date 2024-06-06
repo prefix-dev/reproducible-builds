@@ -82,7 +82,10 @@ def build_recipe(
         try:
             build_info = _build_recipe(recipe, tmp_dir, build_dir)
         except CalledProcessError as e:
-            last_failed_logs = e.stderr[2500:].decode("utf-8")
+            last_failed_logs = e.stderr[1000:].decode("utf-8")
+            import pdb
+
+            pdb.set_trace()
             save_failed_build(
                 connection, recipe.name, rattler_hash, recipe_hash, last_failed_logs
             )

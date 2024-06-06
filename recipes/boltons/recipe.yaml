@@ -21,9 +21,9 @@ requirements:
   host:
     # - if: linux
     #   then:
-    - python
-    - pip
-    - setuptools
+    # - python
+    # - pip
+    # - setuptools
     # - numpy
   run:
     - pip

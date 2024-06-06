@@ -1,5 +1,6 @@
 import hashlib
 import platform
+import pandas as pd
 import sqlite3
 from sqlite3 import Connection
 
@@ -148,7 +149,28 @@ def save_failed_rebuild(conn: Connection, recipe_name, build_id, reason):
         """
         INSERT INTO rebuild (recipe_name, build_id, state, reason, timestamp)
         VALUES (?, ?, "fail", ?, unixepoch())
+        RETURNING *
     """,
         (recipe_name, build_id, reason),
     )
+    inserted = cursor.fetchall()
     conn.commit()
+    return inserted
+
+
+# Function to query the database and return rebuild data
+def get_rebuild_data():
+    conn = init_db()
+    query = """
+    SELECT r.id, r.recipe_name, r.state, r.hash, r.reason, b.build_hash, r.timestamp
+    FROM rebuild r
+    JOIN build b ON r.build_id = b.id
+    INNER JOIN (
+        SELECT build_id, MAX(timestamp) as latest_timestamp
+        FROM rebuild
+        GROUP BY build_id
+    ) latest_rebuild ON r.build_id = latest_rebuild.build_id AND r.timestamp = latest_rebuild.latest_timestamp
+    """
+    df = pd.read_sql_query(query, conn)
+    conn.close()
+    return df
