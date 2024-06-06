@@ -110,12 +110,13 @@ jobs:
 
       - name: Restore rattler-build cache
         id: cache-rattler-build-restore
-        uses: actions/cache@v4
+        uses: actions/cache/restore@v4
         with:
           path: |
             .rb-clone/target/release/rattler-build
             .rb-clone/target/release/rattler-build.exe
           key: v4-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          fail-on-cache-miss: true
 
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
