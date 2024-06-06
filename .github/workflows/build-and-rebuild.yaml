@@ -41,8 +41,8 @@ jobs:
         uses: actions/cache/restore@v4
         with:
           path: |
-            .rb-clone\target\release\rattler-build
-            .rb-clone\target\release\rattler-build.exe
+            .rb-clone/target/release/rattler-build
+            .rb-clone/target/release/rattler-build.exe
           key: v4-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
 
@@ -58,7 +58,7 @@ jobs:
         with:
           path: |
             .rb-clone/target/release/rattler-build
-            .rb-clone\target\release\rattler-build.exe
+            .rb-clone/target/release/rattler-build.exe
           key: v4-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
   generate-recipes:
