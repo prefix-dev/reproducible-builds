@@ -192,7 +192,7 @@ jobs:
 
       - name: Merge patches and update database
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run merge-patches
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches
 
       - name: Upload results
         uses: actions/upload-artifact@v3
