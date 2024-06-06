@@ -115,7 +115,7 @@ jobs:
           path: |
             .rb-clone/target/release/rattler-build
             .rb-clone/target/release/rattler-build.exe
-          key: v3--${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
+          key: v3-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
       - name: Set timezone to UTC
         if: matrix.os == 'ubuntu-latest'
