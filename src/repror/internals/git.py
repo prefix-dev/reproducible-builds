@@ -4,6 +4,7 @@ import base64
 import os
 import re
 import subprocess
+from typing import Optional
 
 import requests
 from .commands import run_command
@@ -34,6 +35,7 @@ class GithubAPI:
             raise ValueError(
                 "REPROR_UPDATE_TOKEN is not set. Please set it in .env file or as an environment variable."
             )
+        return token
 
     def _get_git_remote_url(self):
         """Get the remote URL of the git repository."""
@@ -67,15 +69,23 @@ class GithubAPI:
         )
         return result.stdout.strip()
 
-    def update_obj(self, content: str | bytes, file_path: str, message: str):
+    def update_obj(
+        self,
+        content: str | bytes,
+        file_path: str,
+        message: str,
+        remote_branch: Optional[str] = None,
+    ):
         """Update a file in a GitHub repository and commit the changes."""
         url = f"https://api.github.com/repos/{self.owner}/contents/{file_path}"
         headers = {
-            "Authorization": f"token {self.token}",
+            "Authorization": f"Bearer {self.token}",
             "Accept": "application/vnd.github.v3+json",
         }
 
-        response = requests.get(url, headers=headers, params={"ref": self.branch})
+        response = requests.get(
+            url, headers=headers, params={"rev": remote_branch or self.branch}
+        )
         response.raise_for_status()
         data = response.json()
         sha = data["sha"]
