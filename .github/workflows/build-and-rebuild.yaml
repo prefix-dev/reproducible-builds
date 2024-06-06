@@ -2,8 +2,8 @@ name: Building and Rebuilding
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+      # - main
 
   pull_request:
   workflow_dispatch:
@@ -170,7 +170,7 @@ jobs:
             build_info/
             ci_artifacts/
 
-  statistics:
+  patch-db:
     runs-on: ubuntu-latest
     needs: build-and-rebuild-recipes
 
@@ -190,6 +190,13 @@ jobs:
       - run: |
           ls -la build_info/
 
-      - name: Calculate statistics and plot output
+      - name: Merge patches and update database
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote --remote-branch ${{ github.ref_name }}
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run merge-patches
+
+      - name: Upload results
+        uses: actions/upload-artifact@v3
+        with:
+          name: repror-db
+          path: |
+            repror.db

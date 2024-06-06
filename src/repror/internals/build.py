@@ -30,7 +30,7 @@ def build_conda_package(recipe_path: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_command(build_command)
+    run_command(build_command, silent=True)
 
 
 def rebuild_conda_package(conda_file: Path, output_dir: Path):
@@ -45,7 +45,7 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_command(re_build_command)
+    run_command(re_build_command, silent=True)
 
 
 def build_recipe(recipe_path: Path, output_dir: Path) -> Optional[BuildInfo]:
@@ -69,7 +69,7 @@ def build_recipe(recipe_path: Path, output_dir: Path) -> Optional[BuildInfo]:
     )
 
 
-def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
+def _rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
     # copy to ci artifacts
     shutil.copyfile(
         conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}"

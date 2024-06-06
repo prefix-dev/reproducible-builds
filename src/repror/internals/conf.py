@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import hashlib
 from pathlib import Path
 import tempfile
 from typing import Literal, Optional, Tuple
@@ -42,6 +43,34 @@ class Recipe:
                 + "_"
                 + self.path.replace("/", "_")
             )
+
+    def get_config_content(self, clone_dir: Optional[Path] = None) -> str:
+        if self.is_local():
+            return self.get_local_config_content()
+        else:
+            return self.get_remote_config_content(clone_dir)
+
+    def get_local_config_content(self, recipe_path: Optional[str] = None) -> str:
+        path = Path(recipe_path) if recipe_path else Path(self.path)
+        return path.read_text()
+
+    def get_remote_config_content(self, clone_dir: Optional[Path] = None) -> str:
+        repo_url = self.url
+        ref = self.branch
+        if not clone_dir:
+            with tempfile.TemporaryDirectory() as tmp_dir:
+                clone_dir = Path(tmp_dir)
+
+        clone_dir = clone_dir.joinpath(repo_url.split("/")[-1].replace(".git", ""))
+
+        if not clone_dir.exists():
+            clone_repo(repo_url, clone_dir)
+
+        if ref:
+            checkout_branch_or_commit(clone_dir, ref)
+
+        recipe_path = clone_dir / self.path
+        return self.get_local_config_content(recipe_path)
 
     def load_recipe_config(self, clone_dir: Optional[Path] = None) -> dict:
         if self.is_local():
@@ -102,6 +131,11 @@ class Recipe:
         config = self.load_recipe_config()
         self._config = config
         return self._config
+
+    @property
+    def content_hash(self) -> str:
+        content = self.get_config_content()
+        return hashlib.sha256(content.encode()).hexdigest()
 
 
 def load_all_recipes(config: str = "config.yaml") -> list[Recipe]:

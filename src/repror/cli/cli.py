@@ -7,7 +7,9 @@ from typing import Annotated, Optional
 import typer
 
 from repror.internals.conf import load_config
+from repror.internals.db import init_db
 from repror.internals.print import print
+from repror.internals import patcher
 
 # Different CLI commands
 from . import build_recipe as build
@@ -79,8 +81,10 @@ def _check_local_rattler_build(live: Optional[Live] = None):
 def build_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
     rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
+    force_build: Annotated[bool, typer.Option()] = False,
 ):
     """Build recipe from a string in the form of url::branch::path."""
+    db_conn = init_db()
     with tempfile.TemporaryDirectory() as tmp_dir:
         if not rattler_build_exe:
             _check_local_rattler_build()
@@ -88,7 +92,7 @@ def build_recipe(
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.filter_recipes(recipe_names)
 
-        build.build_recipe(recipes_to_build, tmp_dir)
+        build.build_recipe(db_conn, recipes_to_build, tmp_dir, force_build)
 
 
 @app.command()
@@ -97,13 +101,26 @@ def rebuild_recipe(
     rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
+    db_conn = init_db()
     with tempfile.TemporaryDirectory() as tmp_dir:
         if not rattler_build_exe:
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.filter_recipes(recipe_names)
-        rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir)
+        rebuild.rebuild_recipe(db_conn, recipes_to_rebuild, tmp_dir)
+
+
+@app.command()
+def merge_patches():
+    """Rewrite the README.md file with updated statistics"""
+    patcher.merge_patches()
+
+
+@app.command()
+def create_db():
+    """Create DB"""
+    init_db()
 
 
 @app.command()
