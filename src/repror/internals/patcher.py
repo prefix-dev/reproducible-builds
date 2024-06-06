@@ -50,14 +50,7 @@ def patch(patch_data):
 def merge_patches(build_info_dir: str = "build_info") -> dict:
     build_infos = find_infos(build_info_dir, "info")
 
-    import pdb
-
-    pdb.set_trace()
-
     for build_file in build_infos:
         with open(build_file, "r") as f:
             patch_data = json.load(f)
-            import pdb
-
-            pdb.set_trace()
             patch(patch_data)

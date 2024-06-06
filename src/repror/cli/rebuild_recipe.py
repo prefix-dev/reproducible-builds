@@ -82,9 +82,6 @@ def rebuild_recipe(connection: Connection, recipes: list[Recipe], tmp_dir: Path)
 
         os.makedirs(f"build_info/{platform_name}", exist_ok=True)
 
-        import pdb
-
-        pdb.set_trace()
         with open(
             f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_info.json",
             "w",
