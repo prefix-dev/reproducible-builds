@@ -23,10 +23,39 @@ class BuildState(StrEnum):
     FAIL = "fail"
 
 
-sqlite_file_name = "repro.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
+engine = None
 
-engine = create_engine(sqlite_url, echo=False)
+
+def create_db_and_tables():
+    SQLModel.metadata.create_all(engine)
+
+
+def setup_engine(in_memory: bool = False):
+    """Setup the sqlite engine."""
+    print(f"Setting up engine with in_memory={in_memory}")
+    global engine
+    if engine:
+        return
+
+    if in_memory:
+        engine = create_engine("sqlite:///:memory:", echo=False)
+    else:
+        sqlite_file_name = "repro.db"
+        sqlite_url = f"sqlite:///{sqlite_file_name}"
+        engine = create_engine(sqlite_url, echo=False)
+
+    create_db_and_tables()
+
+
+# The decorator function
+def check_engine_is_set(func):
+    def wrapper(*args, **kwargs):
+        global engine
+        if not engine:
+            raise RuntimeError("Engine is not set. Call setup_engine() first.")
+        return func(*args, **kwargs)
+
+    return wrapper
 
 
 class Build(SQLModel, table=True):
@@ -65,13 +94,7 @@ class Rebuild(SQLModel, table=True):
     build: Build = Relationship(back_populates="rebuilds")
 
 
-def create_db_and_tables():
-    SQLModel.metadata.create_all(engine)
-
-
-create_db_and_tables()
-
-
+@check_engine_is_set
 def get_latest_build(
     recipe_name: str,
     build_tool_hash: str,
@@ -94,6 +117,7 @@ def get_latest_build(
         return build
 
 
+@check_engine_is_set
 def get_latest_build_with_rebuild(
     recipe_name: str,
     build_tool_hash: str,
@@ -118,6 +142,7 @@ def get_latest_build_with_rebuild(
         return build, rebuild
 
 
+@check_engine_is_set
 # Function to save the new build or rebuild in the database
 def save(build: Build | Rebuild):
     with Session(engine) as session:
@@ -125,6 +150,7 @@ def save(build: Build | Rebuild):
         session.commit()
 
 
+@check_engine_is_set
 # Function to query the database and return rebuild data
 def get_rebuild_data() -> list[Build]:
     with Session(engine) as session:

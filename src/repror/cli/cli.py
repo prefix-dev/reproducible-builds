@@ -9,6 +9,7 @@ import typer
 from repror.internals.conf import load_config
 from repror.internals.print import print
 from repror.internals import build_metadata_to_sql
+from repror.internals import db
 
 # Different CLI commands
 from . import build_recipe as build
@@ -40,16 +41,14 @@ class GlobalOptions:
     """Global options for the CLI."""
 
     skip_setup_rattler_build: bool = False
-
-    def __init__(self):
-        self.skip_setup_rattler_build = False
+    in_memory_sql: bool = False
 
 
 global_options = GlobalOptions()
 
 
 @app.callback()
-def main(skip_setup_rattler_build: bool = False):
+def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
     """
     \bRepror is a tool to:
     - Build/rebuild packages using conda build
@@ -59,6 +58,14 @@ def main(skip_setup_rattler_build: bool = False):
     if skip_setup_rattler_build:
         print("[bold yellow]Will skip setting up rattler-build[/bold yellow]")
         global_options.skip_setup_rattler_build = True
+    if in_memory_sql:
+        print("[bold yellow]Will use in-memory SQLite database[/bold yellow]")
+        global_options.in_memory_sql = True
+
+
+def setup_db():
+    """Setup the engine using the global options."""
+    db.setup_engine(global_options.in_memory_sql)
 
 
 @app.command()
@@ -84,6 +91,7 @@ def build_recipe(
 ):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_db()
         if not rattler_build_exe:
             _check_local_rattler_build()
         else:
@@ -101,6 +109,7 @@ def rebuild_recipe(
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
+        setup_db()
         if not rattler_build_exe:
             _check_local_rattler_build()
         else:
@@ -112,6 +121,7 @@ def rebuild_recipe(
 @app.command()
 def merge_patches(update_remote: Annotated[Optional[bool], typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
+    setup_db()
     build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
 
 
@@ -121,8 +131,7 @@ def generate_html(
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rewrite the README.md file with updated statistics"""
-    # build_results_by_platform = rewrite.make_statistics()
-    # rewrite.plot(build_results_by_platform, update_remote, remote_branch)
+    setup_db()
     rewrite.rerender_html(update_remote)
 
 

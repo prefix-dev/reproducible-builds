@@ -6,10 +6,17 @@ runner = CliRunner()
 
 
 def test_build_boltons():
-    result = runner.invoke(app, ["build-recipe", "boltons"])
-    assert result.exit_code == 0
+    """Build boltons recipe, last run should be cached"""
+    result = runner.invoke(app, ["--in-memory-sql", "build-recipe", "boltons"])
+    assert result.exit_code == 0, result.stdout
+    result = runner.invoke(app, ["--in-memory-sql", "build-recipe", "boltons"])
+    assert "Found latest build" in result.stdout
+
 
 
 def test_rebuild_build_boltons():
-    result = runner.invoke(app, ["rebuild-recipe", "boltons"])
-    assert result.exit_code == 0
+    """Rebuild boltons recipe, last run should be cached"""
+    result = runner.invoke(app, ["--in-memory-sql", "rebuild-recipe", "boltons"])
+    assert result.exit_code == 0, result.stdout
+    result = runner.invoke(app, ["--in-memory-sql", "rebuild-recipe", "boltons"])
+    assert "Found latest rebuild" in result.stdout
