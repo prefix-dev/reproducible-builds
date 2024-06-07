@@ -80,6 +80,8 @@ jobs:
           message="$(pixi r generate-recipes)"
           echo "$message"
           echo "recipes=$message" >> "$GITHUB_OUTPUT"
+        env:
+          LOG_LEVEL: WARNING  # Set log level to WARNING
 
   build-and-rebuild-recipes:
     needs: generate-recipes
