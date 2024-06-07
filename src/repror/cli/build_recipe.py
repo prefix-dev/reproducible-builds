@@ -6,14 +6,14 @@ from repror.internals.build import (
     BuildInfo,
     BuildResult,
     build_local_recipe,
-    build_remote_recipes,
+    build_remote_recipe,
 )
 from repror.internals.conf import Recipe, load_all_recipes
 from repror.internals.db import get_latest_build, save
 from repror.internals.rattler_build import rattler_build_hash
 
 
-def filter_recipes(recipe_names: Optional[list[str]]) -> list[Recipe]:
+def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:
     all_recipes = load_all_recipes()
     if recipe_names:
         recipes_to_build = []
@@ -41,14 +41,17 @@ def _build_recipe(
     if recipe.is_local():
         return build_local_recipe(recipe, build_dir, build_info)
     else:
-        return build_remote_recipes(recipe, build_dir, cloned_prefix_dir, build_info)
+        return build_remote_recipe(recipe, build_dir, cloned_prefix_dir, build_info)
 
 
-def build_recipe(
+def build_recipes(
     recipes: list[Recipe],
     tmp_dir: Path,
     force_build: bool = False,
 ):
+    """
+    Build recipes using rattler-build
+    """
     platform_name, platform_version = platform.system().lower(), platform.release()
 
     build_dir = Path("build_outputs")

@@ -8,7 +8,7 @@ import typer
 
 from repror.internals.conf import load_config
 from repror.internals.print import print
-from repror.internals import patcher
+from repror.internals import build_metadata_to_sql
 
 # Different CLI commands
 from . import build_recipe as build
@@ -88,9 +88,9 @@ def build_recipe(
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
-        recipes_to_build = build.filter_recipes(recipe_names)
+        recipes_to_build = build.recipes_for_names(recipe_names)
 
-        build.build_recipe(recipes_to_build, tmp_dir, force_build)
+        build.build_recipes(recipes_to_build, tmp_dir, force_build)
 
 
 @app.command()
@@ -105,14 +105,14 @@ def rebuild_recipe(
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
-        recipes_to_rebuild = build.filter_recipes(recipe_names)
+        recipes_to_rebuild = build.recipes_for_names(recipe_names)
         rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir, force_rebuild)
 
 
 @app.command()
 def merge_patches(update_remote: Annotated[Optional[bool], typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
-    patcher.merge_patches(update_remote=update_remote)
+    build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
 
 
 @app.command()

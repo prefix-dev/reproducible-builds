@@ -14,7 +14,6 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 import matplotlib.pyplot as plt
 
-from repror.internals.conf import load_config
 from repror.internals.db import BuildState, get_rebuild_data
 from repror.internals.git import github_api
 
@@ -150,13 +149,6 @@ def plot(
     plt.legend()
     plt.tight_layout()
     plt.savefig("data/chart.png")
-
-    config = load_config()
-
-    if "rattler-build" not in config:
-        build_text = "Built with latest rattler-build"
-    else:
-        build_text = f"Built with rattler-build {config["rattler-build"]["url"]} at commit {config["rattler-build"]["rev"]}"
 
     # Generate the Markdown table
     env = Environment(
