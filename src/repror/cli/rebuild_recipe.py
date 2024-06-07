@@ -41,13 +41,17 @@ def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path, force_rebuild: bool = F
             platform_version=platform_version,
         )
 
-        latest_build, latest_rebuild = get_latest_build_with_rebuild(
-            recipe.name,
-            rattler_hash,
-            recipe_hash,
-            platform_name,
-            platform_version,
-        )
+        try:
+            latest_build, latest_rebuild = get_latest_build_with_rebuild(
+                recipe.name,
+                rattler_hash,
+                recipe_hash,
+                platform_name,
+                platform_version,
+            )
+        except ValueError:
+            print(f"Failed to get latest build for recipe: {recipe.name}. Skipping.")
+            continue
 
         if latest_rebuild and not force_rebuild:
             print("Found latest rebuild. Skipping rebuilding it again")
