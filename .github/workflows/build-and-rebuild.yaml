@@ -77,9 +77,9 @@ jobs:
       - name: Generate matrix
         id: generate-matrix
         run: |
-          message=$(pixi r generate-recipes)
-          echo $message
-          echo "recipes=$message" >> $GITHUB_OUTPUT
+          message="$(pixi r generate-recipes)"
+          echo "$message"
+          echo "recipes=$message" >> "$GITHUB_OUTPUT"
 
   build-and-rebuild-recipes:
     needs: generate-recipes
@@ -128,7 +128,7 @@ jobs:
 
       - name: Set LANG
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-        run: echo "LANG=en_US.UTF-8" >> $GITHUB_ENV
+        run: echo "LANG=en_US.UTF-8" >> "$GITHUB_ENV"
 
       - name: Build recipes and track if hash is equal
         if: matrix.os != 'windows-latest'
@@ -138,6 +138,7 @@ jobs:
       - name: Build recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
+          # shellcheck disable=SC1012
           pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe
 
       - name: Set timezone to Los Angeles
@@ -150,7 +151,7 @@ jobs:
 
       - name: Set LANG
         if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-        run: echo "LANG=et_EE.UTF-8" >> $GITHUB_ENV
+        run: echo "LANG=et_EE.UTF-8" >> "$GITHUB_ENV"
 
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os != 'windows-latest'
@@ -160,6 +161,7 @@ jobs:
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
+          # shellcheck disable=SC1012
           pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe
 
       - name: Upload results
