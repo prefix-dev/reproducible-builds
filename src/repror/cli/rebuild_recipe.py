@@ -10,6 +10,7 @@ from repror.internals.db import (
     save,
 )
 from repror.internals.rattler_build import rattler_build_hash
+from repror.internals.print import print
 
 
 def rebuild_package(
@@ -32,6 +33,7 @@ def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path, force_rebuild: bool = F
     Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
     for recipe in recipes:
+        print(f"Rebuilding recipe: {recipe.name}")
         rattler_hash = rattler_build_hash()
         recipe_hash = recipe.content_hash
 
@@ -73,7 +75,9 @@ def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path, force_rebuild: bool = F
 
             json.dump(patch_info, f, default=str)
 
+        print(f"{rebuild_result.rebuild}")
         save(rebuild_result.rebuild)
 
         if rebuild_result.exception:
             raise rebuild_result.exception
+        print(f"[bold green]Done: '{recipe.name}' [/bold green]")

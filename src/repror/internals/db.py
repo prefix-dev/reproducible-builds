@@ -140,11 +140,10 @@ def get_latest_build_with_rebuild(
             .order_by(Build.timestamp.desc())
             .limit(1)
         )
-        result = session.execute(statement).first()
-        if not result:
-            raise ValueError("No build found")
-
+        result = session.execute(statement)
         build = result.scalars().first()
+        if not build:
+            raise ValueError("No build found")
         rebuild = build.rebuilds[-1] if build and build.rebuilds else None
 
         return build, rebuild
