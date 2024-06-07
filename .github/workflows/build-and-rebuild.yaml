@@ -198,3 +198,4 @@ jobs:
         run: |
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches --update-remote
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
+        if: github.event_name != 'pull_request'
