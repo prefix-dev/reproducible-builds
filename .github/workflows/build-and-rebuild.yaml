@@ -193,4 +193,4 @@ jobs:
       - name: Merge patches and update database and html
         run: |
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches --update-remote
-          pixi run repror generate-html --update-remote
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
