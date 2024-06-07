@@ -33,17 +33,14 @@ def setup_rattler_build(
         clone_repo(url, clone_dir)
 
     # Set to correct version
-    print(f"Checking out {branch}")
+    print(f"Using git revision {branch}")
     checkout_branch_or_commit(clone_dir, branch)
-    print("Pulling")
     pull(clone_dir)
 
-    print("Building rattler")
-
     # Build rattler
-    # TOOD use live later for streaming the spinner
     build_rattler(clone_dir)
 
     # Set to release binary
     bin_path = Path(clone_dir) / "target" / "release" / "rattler-build"
     os.environ["RATTLER_BUILD_BIN"] = str(bin_path)
+    print(f"Set RATTLER_BUILD_BIN to {bin_path}")

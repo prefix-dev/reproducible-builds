@@ -19,6 +19,8 @@ build-recipe-skip = "repror --skip-setup-rattler-build build-recipe"
 rebuild-recipe = "repror rebuild-recipe"
 # Convert a meta.yaml to a recipe.yaml
 convert-recipe = "convert-conda-recipe"
+# Run tests
+test = "pytest tests/"
 
 
 # Formatting python
@@ -32,13 +34,15 @@ fmt = "ruff format"
 # Default dependencies
 [dependencies]
 python = "~=3.12"
-matplotlib = "*"
 rattler-build = "*"
 pyyaml = "*"
 pytest = "*"
 typer = ">=0.12.3,<0.13"
 jinja2 = "*"
 python-dotenv = "*"
+pandas = "*"
+sqlmodel = "*"
+pydantic = "*"
 
 [pypi-dependencies]
 repror = { path = ".", editable = true }

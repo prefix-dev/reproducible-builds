@@ -1,6 +1,8 @@
+import hashlib
 import os
 
 from repror.internals.commands import run_command, run_streaming_command
+from repror.internals.conf import load_config
 
 
 def get_rattler_build():
@@ -22,3 +24,10 @@ def rattler_build_version(cwd):
     command = [rattler_bin, "-V"]
 
     run_command(command, cwd=str(cwd))
+
+
+def rattler_build_hash():
+    config = load_config()
+    rattler_build_config = config["rattler-build"]
+    url, rev = rattler_build_config["url"], rattler_build_config["rev"]
+    return hashlib.sha256(f"{url}{rev}".encode()).hexdigest()
