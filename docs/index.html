@@ -12,34 +12,90 @@
             <!-- Plot will be added here by JavaScript -->
             <canvas id="historicalChart" width="400" height="200"></canvas>
         </div>
-        <table class="min-w-full bg-white border border-gray-300">
-            <thead>
-                <tr>
-                    <th class="py-2 px-4 border-b">Recipe Name</th>
-                    <th class="py-2 px-4 border-b">Status</th>
-                    <th class="py-2 px-4 border-b">Reason</th>
-                    <th class="py-2 px-4 border-b">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
 
-                <tr class="bg-red-100">
-                    <td class="py-2 px-4 border-b">boltons</td>
-                    <td class="py-2 px-4 border-b">Failed</td>
-                    <td class="py-2 px-4 border-b">965/work"
-  │ To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
 
-</td>
-                    <!-- <td class="py-2 px-4 border-b">
-                        <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs(965/work"
-  │ To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+        <div class="mb-6">
+            <h2 class="text-xl font-bold mb-2">darwin</h2>
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">Recipe Name</th>
+                        <th class="py-2 px-4 border-b">Build Status</th>
+                        <th class="py-2 px-4 border-b">Rebuild Status</th>
+                        <th class="py-2 px-4 border-b">Reason</th>
+                        <th class="py-2 px-4 border-b">Time</th>
+                        <th class="py-2 px-4 border-b">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-')">View Logs</button>
-                    </td> -->
-                </tr>
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">fastapi</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b">None</td>
+                        <td class="py-2 px-4 border-b">2024-06-07 08:15:18</td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
 
-            </tbody>
-        </table>
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">boltons</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">None</td>
+                        <td class="py-2 px-4 border-b">2024-06-07 07:39:29</td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-xl font-bold mb-2">linux</h2>
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">Recipe Name</th>
+                        <th class="py-2 px-4 border-b">Build Status</th>
+                        <th class="py-2 px-4 border-b">Rebuild Status</th>
+                        <th class="py-2 px-4 border-b">Reason</th>
+                        <th class="py-2 px-4 border-b">Time</th>
+                        <th class="py-2 px-4 border-b">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">fastapi</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b">None</td>
+                        <td class="py-2 px-4 border-b">2024-06-07 08:14:03</td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">boltons</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b">None</td>
+                        <td class="py-2 px-4 border-b">2024-06-07 08:02:20</td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <!-- Modal for logs -->
@@ -50,62 +106,5 @@
             <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 mt-2" onclick="closeModal()">Close</button>
         </div>
     </div>
-
-    <script>
-        // document.addEventListener("DOMContentLoaded", function() {
-        //     const plotContainer = document.getElementById('plot-container');
-        //     const img = document.createElement('img');
-        //     img.src = '/static/plot.png';
-        //     img.alt = 'Plot';
-        //     plotContainer.appendChild(img);
-
-        //     fetch('/historical-data')
-        //         .then(response => response.json())
-        //         .then(data => {
-        //             const ctx = document.getElementById('historicalChart').getContext('2d');
-        //             new Chart(ctx, {
-        //                 type: 'line',
-        //                 data: {
-        //                     labels: data.labels,
-        //                     datasets: [{
-        //                         label: 'Rebuild Successes',
-        //                         data: data.successes,
-        //                         borderColor: 'rgba(75, 192, 192, 1)',
-        //                         borderWidth: 1,
-        //                         fill: false
-        //                     }, {
-        //                         label: 'Rebuild Failures',
-        //                         data: data.failures,
-        //                         borderColor: 'rgba(255, 99, 132, 1)',
-        //                         borderWidth: 1,
-        //                         fill: false
-        //                     }]
-        //                 },
-        //                 options: {
-        //                     scales: {
-        //                         x: {
-        //                             type: 'time',
-        //                             time: {
-        //                                 unit: 'day'
-        //                             }
-        //                         },
-        //                         y: {
-        //                             beginAtZero: true
-        //                         }
-        //                     }
-        //                 }
-        //             });
-        //         });
-        // });
-
-        function viewLogs(logs) {
-            document.getElementById('logContent').textContent = logs;
-            document.getElementById('logModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('logModal').classList.add('hidden');
-        }
-    </script>
 </body>
 </html>

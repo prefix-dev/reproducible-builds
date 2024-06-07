@@ -190,13 +190,7 @@ jobs:
       - run: |
           ls -la build_info/
 
-      - name: Merge patches and update database
+      - name: Merge patches and update database and html
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches
-
-      - name: Upload results
-        uses: actions/upload-artifact@v3
-        with:
-          name: repror-db
-          path: |
-            repro.db
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches --update-remote
+          pixi run repror generate-html --update-remote

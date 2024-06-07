@@ -1,56 +1,47 @@
 import json
+from typing import Literal
+
+from sqlmodel import Session
 from repror.cli.rewrite_readme import find_infos
 
+from repror.internals.db import engine, Build, Rebuild
+from repror.internals.git import github_api
 
-import sqlite3
 
 
 # Load the patch data
-def patch(patch_data):
-    # Connect to the SQLite database
-    conn = sqlite3.connect("repro.db")
-    cursor = conn.cursor()
+def patch(patch_data: dict[Literal["build", "rebuild"]]):
+    build = patch_data["build"]
+    rebuild = patch_data["rebuild"]
 
-    # Insert build data without build_id
-    build_data = patch_data["build"][1:]
-    cursor.execute(
-        """
-        INSERT INTO build (recipe_name, state, build_tool_hash, recipe_hash, platform_name, platform_version, build_hash, build_loc, reason, timestamp)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """,
-        build_data,
-    )
-    conn.commit()
+    build = Build.model_validate(build)
+    rebuild = Rebuild.model_validate(rebuild)
 
-    # Query the inserted build_id
-    cursor.execute("SELECT last_insert_rowid()")
-    build_id = cursor.fetchone()[0]
+    rebuild.build = build
 
-    # Update the rebuild table with the correct build_id
-    rebuild_data = patch_data["rebuild"][1:]
-    rebuild_data[1] = build_id
-    cursor.execute(
-        """
-        INSERT INTO rebuild (recipe_name, build_id, state, reason, hash, timestamp)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """,
-        rebuild_data,
-    )
-    conn.commit()
-
-    # Query the inserted data from the build table
-    cursor.execute("SELECT * FROM build WHERE id=?", (build_id,))
-    result = cursor.fetchone()
-    print(result)
-
-    # Close the connection
-    conn.close()
+    with Session(engine) as session:
+        session.add(build)
+        session.add(rebuild)
+        session.commit()
 
 
-def merge_patches(build_info_dir: str = "build_info") -> dict:
+def merge_patches(build_info_dir: str = "build_info", update_remote: bool = False) -> dict:
     build_infos = find_infos(build_info_dir, "info")
 
     for build_file in build_infos:
         with open(build_file, "r") as f:
             patch_data = json.load(f)
             patch(patch_data)
+
+
+
+    if update_remote:
+        # Update the README.md using GitHub API
+        print(":running: Updating repro.db")
+        with open('repro.db', 'rb') as repro_db:
+            db_data = repro_db.read()
+            github_api.update_obj(
+                db_data,
+                "repro.db",
+                "Update database",
+            )

@@ -1,5 +1,7 @@
 local:
 - path: recipes/boltons/recipe.yaml
+- path: recipes/fastapi/recipe.yaml
+
 # - path: recipes/pthread-stubs/recipe.yaml
 # - path: recipes/zlib/recipe.yaml
 rattler-build:
