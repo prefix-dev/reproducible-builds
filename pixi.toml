@@ -19,6 +19,8 @@ build-recipe-skip = "repror --skip-setup-rattler-build build-recipe"
 rebuild-recipe = "repror rebuild-recipe"
 # Convert a meta.yaml to a recipe.yaml
 convert-recipe = "convert-conda-recipe"
+# Run tests
+test = "pytest tests/"
 
 
 # Formatting python

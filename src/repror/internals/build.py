@@ -17,12 +17,18 @@ from repror.internals.commands import (
 
 
 class BuildInfo(BaseModel):
-    build_tool_hash: str
+    """
+    Contains information that was used to build a recipe
+    """
+    rattler_build_hash: str
     platform: str
     platform_version: str
 
 
 class BuildResult(BaseModel):
+    """
+    Result of building a recipe
+    """
     build: Build
     exception: Optional[CalledProcessError] = None
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -40,14 +46,6 @@ class RebuildResult(BaseModel):
     @property
     def failed(self):
         return self.rebuild.state == BuildState.FAIL
-
-
-# class BuildInfo(BaseModel):
-#     recipe_path: str
-#     pkg_hash: str
-#     output_dir: str
-# conda_loc: str
-# _exception: Optional[CalledProcessError] = None
 
 
 def build_conda_package(recipe_path: Path, output_dir: Path):
@@ -82,6 +80,8 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path):
 def build_recipe(
     recipe: Recipe, output_dir: Path, build_info: BuildInfo
 ) -> BuildResult:
+    """Build a single recipe"""
+
     # bypass exception on top
     try:
         build_conda_package(recipe.path, output_dir)
@@ -92,7 +92,7 @@ def build_recipe(
         failed_build = Build(
             recipe_name=recipe.name,
             state=BuildState.FAIL,
-            build_tool_hash=build_info.build_tool_hash,
+            build_tool_hash=build_info.rattler_build_hash,
             recipe_hash=recipe.content_hash,
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
@@ -111,7 +111,7 @@ def build_recipe(
         recipe_name=recipe.name,
         state=BuildState.SUCCESS,
         build_hash=calculate_hash(new_file_loc),
-        build_tool_hash=build_info.build_tool_hash,
+        build_tool_hash=build_info.rattler_build_hash,
         recipe_hash=recipe.content_hash,
         platform_name=build_info.platform,
         platform_version=build_info.platform_version,
@@ -159,15 +159,14 @@ def _rebuild_package(
     return RebuildResult(rebuild=rebuild)
 
 
-def build_remote_recipes(
+def build_remote_recipe(
     recipe: Recipe, build_dir: Path, cloned_prefix_dir: Path, build_info: BuildInfo
 ) -> BuildResult:
-    _, recipe_location = recipe.load_remote_recipe_config(Path(cloned_prefix_dir))
 
     build_dir = build_dir / f"{recipe.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
 
-    return build_recipe(recipe_location, build_dir, build_info)
+    return build_recipe(recipe, build_dir, build_info)
 
 
 def build_local_recipe(recipe: Recipe, build_dir, build_info: BuildInfo) -> BuildResult:
