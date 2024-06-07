@@ -20,6 +20,7 @@ class BuildInfo(BaseModel):
     """
     Contains information that was used to build a recipe
     """
+
     rattler_build_hash: str
     platform: str
     platform_version: str
@@ -29,6 +30,7 @@ class BuildResult(BaseModel):
     """
     Result of building a recipe
     """
+
     build: Build
     exception: Optional[CalledProcessError] = None
     model_config = ConfigDict(arbitrary_types_allowed=True)
@@ -162,7 +164,6 @@ def _rebuild_package(
 def build_remote_recipe(
     recipe: Recipe, build_dir: Path, cloned_prefix_dir: Path, build_info: BuildInfo
 ) -> BuildResult:
-
     build_dir = build_dir / f"{recipe.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
 

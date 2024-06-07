@@ -24,9 +24,7 @@ def write_metadata(build_metadata: dict[Literal["build", "rebuild"]]):
         session.commit()
 
 
-def metadata_to_db(
-    metadata_dir: str = "build_info", update_remote: bool = False
-):
+def metadata_to_db(metadata_dir: str = "build_info", update_remote: bool = False):
     build_infos = find_infos(metadata_dir, "info")
 
     for build_file in build_infos:
@@ -43,7 +41,4 @@ def _update_remote():
     print(":running: Updating repro.db")
     with open("repro.db", "rb") as repro_db:
         db_data = repro_db.read()
-        github_api.update_obj(
-            db_data,
-            "repro.db",
-            "Update database")
+        github_api.update_obj(db_data, "repro.db", "Update database")

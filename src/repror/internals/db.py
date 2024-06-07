@@ -8,7 +8,8 @@ from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, sele
 
 
 # Suppress SQLAlchemy INFO logs
-logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
+logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+
 
 # Function to compute the hash of the build tool version and recipe
 def compute_hash(value: str) -> str:

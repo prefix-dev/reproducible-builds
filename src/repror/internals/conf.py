@@ -81,7 +81,9 @@ class Recipe:
             conf, path = self.load_remote_recipe_config(clone_dir)
             return conf, path
 
-    def load_local_recipe_config(self, recipe_path: Optional[str] = None) -> Tuple[dict, Path]:
+    def load_local_recipe_config(
+        self, recipe_path: Optional[str] = None
+    ) -> Tuple[dict, Path]:
         path = Path(recipe_path) if recipe_path else Path(self.local_path)
         with path.open("r", encoding="utf8") as file:
             conf = yaml.safe_load(file)
@@ -147,7 +149,7 @@ class Recipe:
             return self.local_path
         else:
             if not self._remote_path:
-                 _ = self.config
+                _ = self.config
             return self._remote_path
 
 
@@ -159,7 +161,9 @@ def load_all_recipes(config: str = "config.yaml") -> list[Recipe]:
         branch = repo["branch"]
         for recipe in repo.get("recipes", []):
             path = recipe["path"]
-            recipe = Recipe(url=url, branch=branch, local_path=path, recipe_type="remote")
+            recipe = Recipe(
+                url=url, branch=branch, local_path=path, recipe_type="remote"
+            )
             recipes.append(recipe)
 
     for local in config.get("local", []):

@@ -34,7 +34,6 @@ fmt = "ruff format"
 # Default dependencies
 [dependencies]
 python = "~=3.12"
-matplotlib = "*"
 rattler-build = "*"
 pyyaml = "*"
 pytest = "*"
