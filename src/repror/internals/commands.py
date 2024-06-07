@@ -8,6 +8,7 @@ import subprocess
 from pathlib import Path
 from subprocess import CompletedProcess
 import io
+from enum import Enum
 
 
 def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
@@ -15,25 +16,43 @@ def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
     return subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=silent)
 
 
-def run_streaming_command_stderr(
+class StreamType(Enum):
+    """Enum to specify the type of stream to capture."""
+    STDOUT = 1
+    STDERR = 2
+
+
+def run_streaming_command(
     command: list[str],
     cwd: Optional[list[str]],
     env: Optional[list[str]] = None,
+    stream_type: StreamType = StreamType.STDERR,
 ):
     """Run a specific command and stream the output."""
 
     # We can only capture of stdout or stderr, not both
     # Otherwise it will block
     # See: https://stackoverflow.com/questions/18421757/live-output-from-subprocess-command
-    process = subprocess.Popen(command, stderr=subprocess.PIPE, cwd=cwd, env=env)
 
-    for line in io.TextIOWrapper(
-        process.stderr, encoding="utf-8"
-    ):  # or another encoding
-        print(line, end="")
+    if stream_type == StreamType.STDERR:
+        kwarwgs = {"stderr": subprocess.PIPE}
+    else:
+        kwarwgs = {"stdout": subprocess.PIPE}
 
-    # Also print stderr if there is any
-    print(process.stdout.readline())
+    with subprocess.Popen(command, cwd=cwd, env=env, **kwarwgs) as process:
+        # Print stderr as it comes in
+        for line in io.TextIOWrapper(
+            process.stderr, encoding="utf-8"
+        ):  # or another encoding
+            print(line, end="")
+
+        # Also print the other output if there is any
+        if stream_type == StreamType.STDERR:
+            out = process.stdout
+        else:
+            out = process.stderr
+        if out:
+            print(process.stdout.readline())
 
 
 def calculate_hash(conda_file: Path):
