@@ -57,10 +57,10 @@ def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
     - Rewrite the reproducible-builds README.md file with update statistics
     """
     if skip_setup_rattler_build:
-        print("[bold yellow]Will skip setting up rattler-build[/bold yellow]")
+        print("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
         global_options.skip_setup_rattler_build = True
     if in_memory_sql:
-        print("[bold yellow]Will use in-memory SQLite database[/bold yellow]")
+        print("[yellow]Will use in-memory SQLite database[/yellow]")
         global_options.in_memory_sql = True
 
 
@@ -77,11 +77,13 @@ def generate_recipes():
 
 def _check_local_rattler_build(live: Optional[Live] = None):
     """Setup rattler build if local_rattler_build is set"""
+    print("[dim green]Checking for local rattler build[/dim green]")
     if not global_options.skip_setup_rattler_build:
         config = load_config()
         setup.setup_rattler_build(
             rattler_build_config=config, root_folder=pixi_root_cli(), live=live
         )
+    print("[dim green]Local rattler build check complete[/dim green]")
 
 
 @app.command()

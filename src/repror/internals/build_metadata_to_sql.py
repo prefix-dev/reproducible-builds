@@ -30,6 +30,7 @@ def metadata_to_db(metadata_dir: str = "build_info", update_remote: bool = False
     build_infos = find_infos(metadata_dir, "info")
 
     for build_file in build_infos:
+        print(f":running: Writing {build_file} to the database")
         with open(build_file, "r") as f:
             patch_data = json.load(f)
             write_metadata(patch_data)
