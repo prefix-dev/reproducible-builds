@@ -62,7 +62,9 @@ class Recipe:
             with tempfile.TemporaryDirectory() as tmp_dir:
                 clone_dir = Path(tmp_dir)
 
-        clone_dir = clone_dir.joinpath(repo_url.split("/")[:-1].replace(".git", ""))
+        clone_dir = clone_dir.joinpath(
+            repo_url.replace(".git", "").replace("/", "").replace("https:", "")
+        )
 
         if not clone_dir.exists():
             clone_repo(repo_url, clone_dir)

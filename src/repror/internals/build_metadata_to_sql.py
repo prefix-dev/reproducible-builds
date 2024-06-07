@@ -16,6 +16,9 @@ def write_metadata(build_metadata: dict[Literal["build", "rebuild"]]):
     build = Build.model_validate(build)
     rebuild = Rebuild.model_validate(rebuild)
 
+    build.id = None
+    rebuild.id = None
+
     rebuild.build = build
 
     with Session(engine) as session:
