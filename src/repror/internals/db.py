@@ -140,7 +140,7 @@ def get_latest_build_with_rebuild(
             .order_by(Build.timestamp.desc())
             .limit(1)
         )
-        build = session.exec(statement).first()
+        build = session.execute(statement).first()
         rebuild = build.rebuilds[-1] if build.rebuilds else None
 
         return build, rebuild
@@ -170,7 +170,7 @@ def get_rebuild_data() -> list[Build]:
         )
 
         # Main query to get the latest builds
-        latest_builds = session.exec(latest_build_subquery).all()
+        latest_builds = session.execute(latest_build_subquery).all()
 
         [build.rebuilds for build in latest_builds]
         return latest_builds
