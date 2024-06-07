@@ -8,8 +8,9 @@ import typer
 
 from repror.internals.conf import load_config
 from repror.internals.print import print
-from repror.internals import build_metadata_to_sql
 from repror.internals import db
+from repror.internals import build_metadata_to_sql
+
 
 # Different CLI commands
 from . import build_recipe as build

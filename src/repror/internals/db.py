@@ -4,7 +4,8 @@ import hashlib
 import logging
 from typing import Optional, Tuple
 from sqlalchemy import text
-from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select
+from sqlalchemy.orm import sessionmaker
+from sqlmodel import Field, Relationship, SQLModel, create_engine, select
 
 
 # Suppress SQLAlchemy INFO logs
@@ -24,16 +25,18 @@ class BuildState(StrEnum):
 
 
 engine = None
+Session = sessionmaker()
 
 
 def create_db_and_tables():
+    global engine
     SQLModel.metadata.create_all(engine)
 
 
 def setup_engine(in_memory: bool = False):
     """Setup the sqlite engine."""
     print(f"Setting up engine with in_memory={in_memory}")
-    global engine
+    global engine, Session
     if engine:
         return
 
@@ -44,6 +47,7 @@ def setup_engine(in_memory: bool = False):
         sqlite_url = f"sqlite:///{sqlite_file_name}"
         engine = create_engine(sqlite_url, echo=False)
 
+    Session.configure(bind=engine)
     create_db_and_tables()
 
 
@@ -94,7 +98,7 @@ class Rebuild(SQLModel, table=True):
     build: Build = Relationship(back_populates="rebuilds")
 
 
-@check_engine_is_set
+# @check_engine_is_set
 def get_latest_build(
     recipe_name: str,
     build_tool_hash: str,
@@ -102,7 +106,7 @@ def get_latest_build(
     platform_name: str,
     platform_version: str,
 ) -> Build:
-    with Session(engine) as session:
+    with Session() as session:
         statement = (
             select(Build)
             .where(Build.recipe_name == recipe_name)
@@ -113,7 +117,7 @@ def get_latest_build(
             .order_by(Build.timestamp.desc())
             .limit(1)
         )
-        build = session.exec(statement).first()
+        build = session.execute(statement).first()
         return build
 
 
@@ -125,7 +129,7 @@ def get_latest_build_with_rebuild(
     platform_name: str,
     platform_version: str,
 ) -> Tuple[Build, Optional[Rebuild]]:
-    with Session(engine) as session:
+    with Session() as session:
         statement = (
             select(Build)
             .where(Build.recipe_name == recipe_name)
@@ -145,7 +149,7 @@ def get_latest_build_with_rebuild(
 @check_engine_is_set
 # Function to save the new build or rebuild in the database
 def save(build: Build | Rebuild):
-    with Session(engine) as session:
+    with Session() as session:
         session.add(build)
         session.commit()
 
@@ -153,7 +157,7 @@ def save(build: Build | Rebuild):
 @check_engine_is_set
 # Function to query the database and return rebuild data
 def get_rebuild_data() -> list[Build]:
-    with Session(engine) as session:
+    with Session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
             select(

@@ -13,7 +13,6 @@ def test_build_boltons():
     assert "Found latest build" in result.stdout
 
 
-
 def test_rebuild_build_boltons():
     """Rebuild boltons recipe, last run should be cached"""
     result = runner.invoke(app, ["--in-memory-sql", "rebuild-recipe", "boltons"])

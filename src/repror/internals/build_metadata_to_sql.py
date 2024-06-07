@@ -1,10 +1,9 @@
 import json
 from typing import Literal
 
-from sqlmodel import Session
 from repror.cli.rewrite_readme import find_infos
 
-from repror.internals.db import engine, Build, Rebuild
+from repror.internals.db import Build, Rebuild, Session
 from repror.internals.git import github_api
 from repror.internals.print import print
 
@@ -21,7 +20,7 @@ def write_metadata(build_metadata: dict[Literal["build", "rebuild"]]):
 
     rebuild.build = build
 
-    with Session(engine) as session:
+    with Session() as session:
         session.add(build)
         session.add(rebuild)
         session.commit()
