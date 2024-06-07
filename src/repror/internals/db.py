@@ -1,10 +1,14 @@
 from datetime import datetime
 from enum import StrEnum
 import hashlib
+import logging
 from typing import Optional, Tuple
 from sqlalchemy import text
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select
 
+
+# Suppress SQLAlchemy INFO logs
+logging.getLogger('sqlalchemy.engine').setLevel(logging.WARNING)
 
 # Function to compute the hash of the build tool version and recipe
 def compute_hash(value: str) -> str:
@@ -21,7 +25,7 @@ class BuildState(StrEnum):
 sqlite_file_name = "repro.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-engine = create_engine(sqlite_url, echo=True)
+engine = create_engine(sqlite_url, echo=False)
 
 
 class Build(SQLModel, table=True):
