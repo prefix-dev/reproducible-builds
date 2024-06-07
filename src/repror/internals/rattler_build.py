@@ -1,7 +1,7 @@
 import hashlib
 import os
 
-from repror.internals.commands import run_command, run_streaming_command_stderr
+from repror.internals.commands import run_command, run_streaming_command
 from repror.internals.conf import load_config
 
 
@@ -15,7 +15,7 @@ def get_rattler_build():
 def build_rattler(clone_dir):
     build_command = ["cargo", "build", "--release"]
 
-    run_streaming_command_stderr(build_command, cwd=clone_dir)
+    run_streaming_command(build_command, cwd=clone_dir)
 
 
 def rattler_build_version(cwd):
