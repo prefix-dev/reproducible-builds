@@ -21,6 +21,14 @@ class StreamType(Enum):
     STDOUT = 1
     STDERR = 2
 
+    @property
+    def is_stdout(self):
+        return self == StreamType.STDOUT
+
+    @property
+    def is_stderr(self):
+        return self == StreamType.STDERR
+
 
 def run_streaming_command(
     command: list[str],
@@ -34,7 +42,7 @@ def run_streaming_command(
     # Otherwise it will block
     # See: https://stackoverflow.com/questions/18421757/live-output-from-subprocess-command
 
-    if stream_type == StreamType.STDERR:
+    if stream_type.is_stderr:
         kwarwgs = {"stderr": subprocess.PIPE}
     else:
         kwarwgs = {"stdout": subprocess.PIPE}
@@ -47,10 +55,8 @@ def run_streaming_command(
             print(line, end="")
 
         # Also print the other output if there is any
-        if stream_type == StreamType.STDERR:
-            out = process.stdout
-        else:
-            out = process.stderr
+
+        out = process.stdout if stream_type.is_stderr else process.stderr
         if out:
             print(process.stdout.readline())
 
