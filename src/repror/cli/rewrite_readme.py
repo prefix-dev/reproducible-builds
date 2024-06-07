@@ -52,7 +52,7 @@ def rerender_html(update_remote: bool = False):
         if build.state == BuildState.FAIL:
             by_platform[build.platform_name].append(
                 StatisticData(
-                    state=build.state,
+                    build_state=build.state,
                     recipe_name=build.recipe_name,
                     time=str(build.timestamp),
                     reason=build.reason,

@@ -21,7 +21,7 @@ from ..internals.commands import pixi_root
 from rich.spinner import Spinner
 from rich.live import Live
 
-app = typer.Typer(no_args_is_help=True)
+app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
 
 def pixi_root_cli():
