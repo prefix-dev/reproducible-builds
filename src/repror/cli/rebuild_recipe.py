@@ -49,30 +49,9 @@ def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path, force_rebuild: bool = F
             platform_version,
         )
 
-        # latest_rebuild = (
-        #     get_latest_rebuild(connection, latest_build[0]) if latest_build else None
-        # )
-
         if latest_rebuild and not force_rebuild:
             print("Found latest rebuild. Skipping rebuilding it again")
             continue
-        # if latest_build[2] == "fail":
-        #     latest_rebuild = save_failed_rebuild(
-        #         connection, recipe.name, latest_build[0], latest_build[-2]
-        #     )
-
-        #     with open(
-        #         f"build_info/{platform_name}/{recipe.build_id}_platform_{platform_name}_{platform_version}_info.json",
-        #         "w",
-        #     ) as f:
-        #         patch_info = {
-        #             "build": latest_build,
-        #             "rebuild": latest_rebuild[0],
-        #         }
-
-        #         json.dump(patch_info, f)
-
-        #     return None
 
         rebuild_result = rebuild_package(latest_build, recipe, tmp_dir, build_info)
 
@@ -90,9 +69,6 @@ def rebuild_recipe(recipes: list[Recipe], tmp_dir: Path, force_rebuild: bool = F
 
             json.dump(patch_info, f, default=str)
 
-        import pdb
-
-        pdb.set_trace()
         save(rebuild_result.rebuild)
 
         if rebuild_result.exception:

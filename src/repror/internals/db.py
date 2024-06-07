@@ -18,10 +18,6 @@ class BuildState(StrEnum):
     FAIL = "fail"
 
 
-# DATABASE = 'repro.db'
-
-# Defer initialization of the database until the script is executed from the
-# command-line.
 sqlite_file_name = "repro.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
@@ -71,78 +67,6 @@ def create_db_and_tables():
 create_db_and_tables()
 
 
-def dummy_data():
-    build1 = Build(
-        recipe_name="boltons",
-        state=BuildState.SUCCESS,
-        build_tool_hash=compute_hash("23.0.0"),
-        recipe_hash=compute_hash("h4616a5c_0"),
-        platform_name="darwin",
-        platform_version="22.5.0",
-        build_hash=compute_hash(
-            "f370cf84e9ff55efdaa0bd7ea2b65ed2449ab5f258a8797412aaffd952776421"
-        ),
-        build_loc="artifacts/boltons-23.0.0-pyh4616a5c_0.conda",
-        reason=None,
-    )
-
-    rebuild = Rebuild(
-        # build_id=build1.id,
-        state=BuildState.SUCCESS,
-        reason=None,
-        rebuild_hash=compute_hash(
-            "f370cf84e9ff55efdaa0bd7ea2b65ed2449ab5f258a8797412aaffd952776421"
-        ),
-        build=build1,
-    )
-
-    with Session(engine) as session:
-        session.add(build1)
-        session.add(rebuild)
-        session.commit()
-
-
-# # Function to initialize the SQLite database
-# def init_db(db_name="repro.db") -> Connection:
-#     conn = sqlite3.connect(db_name)
-#     cursor = conn.cursor()
-
-#     # Create build table
-#     cursor.execute("""
-#         CREATE TABLE IF NOT EXISTS build (
-#             id INTEGER PRIMARY KEY AUTOINCREMENT,
-#             recipe_name TEXT,
-#             state TEXT,
-#             build_tool_hash TEXT,
-#             recipe_hash TEXT,
-#             platform_name TEXT,
-#             platform_version TEXT,
-#             build_hash TEXT,
-#             build_loc TEXT,
-#             reason TEXT,
-#             timestamp TEXT
-#         )
-#     """)
-
-#     # Create rebuild table with a foreign key relationship to the build table
-#     cursor.execute("""
-#         CREATE TABLE IF NOT EXISTS rebuild (
-#             id INTEGER PRIMARY KEY AUTOINCREMENT,
-#             recipe_name TEXT,
-#             build_id INTEGER,
-#             state TEXT,
-#             reason TEXT,
-#             hash TEXT,
-#             timestamp TEXT,
-#             FOREIGN KEY(build_id) REFERENCES build(id)
-#         )
-#     """)
-
-#     conn.commit()
-#     return conn
-
-
-# Function to check if the hash exists in the database
 def get_latest_build(
     recipe_name: str,
     build_tool_hash: str,
@@ -165,7 +89,6 @@ def get_latest_build(
         return build
 
 
-# Function to check if the hash exists in the database
 def get_latest_build_with_rebuild(
     recipe_name: str,
     build_tool_hash: str,

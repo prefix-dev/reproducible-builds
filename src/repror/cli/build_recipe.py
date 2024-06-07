@@ -50,7 +50,6 @@ def build_recipe(
     force_build: bool = False,
 ):
     platform_name, platform_version = platform.system().lower(), platform.release()
-    # platform_name, platform_version = "linux", "12"
 
     build_dir = Path("build_outputs")
     build_dir.mkdir(exist_ok=True)
