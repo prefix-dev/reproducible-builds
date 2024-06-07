@@ -43,11 +43,11 @@ def run_streaming_command(
     # See: https://stackoverflow.com/questions/18421757/live-output-from-subprocess-command
 
     if stream_type.is_stderr:
-        kwarwgs = {"stderr": subprocess.PIPE}
+        kwargs = {"stderr": subprocess.PIPE}
     else:
-        kwarwgs = {"stdout": subprocess.PIPE}
+        kwargs = {"stdout": subprocess.PIPE}
 
-    with subprocess.Popen(command, cwd=cwd, env=env, **kwarwgs) as process:
+    with subprocess.Popen(command, cwd=cwd, env=env, **kwargs) as process:
         # Print stderr as it comes in
         for line in io.TextIOWrapper(
             process.stderr, encoding="utf-8"
