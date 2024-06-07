@@ -89,8 +89,6 @@ def build_recipe(
         build_conda_package(recipe.path, output_dir)
     except CalledProcessError as e:
         print(f"Failed to build recipe: {recipe.path}")
-        last_failed_logs = e.stderr[1000:].decode("utf-8")
-
         failed_build = Build(
             recipe_name=recipe.name,
             state=BuildState.FAIL,
@@ -98,7 +96,7 @@ def build_recipe(
             recipe_hash=recipe.content_hash,
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
-            reason=last_failed_logs,
+            reason=e.stderr[-1000:],
         )
         return BuildResult(build=failed_build, exception=e)
 
@@ -137,12 +135,10 @@ def _rebuild_package(
         rebuild_conda_package(build.build_loc, output_dir)
     except CalledProcessError as e:
         print(f"Failed to build recipe: {recipe.name}")
-        last_failed_logs = e.stderr[1000:].decode("utf-8")
-
         failed_build = Rebuild(
             build_id=build.id,
             state=BuildState.FAIL,
-            reason=last_failed_logs,
+            reason=e.stderr[-1000:],
         )
         return RebuildResult(build=failed_build, exception=e)
 
