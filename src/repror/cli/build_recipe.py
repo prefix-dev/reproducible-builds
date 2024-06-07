@@ -64,7 +64,7 @@ def build_recipes(
         recipe_hash = recipe.content_hash
 
         build_info = BuildInfo(
-            build_tool_hash=rattler_hash,
+            rattler_build_hash=rattler_hash,
             platform=platform_name,
             platform_version=platform_version,
         )
