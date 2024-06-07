@@ -14,7 +14,10 @@ def patch(patch_data: dict[Literal["build", "rebuild"]]):
     rebuild = patch_data["rebuild"]
 
     build = Build.model_validate(build)
+    build.id = None
     rebuild = Rebuild.model_validate(rebuild)
+    rebuild.id = None
+    rebuild.build_id = None
 
     rebuild.build = build
 
@@ -35,7 +38,7 @@ def merge_patches(
             patch(patch_data)
 
     if update_remote:
-        # Update the README.md using GitHub API
+        # Update the repro using GitHub API
         print(":running: Updating repro.db")
         with open("repro.db", "rb") as repro_db:
             db_data = repro_db.read()
