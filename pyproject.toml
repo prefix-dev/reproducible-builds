@@ -5,9 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "repror"
 version = "0.0.1"
-authors = [
-  { name="Nichita Morcotilo", email="nichita@prefix.dev" },
-]
+authors = [{ name = "Nichita Morcotilo", email = "nichita@prefix.dev" }]
 description = "verify repro of rattler-build"
 readme = "README.md"
 requires-python = "~=3.10"
@@ -23,6 +21,8 @@ convert-conda-recipe = "repror.convert_conda_recipe:app"
 
 [tool.ruff]
 # Exclude a variety of commonly ignored directories.
-exclude = [
-    "recipes/"
-]
+exclude = ["recipes/"]
+
+[tool.pyright]
+venv = "default"
+venvPath = ".pixi/envs"
