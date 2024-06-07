@@ -33,7 +33,8 @@ def run_streaming_command_stderr(
         print(line, end="")
 
     # Also print stderr if there is any
-    print(process.stdout.readline())
+    if process.stdout:
+        print(process.stdout.readline())
 
 
 def calculate_hash(conda_file: Path):

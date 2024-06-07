@@ -84,7 +84,7 @@ class GithubAPI:
         }
 
         response = requests.get(
-            url, headers=headers, params={"rev": remote_branch or self.branch}
+            url, headers=headers, params={"ref": remote_branch or self.branch}
         )
         response.raise_for_status()
         data = response.json()
