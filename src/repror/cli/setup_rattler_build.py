@@ -48,14 +48,14 @@ def setup_rattler_build(
 
     # Check the hash of rattler_build_hash if it is the same skip the
     # clone and build
-    hash_file = root_folder / ".rb-clone" / "rattler_build_hash"
+    clone_dir = root_folder / ".rb-clone"
+    hash_file = clone_dir / "rattler_build_hash"
     if hash_file.exists():
         with open(hash_file, "r") as f:
             if f.read() == revision:
                 return SetupRattlerBuild.Cached
 
     # Clone the repository
-    clone_dir = root_folder / ".rb-clone"
     if not clone_dir.exists():
         clone_repo(url, clone_dir)
 
