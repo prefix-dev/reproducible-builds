@@ -98,7 +98,7 @@ class Rebuild(SQLModel, table=True):
     build: Build = Relationship(back_populates="rebuilds")
 
 
-# @check_engine_is_set
+@check_engine_is_set
 def get_latest_build(
     recipe_name: str,
     build_tool_hash: str,

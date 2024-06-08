@@ -1,5 +1,5 @@
 import os
-from typing import Optional
+from typing import Optional, Literal
 import platform
 from pathlib import Path
 from repror.internals.build import (
@@ -11,7 +11,8 @@ from repror.internals.build import (
 from repror.internals.conf import Recipe, load_all_recipes
 from repror.internals.db import get_latest_build, save
 from repror.internals.rattler_build import rattler_build_hash
-
+from rich.table import Table
+from rich import print
 
 def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:
     all_recipes = load_all_recipes()
@@ -58,11 +59,13 @@ def build_recipes(
     build_dir.mkdir(exist_ok=True)
 
     os.makedirs("build_info", exist_ok=True)
+    rattler_hash = rattler_build_hash()
 
+    to_build = []
+
+    recipe_status: list[(str, Literal["To Build", "Already Built"])] = []
     for recipe in recipes:
-        rattler_hash = rattler_build_hash()
         recipe_hash = recipe.content_hash
-
         build_info = BuildInfo(
             rattler_build_hash=rattler_hash,
             platform=platform_name,
@@ -77,9 +80,20 @@ def build_recipes(
             platform_version,
         )
         if latest_build and not force_build:
-            print("Found latest build. Skipping build")
+            recipe_status.append((recipe.name, "Already Built"))
             continue
+        recipe_status.append((recipe.name, "To Build"))
+        to_build.append((recipe, tmp_dir, build_dir, build_info))
 
+    # Create rich table with recipes that are already built and need to be built
+    sort = {"To Build": 0, "Already Built": 1}
+    recipe_status = sorted(recipe_status, key=lambda status: sort.get(status[1]))
+    table = Table("Name", "Status", title="Recipes to build")
+    for recipe, status in recipe_status:
+        table.add_row(recipe, status)
+
+    print(table)
+    for recipe, tmp_dir, build_dir, build_info in to_build:
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
         save(build_result.build)
         if build_result.exception:
