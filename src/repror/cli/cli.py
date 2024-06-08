@@ -75,15 +75,19 @@ def generate_recipes():
     generate.generate_recipes()
 
 
-def _check_local_rattler_build(live: Optional[Live] = None):
-    """Setup rattler build if local_rattler_build is set"""
-    print("[dim green]Checking for local rattler build[/dim green]")
-    if not global_options.skip_setup_rattler_build:
+def _check_local_rattler_build():
+    """Setup rattler build if set in yaml"""
+    if global_options.skip_setup_rattler_build:
+        return
+
+    spinner_type = "simpleDots" if platform.system() == "Windows" else "dots"
+    spinner = Spinner(spinner_type, "Setting up rattler build...")
+    with Live(spinner) as live:
         config = load_config()
-        setup.setup_rattler_build(
-            rattler_build_config=config, root_folder=pixi_root_cli(), live=live
+        outcome = setup.setup_rattler_build(
+            rattler_build_config=config, root_folder=pixi_root_cli()
         )
-    print("[dim green]Local rattler build check complete[/dim green]")
+        live.update(f":white_check_mark: Rattler build setup complete ({outcome})")
 
 
 @app.command()
@@ -141,10 +145,4 @@ def generate_html(
 @app.command()
 def setup_rattler_build():
     """Setup a source build environment for rattler. (currently for testing if this works)"""
-    spinner_type = "simpleDots" if platform.system() == "Windows" else "dots"
-
-    spinner = Spinner(spinner_type, "Setting up rattler build...")
-    with Live(spinner) as live:
-        print(":dancer: Rattler build setup starting :dancer:")
-        _check_local_rattler_build(live)
-        print(":dancer: Rattler build setup complete :dancer:")
+    _check_local_rattler_build()
