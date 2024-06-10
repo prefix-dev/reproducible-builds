@@ -6,6 +6,7 @@ repos:
             exclude: meta.yaml
         -   id: end-of-file-fixer
         -   id: trailing-whitespace
+        -   id: debug-statements
   # Use ruff for python examples
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.

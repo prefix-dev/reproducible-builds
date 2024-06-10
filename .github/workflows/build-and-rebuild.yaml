@@ -135,13 +135,13 @@ jobs:
       - name: Build recipes and track if hash is equal
         if: matrix.os != 'windows-latest'
         run: |
-          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build
+          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build --force-build --patch
 
       - name: Build recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
           # shellcheck disable=SC1012
-          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe
+          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --force-build --patch
 
       - name: Set timezone to Los Angeles
         if: matrix.os == 'ubuntu-latest'
@@ -158,16 +158,17 @@ jobs:
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os != 'windows-latest'
         run: |
-          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build
+          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build --force-rebuild --patch
 
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
           # shellcheck disable=SC1012
-          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe
+          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --force-rebuild --patch
 
       - name: Upload results
         uses: actions/upload-artifact@v3
+        if: always()
         with:
           name: build-info
           path: |

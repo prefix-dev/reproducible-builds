@@ -5,7 +5,14 @@ import logging
 from typing import Optional, Tuple
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
-from sqlmodel import Field, Relationship, SQLModel, create_engine, select
+from sqlmodel import (
+    Field,
+    Relationship,
+    SQLModel,
+    create_engine,
+    select,
+    Session as SqlModelSession,
+)
 
 
 # Suppress SQLAlchemy INFO logs
@@ -25,7 +32,7 @@ class BuildState(StrEnum):
 
 
 engine = None
-Session = sessionmaker()
+Session = sessionmaker(class_=SqlModelSession)
 
 
 def create_db_and_tables():
@@ -70,10 +77,10 @@ class Build(SQLModel, table=True):
     recipe_hash: str
     platform_name: str
     platform_version: str
-    build_hash: Optional[str]
-    build_loc: Optional[str]
-    reason: Optional[str]
-    timestamp: datetime = Field(
+    build_hash: Optional[str] = None
+    build_loc: Optional[str] = None
+    reason: Optional[str] = None
+    timestamp: Optional[datetime] = Field(
         default=None,
         sa_column_kwargs={
             "server_default": text("CURRENT_TIMESTAMP"),
@@ -96,6 +103,14 @@ class Rebuild(SQLModel, table=True):
     )
 
     build: Build = Relationship(back_populates="rebuilds")
+
+    @property
+    def platform_name(self):
+        return self.build.platform_name
+
+    @property
+    def recipe_name(self):
+        return self.build.recipe_name
 
 
 @check_engine_is_set
@@ -173,7 +188,6 @@ def get_rebuild_data() -> list[Build]:
         )
 
         # Main query to get the latest builds
-        latest_builds = session.execute(latest_build_subquery).all()
-
+        latest_builds = session.exec(latest_build_subquery).all()
         [build.rebuilds for build in latest_builds]
         return latest_builds
