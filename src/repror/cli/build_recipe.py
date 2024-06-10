@@ -101,6 +101,7 @@ def build_recipes(
     for recipe, tmp_dir, build_dir, build_info in to_build:
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
         if patch:
+            print(f"Saving patch for {build_result.build}")
             save_patch(build_result.build)
 
         if actions_url:

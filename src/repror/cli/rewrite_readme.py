@@ -18,7 +18,7 @@ class StatisticData(BaseModel):
     equal_hash: Optional[bool] = None
     reason: Optional[str] = None
     time: str
-    actions_url: str
+    actions_url: Optional[str] = None
 
     @property
     def is_success(self):
