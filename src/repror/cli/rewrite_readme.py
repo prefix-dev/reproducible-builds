@@ -18,6 +18,7 @@ class StatisticData(BaseModel):
     equal_hash: Optional[bool] = None
     reason: Optional[str] = None
     time: str
+    actions_url: str
 
     @property
     def is_success(self):
@@ -46,6 +47,7 @@ def rerender_html(update_remote: bool = False):
                     recipe_name=build.recipe_name,
                     time=str(build.timestamp),
                     reason=build.reason,
+                    actions_url=build.actions_url,
                 )
             )
             continue
@@ -60,6 +62,7 @@ def rerender_html(update_remote: bool = False):
                 equal_hash=build.build_hash == rebuild.rebuild_hash
                 if rebuild
                 else None,
+                actions_url=build.actions_url,
             )
         )
 

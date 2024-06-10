@@ -24,7 +24,7 @@
                         <th class="py-2 px-4 border-b">Rebuild Status</th>
                         <th class="py-2 px-4 border-b">Reason</th>
                         <th class="py-2 px-4 border-b">Time</th>
-                        <th class="py-2 px-4 border-b">Actions</th>
+                        <th class="py-2 px-4 border-b">Github Action Link</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,8 +33,9 @@
                         <td class="py-2 px-4 border-b">{{ build.recipe_name }}</td>
                         <td class="py-2 px-4 border-b">{{ build.build_state }}</td>
                         <td class="py-2 px-4 border-b">{{ build.rebuild_state if build.rebuild_state else 'N/A' }}</td>
-                        <td class="py-2 px-4 border-b">{{ build.reason }}</td>
+                        <td class="py-2 px-4 border-b"><code>{{ build.reason }}</code></td>
                         <td class="py-2 px-4 border-b">{{ build.time }}</td>
+                        <td class="py-2 px-4 border-b"><a href="{{ build.actions_url }}">url to github actions run</a></td>
                         <!-- <td class="py-2 px-4 border-b">
                             <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('{{ build.reason }}')">View Logs</button>
                         </td> -->
