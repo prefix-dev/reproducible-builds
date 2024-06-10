@@ -1,5 +1,5 @@
 import os
-from typing import Optional, Literal
+from typing import Optional
 import platform
 from pathlib import Path
 from repror.internals.build import (
@@ -11,8 +11,10 @@ from repror.internals.build import (
 from repror.internals.conf import Recipe, load_all_recipes
 from repror.internals.db import get_latest_build, save
 from repror.internals.rattler_build import rattler_build_hash
+from repror.internals.build import BuildStatus
 from rich.table import Table
 from rich import print
+
 
 def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:
     all_recipes = load_all_recipes()
@@ -63,7 +65,7 @@ def build_recipes(
 
     to_build = []
 
-    recipe_status: list[(str, Literal["To Build", "Already Built"])] = []
+    recipe_status: list[(str, BuildStatus)] = []
     for recipe in recipes:
         recipe_hash = recipe.content_hash
         build_info = BuildInfo(
@@ -80,13 +82,13 @@ def build_recipes(
             platform_version,
         )
         if latest_build and not force_build:
-            recipe_status.append((recipe.name, "Already Built"))
+            recipe_status.append((recipe.name, BuildStatus.AlreadyBuilt))
             continue
-        recipe_status.append((recipe.name, "To Build"))
+        recipe_status.append((recipe.name, BuildStatus.ToBuild))
         to_build.append((recipe, tmp_dir, build_dir, build_info))
 
     # Create rich table with recipes that are already built and need to be built
-    sort = {"To Build": 0, "Already Built": 1}
+    sort = {BuildStatus.ToBuild: 0, BuildStatus.AlreadyBuilt: 1}
     recipe_status = sorted(recipe_status, key=lambda status: sort.get(status[1]))
     table = Table("Name", "Status", title="Recipes to build")
     for recipe, status in recipe_status:
