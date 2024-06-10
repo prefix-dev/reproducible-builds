@@ -35,7 +35,7 @@ def strip_emojis(text: str) -> str:
         flags=re.UNICODE,
     )
 
-    # Regex to remove text-based emoji representations like :dancer:
+    # Regex to remove text-based emoji representations like :dancer: hello
     text_emoji_pattern = re.compile(r":[a-z_]+:", re.UNICODE)
 
     text = emoji_pattern.sub(r"", text)
