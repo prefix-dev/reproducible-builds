@@ -102,6 +102,7 @@ def build_recipe(
     rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
     force_build: Annotated[bool, typer.Option()] = False,
     patch: Annotated[bool, typer.Option()] = False,
+    actions_url: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -112,7 +113,7 @@ def build_recipe(
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.recipes_for_names(recipe_names)
 
-        build.build_recipes(recipes_to_build, tmp_dir, force_build, patch)
+        build.build_recipes(recipes_to_build, tmp_dir, force_build, patch, actions_url)
 
 
 @app.command()
@@ -121,6 +122,7 @@ def rebuild_recipe(
     rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
     force_rebuild: Annotated[bool, typer.Option()] = False,
     patch: Annotated[bool, typer.Option()] = False,
+    actions_url: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -130,7 +132,9 @@ def rebuild_recipe(
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.recipes_for_names(recipe_names)
-        rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir, force_rebuild, patch)
+        rebuild.rebuild_recipe(
+            recipes_to_rebuild, tmp_dir, force_rebuild, patch, actions_url
+        )
 
 
 @app.command()

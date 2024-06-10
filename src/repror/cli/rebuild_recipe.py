@@ -1,5 +1,6 @@
 from pathlib import Path
 import platform
+from typing import Optional
 
 from repror.internals.build import BuildInfo, RebuildResult, Recipe, _rebuild_package
 from repror.internals.db import (
@@ -30,6 +31,7 @@ def rebuild_recipe(
     tmp_dir: Path,
     force_rebuild: bool = False,
     patch: bool = False,
+    actions_url: Optional[str] = None,
 ):
     platform_name, platform_version = platform.system().lower(), platform.release()
 
@@ -67,6 +69,8 @@ def rebuild_recipe(
         print(f"{rebuild_result.rebuild}")
         if patch:
             save_patch(rebuild_result.rebuild)
+        if actions_url:
+            rebuild_result.rebuild.actions_url = actions_url
         save(rebuild_result.rebuild)
 
         if rebuild_result.exception:
