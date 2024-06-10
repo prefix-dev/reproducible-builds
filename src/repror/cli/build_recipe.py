@@ -53,6 +53,7 @@ def build_recipes(
     tmp_dir: Path,
     force_build: bool = False,
     patch: bool = False,
+    actions_url: Optional[str] = None,
 ):
     """
     Build recipes using rattler-build
@@ -101,6 +102,10 @@ def build_recipes(
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
         if patch:
             save_patch(build_result.build)
+
+        if actions_url:
+            build_result.build.actions_url = actions_url
+
         save(build_result.build)
         if build_result.exception:
             raise build_result.exception

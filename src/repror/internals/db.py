@@ -86,6 +86,7 @@ class Build(SQLModel, table=True):
             "server_default": text("CURRENT_TIMESTAMP"),
         },
     )
+    actions_url: Optional[str] = None
     rebuilds: list["Rebuild"] = Relationship(back_populates="build")
 
 
@@ -101,7 +102,7 @@ class Rebuild(SQLModel, table=True):
             "server_default": text("CURRENT_TIMESTAMP"),
         },
     )
-
+    actions_url: Optional[str] = None
     build: Build = Relationship(back_populates="rebuilds")
 
     @property
