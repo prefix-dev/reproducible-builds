@@ -8,4 +8,6 @@
 [chat-url]: https://discord.gg/kKV8ZxyzY4
 
 
-https://prefix-dev.github.io/reproducible-builds/
+
+## Build Status
+You can view the current build status [here](https://prefix-dev.github.io/reproducible-builds/).
