@@ -1,8 +1,13 @@
+from enum import StrEnum
 from pathlib import Path
 import shutil
-from typing import Optional, TypedDict
+from subprocess import CalledProcessError
+from typing import Optional
+
+from pydantic import BaseModel, ConfigDict
 
 from repror.internals.conf import Recipe
+from repror.internals.db import Build, BuildState, Rebuild
 from repror.internals.rattler_build import get_rattler_build
 from repror.internals.commands import (
     calculate_hash,
@@ -12,11 +17,43 @@ from repror.internals.commands import (
 )
 
 
-class BuildInfo(TypedDict):
-    recipe_path: str
-    pkg_hash: str
-    output_dir: str
-    conda_loc: str
+class BuildStatus(StrEnum):
+    ToBuild = "To Build"
+    AlreadyBuilt = "Already Built"
+
+
+class BuildInfo(BaseModel):
+    """
+    Contains information that was used to build a recipe
+    """
+
+    rattler_build_hash: str
+    platform: str
+    platform_version: str
+
+
+class BuildResult(BaseModel):
+    """
+    Result of building a recipe
+    """
+
+    build: Build
+    exception: Optional[CalledProcessError] = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @property
+    def failed(self):
+        return self.build.state == BuildState.FAIL
+
+
+class RebuildResult(BaseModel):
+    rebuild: Rebuild
+    exception: Optional[CalledProcessError] = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    @property
+    def failed(self):
+        return self.rebuild.state == BuildState.FAIL
 
 
 def build_conda_package(recipe_path: Path, output_dir: Path):
@@ -30,7 +67,7 @@ def build_conda_package(recipe_path: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_command(build_command)
+    run_command(build_command, silent=True)
 
 
 def rebuild_conda_package(conda_file: Path, output_dir: Path):
@@ -45,12 +82,29 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_command(re_build_command)
+    run_command(re_build_command, silent=True)
 
 
-def build_recipe(recipe_path: Path, output_dir: Path) -> Optional[BuildInfo]:
+def build_recipe(
+    recipe: Recipe, output_dir: Path, build_info: BuildInfo
+) -> BuildResult:
+    """Build a single recipe"""
+
     # bypass exception on top
-    build_conda_package(recipe_path, output_dir)
+    try:
+        build_conda_package(recipe.path, output_dir)
+    except CalledProcessError as e:
+        print(f"Failed to build recipe: {recipe.path}")
+        failed_build = Build(
+            recipe_name=recipe.name,
+            state=BuildState.FAIL,
+            build_tool_hash=build_info.rattler_build_hash,
+            recipe_hash=recipe.content_hash,
+            platform_name=build_info.platform,
+            platform_version=build_info.platform_version,
+            reason=e.stderr[-1000:],
+        )
+        return BuildResult(build=failed_build, exception=e)
 
     # let's record first hash
     conda_file = find_conda_file(output_dir)
@@ -59,63 +113,66 @@ def build_recipe(recipe_path: Path, output_dir: Path) -> Optional[BuildInfo]:
     # so we could upload it in github action
     new_file_loc = move_file(conda_file, Path("artifacts"))
 
-    first_build_hash = calculate_hash(new_file_loc)
-
-    return BuildInfo(
-        recipe_path=str(recipe_path),
-        pkg_hash=first_build_hash,
-        output_dir=str(output_dir),
-        conda_loc=str(new_file_loc),
+    build = Build(
+        recipe_name=recipe.name,
+        state=BuildState.SUCCESS,
+        build_hash=calculate_hash(new_file_loc),
+        build_tool_hash=build_info.rattler_build_hash,
+        recipe_hash=recipe.content_hash,
+        platform_name=build_info.platform,
+        platform_version=build_info.platform_version,
+        build_loc=str(new_file_loc),
     )
 
+    return BuildResult(build=build, exception=None)
 
-def rebuild_package(conda_file, output_dir, platform) -> Optional[BuildInfo]:
+
+def _rebuild_package(
+    build: Build, recipe: Recipe, output_dir, build_info: BuildInfo
+) -> RebuildResult:
     # copy to ci artifacts
     shutil.copyfile(
-        conda_file, f"ci_artifacts/{platform}/build/{Path(conda_file).name}"
+        build.build_loc,
+        f"ci_artifacts/{build_info.platform}/build/{Path(build.build_loc).name}",
     )
 
     # raise exception to top
-    rebuild_conda_package(conda_file, output_dir)
+    try:
+        rebuild_conda_package(build.build_loc, output_dir)
+    except CalledProcessError as e:
+        print(f"Failed to build recipe: {recipe.name}")
+        failed_build = Rebuild(
+            build_id=build.id,
+            state=BuildState.FAIL,
+            reason=e.stderr[-1000:],
+        )
+        return RebuildResult(build=failed_build, exception=e)
 
-    # let's record first hash
     conda_file = find_conda_file(output_dir)
     shutil.copyfile(
-        conda_file, f"ci_artifacts/{platform}/rebuild/{Path(conda_file).name}"
-    )
-    first_build_hash = calculate_hash(conda_file)
-
-    return BuildInfo(
-        recipe_path=str(conda_file),
-        pkg_hash=first_build_hash,
-        output_dir=str(output_dir),
-        conda_loc=str(conda_file),
+        conda_file,
+        f"ci_artifacts/{build_info.platform}/rebuild/{Path(conda_file).name}",
     )
 
+    rebuild = Rebuild(
+        build_id=build.id,
+        state=BuildState.SUCCESS,
+        rebuild_hash=calculate_hash(conda_file),
+    )
 
-def build_remote_recipes(
-    recipe: Recipe, build_dir: Path, cloned_prefix_dir: Path
-) -> dict[str, Optional[BuildInfo]]:
-    _, recipe_location = recipe.load_remote_recipe_config(Path(cloned_prefix_dir))
+    return RebuildResult(rebuild=rebuild)
 
-    build_infos: dict[str, Optional[BuildInfo]] = {}
 
+def build_remote_recipe(
+    recipe: Recipe, build_dir: Path, cloned_prefix_dir: Path, build_info: BuildInfo
+) -> BuildResult:
     build_dir = build_dir / f"{recipe.name}_build"
     build_dir.mkdir(parents=True, exist_ok=True)
 
-    build_info = build_recipe(recipe_location, build_dir)
-
-    build_infos[recipe.name] = build_info
-
-    return build_infos
+    return build_recipe(recipe, build_dir, build_info)
 
 
-def build_local_recipe(recipe: Recipe, build_dir):
+def build_local_recipe(recipe: Recipe, build_dir, build_info: BuildInfo) -> BuildResult:
     print(f"Building recipe: {recipe.name}")
-    build_infos = {}
 
-    build_info = build_recipe(recipe.path, build_dir)
-
-    build_infos[recipe.name] = build_info
-
-    return build_infos
+    return build_recipe(recipe, build_dir, build_info)

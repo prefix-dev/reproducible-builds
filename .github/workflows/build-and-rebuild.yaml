@@ -2,8 +2,8 @@ name: Building and Rebuilding
 
 on:
   push:
-    branches:
-      - main
+    # branches:
+      # - main
 
   pull_request:
   workflow_dispatch:
@@ -80,6 +80,8 @@ jobs:
           message="$(pixi r generate-recipes)"
           echo "$message"
           echo "recipes=$message" >> "$GITHUB_OUTPUT"
+        env:
+          LOG_LEVEL: WARNING  # Set log level to WARNING
 
   build-and-rebuild-recipes:
     needs: generate-recipes
@@ -172,7 +174,7 @@ jobs:
             build_info/
             ci_artifacts/
 
-  statistics:
+  patch-db:
     runs-on: ubuntu-latest
     needs: build-and-rebuild-recipes
 
@@ -192,6 +194,8 @@ jobs:
       - run: |
           ls -la build_info/
 
-      - name: Calculate statistics and plot output
+      - name: Merge patches and update database and html
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run rewrite-readme --update-remote --remote-branch ${{ github.ref_name }}
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches --update-remote
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
+        if: github.event_name != 'pull_request'
