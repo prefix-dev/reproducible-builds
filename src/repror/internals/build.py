@@ -145,6 +145,7 @@ def _rebuild_package(
             build_id=build.id,
             state=BuildState.FAIL,
             reason=e.stderr[-1000:],
+            build=build,
         )
         return RebuildResult(build=failed_build, exception=e)
 
@@ -158,6 +159,7 @@ def _rebuild_package(
         build_id=build.id,
         state=BuildState.SUCCESS,
         rebuild_hash=calculate_hash(conda_file),
+        build=build,
     )
 
     return RebuildResult(rebuild=rebuild)

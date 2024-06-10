@@ -1,6 +1,4 @@
 from collections import defaultdict
-import glob
-import os
 from typing import Optional
 
 from pydantic import BaseModel
@@ -11,14 +9,6 @@ from jinja2 import Environment, FileSystemLoader
 
 from repror.internals.db import BuildState, get_rebuild_data
 from repror.internals.git import github_api
-
-
-def find_infos(folder_path: str, suffix: str):
-    """
-    Use glob to find all .json files in the folder
-    """
-    json_files = glob.glob(os.path.join(folder_path, f"*/**{suffix}.json"))
-    return json_files
 
 
 class StatisticData(BaseModel):

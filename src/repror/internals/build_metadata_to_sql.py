@@ -1,39 +1,24 @@
-import json
-from typing import Literal
-
-from repror.cli.rewrite_readme import find_infos
-
-from repror.internals.db import Build, Rebuild, Session
 from repror.internals.git import github_api
 from repror.internals.print import print
-
-
-def write_metadata(build_metadata: dict[Literal["build", "rebuild"]]):
-    build = build_metadata["build"]
-    rebuild = build_metadata["rebuild"]
-
-    build = Build.model_validate(build)
-    rebuild = Rebuild.model_validate(rebuild)
-
-    build.id = None
-    rebuild.id = None
-
-    rebuild.build = build
-
-    with Session() as session:
-        session.add(build)
-        session.add(rebuild)
-        session.commit()
+from repror.internals.patcher import aggregate_patches, load_patch
 
 
 def metadata_to_db(metadata_dir: str = "build_info", update_remote: bool = False):
-    build_infos = find_infos(metadata_dir, "info")
+    patches = aggregate_patches(metadata_dir)
+    for recipe_name in patches:
+        for platform in patches[recipe_name]:
+            if (
+                "rebuild" in patches[recipe_name][platform]
+                and "build" not in patches[recipe_name][platform]
+            ):
+                raise ValueError(
+                    f"Rebuild patch for {recipe_name} without build patch. Aborting"
+                )
 
-    for build_file in build_infos:
-        print(f":running: Writing {build_file} to the database")
-        with open(build_file, "r") as f:
-            patch_data = json.load(f)
-            write_metadata(patch_data)
+            print(f":running: Writing {recipe_name} to the database")
+
+            patch_for_recipe = patches[recipe_name][platform]
+            load_patch(patch_for_recipe)
 
     if update_remote:
         _update_remote()

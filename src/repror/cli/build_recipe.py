@@ -12,6 +12,7 @@ from repror.internals.conf import Recipe, load_all_recipes
 from repror.internals.db import get_latest_build, save
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
+from repror.internals.patcher import save_patch
 from rich.table import Table
 from rich import print
 
@@ -51,6 +52,7 @@ def build_recipes(
     recipes: list[Recipe],
     tmp_dir: Path,
     force_build: bool = False,
+    patch: bool = False,
 ):
     """
     Build recipes using rattler-build
@@ -97,6 +99,8 @@ def build_recipes(
     print(table)
     for recipe, tmp_dir, build_dir, build_info in to_build:
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
+        if patch:
+            save_patch(build_result.build)
         save(build_result.build)
         if build_result.exception:
             raise build_result.exception
