@@ -18,6 +18,7 @@ def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
 
 class StreamType(Enum):
     """Enum to specify the type of stream to capture."""
+
     STDOUT = 1
     STDERR = 2
 

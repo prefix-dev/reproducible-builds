@@ -1,3 +1,4 @@
+from enum import StrEnum
 from pathlib import Path
 import shutil
 from subprocess import CalledProcessError
@@ -14,6 +15,11 @@ from repror.internals.commands import (
     move_file,
     run_command,
 )
+
+
+class BuildStatus(StrEnum):
+    ToBuild = "To Build"
+    AlreadyBuilt = "Already Built"
 
 
 class BuildInfo(BaseModel):
