@@ -66,7 +66,6 @@ def rerender_html(update_remote: bool = False):
     template = env.get_template("index.html")
 
     html_content = template.render(
-        # build_text=build_text, build_results_by_platform=build_results_by_platform
         by_platform=by_platform
     )
     # Save the table to README.md
