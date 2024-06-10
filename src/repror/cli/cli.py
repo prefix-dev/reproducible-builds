@@ -81,13 +81,19 @@ def _check_local_rattler_build():
         return
 
     spinner_type = "simpleDots" if platform.system() == "Windows" else "dots"
+    live_update_message = (
+        "Rattler build setup complete ({outcome})"
+        if platform.system() == "Windows"
+        else ":white_check_mark: Rattler build setup complete ({outcome})"
+    )
+
     spinner = Spinner(spinner_type, "Setting up rattler build...")
     with Live(spinner) as live:
         config = load_config()
         outcome = setup.setup_rattler_build(
             rattler_build_config=config, root_folder=pixi_root_cli()
         )
-        live.update(f":white_check_mark: Rattler build setup complete ({outcome})")
+        live.update(live_update_message.format(outcome=outcome))
 
 
 @app.command()
