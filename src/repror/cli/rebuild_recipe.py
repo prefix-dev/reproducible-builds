@@ -67,10 +67,10 @@ def rebuild_recipe(
 
         rebuild_result = rebuild_package(latest_build, recipe, tmp_dir, build_info)
         print(f"{rebuild_result.rebuild}")
-        if patch:
-            save_patch(rebuild_result.rebuild)
         if actions_url:
             rebuild_result.rebuild.actions_url = actions_url
+        if patch:
+            save_patch(rebuild_result.rebuild)
         save(rebuild_result.rebuild)
 
         if rebuild_result.exception:
