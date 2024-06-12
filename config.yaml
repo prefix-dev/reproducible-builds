@@ -39,7 +39,7 @@ local:
 # - path: recipes/zlib/recipe.yaml # wrong conversion
 # - path: recipes/wheel/recipe.yaml # license filesystem error
 rattler-build:
-  rev: 6f2c48e6e490967f3c47253c092853ee8fce9d57
+  rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
   url: https://github.com/prefix-dev/rattler-build.git
 repositories:
 - branch: main
