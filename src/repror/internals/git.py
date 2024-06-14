@@ -1,3 +1,4 @@
+from pathlib import Path
 from subprocess import CompletedProcess
 
 import base64
@@ -115,6 +116,22 @@ github_api = GithubAPI()
 def clone_repo(repo_url, clone_dir) -> CompletedProcess:
     """Simple git clone command."""
     return run_command(["git", "clone", repo_url, str(clone_dir)], silent=True)
+
+
+def fetch_changes(clone_dir: Path) -> CompletedProcess:
+    """Fetch latest changes from remote."""
+    return run_command(["git", "fetch"], cwd=str(clone_dir))
+
+
+def check_rev_is_present(clone_dir: Path, rev: str) -> bool:
+    """
+    Verify if revision is present in .git repository
+    Usually it is used to check if an update is needed
+    """
+    output = run_command(
+        ["git", "cat-file", "-t", rev], cwd=str(clone_dir), silent=True
+    )
+    return b"commit" in output.stdout
 
 
 def checkout_branch_or_commit(clone_dir, ref) -> CompletedProcess:
