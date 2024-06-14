@@ -102,7 +102,7 @@ def build_recipe(
             recipe_hash=recipe.content_hash,
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
-            reason=e.stderr[-1000:].decode('utf-8'),
+            reason=e.stderr[-1000:].decode("utf-8"),
         )
         return BuildResult(build=failed_build, exception=e)
 
@@ -144,10 +144,10 @@ def _rebuild_package(
         failed_build = Rebuild(
             build_id=build.id,
             state=BuildState.FAIL,
-            reason=e.stderr[-1000:].decode('utf-8'),
+            reason=e.stderr[-1000:].decode("utf-8"),
             build=build,
         )
-        return RebuildResult(build=failed_build, exception=e)
+        return RebuildResult(rebuild=failed_build, exception=e)
 
     conda_file = find_conda_file(output_dir)
     shutil.copyfile(
