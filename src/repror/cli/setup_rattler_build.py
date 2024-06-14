@@ -3,7 +3,13 @@ from enum import StrEnum
 from pathlib import Path
 from rich import print
 
-from repror.internals.git import clone_repo, checkout_branch_or_commit, pull
+from repror.internals.git import (
+    check_rev_is_present,
+    clone_repo,
+    checkout_branch_or_commit,
+    pull,
+    fetch_changes,
+)
 from repror.internals.rattler_build import build_rattler
 from rich.panel import Panel
 
@@ -53,6 +59,11 @@ def setup_rattler_build(
     # Clone the repository
     if not clone_dir.exists():
         clone_repo(url, clone_dir)
+    else:
+        # Check if revision is present and fetch latest updates if missing
+        rev_present = check_rev_is_present(clone_dir, revision)
+        if not rev_present:
+            fetch_changes(clone_dir)
 
     # Set to correct version
     print(f"Using git revision {revision}")
