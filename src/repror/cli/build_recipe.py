@@ -1,4 +1,5 @@
 import os
+import shutil
 from typing import Optional
 import platform
 from pathlib import Path
@@ -42,10 +43,17 @@ def _build_recipe(
 ) -> BuildResult:
     cloned_prefix_dir = Path(tmp_dir) / "cloned"
 
+    # make output dir per package
+    package_output_dir = build_dir / recipe.name
+    if package_output_dir.exists():
+        shutil.rmtree(package_output_dir)
+
     if recipe.is_local():
-        return build_local_recipe(recipe, build_dir, build_info)
+        return build_local_recipe(recipe, package_output_dir, build_info)
     else:
-        return build_remote_recipe(recipe, build_dir, cloned_prefix_dir, build_info)
+        return build_remote_recipe(
+            recipe, package_output_dir, cloned_prefix_dir, build_info
+        )
 
 
 def build_recipes(
