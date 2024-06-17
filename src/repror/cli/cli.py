@@ -18,6 +18,7 @@ from . import generate_recipes as generate
 from . import rewrite_readme as rewrite
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
+from . import check_recipe
 
 from ..internals.commands import pixi_root
 from rich.spinner import Spinner
@@ -158,3 +159,11 @@ def generate_html(
 def setup_rattler_build():
     """Setup a source build environment for rattler. (currently for testing if this works)"""
     _check_local_rattler_build()
+
+
+@app.command()
+def check(recipe_names: Annotated[list[str], typer.Argument()]):
+    """Check if recipe name[s] is reproducible, by verifying it's build and rebuild hash."""
+    setup_db()
+    recipes_to_check = build.recipes_for_names(recipe_names)
+    check_recipe.check(recipes_to_check)

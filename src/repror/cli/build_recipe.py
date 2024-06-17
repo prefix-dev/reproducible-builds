@@ -15,7 +15,7 @@ from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
 from repror.internals.patcher import save_patch
 from rich.table import Table
-from rich import print
+from repror.internals.print import print
 
 
 def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:

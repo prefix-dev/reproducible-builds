@@ -42,7 +42,7 @@ requirements:
   host:
   run:
   run_exports:
-    - ${{ pin_subpackage('libffi', "x.x") }}
+    - ${{ pin_subpackage('libffi', min_pin="x.x") }}
 
 tests:
   - requirements:
