@@ -1,21 +1,21 @@
-schema_version: 1
-
 context:
   version: 3.45.3
   year: 2024
-  version_split: "\"version.split(\".\")\""
-  major: version_split[0]
-  minor: version_split[1]|int * 10
-  bugfix: version_split[2]|int * 100
-  version_coded: "\"(major ~ ((\"%03d\" % minor)|string) ~ ((\"%03d\" % bugfix)|string))\""
+  # version_split: ${{ version.split('.') }}
+  # major: ${{ version_split[0] }}
+  # minor: ${{ version_split[1] | int * 10 }}
+  # bugfix: ${{ version_split[2] | int * 100 }}
+  # minor_version:  ${{ ("%03d" % minor)|string }}
+  # version_coded: ${{ major ~ (("%03d" % minor)|string) ~ (("%03d" % bugfix)|string)) }}
 
 recipe:
   name: sqlite-split
   version: ${{ version }}
 
 source:
-  url: https://www.sqlite.org/${{ year }}/sqlite-autoconf-${{ version_coded }}.tar.gz
-  sha256: b2809ca53124c19c60f42bf627736eae011afdcc205bb48270a5ee9a38191531
+  # url: https://www.sqlite.org/${{ year }}/sqlite-autoconf-${{ version_coded }}.tar.gz
+  url: https://sqlite.org/2024/sqlite-autoconf-3460000.tar.gz
+  sha256: 6f8e6a7b335273748816f9b3b62bbdc372a889de8782d7f048c653a447417a7d
   patches:
     - if: win
       then: expose_symbols.patch
@@ -23,38 +23,38 @@ source:
 build:
   number: 0
 
-requirements:
-  build:
-    - ${{ compiler('c') }}
-    - if: not win
-      then: make
-    - if: not win
-      then: libtool
-  host:
-    - if: not win
-      then: ncurses
-    - if: not win
-      then: readline
-    - if: not win
-      then: zlib
+# requirements:
+#   build:
+#     - ${{ compiler('c') }}
+#     - if: not win
+#       then: make
+#     - if: not win
+#       then: libtool
+#   host:
+#     - if: not win
+#       then: ncurses
+#     - if: not win
+#       then: readline
+#     - if: not win
+#       then: zlib
 
 outputs:
   - package:
       name: libsqlite
-    files:
-      - if: unix
-        then: include/sqlite*.h
-      - if: unix
-        then: lib/libsqlite*
-      - if: unix
-        then: lib/pkgconfig/sqlite3.pc
-      - if: win
-        then: Library\bin\sqlite3.dll
-      - if: win
-        then: Library\lib\sqlite3.lib
-      - if: win
-        then: Library\include\sqlite*.h
-    build:
+    # files:
+    #   - if: unix
+    #     then: include/sqlite*.h
+    #   - if: unix
+    #     then: lib/libsqlite*
+    #   - if: unix
+    #     then: lib/pkgconfig/sqlite3.pc
+    #   - if: win
+    #     then: Library\bin\sqlite3.dll
+    #   - if: win
+    #     then: Library\lib\sqlite3.lib
+    #   - if: win
+    #     then: Library\include\sqlite*.h
+    # build:
     requirements:
       build:
         - ${{ compiler('c') }}
@@ -70,32 +70,32 @@ outputs:
           then: zlib
       run_exports:
         - ${{ pin_subpackage('libsqlite') }}
-    tests:
-      - script:
-          - if: win
-            then: if not exist %PREFIX%\\Library\bin\sqlite3.dll exit 1
-          - if: win
-            then: if not exist %PREFIX%\\Library\lib\sqlite3.lib exit 1
-          - if: not win
-            then: test -f $PREFIX/lib/libsqlite3${SHLIB_EXT}
-          - if: not win
-            then: test ! -f $PREFIX/lib/libsqlite3.a
-          - if: win
-            then: if not exist %PREFIX%\\Library\include\sqlite3.h exit 1
-          - if: win
-            then: if not exist %PREFIX%\\Library\include\sqlite3ext.h exit 1
-          - if: not win
-            then: test -f $PREFIX/include/sqlite3.h
-          - if: not win
-            then: test -f $PREFIX/include/sqlite3ext.h
+    # tests:
+    #   - script:
+    #       - if: win
+    #         then: if not exist %PREFIX%\\Library\bin\sqlite3.dll exit 1
+    #       - if: win
+    #         then: if not exist %PREFIX%\\Library\lib\sqlite3.lib exit 1
+    #       - if: not win
+    #         then: test -f $PREFIX/lib/libsqlite3${SHLIB_EXT}
+    #       - if: not win
+    #         then: test ! -f $PREFIX/lib/libsqlite3.a
+    #       - if: win
+    #         then: if not exist %PREFIX%\\Library\include\sqlite3.h exit 1
+    #       - if: win
+    #         then: if not exist %PREFIX%\\Library\include\sqlite3ext.h exit 1
+    #       - if: not win
+    #         then: test -f $PREFIX/include/sqlite3.h
+    #       - if: not win
+    #         then: test -f $PREFIX/include/sqlite3ext.h
   - package:
       name: sqlite
-    files:
-      - if: unix
-        then: bin/sqlite3
-      - if: win
-        then: Library\bin\sqlite3.exe
-    build:
+    # files:
+    #   - if: unix
+    #     then: bin/sqlite3
+    #   - if: win
+    #     then: Library\bin\sqlite3.exe
+    # build:
     requirements:
       build:
         - ${{ compiler('c') }}

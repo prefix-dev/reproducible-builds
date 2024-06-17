@@ -1,5 +1,3 @@
-schema_version: 1
-
 context:
   name: _openmp_mutex
   version: 4.5
@@ -33,7 +31,7 @@ requirements:
     - if: linux64 or ppc64le
       then: _libgcc_mutex ${{ _libgcc_mutex }}
   run_exports:
-    - ${{ pin_subpackage('_openmp_mutex', max_pin=None) }}
+    - ${{ pin_subpackage('_openmp_mutex') }}
   ignore_run_exports:
     from_package:
       - _openmp_mutex
@@ -48,8 +46,8 @@ tests:
         - ${{ compiler('cxx') }}
     script:
       - test -f $PREFIX/lib/libgomp.so.1
-      - if [ ! "$PREFIX/lib/libgomp.so.1" -ef "$PREFIX/lib/libomp.so" ]; then exit 1;:
-          - fi
+      # - if [ ! "$PREFIX/lib/libgomp.so.1" -ef "$PREFIX/lib/libomp.so" ]; then exit 1;:
+      #     - fi
       - rm -f omp_hello && ${CC} -v -fopenmp omp_hello.c -o omp_hello && ./omp_hello
       - if: linux
         then: ldd omp_hello

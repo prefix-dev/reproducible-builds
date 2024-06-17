@@ -1,7 +1,5 @@
-schema_version: 1
-
 context:
-  version: 9e
+  version: "9e"
 
 package:
   name: jpeg
@@ -39,7 +37,7 @@ tests:
 
 about:
   license: IJG
-  license_file: ${{ RECIPE_DIR }}/LICENSE.txt
+  # license_file: ${{ RECIPE_DIR }}/LICENSE.txt
   summary: read/write jpeg COM, EXIF, IPTC medata
   homepage: http://www.ijg.org/
 

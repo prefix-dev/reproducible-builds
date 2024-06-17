@@ -26,18 +26,17 @@ local:
 - path: recipes/font-ttf-inconsolata/recipe.yaml
 - path: recipes/font-ttf-ubuntu/recipe.yaml
 - path: recipes/xorg-kbproto/recipe.yaml
-# - path: recipes/jpeg/recipe.yaml # 9e invalid version
-# - path: recipes/_openmp_mutex/recipe.yaml # broken pin_subpackage and recipe
-# - path: recipes/libnsl/recipe.yaml # skiped on linux
-#- path: recipes/pcre2/recipe.yaml # bad recipe converter outputs
-#- path: recipes/brotli/recipe.yaml # bad recipe
-# - path: recipes/kiwisolver/recipe.yaml skipped on linux
+- path: recipes/jpeg/recipe.yaml
+# - path: recipes/_openmp_mutex/recipe.yaml # skiped on non linux
+# - path: recipes/libnsl/recipe.yaml # skiped on non linux
+- path: recipes/pcre2/recipe.yaml # bad recipe converter outputs
+# - path: recipes/brotli/recipe.yaml # bad recipe
+- path: recipes/kiwisolver/recipe.yaml
 # - path: recipes/font-ttf-dejavu-sans-mono/recipe.yaml # bad checksum after downloading
-# - path: recipes/munkres/recipe.yaml # fails to run the tests ( import munkres missing)
-# - path: recipes/toml/recipe.yaml # fail to run tests ( import toml )
-#- path: recipes/sqlite/recipe.yaml # bad conversion of multiple outputs
-# - path: recipes/zlib/recipe.yaml # wrong conversion
-# - path: recipes/wheel/recipe.yaml # license filesystem error
+- path: recipes/munkres/recipe.yaml
+- path: recipes/toml/recipe.yaml
+- path: recipes/sqlite/recipe.yaml
+- path: recipes/wheel/recipe.yaml
 rattler-build:
   rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
   url: https://github.com/prefix-dev/rattler-build.git
