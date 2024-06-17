@@ -175,3 +175,6 @@ build_info/*
 build_outputs/*
 # Local rattler-build clone
 .rb-clone/*
+
+# DS_STORE
+.DS_Store

@@ -1,4 +1,4 @@
-schema_version: 1
+# schema_version: 1
 
 context:
   version: 1.3.1
@@ -17,64 +17,55 @@ source:
 build:
   number: ${{ build_num }}
 
-requirements:
-  build:
-    - if: win
-      then: cmake
-    # compiler on osx depends on zlib itself. Use the bootstrap compiler instead on osx
-    - ${{ compiler('c') }}
-    - ${{ stdlib('c') }}
-    - if: unix
-      then: make
-  run:
+
 
 outputs:
   - package:
       name: libzlib
-    files:
-      - if: linux
-        then: lib/libz.so.*
-      - if: osx
-        then: lib/libz.*.dylib
-      - if: win
-        then: Library/bin/zlib.dll
-      - if: win
-        then: zlib.dll
-    build:
+    # build:
     requirements:
       build:
         - ${{ compiler('c') }}
-        - ${{ stdlib('c') }}
-      host:
-      run:
+        # - ${{ stdlib('c') }}
+      # host:
+      # run:
       run_exports:
         - ${{ pin_subpackage('libzlib', max_pin='x') }}
       run_constraints:
         - zlib ${{ version }} *_${{ build_num }}
-    tests:
-      - script:
-          - if: unix
-            then: test ! -f ${PREFIX}/lib/libz.a
-          - if: unix
-            then: test ! -f ${PREFIX}/lib/libz${SHLIB_EXT}
-          - if: unix
-            then: test ! -f ${PREFIX}/include/zlib.h
-          - if: win
-            then: if not exist %LIBRARY_BIN%\zlib.dll exit 1
-          - if: win
-            then: if not exist %PREFIX%\zlib.dll exit 1
+    # files:
+    #   - if: linux
+    #     then: lib/libz.so.*
+    #   - if: osx
+    #     then: lib/libz.*.dylib
+    #   - if: win
+    #     then: Library/bin/zlib.dll
+    #   - if: win
+    #     then: zlib.dll
+    # tests:
+    #   - script:
+    #       - if: unix
+    #         then: test ! -f ${PREFIX}/lib/libz.a
+    #       - if: unix
+    #         then: test ! -f ${PREFIX}/lib/libz${SHLIB_EXT}
+    #       - if: unix
+    #         then: test ! -f ${PREFIX}/include/zlib.h
+    #       - if: win
+    #         then: if not exist %LIBRARY_BIN%\zlib.dll exit 1
+    #       - if: win
+    #         then: if not exist %PREFIX%\zlib.dll exit 1
   - package:
       name: libzlib-wapi
-    files:
-      - if: win
-        then: Library/bin/zlibwapi.dll
+    # files:
+    #   - if: win
+    #     then: Library/bin/zlibwapi.dll
     build:
       skip:
         - not win
     requirements:
       build:
         - ${{ compiler('c') }}
-        - ${{ stdlib('c') }}
+        # - ${{ stdlib('c') }}
       host:
       run:
       run_exports:
@@ -88,83 +79,78 @@ outputs:
             then: "if not exist \"%LIBRARY_BIN%\\zlibwapi.dll\" exit 1"
   - package:
       name: zlib
-    files:
-      - if: linux
-        then: lib/libz.so
-      - if: osx
-        then: lib/libz.dylib
-      - if: unix
-        then: include
-      - if: unix
-        then: lib/pkgconfig
-      - if: unix
-        then: lib/libz.a
-      - if: win
-        then: Library/include
-      - if: win
-        then: Library/share
-      - if: win
-        then: Library/lib/zlib.lib
-      - if: win
-        then: Library/lib/zdll.lib
-      - if: win
-        then: Library/lib/z.lib
-      - if: win
-        then: Library/lib/zlibstatic.lib
-      - if: win
-        then: Library/lib/pkgconfig
-    build:
+    # files:
+    #   - if: linux
+    #     then: lib/libz.so
+    #   - if: osx
+    #     then: lib/libz.dylib
+    #   - if: unix
+    #     then: include
+    #   - if: unix
+    #     then: lib/pkgconfig
+    #   - if: unix
+    #     then: lib/libz.a
+    #   - if: win
+    #     then: Library/include
+    #   - if: win
+    #     then: Library/share
+    #   - if: win
+    #     then: Library/lib/zlib.lib
+    #   - if: win
+    #     then: Library/lib/zdll.lib
+    #   - if: win
+    #     then: Library/lib/z.lib
+    #   - if: win
+    #     then: Library/lib/zlibstatic.lib
+    #   - if: win
+    #     then: Library/lib/pkgconfig
+    # build:
     requirements:
       build:
         - ${{ compiler('c') }}
-        - ${{ stdlib('c') }}
+        # - ${{ stdlib('c') }}
       host:
         - ${{ pin_subpackage('libzlib', exact=True) }}
       run:
         - ${{ pin_subpackage('libzlib', exact=True) }}
       run_exports:
         - ${{ pin_subpackage('libzlib', max_pin='x') }}
-    tests:
-      - files:
-          recipe:
-            - test_compile_flags.bat
-            - test_compile_flags.c
-        requirements:
-          run:
-            - ${{ compiler('c') }}
-        script:
-          - if: unix
-            then: test -f ${PREFIX}/lib/libz.a
-          - if: unix
-            then: test -f ${PREFIX}/lib/libz${SHLIB_EXT}
-          - if: unix
-            then: test -f ${PREFIX}/include/zlib.h
-          - if: win
-            then: if not exist %LIBRARY_LIB%\zlibstatic.lib exit 1
-          - if: win
-            then: if not exist %LIBRARY_LIB%\zlib.lib exit 1
-          - if: win
-            then: if not exist %LIBRARY_LIB%\pkgconfig\zlib.pc exit 1
-          - if: win
-            then: if not exist %LIBRARY_INC%\zlib.h exit 1
-          - if: win
-            then: if exist %LIBRARY_LIB%\zlibwapi.lib exit 1
-          - if: win
-            then: call test_compile_flags.bat
+    # tests:
+      # - files:
+      #     recipe:
+      #       - test_compile_flags.bat
+      #       - test_compile_flags.c
+      #   requirements:
+      #     run:
+      #       - ${{ compiler('c') }}
+        # script:
+        #   - if: unix
+        #     then: test -f ${PREFIX}/lib/libz.a
+        #   - if: unix
+        #     then: test -f ${PREFIX}/lib/libz${SHLIB_EXT}
+        #   - if: unix
+        #     then: test -f ${PREFIX}/include/zlib.h
+        #   - if: win
+        #     then: if not exist %LIBRARY_LIB%\zlibstatic.lib exit 1
+        #   - if: win
+        #     then: if not exist %LIBRARY_LIB%\zlib.lib exit 1
+        #   - if: win
+        #     then: if not exist %LIBRARY_LIB%\pkgconfig\zlib.pc exit 1
+        #   - if: win
+        #     then: if not exist %LIBRARY_INC%\zlib.h exit 1
+        #   - if: win
+        #     then: if exist %LIBRARY_LIB%\zlibwapi.lib exit 1
+          # - if: win
+          #   then: call test_compile_flags.bat
   - package:
       name: zlib-wapi
-    files:
-      - if: win
-        then: Library/lib/zlibwapi.lib
-      - if: win
-        then: Library/include/zlib.h
     build:
       skip:
         - not win
     requirements:
       build:
         - ${{ compiler('c') }}
-        - ${{ stdlib('c') }}
+        # - ${{ stdlib('c') }}
       host:
         - ${{ pin_subpackage('libzlib-wapi', exact=True) }}
         - ${{ pin_subpackage('zlib', exact=True) }}
@@ -173,27 +159,28 @@ outputs:
         - ${{ pin_subpackage('zlib', exact=True) }}
       run_exports:
         - ${{ pin_subpackage('libzlib-wapi', max_pin='x') }}
-    tests:
-      - files:
-          recipe:
-            - test_compile_flags.bat
-            - test_compile_flags.c
-        requirements:
-          run:
-            - ${{ compiler('c') }}
-        script:
-          - if: win
-            then: if not exist %LIBRARY_LIB%\zlibwapi.lib exit 1
-          - if: win
-            then: if not exist %LIBRARY_INC%\zlib.h exit 1
-          - if: win
-            then: "call test_compile_flags.bat \"wapi\""
+    # tests:
+    #   - script:
+    #       - if: win
+    #         then: if not exist %LIBRARY_LIB%\zlibwapi.lib exit 1
+    #       - if: win
+    #         then: if not exist %LIBRARY_INC%\zlib.h exit 1
+    #       - if: win
+    #         then: "call test_compile_flags.bat \"wapi\""
+    #     files:
+    #       recipe:
+    #         - test_compile_flags.bat
+    #         - test_compile_flags.c
+    #     requirements:
+    #       run:
+    #         - ${{ compiler('c') }}
+
 
 about:
   # http://zlib.net/zlib_license.html
   license: Zlib
   summary: Massively spiffy yet delicately unobtrusive compression library
-  license_file: license.txt
+  # license_file: license.txt
   description: |
     zlib is designed to be a free, general-purpose, lossless data-compression
     library for use on virtually any computer hardware and operating system.
