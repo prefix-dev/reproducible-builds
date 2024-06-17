@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rebuild Status</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-2xl font-bold mb-4">Rebuild Status</h1>
+        <div id="plot-container" class="mb-4">
+            <!-- Plot will be added here by JavaScript -->
+            <canvas id="historicalChart" width="400" height="200"></canvas>
+        </div>
+
+
+        <div class="mb-6">
+            <h2 class="text-xl font-bold mb-2">darwin</h2>
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">Recipe Name</th>
+                        <th class="py-2 px-4 border-b">Build Status</th>
+                        <th class="py-2 px-4 border-b">Rebuild Status</th>
+                        <th class="py-2 px-4 border-b">Reason</th>
+                        <th class="py-2 px-4 border-b">Time</th>
+                        <th class="py-2 px-4 border-b">Github Action Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">kiwisolver</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 13:26:04</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pcre2-split-recipe</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 13:18:38</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">munkres</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 13:05:57</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">toml</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 13:04:58</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">jpeg</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 13:00:52</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">sqlite-split</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 12:34:16</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">wheel</td>
+                        <td class="py-2 px-4 border-b">fail</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b"><code>ore.buildapi.build_wheel('\''.'\'')'
+ │ │ + python -m installer --no-compile-bytecode wheel-0.43.0-py3-none-any.whl
+ │ │
+ │ ╰─────────────────── (took 3 seconds)
+ │
+ │ ╭─ Packaging new files
+ │ │ Copying done!
+ │ │ Post-processing done!
+ │ │ Writing metadata for package
+ │ │ Copying license files
+ │ │ × error File already exists: "/var/folders/rf/kyk8v0zd3993kvjg2p373plm0000gn/T/wheelQWwMXD/info/licenses/LICENSE.txt"
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 7 seconds)
+ × error Error building package: FileSystem error: 'Path "/var/folders/rf/kyk8v0zd3993kvjg2p373plm0000gn/T/wheelQWwMXD/info/licenses/
+ × error LICENSE.txt" already exists!'
+Error:   × FileSystem error: 'Path "/var/folders/rf/kyk8v0zd3993kvjg2p373plm0000gn/T/wheelQWwMXD/info/licenses/LICENSE.txt" already
+  │ exists!'
+
+</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 12:16:15</td>
+                        <td class="py-2 px-4 border-b"><a href="None">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('ore.buildapi.build_wheel('\''.'\'')'
+ │ │ + python -m installer --no-compile-bytecode wheel-0.43.0-py3-none-any.whl
+ │ │
+ │ ╰─────────────────── (took 3 seconds)
+ │
+ │ ╭─ Packaging new files
+ │ │ Copying done!
+ │ │ Post-processing done!
+ │ │ Writing metadata for package
+ │ │ Copying license files
+ │ │ × error File already exists: "/var/folders/rf/kyk8v0zd3993kvjg2p373plm0000gn/T/wheelQWwMXD/info/licenses/LICENSE.txt"
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 7 seconds)
+ × error Error building package: FileSystem error: 'Path "/var/folders/rf/kyk8v0zd3993kvjg2p373plm0000gn/T/wheelQWwMXD/info/licenses/
+ × error LICENSE.txt" already exists!'
+Error:   × FileSystem error: 'Path "/var/folders/rf/kyk8v0zd3993kvjg2p373plm0000gn/T/wheelQWwMXD/info/licenses/LICENSE.txt" already
+  │ exists!'
+
+')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">_libgcc_mutex</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">boltons</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">ca-certificates</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">conda</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">curl</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">cycler</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">fastapi</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">font-ttf-inconsolata</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">font-ttf-source-code-pro</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">font-ttf-ubuntu</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">fonts-conda-ecosystem</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">fonts-conda-forge</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">freetype</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">lerc</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">libffi</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pip</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">pixman</td>
+                        <td class="py-2 px-4 border-b">fail</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b"><code>ndex.crates.io-6f17d22bba15001f/patch-0.7.0/src/parser.rs:84:5:
+bug: failed to parse entire input. Remaining: '+# conda-forge: maintain versioning compatibility with the previous
++# Autotools-based binaries
++version_arr = meson.project_version().split('.')
++minor_version = version_arr[1].to_int()
++micro_version = version_arr[2].to_int()
++darwin_versions = ['41.0.0', '@0@.@1@.0'.format(minor_version + 1, micro_version)]
++
+ libpixman = library(
+   'pixman-1',
+   [pixman_files, config_h, version_h, cpu_features_sources],
+@@ -125,6 +132,7 @@ libpixman = library(
+   dependencies : [dep_m, dep_threads],
+   include_directories : cpu_features_inc,
+   version : meson.project_version(),
++  darwin_versions : darwin_versions,
+   install : true,
+ )
+'
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 1 second)
+</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('ndex.crates.io-6f17d22bba15001f/patch-0.7.0/src/parser.rs:84:5:
+bug: failed to parse entire input. Remaining: '+# conda-forge: maintain versioning compatibility with the previous
++# Autotools-based binaries
++version_arr = meson.project_version().split('.')
++minor_version = version_arr[1].to_int()
++micro_version = version_arr[2].to_int()
++darwin_versions = ['41.0.0', '@0@.@1@.0'.format(minor_version + 1, micro_version)]
++
+ libpixman = library(
+   'pixman-1',
+   [pixman_files, config_h, version_h, cpu_features_sources],
+@@ -125,6 +132,7 @@ libpixman = library(
+   dependencies : [dep_m, dep_threads],
+   include_directories : cpu_features_inc,
+   version : meson.project_version(),
++  darwin_versions : darwin_versions,
+   install : true,
+ )
+'
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 1 second)
+')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pthread-stubs</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pyparsing</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">python-dateutil</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pytz</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">rich</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">setuptools</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">six</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">tomli</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">xorg-kbproto</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">xz</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">zlib-split</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mb-6">
+            <h2 class="text-xl font-bold mb-2">linux</h2>
+            <table class="min-w-full bg-white border border-gray-300">
+                <thead>
+                    <tr>
+                        <th class="py-2 px-4 border-b">Recipe Name</th>
+                        <th class="py-2 px-4 border-b">Build Status</th>
+                        <th class="py-2 px-4 border-b">Rebuild Status</th>
+                        <th class="py-2 px-4 border-b">Reason</th>
+                        <th class="py-2 px-4 border-b">Time</th>
+                        <th class="py-2 px-4 border-b">Github Action Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">_libgcc_mutex</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">boltons</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">ca-certificates</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">conda</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">fail</td>
+                        <td class="py-2 px-4 border-b"><code> Rebuilding artifacts/zlib-1.2.11-h62dcd97_3.conda
+ Extracted recipe to: "/tmp/.tmpqU5H8d"
+Error:   × failed to open file `/tmp/.tmpqU5H8d/rendered_recipe.yaml`
+  ╰─▶ No such file or directory (os error 2)
+
+</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs(' Rebuilding artifacts/zlib-1.2.11-h62dcd97_3.conda
+ Extracted recipe to: "/tmp/.tmpqU5H8d"
+Error:   × failed to open file `/tmp/.tmpqU5H8d/rendered_recipe.yaml`
+  ╰─▶ No such file or directory (os error 2)
+
+')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">curl</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">cycler</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">fastapi</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">font-ttf-inconsolata</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">font-ttf-source-code-pro</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">font-ttf-ubuntu</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">fonts-conda-ecosystem</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">fonts-conda-forge</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">freetype</td>
+                        <td class="py-2 px-4 border-b">fail</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b"><code>ucible-builds/reproducible-builds/build_outputs/freetype/bld/rattler
+ │ │ -build_freetype_1718621161/work/objs/bdf.o >/dev/null 2>&1
+ │ │
+ │ ╰─────────────────── (took 11 seconds)
+ │
+ ╰─────────────────── (took 17 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/freetype/bld/rattler-build_freetype_1718621161/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/freetype/bld/rattler-build_freetype_1718621161/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('ucible-builds/reproducible-builds/build_outputs/freetype/bld/rattler
+ │ │ -build_freetype_1718621161/work/objs/bdf.o >/dev/null 2>&1
+ │ │
+ │ ╰─────────────────── (took 11 seconds)
+ │
+ ╰─────────────────── (took 17 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/freetype/bld/rattler-build_freetype_1718621161/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/freetype/bld/rattler-build_freetype_1718621161/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">lerc</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">libffi</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pip</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">pixman</td>
+                        <td class="py-2 px-4 border-b">fail</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b"><code>ex.crates.io-6f17d22bba15001f/patch-0.7.0/src/parser.rs:84:5:
+bug: failed to parse entire input. Remaining: '+# conda-forge: maintain versioning compatibility with the previous
++# Autotools-based binaries
++version_arr = meson.project_version().split('.')
++minor_version = version_arr[1].to_int()
++micro_version = version_arr[2].to_int()
++darwin_versions = ['41.0.0', '@0@.@1@.0'.format(minor_version + 1, micro_version)]
++
+ libpixman = library(
+   'pixman-1',
+   [pixman_files, config_h, version_h, cpu_features_sources],
+@@ -125,6 +132,7 @@ libpixman = library(
+   dependencies : [dep_m, dep_threads],
+   include_directories : cpu_features_inc,
+   version : meson.project_version(),
++  darwin_versions : darwin_versions,
+   install : true,
+ )
+'
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ ╰─────────────────── (took 2 seconds)
+</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('ex.crates.io-6f17d22bba15001f/patch-0.7.0/src/parser.rs:84:5:
+bug: failed to parse entire input. Remaining: '+# conda-forge: maintain versioning compatibility with the previous
++# Autotools-based binaries
++version_arr = meson.project_version().split('.')
++minor_version = version_arr[1].to_int()
++micro_version = version_arr[2].to_int()
++darwin_versions = ['41.0.0', '@0@.@1@.0'.format(minor_version + 1, micro_version)]
++
+ libpixman = library(
+   'pixman-1',
+   [pixman_files, config_h, version_h, cpu_features_sources],
+@@ -125,6 +132,7 @@ libpixman = library(
+   dependencies : [dep_m, dep_threads],
+   include_directories : cpu_features_inc,
+   version : meson.project_version(),
++  darwin_versions : darwin_versions,
+   install : true,
+ )
+'
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ ╰─────────────────── (took 2 seconds)
+')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pthread-stubs</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pyparsing</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">python-dateutil</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">pytz</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">rich</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">setuptools</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">six</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">tomli</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">xorg-kbproto</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-red-100">
+                        <td class="py-2 px-4 border-b">xz</td>
+                        <td class="py-2 px-4 border-b">fail</td>
+                        <td class="py-2 px-4 border-b">N/A</td>
+                        <td class="py-2 px-4 border-b"><code>FIX/lib
+ │ │ +MESON_ARGS=--buildtype release --prefix=$PREFIX -Dlibdir=lib
+ │ │ + make install
+ │ │ make: *** No rule to make target 'install'.  Stop.
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 6 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/xz/bld/rattler-build_xz_1718621247/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/xz/bld/rattler-build_xz_1718621247/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('FIX/lib
+ │ │ +MESON_ARGS=--buildtype release --prefix=$PREFIX -Dlibdir=lib
+ │ │ + make install
+ │ │ make: *** No rule to make target 'install'.  Stop.
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 6 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/xz/bld/rattler-build_xz_1718621247/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/xz/bld/rattler-build_xz_1718621247/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                    <tr class="bg-green-100">
+                        <td class="py-2 px-4 border-b">zlib-split</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b">success</td>
+                        <td class="py-2 px-4 border-b"><code>None</code></td>
+                        <td class="py-2 px-4 border-b">2024-06-17 10:52:15</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9546270398">url to github actions run</a></td>
+                        <!-- <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                        </td> -->
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Modal for logs -->
+    <div id="logModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 hidden">
+        <div class="bg-white p-4 rounded shadow-lg max-w-xl w-full">
+            <h2 class="text-xl font-bold mb-2">Logs</h2>
+            <pre id="logContent" class="bg-gray-200 p-2 rounded h-64 overflow-y-scroll"></pre>
+            <button class="bg-red-500 text-white py-1 px-3 rounded hover:bg-red-700 mt-2" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+</body>
+</html>

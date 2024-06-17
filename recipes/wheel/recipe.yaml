@@ -41,7 +41,7 @@ tests:
 
 about:
   license: MIT
-  license_file: LICENSE.txt
+  # license_file: LICENSE.txt
   summary: A built-package format for Python.
   homepage: https://github.com/pypa/wheel
 

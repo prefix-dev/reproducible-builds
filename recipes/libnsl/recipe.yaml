@@ -1,5 +1,3 @@
-schema_version: 1
-
 context:
   name: libnsl
   version: 2.0.1
