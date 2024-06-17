@@ -70,8 +70,9 @@ def rerender_html(update_remote: bool = False):
 
     html_content = template.render(by_platform=by_platform)
     # Save the table to README.md
-    with open("docs/index.html", "w") as file:
-        file.write(html_content)
+    index_html_path = Path("docs/index.html")
+    index_html_path.parent.mkdir(exist_ok=True)
+    index_html_path.write_text(html_content)
 
     if update_remote:
         # Update the README.md using GitHub API
