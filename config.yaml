@@ -10,7 +10,7 @@ local:
 - path: recipes/pytz/recipe.yaml
 - path: recipes/six/recipe.yaml
 - path: recipes/python-dateutil/recipe.yaml
-- path: recipes/libpng/recipe.yaml
+# - path: recipes/libpng/recipe.yaml
 - path: recipes/freetype/recipe.yaml
 - path: recipes/xz/recipe.yaml
 - path: recipes/libffi/recipe.yaml

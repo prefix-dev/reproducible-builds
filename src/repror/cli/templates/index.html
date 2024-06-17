@@ -13,6 +13,24 @@
             <canvas id="historicalChart" width="400" height="200"></canvas>
         </div>
 
+        <!-- Reproducibility Percentages -->
+        <div class="mb-6">
+            <h2 class="text-xl font-bold mb-2">Reproducibility Per Platform</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {% for platform, builds in by_platform.items() %}
+                {% set total_builds = builds|length %}
+                {% set reproducible_builds = builds|selectattr('is_success', 'equalto', True)|list|length %}
+                {% set reproducibility_percentage = (reproducible_builds / total_builds) * 100 %}
+                <div class="bg-white p-4 rounded shadow border border-gray-300">
+                    <h3 class="text-lg font-semibold">{{ platform }}</h3>
+                    <p>Total Builds: {{ total_builds }}</p>
+                    <p>Reproducible Builds: {{ reproducible_builds }}</p>
+                    <p>Reproducibility: {{ reproducibility_percentage | round(2) }}%</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
         {% for platform, builds in by_platform.items() %}
         <div class="mb-6">
             <h2 class="text-xl font-bold mb-2">{{ platform }}</h2>

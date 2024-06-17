@@ -13,7 +13,7 @@ from enum import Enum
 
 def run_command(command, cwd=None, env=None, silent=False) -> CompletedProcess:
     """Run a specific command."""
-    return subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=silent)
+    return subprocess.run(command, cwd=cwd, env=env, check=True, capture_output=False)
 
 
 class StreamType(Enum):
