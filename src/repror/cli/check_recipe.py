@@ -35,7 +35,8 @@ def check(
         )
 
         if not latest_build and not latest_rebuild:
-            raise ValueError(f"No build and rebuild found for recipe {recipe.name}")
+            status[recipe.name] = "No (not built yet)"
+            continue
 
         rebuild_hash = latest_rebuild.rebuild_hash if latest_rebuild else ""
         status[recipe.name] = "Yes" if latest_build and latest_build.build_hash == rebuild_hash else "No"
