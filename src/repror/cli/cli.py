@@ -101,8 +101,9 @@ def _check_local_rattler_build():
 def build_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
     rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
-    force_build: Annotated[bool, typer.Option()] = False,
+    force: Annotated[bool, typer.Option()] = False,
     patch: Annotated[bool, typer.Option()] = False,
+    run_rebuild: Annotated[bool, typer.Option("--rebuild")] = False,
     actions_url: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Build recipe from a string in the form of url::branch::path."""
@@ -114,14 +115,19 @@ def build_recipe(
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.recipes_for_names(recipe_names)
 
-        build.build_recipes(recipes_to_build, tmp_dir, force_build, patch, actions_url)
+        build.build_recipes(recipes_to_build, tmp_dir, force, patch, actions_url)
+        if run_rebuild:
+            print("Rebuilding recipes...")
+            rebuild.rebuild_recipe(recipes_to_build, tmp_dir, force, patch, actions_url)
+            print("Verifying if rebuilds are reproducible...")
+            check_recipe.check(recipes_to_build)
 
 
 @app.command()
 def rebuild_recipe(
     recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
     rattler_build_exe: Annotated[Optional[Path], typer.Option()] = None,
-    force_rebuild: Annotated[bool, typer.Option()] = False,
+    force: Annotated[bool, typer.Option()] = False,
     patch: Annotated[bool, typer.Option()] = False,
     actions_url: Annotated[Optional[str], typer.Option()] = None,
 ):
@@ -133,9 +139,7 @@ def rebuild_recipe(
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.recipes_for_names(recipe_names)
-        rebuild.rebuild_recipe(
-            recipes_to_rebuild, tmp_dir, force_rebuild, patch, actions_url
-        )
+        rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir, force, patch, actions_url)
 
 
 @app.command()

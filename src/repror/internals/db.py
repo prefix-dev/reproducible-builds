@@ -2,14 +2,16 @@ from datetime import datetime
 from enum import StrEnum
 import hashlib
 import logging
-from typing import Optional, Tuple
+from typing import Optional
 from sqlalchemy import func, text
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
     Field,
     Relationship,
     SQLModel,
+    and_,
     create_engine,
+    or_,
     select,
     Session as SqlModelSession,
 )
@@ -115,54 +117,90 @@ class Rebuild(SQLModel, table=True):
 
 
 @check_engine_is_set
-def get_latest_build(
-    recipe_name: str,
+def get_latest_builds(
+    recipe_names_and_hash: list[tuple[str, str]],
     build_tool_hash: str,
-    recipe_hash: str,
     platform_name: str,
     platform_version: str,
-) -> Build:
+) -> dict[str, Build]:
     with Session() as session:
-        statement = (
-            select(Build)
-            .where(Build.recipe_name == recipe_name)
+        conditions = [
+            (Build.recipe_name == recipe_name) & (Build.recipe_hash == recipe_hash)
+            for recipe_name, recipe_hash in recipe_names_and_hash
+        ]
+
+        subquery = (
+            select(
+                Build.recipe_name,
+                Build.recipe_hash,
+                func.max(Build.timestamp).label("max_timestamp"),
+            )
+            .where(or_(*conditions))
             .where(Build.build_tool_hash == build_tool_hash)
-            .where(Build.recipe_hash == recipe_hash)
             .where(Build.platform_name == platform_name)
             .where(Build.platform_version == platform_version)
+            .group_by(Build.recipe_name, Build.recipe_hash)
+        ).subquery()
+
+        statement = (
+            select(Build)
+            .join(
+                subquery,
+                and_(
+                    Build.recipe_name == subquery.c.recipe_name,
+                    Build.recipe_hash == subquery.c.recipe_hash,
+                    Build.timestamp == subquery.c.max_timestamp,
+                ),
+            )
             .order_by(Build.timestamp.desc())
-            .limit(1)
         )
-        build = session.execute(statement).first()
-        return build
+        builds = session.exec(statement).fetchall()
+        return {build.recipe_name: build for build in builds}
 
 
 @check_engine_is_set
 def get_latest_build_with_rebuild(
-    recipe_name: str,
+    recipe_names_and_hash: list[tuple[str, str]],
     build_tool_hash: str,
-    recipe_hash: str,
     platform_name: str,
     platform_version: str,
-) -> Tuple[Build, Optional[Rebuild]]:
+) -> dict[str, (Build, Optional[Rebuild])]:
     with Session() as session:
-        statement = (
-            select(Build)
-            .where(Build.recipe_name == recipe_name)
+        conditions = [
+            (Build.recipe_name == recipe_name) & (Build.recipe_hash == recipe_hash)
+            for recipe_name, recipe_hash in recipe_names_and_hash
+        ]
+
+        subquery = (
+            select(
+                Build.recipe_name,
+                Build.recipe_hash,
+                func.max(Build.timestamp).label("max_timestamp"),
+            )
+            .where(or_(*conditions))
             .where(Build.build_tool_hash == build_tool_hash)
-            .where(Build.recipe_hash == recipe_hash)
             .where(Build.platform_name == platform_name)
             .where(Build.platform_version == platform_version)
-            .order_by(Build.timestamp.desc())
-            .limit(1)
-        )
-        result = session.execute(statement)
-        build = result.scalars().first()
-        if not build:
-            raise ValueError("No build found")
-        rebuild = build.rebuilds[-1] if build and build.rebuilds else None
+            .group_by(Build.recipe_name, Build.recipe_hash)
+        ).subquery()
 
-        return build, rebuild
+        statement = (
+            select(Build)
+            .join(
+                subquery,
+                and_(
+                    Build.recipe_name == subquery.c.recipe_name,
+                    Build.recipe_hash == subquery.c.recipe_hash,
+                    Build.timestamp == subquery.c.max_timestamp,
+                ),
+            )
+            .order_by(Build.timestamp.desc())
+        )
+        builds = session.exec(statement).fetchall()
+        return {
+            build.recipe_name: (build, build.rebuilds[-1] if build.rebuilds else None)
+            for build in builds
+        }
 
 
 @check_engine_is_set

@@ -17,16 +17,23 @@ def check(
 
     status = {}
 
+    recipes_to_find = []
     for recipe in recipes:
+        recipe_name = recipe.name
         recipe_hash = recipe.content_hash
+        recipes_to_find.append((recipe_name, recipe_hash))
 
-        latest_build, latest_rebuild = get_latest_build_with_rebuild(
-            recipe.name,
-            rattler_hash,
-            recipe_hash,
-            platform_name,
-            platform_version,
+    latest_build_and_rebuild = get_latest_build_with_rebuild(
+        recipes_to_find,
+        rattler_hash,
+        platform_name,
+        platform_version,
+    )
+    for recipe in recipes:
+        latest_build, latest_rebuild = latest_build_and_rebuild.get(
+            recipe.name, (None, None)
         )
+
         if not latest_build and not latest_rebuild:
             raise ValueError(f"No build and rebuild found for recipe {recipe.name}")
 
