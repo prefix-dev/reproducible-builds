@@ -93,16 +93,16 @@ class Recipe:
             return conf, raw_config, path
 
     def load_local_recipe_config(
-        self, recipe_path: Optional[str] = None
+        self, recipe_path: Optional[Path] = None
     ) -> tuple[dict, str, Path]:
-        path = Path(recipe_path) if recipe_path else Path(self.local_path)
+        path = recipe_path if recipe_path else Path(self.local_path)
         raw_config = path.read_text(encoding="utf8")
         conf = yaml.safe_load(raw_config)
         return conf, raw_config, path
 
     def load_remote_recipe_config(
         self, clone_dir: Optional[Path] = None
-    ) -> tuple[dict, Path]:
+    ) -> tuple[dict, str, Path]:
         if not self.url:
             raise ValueError("url should be provided for remote recipe")
 
@@ -157,11 +157,13 @@ class Recipe:
     @property
     def config(self) -> dict:
         self._load_config_if_needed()
+        assert self._config
         return self._config
 
     @property
     def raw_config(self) -> str:
         self._load_config_if_needed()
+        assert self._raw_config
         return self._raw_config
 
     def content_hash(self) -> str:

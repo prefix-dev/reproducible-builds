@@ -115,10 +115,10 @@ def build_recipe(
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.recipes_for_names(recipe_names)
 
-        build.build_recipes(recipes_to_build, tmp_dir, force, patch, actions_url)
+        build.build_recipes(recipes_to_build, Path(tmp_dir), force, patch, actions_url)
         if run_rebuild:
             print("Rebuilding recipes...")
-            rebuild.rebuild_recipe(recipes_to_build, tmp_dir, force, patch, actions_url)
+            rebuild.rebuild_recipe(recipes_to_build, Path(tmp_dir), force, patch, actions_url)
             print("Verifying if rebuilds are reproducible...")
             check_recipe.check(recipes_to_build)
 
@@ -139,7 +139,7 @@ def rebuild_recipe(
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.recipes_for_names(recipe_names)
-        rebuild.rebuild_recipe(recipes_to_rebuild, tmp_dir, force, patch, actions_url)
+        rebuild.rebuild_recipe(recipes_to_rebuild, Path(tmp_dir), force, patch, actions_url)
 
 
 @app.command()

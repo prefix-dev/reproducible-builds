@@ -161,7 +161,7 @@ def get_latest_builds(
                     Build.timestamp == subquery.c.max_timestamp,
                 ),
             )
-            .order_by(Build.timestamp.desc())
+            .order_by(col(Build.timestamp).desc())
         )
         builds = session.exec(statement).fetchall()
         return {build.recipe_name: build for build in builds}
@@ -173,7 +173,7 @@ def get_latest_build_with_rebuild(
     build_tool_hash: str,
     platform_name: str,
     platform_version: str,
-) -> dict[str, (Build, Optional[Rebuild])]:
+) -> dict[str, tuple[Build, Optional[Rebuild]]]:
     with Session() as session:
         conditions = [
             (Build.recipe_name == recipe_name) & (Build.recipe_hash == recipe_hash)

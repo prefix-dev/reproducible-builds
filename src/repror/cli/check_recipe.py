@@ -38,7 +38,7 @@ def check(
             raise ValueError(f"No build and rebuild found for recipe {recipe.name}")
 
         rebuild_hash = latest_rebuild.rebuild_hash if latest_rebuild else ""
-        status[recipe.name] = "Yes" if latest_build.build_hash == rebuild_hash else "No"
+        status[recipe.name] = "Yes" if latest_build and latest_build.build_hash == rebuild_hash else "No"
 
     title = "Is the Recipe Repro?" if  len(recipes) == 1 else "Are Recipes Repro?"
     table = Table("Name", "Is Repro?", title=title)
