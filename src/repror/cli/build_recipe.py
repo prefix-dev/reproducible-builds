@@ -19,6 +19,9 @@ from rich import print
 
 
 def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:
+    """
+    Get recipes objects for the given names. If no names are given, return all recipes
+    """
     all_recipes = load_all_recipes()
     if recipe_names:
         recipes_to_build = []
@@ -76,9 +79,10 @@ def build_recipes(
 
     to_build = []
 
-    recipe_status: list[(str, BuildStatus)] = []
+    recipe_status: list[tuple[str, BuildStatus]] = []
     for recipe in recipes:
-        recipe_hash = recipe.content_hash
+        # Can be slow because of hash calculation
+        recipe_hash = recipe.content_hash()
         build_info = BuildInfo(
             rattler_build_hash=rattler_hash,
             platform=platform_name,
@@ -100,7 +104,7 @@ def build_recipes(
 
     # Create rich table with recipes that are already built and need to be built
     sort = {BuildStatus.ToBuild: 0, BuildStatus.AlreadyBuilt: 1}
-    recipe_status = sorted(recipe_status, key=lambda status: sort.get(status[1]))
+    recipe_status = sorted(recipe_status, key=lambda status: sort.get(status[1]) or 1)
     table = Table("Name", "Status", title="Recipes to build")
     for recipe, status in recipe_status:
         table.add_row(recipe, status)
