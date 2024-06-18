@@ -128,10 +128,13 @@ def check_rev_is_present(clone_dir: Path, rev: str) -> bool:
     Verify if revision is present in .git repository
     Usually it is used to check if an update is needed
     """
-    output = run_command(
-        ["git", "cat-file", "-t", rev], cwd=str(clone_dir), silent=True
-    )
-    return b"commit" in output.stdout
+    try:
+        output = run_command(
+            ["git", "cat-file", "-t", rev], cwd=str(clone_dir), silent=True
+        )
+        return b"commit" in output.stdout
+    except subprocess.CalledProcessError:
+        return False
 
 
 def checkout_branch_or_commit(clone_dir, ref) -> CompletedProcess:
