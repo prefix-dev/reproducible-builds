@@ -25,4 +25,5 @@ exclude = ["recipes/"]
 
 [tool.pyright]
 venv = "default"
+pythonVersion = "3.12"
 venvPath = ".pixi/envs"

@@ -114,7 +114,7 @@ def build_recipe(
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_build = build.recipes_for_names(recipe_names)
 
-        build.build_recipes(recipes_to_build, tmp_dir, force_build, patch, actions_url)
+        build.build_recipes(recipes_to_build, Path(tmp_dir), force_build, patch, actions_url)
 
 
 @app.command()
@@ -134,25 +134,27 @@ def rebuild_recipe(
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.recipes_for_names(recipe_names)
         rebuild.rebuild_recipe(
-            recipes_to_rebuild, tmp_dir, force_rebuild, patch, actions_url
+            recipes_to_rebuild, Path(tmp_dir), force_rebuild, patch, actions_url
         )
 
 
 @app.command()
-def merge_patches(update_remote: Annotated[Optional[bool], typer.Option()] = False):
+def merge_patches(update_remote: Annotated[Optional[bool], typer.Option()] = None):
     """Merge database patches after CI jobs run to the database."""
+    if not update_remote:
+        update_remote = False
     setup_db()
     build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
 
 
 @app.command()
 def generate_html(
-    update_remote: Annotated[Optional[bool], typer.Option()] = False,
+    update_remote: Annotated[Optional[bool], typer.Option()] = None,
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rewrite the README.md file with updated statistics"""
     setup_db()
-    rewrite.rerender_html(update_remote)
+    rewrite.rerender_html(update_remote or False)
 
 
 @app.command()

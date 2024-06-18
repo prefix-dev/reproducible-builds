@@ -1,8 +1,8 @@
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum
 import hashlib
 import logging
-from typing import Optional, Tuple
+from typing import Optional, Sequence, Tuple
 from sqlalchemy import text
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
@@ -12,6 +12,7 @@ from sqlmodel import (
     create_engine,
     select,
     Session as SqlModelSession,
+    col
 )
 
 
@@ -26,7 +27,7 @@ def compute_hash(value: str) -> str:
     return hasher.hexdigest()
 
 
-class BuildState(StrEnum):
+class BuildState(str, Enum):
     SUCCESS = "success"
     FAIL = "fail"
 
@@ -37,6 +38,8 @@ Session = sessionmaker(class_=SqlModelSession)
 
 def create_db_and_tables():
     global engine
+    if not engine:
+        raise RuntimeError("Engine is not set. Call setup_engine() first.")
     SQLModel.metadata.create_all(engine)
 
 
@@ -121,7 +124,7 @@ def get_latest_build(
     recipe_hash: str,
     platform_name: str,
     platform_version: str,
-) -> Build:
+) -> Optional[Build]:
     with Session() as session:
         statement = (
             select(Build)
@@ -130,10 +133,10 @@ def get_latest_build(
             .where(Build.recipe_hash == recipe_hash)
             .where(Build.platform_name == platform_name)
             .where(Build.platform_version == platform_version)
-            .order_by(Build.timestamp.desc())
+            .order_by(col(Build.timestamp).desc())
             .limit(1)
         )
-        build = session.execute(statement).first()
+        build = session.exec(statement).first()
         return build
 
 
@@ -153,7 +156,7 @@ def get_latest_build_with_rebuild(
             .where(Build.recipe_hash == recipe_hash)
             .where(Build.platform_name == platform_name)
             .where(Build.platform_version == platform_version)
-            .order_by(Build.timestamp.desc())
+            .order_by(col(Build.timestamp).desc())
             .limit(1)
         )
         result = session.execute(statement)
@@ -175,7 +178,7 @@ def save(build: Build | Rebuild):
 
 @check_engine_is_set
 # Function to query the database and return rebuild data
-def get_rebuild_data() -> list[Build]:
+def get_rebuild_data() -> Sequence[Build]:
     with Session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
@@ -185,7 +188,7 @@ def get_rebuild_data() -> list[Build]:
             )
             .group_by(Build.platform_name)
             .group_by(Build.recipe_name)
-            .order_by(Build.timestamp.desc())
+            .order_by(col(Build.timestamp).desc())
             .limit(1)
         )
 

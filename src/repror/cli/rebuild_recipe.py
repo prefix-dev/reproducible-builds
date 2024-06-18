@@ -41,7 +41,7 @@ def rebuild_recipe(
     for recipe in recipes:
         print(f"Rebuilding recipe: {recipe.name}")
         rattler_hash = rattler_build_hash()
-        recipe_hash = recipe.content_hash
+        recipe_hash = recipe.content_hash()
 
         build_info = BuildInfo(
             rattler_build_hash=rattler_hash,
