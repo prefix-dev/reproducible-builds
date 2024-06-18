@@ -15,6 +15,8 @@ generate-recipes = "repror generate-recipes"
 build-recipe = "repror build-recipe"
 # Same as above but skip rattler-build setup
 build-recipe-skip = "repror --skip-setup-rattler-build build-recipe"
+# Build an rebuild a recipe
+reproduce = "repror build-recipe --rebuild"
 # Rebuild a single recipe using the python script
 rebuild-recipe = "repror rebuild-recipe"
 # Convert a meta.yaml to a recipe.yaml
