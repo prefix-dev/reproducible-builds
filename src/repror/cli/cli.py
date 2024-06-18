@@ -166,7 +166,7 @@ def setup_rattler_build():
 
 
 @app.command()
-def check(recipe_names: Annotated[list[str], typer.Argument()]):
+def check(recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None):
     """Check if recipe name[s] is reproducible, by verifying it's build and rebuild hash."""
     setup_db()
     recipes_to_check = build.recipes_for_names(recipe_names)
