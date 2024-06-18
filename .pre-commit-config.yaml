@@ -5,9 +5,9 @@ repos:
         -   id: check-yaml
             exclude: meta.yaml
         -   id: end-of-file-fixer
-            exclude: ^recipes
+            exclude: ^(recipes/|docs/)
         -   id: trailing-whitespace
-            exclude: ^recipes
+            exclude: ^(recipes/|docs/)
         -   id: debug-statements
   # Use ruff for python examples
   - repo: https://github.com/astral-sh/ruff-pre-commit

@@ -195,8 +195,14 @@ jobs:
       - run: |
           ls -la build_info/
 
-      - name: Merge patches and update database and html
+      - name: Merge patches and update database, html and push to remote
+        if: github.ref == 'refs/heads/main'
         run: |
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches --update-remote
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
-        if: github.event_name != 'pull_request'
+
+      - name: Merge patches and update database, html
+        if: github.ref != 'refs/heads/main'
+        run: |
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html

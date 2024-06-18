@@ -18,7 +18,7 @@ def check(
     status = {}
 
     for recipe in recipes:
-        recipe_hash = recipe.content_hash
+        recipe_hash = recipe.content_hash()
 
         latest_build, latest_rebuild = get_latest_build_with_rebuild(
             recipe.name,
@@ -30,8 +30,9 @@ def check(
         if not latest_build and not latest_rebuild:
             raise ValueError(f"No build and rebuild found for recipe {recipe.name}")
 
+        rebuild_hash = latest_rebuild.rebuild_hash if latest_rebuild else ""
         status[recipe.name] = (
-            "Yes" if latest_build.build_hash == latest_rebuild.rebuild_hash else "No"
+            "Yes" if latest_build.build_hash == rebuild_hash else "No"
         )
 
     table = Table("Name", "Is Repro?", title="Are Recipe Repro?")

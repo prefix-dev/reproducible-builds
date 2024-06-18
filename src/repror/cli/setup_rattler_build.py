@@ -1,5 +1,5 @@
 import os
-from enum import StrEnum
+from enum import Enum
 from pathlib import Path
 from rich import print
 
@@ -14,7 +14,7 @@ from repror.internals.rattler_build import build_rattler
 from rich.panel import Panel
 
 
-class SetupRattlerBuild(StrEnum):
+class SetupRattlerBuild(str, Enum):
     """Return type for setup_rattler_build function."""
 
     Pixi = "From pixi env"

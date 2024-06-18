@@ -2,6 +2,7 @@ import re
 import platform
 
 from rich import print as rich_print
+from typing import Any, IO, Optional
 
 
 def strip_emojis(text: str) -> str:
@@ -44,7 +45,13 @@ def strip_emojis(text: str) -> str:
     return text
 
 
-def print(text: str) -> None:
+def print(
+    *objects: Any,
+    sep: str = " ",
+    end: str = "\n",
+    file: Optional[IO[str]] = None,
+    flush: bool = False,
+) -> None:
     if platform.system() == "Windows":
-        return rich_print(strip_emojis(text))
-    rich_print(text)
+        return rich_print(strip_emojis(*objects), sep=sep, end=end, file=file, flush=flush)
+    rich_print(*objects, sep=sep, end=end, file=file, flush=flush)
