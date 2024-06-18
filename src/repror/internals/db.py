@@ -203,7 +203,7 @@ def get_latest_build_with_rebuild(
                     Build.timestamp == subquery.c.max_timestamp,
                 ),
             )
-            .order_by(Build.timestamp.desc())
+            .order_by(col(Build.timestamp).desc())
         )
         builds = session.exec(statement).fetchall()
 

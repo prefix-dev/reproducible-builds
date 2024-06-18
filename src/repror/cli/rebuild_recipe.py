@@ -42,7 +42,7 @@ def rebuild_recipe(
 
     for recipe in recipes:
         recipe_name = recipe.name
-        recipe_hash = recipe.content_hash
+        recipe_hash = recipe.content_hash()
         recipes_to_find.append((recipe_name, recipe_hash))
 
     rattler_hash = rattler_build_hash()
