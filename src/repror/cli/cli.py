@@ -143,7 +143,7 @@ def rebuild_recipe(
 
 
 @app.command()
-def merge_patches(update_remote: Annotated[Optional[bool], typer.Option()] = False):
+def merge_patches(update_remote: Annotated[bool, typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
     setup_db()
     build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
@@ -151,12 +151,12 @@ def merge_patches(update_remote: Annotated[Optional[bool], typer.Option()] = Fal
 
 @app.command()
 def generate_html(
-    update_remote: Annotated[Optional[bool], typer.Option()] = False,
+    update_remote: Annotated[Optional[bool], typer.Option()] = None,
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rewrite the README.md file with updated statistics"""
     setup_db()
-    rewrite.rerender_html(update_remote)
+    rewrite.rerender_html(update_remote or False)
 
 
 @app.command()

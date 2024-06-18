@@ -1,4 +1,4 @@
-from enum import StrEnum
+from enum import Enum
 from pathlib import Path
 import shutil
 from subprocess import CalledProcessError
@@ -17,7 +17,7 @@ from repror.internals.commands import (
 )
 
 
-class BuildStatus(StrEnum):
+class BuildStatus(str, Enum):
     ToBuild = "To Build"
     AlreadyBuilt = "Already Built"
 
@@ -99,7 +99,7 @@ def build_recipe(
             recipe_name=recipe.name,
             state=BuildState.FAIL,
             build_tool_hash=build_info.rattler_build_hash,
-            recipe_hash=recipe.content_hash,
+            recipe_hash=recipe.content_hash(),
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
             reason=e.stderr[-1000:].decode("utf-8"),
@@ -118,7 +118,7 @@ def build_recipe(
         state=BuildState.SUCCESS,
         build_hash=calculate_hash(new_file_loc),
         build_tool_hash=build_info.rattler_build_hash,
-        recipe_hash=recipe.content_hash,
+        recipe_hash=recipe.content_hash(),
         platform_name=build_info.platform,
         platform_version=build_info.platform_version,
         build_loc=str(new_file_loc),
@@ -130,6 +130,12 @@ def build_recipe(
 def _rebuild_package(
     build: Build, recipe: Recipe, output_dir, build_info: BuildInfo
 ) -> RebuildResult:
+    # Validate build object
+    if build.build_loc is None:
+        raise ValueError("Build location is not set in the build object.")
+    if build.id is None:
+        raise ValueError("Build id is not set in the build object.")
+
     # copy to ci artifacts
     shutil.copyfile(
         build.build_loc,
@@ -138,7 +144,7 @@ def _rebuild_package(
 
     # raise exception to top
     try:
-        rebuild_conda_package(build.build_loc, output_dir)
+        rebuild_conda_package(Path(build.build_loc), output_dir)
     except CalledProcessError as e:
         print(f"Failed to build recipe: {recipe.name}")
         failed_build = Rebuild(

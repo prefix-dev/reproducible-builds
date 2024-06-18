@@ -1,9 +1,11 @@
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum
 import hashlib
 import logging
 from typing import Optional
 from sqlalchemy import func, text
+from typing import Sequence, TypeGuard
+from sqlalchemy import Engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
     Field,
@@ -14,6 +16,7 @@ from sqlmodel import (
     or_,
     select,
     Session as SqlModelSession,
+    col,
 )
 
 
@@ -28,7 +31,7 @@ def compute_hash(value: str) -> str:
     return hasher.hexdigest()
 
 
-class BuildState(StrEnum):
+class BuildState(str, Enum):
     SUCCESS = "success"
     FAIL = "fail"
 
@@ -39,7 +42,8 @@ Session = sessionmaker(class_=SqlModelSession)
 
 def create_db_and_tables():
     global engine
-    SQLModel.metadata.create_all(engine)
+    if __engine_is_set(engine):
+        SQLModel.metadata.create_all(engine)
 
 
 def setup_engine(in_memory: bool = False):
@@ -64,11 +68,16 @@ def setup_engine(in_memory: bool = False):
 def check_engine_is_set(func):
     def wrapper(*args, **kwargs):
         global engine
-        if not engine:
-            raise RuntimeError("Engine is not set. Call setup_engine() first.")
+        __engine_is_set(engine)
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def __engine_is_set(engine) -> TypeGuard[Engine]:
+    if not engine:
+        raise RuntimeError("Engine is not set. Call setup_engine() first.")
+    return engine is not None
 
 
 class Build(SQLModel, table=True):
@@ -197,6 +206,7 @@ def get_latest_build_with_rebuild(
             .order_by(Build.timestamp.desc())
         )
         builds = session.exec(statement).fetchall()
+
         return {
             build.recipe_name: (build, build.rebuilds[-1] if build.rebuilds else None)
             for build in builds
@@ -213,13 +223,15 @@ def save(build: Build | Rebuild):
 
 @check_engine_is_set
 # Function to query the database and return rebuild data
-def get_rebuild_data() -> list[Build]:
+def get_rebuild_data() -> Sequence[Build]:
     with Session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
             select(Build, func.max(Build.timestamp).label("latest_timestamp"))
             .group_by(Build.platform_name)
             .group_by(Build.recipe_name)
+            .order_by(col(Build.timestamp).desc())
+            .limit(1)
         )
 
         # Main query to get the latest builds
