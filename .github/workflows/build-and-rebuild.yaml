@@ -135,13 +135,13 @@ jobs:
       - name: Build recipes and track if hash is equal
         if: matrix.os != 'windows-latest'
         run: |
-          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build --force-build --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Build recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
           # shellcheck disable=SC1012
-          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --force-build --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Set timezone to Los Angeles
         if: matrix.os == 'ubuntu-latest'
@@ -158,13 +158,13 @@ jobs:
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os != 'windows-latest'
         run: |
-          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build --force-rebuild --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone/target/release/rattler-build --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
           # shellcheck disable=SC1012
-          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --force-rebuild --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          pixi run rebuild-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Upload results
         uses: actions/upload-artifact@v3
