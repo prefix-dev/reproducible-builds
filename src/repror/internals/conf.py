@@ -27,6 +27,7 @@ class Recipe:
     local_path: str
     _name: Optional[str] = None
     _config: Optional[dict] = None
+    _raw_config: Optional[str] = None
     _remote_path: Optional[Path] = None
 
     def is_local(self) -> bool:
@@ -81,25 +82,27 @@ class Recipe:
         recipe_path = clone_dir / self.local_path
         return self.get_local_config_content(recipe_path)
 
-    def load_recipe_config_and_path(self, clone_dir: Optional[Path] = None) -> tuple[dict, Path]:
+    def load_recipe_config_and_path(
+        self, clone_dir: Optional[Path] = None
+    ) -> tuple[dict, str, Path]:
         if self.is_local():
-            conf, path = self.load_local_recipe_config()
-            return conf, path
+            conf, raw_config, path = self.load_local_recipe_config()
+            return conf, raw_config, path
         else:
-            conf, path = self.load_remote_recipe_config(clone_dir)
-            return conf, path
+            conf, raw_config, path = self.load_remote_recipe_config(clone_dir)
+            return conf, raw_config, path
 
     def load_local_recipe_config(
         self, recipe_path: Optional[Path] = None
-    ) -> tuple[dict, Path]:
+    ) -> tuple[dict, str, Path]:
         path = recipe_path if recipe_path else Path(self.local_path)
-        with path.open("r", encoding="utf8") as file:
-            conf = yaml.safe_load(file)
-            return conf, path
+        raw_config = path.read_text(encoding="utf8")
+        conf = yaml.safe_load(raw_config)
+        return conf, raw_config, path
 
     def load_remote_recipe_config(
         self, clone_dir: Optional[Path] = None
-    ) -> tuple[dict, Path]:
+    ) -> tuple[dict, str, Path]:
         if not self.url:
             raise ValueError("url should be provided for remote recipe")
 
@@ -120,8 +123,8 @@ class Recipe:
             checkout_branch_or_commit(clone_dir, ref)
 
         recipe_path = clone_dir / self.local_path
-        (conf, _) = self.load_local_recipe_config(recipe_path)
-        return conf, recipe_path
+        (conf, raw_config, _) = self.load_local_recipe_config(recipe_path)
+        return conf, raw_config, recipe_path
 
     @property
     def name(self) -> str:
@@ -144,19 +147,27 @@ class Recipe:
 
         return self._name
 
+    def _load_config_if_needed(self):
+        if self._config is None or self._raw_config is None:
+            config, raw_config, abs_path = self.load_recipe_config_and_path()
+            self._config = config
+            self._remote_path = abs_path
+            self._raw_config = raw_config
+
     @property
     def config(self) -> dict:
-        if self._config:
-            return self._config
-
-        config, abs_path = self.load_recipe_config_and_path()
-        self._config = config
-        self._remote_path = abs_path
+        self._load_config_if_needed()
+        assert self._config
         return self._config
 
+    @property
+    def raw_config(self) -> str:
+        self._load_config_if_needed()
+        assert self._raw_config
+        return self._raw_config
+
     def content_hash(self) -> str:
-        content = self.get_config_content()
-        return hashlib.sha256(content.encode()).hexdigest()
+        return hashlib.sha256(self.raw_config.encode()).hexdigest()
 
     @property
     def path(self) -> Path:

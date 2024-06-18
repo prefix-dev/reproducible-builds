@@ -29,7 +29,7 @@ def rebuild_package(
 def rebuild_recipe(
     recipes: list[Recipe],
     tmp_dir: Path,
-    force_rebuild: bool = False,
+    force: bool = False,
     patch: bool = False,
     actions_url: Optional[str] = None,
 ):
@@ -38,10 +38,24 @@ def rebuild_recipe(
     Path(f"ci_artifacts/{platform_name}/build").mkdir(exist_ok=True, parents=True)
     Path(f"ci_artifacts/{platform_name}/rebuild").mkdir(exist_ok=True, parents=True)
 
+    recipes_to_find = []
+
+    for recipe in recipes:
+        recipe_name = recipe.name
+        recipe_hash = recipe.content_hash()
+        recipes_to_find.append((recipe_name, recipe_hash))
+
+    rattler_hash = rattler_build_hash()
+
+    latest_build_with_rebuild = get_latest_build_with_rebuild(
+        recipes_to_find,
+        rattler_hash,
+        platform_name,
+        platform_version,
+    )
+
     for recipe in recipes:
         print(f"Rebuilding recipe: {recipe.name}")
-        rattler_hash = rattler_build_hash()
-        recipe_hash = recipe.content_hash()
 
         build_info = BuildInfo(
             rattler_build_hash=rattler_hash,
@@ -49,22 +63,17 @@ def rebuild_recipe(
             platform_version=platform_version,
         )
 
-        try:
-            latest_build, latest_rebuild = get_latest_build_with_rebuild(
-                recipe.name,
-                rattler_hash,
-                recipe_hash,
-                platform_name,
-                platform_version,
+        latest_build, latest_rebuild = latest_build_with_rebuild.get(
+            recipe.name, (None, None)
+        )
+        if not latest_build:
+            raise ValueError(
+                f"No build found for recipe {recipe.name}. Cannot rebuild."
             )
-        except ValueError:
-            print(f"Failed to get latest build for recipe: {recipe.name}. Skipping.")
-            continue
 
-        if latest_rebuild and not force_rebuild:
+        if latest_rebuild and not force:
             print("Found latest rebuild. Skipping rebuilding it again")
             continue
-
         rebuild_result = rebuild_package(latest_build, recipe, tmp_dir, build_info)
         print(f"{rebuild_result.rebuild}")
         if actions_url:

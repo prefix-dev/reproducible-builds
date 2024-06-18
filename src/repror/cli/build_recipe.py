@@ -10,7 +10,7 @@ from repror.internals.build import (
     build_remote_recipe,
 )
 from repror.internals.conf import Recipe, load_all_recipes
-from repror.internals.db import get_latest_build, save
+from repror.internals.db import get_latest_builds, save
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
 from repror.internals.patcher import save_patch
@@ -62,7 +62,7 @@ def _build_recipe(
 def build_recipes(
     recipes: list[Recipe],
     tmp_dir: Path,
-    force_build: bool = False,
+    force: bool = False,
     patch: bool = False,
     actions_url: Optional[str] = None,
 ):
@@ -80,23 +80,29 @@ def build_recipes(
     to_build = []
 
     recipe_status: list[tuple[str, BuildStatus]] = []
+    recipes_to_find = []
+
     for recipe in recipes:
-        # Can be slow because of hash calculation
+        recipe_name = recipe.name
         recipe_hash = recipe.content_hash()
+        recipes_to_find.append((recipe_name, recipe_hash))
+
+    latest_builds = get_latest_builds(
+        recipes_to_find,
+        rattler_hash,
+        platform_name,
+        platform_version,
+    )
+
+    for recipe in recipes:
         build_info = BuildInfo(
             rattler_build_hash=rattler_hash,
             platform=platform_name,
             platform_version=platform_version,
         )
+        recipe_build = latest_builds.get(recipe.name)
 
-        latest_build = get_latest_build(
-            recipe.name,
-            rattler_hash,
-            recipe_hash,
-            platform_name,
-            platform_version,
-        )
-        if latest_build and not force_build:
+        if recipe_build and not force:
             recipe_status.append((recipe.name, BuildStatus.AlreadyBuilt))
             continue
         recipe_status.append((recipe.name, BuildStatus.ToBuild))
@@ -112,6 +118,7 @@ def build_recipes(
     print(table)
     for recipe, tmp_dir, build_dir, build_info in to_build:
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
+        print(f"{build_result.build}")
 
         if actions_url:
             build_result.build.actions_url = actions_url

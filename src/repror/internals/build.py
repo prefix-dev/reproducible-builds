@@ -130,7 +130,6 @@ def build_recipe(
 def _rebuild_package(
     build: Build, recipe: Recipe, output_dir, build_info: BuildInfo
 ) -> RebuildResult:
-
     # Validate build object
     if build.build_loc is None:
         raise ValueError("Build location is not set in the build object.")

@@ -17,25 +17,31 @@ def check(
 
     status = {}
 
+    recipes_to_find = []
     for recipe in recipes:
+        recipe_name = recipe.name
         recipe_hash = recipe.content_hash()
+        recipes_to_find.append((recipe_name, recipe_hash))
 
-        latest_build, latest_rebuild = get_latest_build_with_rebuild(
-            recipe.name,
-            rattler_hash,
-            recipe_hash,
-            platform_name,
-            platform_version,
+    latest_build_and_rebuild = get_latest_build_with_rebuild(
+        recipes_to_find,
+        rattler_hash,
+        platform_name,
+        platform_version,
+    )
+    for recipe in recipes:
+        latest_build, latest_rebuild = latest_build_and_rebuild.get(
+            recipe.name, (None, None)
         )
+
         if not latest_build and not latest_rebuild:
             raise ValueError(f"No build and rebuild found for recipe {recipe.name}")
 
         rebuild_hash = latest_rebuild.rebuild_hash if latest_rebuild else ""
-        status[recipe.name] = (
-            "Yes" if latest_build.build_hash == rebuild_hash else "No"
-        )
+        status[recipe.name] = "Yes" if latest_build and latest_build.build_hash == rebuild_hash else "No"
 
-    table = Table("Name", "Is Repro?", title="Are Recipe Repro?")
+    title = "Is the Recipe Repro?" if  len(recipes) == 1 else "Are Recipes Repro?"
+    table = Table("Name", "Is Repro?", title=title)
     for recipe, is_repro in status.items():
         table.add_row(recipe, is_repro)
 

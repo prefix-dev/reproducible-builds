@@ -53,5 +53,7 @@ def print(
     flush: bool = False,
 ) -> None:
     if platform.system() == "Windows":
-        return rich_print(strip_emojis(*objects), sep=sep, end=end, file=file, flush=flush)
+        return rich_print(
+            strip_emojis(*objects), sep=sep, end=end, file=file, flush=flush
+        )
     rich_print(*objects, sep=sep, end=end, file=file, flush=flush)
