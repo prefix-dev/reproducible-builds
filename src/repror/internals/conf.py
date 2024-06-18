@@ -2,7 +2,7 @@ from dataclasses import dataclass
 import hashlib
 from pathlib import Path
 import tempfile
-from typing import Literal, Optional, Tuple
+from typing import Literal, Optional
 import yaml
 
 from repror.internals.git import checkout_branch_or_commit, clone_repo
@@ -81,7 +81,7 @@ class Recipe:
         recipe_path = clone_dir / self.local_path
         return self.get_local_config_content(recipe_path)
 
-    def load_recipe_config_and_path(self, clone_dir: Optional[Path] = None) -> Tuple[dict, Path]:
+    def load_recipe_config_and_path(self, clone_dir: Optional[Path] = None) -> tuple[dict, Path]:
         if self.is_local():
             conf, path = self.load_local_recipe_config()
             return conf, path
@@ -91,7 +91,7 @@ class Recipe:
 
     def load_local_recipe_config(
         self, recipe_path: Optional[Path] = None
-    ) -> Tuple[dict, Path]:
+    ) -> tuple[dict, Path]:
         path = recipe_path if recipe_path else Path(self.local_path)
         with path.open("r", encoding="utf8") as file:
             conf = yaml.safe_load(file)
@@ -99,9 +99,10 @@ class Recipe:
 
     def load_remote_recipe_config(
         self, clone_dir: Optional[Path] = None
-    ) -> Tuple[dict, Path]:
-        if self.url is None:
+    ) -> tuple[dict, Path]:
+        if not self.url:
             raise ValueError("url should be provided for remote recipe")
+
         repo_url = self.url
         ref = self.branch
         if not clone_dir:

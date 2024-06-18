@@ -1,6 +1,6 @@
 import os
 import shutil
-from typing import Optional, Tuple
+from typing import Optional
 import platform
 from pathlib import Path
 from repror.internals.build import (
@@ -79,9 +79,9 @@ def build_recipes(
 
     to_build = []
 
-    recipe_status: list[Tuple[str, BuildStatus]] = []
+    recipe_status: list[tuple[str, BuildStatus]] = []
     for recipe in recipes:
-        # Can be slow because of hash calculcation
+        # Can be slow because of hash calculation
         recipe_hash = recipe.content_hash()
         build_info = BuildInfo(
             rattler_build_hash=rattler_hash,

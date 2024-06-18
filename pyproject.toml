@@ -27,3 +27,4 @@ exclude = ["recipes/"]
 venv = "default"
 pythonVersion = "3.12"
 venvPath = ".pixi/envs"
+ignore = ["recipes/**"]
