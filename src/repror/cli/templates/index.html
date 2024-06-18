@@ -51,7 +51,7 @@
                         <td class="py-2 px-4 border-b">{{ build.recipe_name }}</td>
                         <td class="py-2 px-4 border-b">{{ build.build_state }}</td>
                         <td class="py-2 px-4 border-b">{{ build.rebuild_state if build.rebuild_state else 'N/A' }}</td>
-                        <td class="py-2 px-4 border-b"><code>{{ build.reason }}</code></td>
+                        <td class="py-2 px-4 border-b"><pre>{{ build.reason }}</pre></td>
                         <td class="py-2 px-4 border-b">{{ build.time }}</td>
                         <td class="py-2 px-4 border-b"><a href="{{ build.actions_url }}">url to github actions run</a></td>
                         <!-- <td class="py-2 px-4 border-b">
