@@ -2,8 +2,8 @@ from datetime import datetime
 from enum import Enum
 import hashlib
 import logging
-from typing import Optional, Sequence, Tuple
-from sqlalchemy import func, text
+from typing import Optional, Sequence, Tuple, TypeGuard
+from sqlalchemy import Engine, func, text
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
     Field,
@@ -38,9 +38,8 @@ Session = sessionmaker(class_=SqlModelSession)
 
 def create_db_and_tables():
     global engine
-    if not engine:
-        raise RuntimeError("Engine is not set. Call setup_engine() first.")
-    SQLModel.metadata.create_all(engine)
+    if __engine_is_set(engine):
+        SQLModel.metadata.create_all(engine)
 
 
 def setup_engine(in_memory: bool = False):
@@ -65,11 +64,15 @@ def setup_engine(in_memory: bool = False):
 def check_engine_is_set(func):
     def wrapper(*args, **kwargs):
         global engine
-        if not engine:
-            raise RuntimeError("Engine is not set. Call setup_engine() first.")
+        __engine_is_set(engine)
         return func(*args, **kwargs)
 
     return wrapper
+
+def __engine_is_set(engine) -> TypeGuard[Engine]:
+    if not engine:
+        raise RuntimeError("Engine is not set. Call setup_engine() first.")
+    return engine is not None
 
 
 class Build(SQLModel, table=True):
