@@ -27,8 +27,8 @@ local:
 - path: recipes/font-ttf-ubuntu/recipe.yaml
 - path: recipes/xorg-kbproto/recipe.yaml
 - path: recipes/jpeg/recipe.yaml
-# - path: recipes/_openmp_mutex/recipe.yaml # skiped on non linux
-# - path: recipes/libnsl/recipe.yaml # skiped on non linux
+# - path: recipes/_openmp_mutex/recipe.yaml # skipped on non linux
+# - path: recipes/libnsl/recipe.yaml # skipped on non linux
 - path: recipes/pcre2/recipe.yaml # bad recipe converter outputs
 # - path: recipes/brotli/recipe.yaml # bad recipe
 - path: recipes/kiwisolver/recipe.yaml

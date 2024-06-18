@@ -3,7 +3,7 @@ from enum import StrEnum
 import hashlib
 import logging
 from typing import Optional, Tuple
-from sqlalchemy import text
+from sqlalchemy import func, text
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
     Field,
@@ -179,16 +179,14 @@ def get_rebuild_data() -> list[Build]:
     with Session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
-            select(
-                Build,
-                # func.max(Build.timestamp).label("latest_timestamp")
-            )
+            select(Build, func.max(Build.timestamp).label("latest_timestamp"))
             .group_by(Build.platform_name)
             .group_by(Build.recipe_name)
-            .order_by(Build.timestamp.desc())
         )
 
         # Main query to get the latest builds
-        latest_builds = session.exec(latest_build_subquery).all()
+        all_group_builds = session.exec(latest_build_subquery).all()
+        latest_builds = [build for build, _ in all_group_builds]
+
         [build.rebuilds for build in latest_builds]
         return latest_builds

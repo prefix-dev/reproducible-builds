@@ -137,7 +137,6 @@ def check_rev_is_present(clone_dir: Path, rev: str) -> bool:
         return False
 
 
-
 def checkout_branch_or_commit(clone_dir, ref) -> CompletedProcess:
     """Checkout a branch or commit."""
     return run_command(["git", "checkout", ref], cwd=str(clone_dir), silent=True)
