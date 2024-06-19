@@ -3,13 +3,15 @@ name: Building and Rebuilding
 on:
   push:
     # branches:
-      # - main
+    # - main
 
   pull_request:
   workflow_dispatch:
 
 env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
+  # Name of the production database
+  REPROR_DB_NAME: repro.db
   # For windows builds
   PYTHONUTF8: 1
 
@@ -45,12 +47,10 @@ jobs:
             .rb-clone/target/release/rattler-build.exe
           key: v4-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
-
       - name: Build rattler-build
         if: steps.cache-rattler-build-restore.outputs.cache-hit != 'true'
         run: |
           pixi run repror setup-rattler-build
-
 
       - name: Save unix rattler-build
         uses: actions/cache/save@v4
@@ -81,7 +81,7 @@ jobs:
           echo "$message"
           echo "recipes=$message" >> "$GITHUB_OUTPUT"
         env:
-          LOG_LEVEL: WARNING  # Set log level to WARNING
+          LOG_LEVEL: WARNING # Set log level to WARNING
 
   build-and-rebuild-recipes:
     needs: generate-recipes
@@ -92,7 +92,6 @@ jobs:
         recipe_name: ${{ fromJson(needs.generate-recipes.outputs.recipe) }}
         # os: [ubuntu-latest]
         os: [ubuntu-latest, windows-latest, macos-latest]
-
 
     runs-on: ${{ matrix.os }}
 

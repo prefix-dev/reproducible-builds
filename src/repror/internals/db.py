@@ -2,10 +2,10 @@ from datetime import datetime
 from enum import Enum
 import hashlib
 import logging
+import os
 from typing import Optional
 from sqlalchemy import func, text
-from typing import Sequence, TypeGuard
-from sqlalchemy import Engine
+from typing import Sequence
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
     Field,
@@ -18,10 +18,19 @@ from sqlmodel import (
     Session as SqlModelSession,
     col,
 )
+from .print import print
+from .options import global_options
 
 
 # Suppress SQLAlchemy INFO logs
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
+
+engine = None
+# Create a session class that binds to SQLModelSession
+__Session = sessionmaker(class_=SqlModelSession)
+
+# Name of the production database
+PROD_DB = "repro.db"
 
 
 # Function to compute the hash of the build tool version and recipe
@@ -36,47 +45,51 @@ class BuildState(str, Enum):
     FAIL = "fail"
 
 
-engine = None
-Session = sessionmaker(class_=SqlModelSession)
-
-
 def create_db_and_tables():
-    global engine
-    if __engine_is_set(engine):
-        SQLModel.metadata.create_all(engine)
+    """Create the database and tables, if they don't exist."""
+    __set_engine()
+    SQLModel.metadata.create_all(engine)
 
 
 def setup_engine(in_memory: bool = False):
     """Setup the sqlite engine."""
-    global engine, Session
+    print(f"Setting up engine with in_memory={in_memory}")
+    global engine, __Session
     if engine:
+        # Engine is already set, skip initialization
         return
 
     if in_memory:
         engine = create_engine("sqlite:///:memory:", echo=False)
     else:
-        sqlite_file_name = "repro.db"
+        # Get the name of the database from an environment variable
+        # or use the default name which is a local database
+        sqlite_file_name = os.getenv("REPRO_DB_NAME", "repro.local.db")
+        # Do a manual check for safety
+        if sqlite_file_name == PROD_DB:
+            print("[dim yellow]Running on production[/dim yellow]")
+        else:
+            print(f"[dim green]Running on {sqlite_file_name}[/dim green]")
+
+        # Setup the engine
+        # We assume that the database is in the same directory as the project
         sqlite_url = f"sqlite:///{sqlite_file_name}"
         engine = create_engine(sqlite_url, echo=False)
 
-    Session.configure(bind=engine)
+    __Session.configure(bind=engine)
     create_db_and_tables()
 
 
-# The decorator function
-def check_engine_is_set(func):
-    def wrapper(*args, **kwargs):
-        global engine
-        __engine_is_set(engine)
-        return func(*args, **kwargs)
-
-    return wrapper
-
-
-def __engine_is_set(engine) -> TypeGuard[Engine]:
+def __set_engine() -> None:
+    global engine
     if not engine:
-        raise RuntimeError("Engine is not set. Call setup_engine() first.")
-    return engine is not None
+        setup_engine(global_options.in_memory_sql)
+
+
+def get_session() -> SqlModelSession:
+    """Get a new session."""
+    __set_engine()
+    return __Session()
 
 
 class Build(SQLModel, table=True):
@@ -124,14 +137,13 @@ class Rebuild(SQLModel, table=True):
         return self.build.recipe_name
 
 
-@check_engine_is_set
 def get_latest_builds(
     recipe_names_and_hash: list[tuple[str, str]],
     build_tool_hash: str,
     platform_name: str,
     platform_version: str,
 ) -> dict[str, Build]:
-    with Session() as session:
+    with get_session() as session:
         conditions = [
             (Build.recipe_name == recipe_name) & (Build.recipe_hash == recipe_hash)
             for recipe_name, recipe_hash in recipe_names_and_hash
@@ -166,14 +178,13 @@ def get_latest_builds(
         return {build.recipe_name: build for build in builds}
 
 
-@check_engine_is_set
 def get_latest_build_with_rebuild(
     recipe_names_and_hash: list[tuple[str, str]],
     build_tool_hash: str,
     platform_name: str,
     platform_version: str,
 ) -> dict[str, tuple[Build, Optional[Rebuild]]]:
-    with Session() as session:
+    with get_session() as session:
         conditions = [
             (Build.recipe_name == recipe_name) & (Build.recipe_hash == recipe_hash)
             for recipe_name, recipe_hash in recipe_names_and_hash
@@ -212,18 +223,16 @@ def get_latest_build_with_rebuild(
         }
 
 
-@check_engine_is_set
 # Function to save the new build or rebuild in the database
 def save(build: Build | Rebuild):
-    with Session() as session:
+    with get_session() as session:
         session.add(build)
         session.commit()
 
 
-@check_engine_is_set
 # Function to query the database and return rebuild data
 def get_rebuild_data() -> Sequence[Build]:
-    with Session() as session:
+    with get_session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
             select(Build, func.max(Build.timestamp).label("latest_timestamp"))

@@ -6,9 +6,11 @@ from typing import Annotated, Optional
 
 import typer
 
+from rich.spinner import Spinner
+from rich.live import Live
+
 from repror.internals.conf import load_config
 from repror.internals.print import print
-from repror.internals import db
 from repror.internals import build_metadata_to_sql
 
 
@@ -21,8 +23,8 @@ from . import rebuild_recipe as rebuild
 from . import check_recipe
 
 from ..internals.commands import pixi_root
-from rich.spinner import Spinner
-from rich.live import Live
+from ..internals.options import global_options
+
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
@@ -39,16 +41,6 @@ def pixi_root_cli():
     return root_folder
 
 
-class GlobalOptions:
-    """Global options for the CLI."""
-
-    skip_setup_rattler_build: bool = False
-    in_memory_sql: bool = False
-
-
-global_options = GlobalOptions()
-
-
 @app.callback()
 def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
     """
@@ -63,11 +55,6 @@ def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
     if in_memory_sql:
         print("[yellow]Will use in-memory SQLite database[/yellow]")
         global_options.in_memory_sql = True
-
-
-def setup_db():
-    """Setup the engine using the global options."""
-    db.setup_engine(global_options.in_memory_sql)
 
 
 @app.command()
@@ -108,7 +95,6 @@ def build_recipe(
 ):
     """Build recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
-        setup_db()
         if not rattler_build_exe:
             _check_local_rattler_build()
         else:
@@ -118,7 +104,9 @@ def build_recipe(
         build.build_recipes(recipes_to_build, Path(tmp_dir), force, patch, actions_url)
         if run_rebuild:
             print("Rebuilding recipes...")
-            rebuild.rebuild_recipe(recipes_to_build, Path(tmp_dir), force, patch, actions_url)
+            rebuild.rebuild_recipe(
+                recipes_to_build, Path(tmp_dir), force, patch, actions_url
+            )
             print("Verifying if rebuilds are reproducible...")
             check_recipe.check(recipes_to_build)
 
@@ -133,19 +121,19 @@ def rebuild_recipe(
 ):
     """Rebuild recipe from a string in the form of url::branch::path."""
     with tempfile.TemporaryDirectory() as tmp_dir:
-        setup_db()
         if not rattler_build_exe:
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
         recipes_to_rebuild = build.recipes_for_names(recipe_names)
-        rebuild.rebuild_recipe(recipes_to_rebuild, Path(tmp_dir), force, patch, actions_url)
+        rebuild.rebuild_recipe(
+            recipes_to_rebuild, Path(tmp_dir), force, patch, actions_url
+        )
 
 
 @app.command()
 def merge_patches(update_remote: Annotated[bool, typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
-    setup_db()
     build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
 
 
@@ -155,7 +143,6 @@ def generate_html(
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rewrite the README.md file with updated statistics"""
-    setup_db()
     rewrite.rerender_html(update_remote or False)
 
 
@@ -168,6 +155,5 @@ def setup_rattler_build():
 @app.command()
 def check(recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None):
     """Check if recipe name[s] is reproducible, by verifying it's build and rebuild hash."""
-    setup_db()
     recipes_to_check = build.recipes_for_names(recipe_names)
     check_recipe.check(recipes_to_check)

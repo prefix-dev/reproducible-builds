@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 
-from repror.internals.db import Build, Rebuild, Session
+from repror.internals.db import Build, Rebuild, get_session
 
 
 def find_patches(folder_path: str) -> list[Path]:
@@ -64,7 +64,7 @@ def load_patch(patch_data: dict[Literal["build", "rebuild"]]):
         rebuild.build_id = None
         rebuild.build = build
 
-    with Session() as session:
+    with get_session() as session:
         session.add(build)
         if "rebuild" in patch_data:
             session.add(rebuild)
