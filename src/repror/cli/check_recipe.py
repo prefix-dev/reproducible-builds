@@ -39,9 +39,11 @@ def check(
             continue
 
         rebuild_hash = latest_rebuild.rebuild_hash if latest_rebuild else ""
-        status[recipe.name] = "Yes" if latest_build and latest_build.build_hash == rebuild_hash else "No"
+        status[recipe.name] = (
+            "Yes" if latest_build and latest_build.build_hash == rebuild_hash else "No"
+        )
 
-    title = "Is the Recipe Repro?" if  len(recipes) == 1 else "Are Recipes Repro?"
+    title = "Is the Recipe Repro?" if len(recipes) == 1 else "Are Recipes Repro?"
     table = Table("Name", "Is Repro?", title=title)
     for recipe, is_repro in status.items():
         table.add_row(recipe, is_repro)
