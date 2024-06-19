@@ -5,7 +5,7 @@ import logging
 import os
 from typing import Optional
 from sqlalchemy import func, text
-from typing import Sequence, TypeGuard
+from typing import Sequence
 from sqlalchemy.orm import sessionmaker
 from sqlmodel import (
     Field,
@@ -47,7 +47,7 @@ class BuildState(str, Enum):
 
 def create_db_and_tables():
     """Create the database and tables, if they don't exist."""
-    __engine_is_set()
+    __set_engine()
     SQLModel.metadata.create_all(engine)
 
 
@@ -80,16 +80,15 @@ def setup_engine(in_memory: bool = False):
     create_db_and_tables()
 
 
-def __engine_is_set() -> TypeGuard[bool]:
+def __set_engine() -> None:
     global engine
     if not engine:
         setup_engine(global_options.in_memory_sql)
-    return engine is not None
 
 
 def get_session() -> SqlModelSession:
     """Get a new session."""
-    __engine_is_set()
+    __set_engine()
     return __Session()
 
 
