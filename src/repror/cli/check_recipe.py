@@ -15,6 +15,10 @@ def check(
     platform_name, platform_version = platform.system().lower(), platform.release()
     rattler_hash = rattler_build_hash()
 
+    info_table = Table("Platform", "Version", "Rattler Build Hash", title="Build Info")
+    info_table.add_row(platform_name, platform_version, rattler_hash)
+    print(info_table)
+
     status = {}
 
     recipes_to_find = []
