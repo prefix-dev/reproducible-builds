@@ -48,7 +48,6 @@ def create_db_and_tables():
 
 def setup_engine(in_memory: bool = False):
     """Setup the sqlite engine."""
-    print(f"Setting up engine with in_memory={in_memory}")
     global engine, Session
     if engine:
         return
