@@ -2,6 +2,7 @@ from datetime import datetime
 from enum import Enum
 import hashlib
 import logging
+import os
 from typing import Optional
 from sqlalchemy import func, text
 from typing import Sequence, TypeGuard
@@ -18,6 +19,7 @@ from sqlmodel import (
     Session as SqlModelSession,
     col,
 )
+from .print import print
 
 
 # Suppress SQLAlchemy INFO logs
@@ -38,9 +40,11 @@ class BuildState(str, Enum):
 
 engine = None
 Session = sessionmaker(class_=SqlModelSession)
+PROD_DB = "repro.db"
 
 
 def create_db_and_tables():
+    """Create the database and tables, if they don't exist."""
     global engine
     if __engine_is_set(engine):
         SQLModel.metadata.create_all(engine)
@@ -51,12 +55,25 @@ def setup_engine(in_memory: bool = False):
     print(f"Setting up engine with in_memory={in_memory}")
     global engine, Session
     if engine:
+        # Engine is already set, skip initialization
         return
 
     if in_memory:
         engine = create_engine("sqlite:///:memory:", echo=False)
     else:
-        sqlite_file_name = "repro.db"
+        # Get the name of the database from an environment variable
+        # or use the default name which is a local database
+        sqlite_file_name = os.getenv("REPRO_DB_NAME")
+        # Do a manual check for safety
+        if sqlite_file_name == PROD_DB:
+            print("[dim green]Running on production[/dim green]")
+
+        # If the environment variable is not set, use the default name
+        if not sqlite_file_name:
+            sqlite_file_name = "repro.local.db"
+
+        # Setup the engine
+        # We assume that the database is in the same directory as the project
         sqlite_url = f"sqlite:///{sqlite_file_name}"
         engine = create_engine(sqlite_url, echo=False)
 
