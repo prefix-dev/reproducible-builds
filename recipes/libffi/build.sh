@@ -5,6 +5,7 @@ shopt -s extglob
 
 export CFLAGS="${CFLAGS//-fvisibility=+([! ])/}"
 export CXXFLAGS="${CXXFLAGS//-fvisibility=+([! ])/}"
+export ZERO_AR_DATE=1
 
 configure_args=(
     --disable-debug
