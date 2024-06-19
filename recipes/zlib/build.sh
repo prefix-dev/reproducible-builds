@@ -2,6 +2,7 @@
 
 export CFLAGS="${CFLAGS} -fPIC"
 export CXXFLAGS="${CXXFLAGS} -fPIC"
+export ZERO_AR_DATE=1
 
 if [[ "$target_platform" == linux-* ]]; then
   export CC=$GCC
