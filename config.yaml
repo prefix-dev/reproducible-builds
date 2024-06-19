@@ -46,3 +46,22 @@ repositories:
   - path: examples/rich/recipe.yaml
   - path: examples/curl/recipe.yaml
   url: https://github.com/prefix-dev/rattler-build.git
+
+- branch: main
+  url: https://github.com/wolfv/rust-forge.git
+  recipes:
+  - path: bottom/recipe.yaml
+  - path: cargo-insta/recipe.yaml
+  - path: cargo-sweep/recipe.yaml
+  - path: daktilo/recipe.yaml
+  - path: dua-cli/recipe.yaml
+  - path: gping/recipe.yaml
+  - path: lsd/recipe.yaml
+  - path: repgrep/recipe.yaml
+  - path: tokio-console/recipe.yaml
+  - path: trippy/recipe.yaml
+  - path: tui-journal/recipe.yaml
+  - path: watchexec/recipe.yaml
+  - path: yazi/recipe.yaml
+  - path: zenith/recipe.yaml
+  - path: zoxide/recipe.yaml

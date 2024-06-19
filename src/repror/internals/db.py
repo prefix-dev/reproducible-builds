@@ -239,7 +239,6 @@ def get_rebuild_data() -> Sequence[Build]:
             .group_by(Build.platform_name)
             .group_by(Build.recipe_name)
             .order_by(col(Build.timestamp).desc())
-            .limit(1)
         )
 
         # Main query to get the latest builds
