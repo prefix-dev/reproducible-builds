@@ -12,7 +12,7 @@ from repror.internals.build import (
     build_remote_recipe,
 )
 from repror.internals.conf import Recipe, load_all_recipes
-from repror.internals.db import BuildState, get_latest_builds, save
+from repror.internals.db import get_latest_builds, save
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
 from repror.internals.patcher import save_patch
@@ -125,10 +125,11 @@ def build_recipes(
         if actions_url:
             build_result.build.actions_url = actions_url
 
+        failure = build_result.failed
         if patch:
             print(f"Saving patch for {build_result.build}")
             save_patch(build_result.build)
         else:
             save(build_result.build)
-        if build_result.build.state == BuildState.FAIL:
+        if failure:
             raise ValueError(f"Build failed for {recipe.name}")
