@@ -1,0 +1,65 @@
+context:
+  name: libedit
+  version: 3.1
+  date: 20191231
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}.${{ date }}
+
+source:
+  url: http://thrysoee.dk/editline/${{ name }}-${{ date }}-${{ version }}.tar.gz
+  sha256: dbb82cb7e116a5f8025d35ef5b4f7d4a3cdd0a3909a146a39112095a2d229071
+  file_name: ${{ name }}-${{ date }}-${{ version }}.tar.gz
+  # patches:
+    # - 0001-Also-look-in-libtinfo-for-tgetent.patch
+
+build:
+  number: 2
+  skip:
+    - win
+
+requirements:
+  build:
+    - if: unix
+      then: libtool
+    - ${{ compiler('c') }}
+    - automake
+    - autoconf
+    - perl
+    - make
+    - m4
+  host:
+    - ncurses
+  run:
+    - ncurses
+  run_exports:
+    - ${{ pin_subpackage('libedit', upper_bound='x.x') }}
+
+tests:
+  - script:
+      - if: osx
+        then: test -f $PREFIX/lib/libedit.dylib
+      - if: linux
+        then: test -f $PREFIX/lib/libedit.so
+      - if: unix
+        then: test ! -f $PREFIX/lib/libedit.a
+
+about:
+  license: BSD-2-Clause
+  license_file: COPYING
+  summary: Editline Library (libedit)
+  description: |
+    This is an autotool- and libtoolized port of the NetBSD Editline library
+    (libedit). This Berkeley-style licensed command line editor library provides
+    generic line editing, history, and tokenization functions, similar to those
+    found in GNU Readline
+
+
+  homepage: http://thrysoee.dk/editline/
+
+extra:
+  recipe-maintainers:
+    - djsutherland
+    - scopatz
+    - mingwandroid

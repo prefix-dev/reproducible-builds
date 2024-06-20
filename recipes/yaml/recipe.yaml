@@ -1,0 +1,70 @@
+schema_version: 1
+
+context:
+  version: 0.2.5
+
+package:
+  name: yaml
+  version: ${{ version }}
+
+source:
+  url: https://github.com/yaml/libyaml/archive/${{ version }}.tar.gz
+  sha256: fa240dbf262be053f3898006d502d514936c818e422afdcf33921c63bed9bf2e
+
+build:
+  number: 2
+
+requirements:
+  build:
+    - ${{ compiler('c') }}
+    - if: not win
+      then: automake
+    - if: not win
+      then: autoconf
+    - if: not win
+      then: make
+    - if: not win
+      then: libtool
+    - if: win
+      then: cmake
+    - if: win
+      then: pkg-config
+    - if: win
+      then: ninja
+  run_exports:
+    - ${{ pin_subpackage('yaml', max_pin='x.x') }}
+
+tests:
+  - script:
+      - if: not win
+        then: "test -f \"${PREFIX}/include/yaml.h\""
+      - if: win
+        then: "if not exist \"%LIBRARY_INC%\\\\yaml.h\" exit 1"
+      - if: not win
+        then: "test -f \"${PREFIX}/lib/libyaml${SHLIB_EXT}\""
+      - if: win
+        then: "if not exist \"%LIBRARY_LIB%\\\\yaml.lib\" exit 1"
+      - if: win
+        then: "if not exist \"%LIBRARY_BIN%\\\\yaml.dll\" exit 1"
+      - if: not win
+        then: "test -f \"${PREFIX}/lib/pkgconfig/yaml-0.1.pc\""
+
+about:
+  license: MIT
+  license_file: License
+  summary: A C library for parsing and emitting YAML
+  description: |
+    YAML is a human friendly data serialization standard for all programming
+    languages.
+  homepage: http://pyyaml.org/wiki/LibYAML
+  repository: https://github.com/yaml
+  documentation: http://www.yaml.org/spec/1.2/spec.html
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - msarahan
+    - pelson
+    - mingwandroid
+    - ocefpaf
+    - seanyen

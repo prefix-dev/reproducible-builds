@@ -1,0 +1,27 @@
+From 4c694d19a32bda2d1745c643661c491bb746cc9a Mon Sep 17 00:00:00 2001
+From: h-vetinari <h.vetinari@gmx.com>
+Date: Fri, 24 May 2024 02:18:29 +1100
+Subject: [PATCH 2/4] MINOR: [Python] try harder to set up s3_server fixture
+ (#41754)
+
+In conda-forge, when running the aarch tests in emulation, we regularly run into the [issue](https://github.com/conda-forge/pyarrow-feedstock/issues/117) that the fixture setup fails. Extending the timeouts fixes this. Since it only happens once per session, it doesn't hurt to take a little bit more time.
+
+Authored-by: H. Vetinari <h.vetinari@gmx.com>
+Signed-off-by: Antoine Pitrou <antoine@python.org>
+---
+ python/pyarrow/tests/conftest.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/python/pyarrow/tests/conftest.py b/python/pyarrow/tests/conftest.py
+index 57bc3c8fc6..343b602995 100644
+--- a/python/pyarrow/tests/conftest.py
++++ b/python/pyarrow/tests/conftest.py
+@@ -192,7 +192,7 @@ def retry(attempts=3, delay=1.0, max_delay=None, backoff=1):
+ 
+ @pytest.fixture(scope='session')
+ def s3_server(s3_connection, tmpdir_factory):
+-    @retry(attempts=5, delay=0.1, backoff=2)
++    @retry(attempts=5, delay=1, backoff=2)
+     def minio_server_health_check(address):
+         resp = urllib.request.urlopen(f"http://{address}/minio/health/cluster")
+         assert resp.getcode() == 200

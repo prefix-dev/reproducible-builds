@@ -1,0 +1,49 @@
+schema_version: 1
+
+context:
+  name: unicodedata2
+  version: 15.1.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: cb30f189ad66482f8529a45da71b2a8841e9bd2bb376cc2933003a4a55a07648
+build:
+  number: 0
+  script: python -m pip install . -vv
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - ${{ compiler('c') }}
+  host:
+    - python
+    - pip
+    - setuptools
+  run:
+    - python
+
+tests:
+  - python:
+      imports:
+        - unicodedata2
+      pip_check: false
+
+about:
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: unicodedata backport/updates to python 3 and python 2.
+  description: unicodedata backport/updates to python 3 and python 2.
+  homepage: https://github.com/mikekap/unicodedata2
+  repository: https://github.com/mikekap/unicodedata2
+
+extra:
+  recipe-maintainers:
+    - CJ-Wright
+    - dopplershift

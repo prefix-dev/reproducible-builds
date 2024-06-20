@@ -1,0 +1,28 @@
+From 441ce78767779ba0a8f64241ffcd353a731679cf Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sun, 4 Sep 2022 19:42:16 +0200
+Subject: [PATCH 3/5] correctly link to protobuf & abseil
+
+---
+ python/setup.py | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/python/setup.py b/python/setup.py
+index 73b4aeffb..b1bcfdbe0 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -337,7 +337,13 @@ if __name__ == '__main__':
+           extra_objects += list(
+               glob.iglob('../third_party/abseil-cpp/absl/**/*.a'))
+     else:
+-      libraries = ['protobuf']
++      if sys.platform == 'win32':
++        # our windows builds don't follow standard windows naming (i.e. have a lib prefix);
++        # also shared abseil on windows is packaged as an omnibus, not individual libs
++        libraries = ['libprotobuf', 'abseil_dll']
++      else:
++        libraries = ['protobuf', 'absl_spinlock_wait', 'absl_strings']
++
+       if HasLibraryDirsOpt():
+         library_dirs = None
+       elif os.path.exists('../bazel-bin/src/google/protobuf/libprotobuf.a'):

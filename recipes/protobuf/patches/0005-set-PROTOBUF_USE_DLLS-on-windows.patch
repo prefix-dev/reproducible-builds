@@ -1,0 +1,31 @@
+From 08872c74b481fe335272733494dfbe3844b755a8 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Thu, 18 May 2023 18:49:27 +1100
+Subject: [PATCH 5/5] set PROTOBUF_USE_DLLS on windows
+
+the other symbols can be removed because they're only
+relevant for MinGW (check the issue links); also evident
+from the gcc-style `-Dsymbol` instead of MSVC's `/Dsymbol`.
+---
+ python/setup.py | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/python/setup.py b/python/setup.py
+index d6f99ab3d..e5be7a309 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -397,13 +397,8 @@ if __name__ == '__main__':
+             r'macosx-[0-9]+\.[0-9]+-(.+)', r'macosx-10.9-\1',
+             util.get_platform())
+ 
+-    # https://github.com/Theano/Theano/issues/4926
+     if sys.platform == 'win32':
+-      extra_compile_args.append('-D_hypot=hypot')
+-
+-    # https://github.com/tpaviot/pythonocc-core/issues/48
+-    if sys.platform == 'win32' and  '64 bit' in sys.version:
+-      extra_compile_args.append('-DMS_WIN64')
++      extra_compile_args.append('/DPROTOBUF_USE_DLLS')
+ 
+     if 'clang' in os.popen('$CC --version 2> /dev/null').read():
+       extra_compile_args.append('-Wno-shorten-64-to-32')
