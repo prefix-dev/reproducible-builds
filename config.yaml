@@ -10,7 +10,6 @@ local:
 - path: recipes/pytz/recipe.yaml
 - path: recipes/six/recipe.yaml
 - path: recipes/python-dateutil/recipe.yaml
-# - path: recipes/libpng/recipe.yaml
 - path: recipes/freetype/recipe.yaml
 - path: recipes/xz/recipe.yaml
 - path: recipes/libffi/recipe.yaml
@@ -27,16 +26,38 @@ local:
 - path: recipes/font-ttf-ubuntu/recipe.yaml
 - path: recipes/xorg-kbproto/recipe.yaml
 - path: recipes/jpeg/recipe.yaml
-# - path: recipes/_openmp_mutex/recipe.yaml # skipped on non linux
-# - path: recipes/libnsl/recipe.yaml # skipped on non linux
-- path: recipes/pcre2/recipe.yaml # bad recipe converter outputs
-# - path: recipes/brotli/recipe.yaml # bad recipe
+- path: recipes/pcre2/recipe.yaml
 - path: recipes/kiwisolver/recipe.yaml
-# - path: recipes/font-ttf-dejavu-sans-mono/recipe.yaml # bad checksum after downloading
 - path: recipes/munkres/recipe.yaml
 - path: recipes/toml/recipe.yaml
 - path: recipes/sqlite/recipe.yaml
 - path: recipes/wheel/recipe.yaml
+- path: recipes/tornado/recipe.yaml
+- path: recipes/unicodedata2/recipe.yaml
+- path: recipes/ruamel.yaml/recipe.yaml
+- path: recipes/readline/recipe.yaml
+- path: recipes/pyaml/recipe.yaml
+- path: recipes/psutil/recipe.yaml
+- path: recipes/pandoc/recipe.yaml
+- path: recipes/nettle/recipe.yaml
+- path: recipes/mpfr/recipe.yaml
+- path: recipes/matplotlib/recipe.yaml
+- path: recipes/markupsafe/recipe.yaml
+- path: recipes/libxslt/recipe.yaml
+- path: recipes/libxml2/recipe.yaml
+- path: recipes/libssh2/recipe.yaml
+- path: recipes/libsodium/recipe.yaml
+- path: recipes/libopus/recipe.yaml
+- path: recipes/libidn2/recipe.yaml
+- path: recipes/libedit/recipe.yaml
+- path: recipes/libdeflate/recipe.yaml
+- path: recipes/gmp/recipe.yaml
+- path: recipes/frozenlist/recipe.yaml
+- path: recipes/fonttools/recipe.yaml
+- path: recipes/countourpy/recipe.yaml
+- path: recipes/brotlipy/recipe.yaml
+- path: recipes/argon2-cffi-bindings/recipe.yaml
+- path: recipes/aom/recipe.yaml
 rattler-build:
   rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
   url: https://github.com/prefix-dev/rattler-build.git
@@ -46,9 +67,7 @@ repositories:
   - path: examples/rich/recipe.yaml
   - path: examples/curl/recipe.yaml
   url: https://github.com/prefix-dev/rattler-build.git
-
 - branch: main
-  url: https://github.com/wolfv/rust-forge.git
   recipes:
   - path: bottom/recipe.yaml
   - path: cargo-insta/recipe.yaml
@@ -65,3 +84,4 @@ repositories:
   - path: yazi/recipe.yaml
   - path: zenith/recipe.yaml
   - path: zoxide/recipe.yaml
+  url: https://github.com/wolfv/rust-forge.git

@@ -1,0 +1,59 @@
+schema_version: 1
+
+context:
+  version: 3.100
+
+package:
+  name: lame
+  version: ${{ version }}
+
+source:
+  url: https://downloads.sourceforge.net/sourceforge/lame/lame-${{ version }}.tar.gz
+  # sha256: 3e5af35689f087aa0902c698b6482b6c6a79d9525db8c8b59027abe1b0a75d5f
+  patches:
+    - libmp3lame.patch
+    - fixup_windows_build.patch
+
+build:
+  number: 1003
+
+requirements:
+  build:
+    - if: unix
+      then: gnuconfig
+    - ${{ compiler('c') }}
+    - if: unix
+      then: make
+    - if: win
+      then: nasm
+  run_exports:
+    - ${{ pin_subpackage('lame', upper_bound='x.x') }}
+
+tests:
+  - script:
+      - lame --genre-list testcase.mp3
+      - lame --longhelp
+      - if: not win
+        then: test -f $PREFIX/include/lame/lame.h
+      - if: win
+        then: if not exist %PREFIX%\\Library\\include\\lame\\lame.h exit 1
+
+about:
+  license: LGPL-2.0-only
+  license_file: COPYING
+  summary: High quality MPEG Audio Layer III (MP3) encoder
+  # The remaining entries in this section are optional, but recommended
+  description: |
+    LAME is a high quality MPEG Audio Layer III (MP3) encoder licensed under the LGPL.
+    Today, LAME is considered the best MP3 encoder at mid-high bitrates and at VBR, mostly
+    thanks to the dedicated work of its developers and the open source licensing model
+    that allowed the project to tap into engineering resources from all around the world.
+  homepage: https://lame.sourceforge.io/
+  repository: https://svn.code.sf.net/p/lame/svn/trunk/lame/
+  documentation: http://lame.sourceforge.net/using.php
+
+extra:
+  recipe-maintainers:
+    - soumith
+    - hmaarrfk
+    - bmcfee

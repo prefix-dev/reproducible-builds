@@ -1,0 +1,57 @@
+diff -u a/Makefile.MSVC b/Makefile.MSVC
+--- a/Makefile.MSVC	2022-07-07 08:07:06.176387878 -0400
++++ b/Makefile.MSVC	2022-07-08 08:28:01.798387029 -0400
+@@ -98,8 +98,8 @@
+ SNDFILE = NO
+ !	ENDIF
+ 
+-OFF = win32
+-MACHINE = /machine:I386
++OFF = win64
++MACHINE = /machine:X64
+ LIB_OPTS = /nologo $(MACHINE) 
+ 
+ !	MESSAGE ----------------------------------------------------------------------
+@@ -204,9 +204,9 @@
+ 
+ # release options
+ !	IF "$(MSVCVER)" == "Win64"
+-CC_OPTS = /nologo /DWin64 /O2b2ity /GAy /Gs1024 /Zp8 /GL /GS- /Zi
++CC_OPTS = /nologo /DWin64 /O2b2ity /Gs1024 /Zp8 /GS-
+ !	ELSEIF "$(MSVCVER)" == "8.0"
+-CC_OPTS = /nologo /O2 /Wp64 /Oi /GL /arch:SSE /fp:precise
++CC_OPTS = /nologo /O2 /Wp64 /Oi /arch:SSE /fp:precise
+ !	ELSEif "$(CPU)"=="P6"
+ CC_OPTS = /nologo /O2 /Ob2 /GAy /Gs1024 /Zp8 /Zi
+ !else
+@@ -424,8 +424,8 @@
+ #__ Robert's alternate code ___________________________________________________
+ !	IF "$(CFG)" == "RH"
+ !	IF "$(MSVCVER)" == "8.0"
+-LIB_OPTS = $(LIB_OPTS) /LTCG
+-LN_OPTS = $(LN_OPTS) /LTCG
++LIB_OPTS = $(LIB_OPTS)
++LN_OPTS = $(LN_OPTS)
+ !   ENDIF
+ !	ENDIF
+ #___________________________________________________ Robert's alternate code __
+@@ -495,10 +495,6 @@
+ 	mpglib/interface.c
+ 
+ 
+-!IF "$(MSVCVER)" == "Win64"
+-ADDL_OBJ = bufferoverflowU.lib
+-!ENDIF
+-
+ LIB_OBJ = $(lamelib_sources:.c=.obj)
+ HIP_OBJ = $(mpglib_sources:.c=.obj)
+ CMMN_OBJ = $(common_sources:.c=.obj)
+@@ -544,7 +540,7 @@
+ .SUFFIXES : .nas
+ .nas.obj:
+ 	@echo $<
+-	@nasmw -f $(OFF) -i libmp3lame/i386/ -DWIN32 $< -o $@
++	@nasm -f $(OFF) -i libmp3lame/i386/ -DWIN32 -DWIN64 $< -o $@
+ 
+ CC_SWITCHES = $(CC_SWITCHES) /DHAVE_NASM
+ ASM_OBJ = $(ASM_OBJ) \

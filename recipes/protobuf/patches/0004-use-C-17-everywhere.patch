@@ -1,0 +1,24 @@
+From 025938fdbfa0ed950afedd9d773e1f6b499950bd Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Thu, 18 May 2023 17:14:37 +1100
+Subject: [PATCH 4/5] use C++17 everywhere
+
+---
+ python/setup.py | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/python/setup.py b/python/setup.py
+index b1bcfdbe0..d6f99ab3d 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -377,7 +377,9 @@ if __name__ == '__main__':
+       extra_compile_args.append('-Wno-invalid-offsetof')
+       extra_compile_args.append('-Wno-sign-compare')
+       extra_compile_args.append('-Wno-unused-variable')
+-      extra_compile_args.append('-std=c++14')
++      extra_compile_args.append('-std=c++17')
++    else:
++      extra_compile_args.append('/std:c++17')
+ 
+     if sys.platform == 'darwin':
+       extra_compile_args.append('-Wno-shorten-64-to-32')

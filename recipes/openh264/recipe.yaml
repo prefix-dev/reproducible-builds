@@ -1,0 +1,61 @@
+schema_version: 1
+
+context:
+  name: openh264
+  version: 2.4.1
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/cisco/openh264/archive/v${{ version }}.tar.gz
+  sha256: 8ffbe944e74043d0d3fb53d4a2a14c94de71f58dbea6a06d0dc92369542958ea
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    - pkg-config
+    - nasm
+    - if: unix
+      then: make
+    - if: win
+      then: meson
+    - if: win
+      then: ninja
+  run_exports:
+    - ${{ pin_subpackage('openh264', max_pin='x.x.x') }}
+
+tests:
+  - script:
+      - h264enc -h
+      - if: unix
+        then: h264dec | grep welsdec.cfg
+      - if: win
+        then: h264dec | findstr welsdec.cfg
+      - if: unix
+        then: test -f $PREFIX/lib/libopenh264${SHLIB_EXT}
+      - if: win
+        then: if not exist %PREFIX%\\Library\\bin\\openh264-7.dll exit 1
+      - if: win
+        then: if not exist %PREFIX%\\Library\\lib\\openh264.lib exit 1
+      - if: win
+        then: if not exist %PREFIX%\\Library\\lib\\pkgconfig\\openh264.pc exit 1
+
+about:
+  license: BSD-2-Clause
+  license_file: LICENSE
+  summary: OpenH264 is a codec library which supports H.264 encoding and decoding
+  homepage: http://www.openh264.org/
+  repository: https://github.com/cisco/openh264
+  documentation: https://github.com/cisco/openh264
+
+extra:
+  recipe-maintainers:
+    - 183amir
+    - sdvillal
+    - hmaarrfk

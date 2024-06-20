@@ -1,0 +1,47 @@
+{% set name = "libtasn1" %}
+{% set version = "4.19.0" %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  url: http://ftp.gnu.org/gnu/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  sha256: 1613f0ac1cf484d6ec0ce3b8c06d56263cc7242f1c23b30d82d23de345a63f7a
+
+build:
+  number: 0
+  # seems Windows with MSVC not currently supported
+  skip: true  # [win]
+  run_exports:
+    - {{ pin_subpackage('libtasn1', max_pin='x') }}
+
+requirements:
+  build:
+    - {{ compiler('c') }}
+    - make
+    - gnuconfig  # [unix]
+  host:
+  run:
+
+test:
+  commands:
+    - test -f $PREFIX/lib/libtasn1${SHLIB_EXT}  # [unix]
+
+about:
+  home: https://www.gnu.org/software/libtasn1/
+  license: GPL-3.0-or-later
+  license_file: COPYING
+  summary: Libtasn1 is the ASN.1 library used by GnuTLS, p11-kit and some other packages
+  description: |
+    The Libtasn1 library provides Abstract Syntax Notation One
+    (ASN.1, as specified by the X.680 ITU-T recommendation) parsing and structures management,
+    and Distinguished Encoding Rules (DER, as per X.690) encoding and decoding functions.
+  doc_url: https://www.gnu.org/software/libtasn1/manual/libtasn1.html
+  dev_url: https://gitlab.com/gnutls/libtasn1/
+
+extra:
+  recipe-maintainers:
+    - gillins
+    - ceholden
+    - ocefpaf

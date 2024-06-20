@@ -1,0 +1,63 @@
+schema_version: 1
+
+context:
+  name: argon2-cffi-bindings
+  version: 21.2.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: bb89ceffa6c791807d1305ceb77dbfacc5aa499891d2c55661c6459651fc39e3
+
+build:
+  number: 4
+  script:
+    content:
+      - if: unix
+        then: ln -sf $RANLIB $BUILD_PREFIX/bin/ranlib
+      - python -m pip install . -vv
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - if: build_platform != target_platform
+      then: cffi >=1.0.1
+    - ${{ compiler("c") }}
+  host:
+    - python
+    - pip
+    - cffi >=1.0.1
+    - setuptools >=45
+    - setuptools_scm >=6.2
+    - wheel
+  run:
+    - python
+    - cffi >=1.0.1
+
+tests:
+  - python:
+      imports:
+        - _argon2_cffi_bindings
+      pip_check: true
+
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: Low-level Python CFFI Bindings for Argon2
+  description: |
+    argon2-cffi-bindings provides low-level CFFI bindings to the Argon2
+    password hashing algorithm including a vendored version of them.
+  homepage: https://github.com/hynek/argon2-cffi-bindings
+  repository: https://github.com/hynek/argon2-cffi-bindings
+  documentation: https://github.com/hynek/argon2-cffi-bindings
+
+extra:
+  recipe-maintainers:
+    - stuertz

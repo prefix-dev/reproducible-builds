@@ -1,0 +1,17 @@
+--- setup.py	2020-06-22 17:42:24.000000000 -0400
++++ setup.py	2020-07-03 15:21:22.021362099 -0400
+@@ -247,10 +247,10 @@
+         'dbghelp',
+     )
+ if BUILD_WITH_SYSTEM_OPENSSL:
+-    EXTENSION_LIBRARIES += (
+-        'ssl',
+-        'crypto',
+-    )
++    if not "win32" in sys.platform:
++        EXTENSION_LIBRARIES += ('ssl', 'crypto',)
++    else:
++        EXTENSION_LIBRARIES += ('libssl', 'libcrypto',)
+ if BUILD_WITH_SYSTEM_ZLIB:
+     EXTENSION_LIBRARIES += ('z',)
+ if BUILD_WITH_SYSTEM_CARES:
