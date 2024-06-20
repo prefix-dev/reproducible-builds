@@ -57,6 +57,7 @@ The config also contains the rattler-build version that its using, this way we c
 This project uses a Sqlite database to store the build information. The database is created automatically when the project is setup.
 When running locally a local version of the database is created, this will ensure that you have a clean database to work with.
 You can also use the `--in-memory-sql` flag to use an in-memory database, which is useful for testing.
+E.g `pixi run repror --in-memory-sql build-recipe boltons`, this will build the boltons recipe in an in-memory database.
 
 ### Running locally 🏃‍♂️
 This project exposes a Python CLI called `repror` to interact with the project. We also re-expose the CLI using pixi tasks.
@@ -77,6 +78,9 @@ There is also the following task for converting recipes:
 A static html page is generated with the results of the builds, this can be found in the `docs` folder.
 to create the html page run the following task:
 * `generate-html` to generate the html page.
+
+Testing the repository can be done by running the following task:
+* `test` to run the pytests.
 
 
 #### Using the Python CLI directly 🐍
