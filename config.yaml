@@ -36,7 +36,7 @@ local:
 - path: recipes/unicodedata2/recipe.yaml
 - path: recipes/ruamel.yaml/recipe.yaml
 - path: recipes/readline/recipe.yaml
-- path: recipes/pyaml/recipe.yaml
+- path: recipes/pyyaml/recipe.yaml
 - path: recipes/psutil/recipe.yaml
 - path: recipes/pandoc/recipe.yaml
 - path: recipes/nettle/recipe.yaml
@@ -54,7 +54,7 @@ local:
 - path: recipes/gmp/recipe.yaml
 - path: recipes/frozenlist/recipe.yaml
 - path: recipes/fonttools/recipe.yaml
-- path: recipes/countourpy/recipe.yaml
+- path: recipes/contourpy/recipe.yaml
 - path: recipes/brotlipy/recipe.yaml
 - path: recipes/argon2-cffi-bindings/recipe.yaml
 - path: recipes/aom/recipe.yaml
