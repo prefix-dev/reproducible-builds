@@ -6,6 +6,7 @@ from repror.cli.utils import rebuild_to_table
 from repror.internals.build import BuildInfo, RebuildResult, Recipe, _rebuild_package
 from repror.internals.db import (
     Build,
+    BuildState,
     get_latest_build_with_rebuild,
     save,
 )
@@ -81,8 +82,9 @@ def rebuild_recipe(
             rebuild_result.rebuild.actions_url = actions_url
         if patch:
             save_patch(rebuild_result.rebuild)
-        save(rebuild_result.rebuild)
+        else:
+            save(rebuild_result.rebuild)
 
-        if rebuild_result.exception:
-            raise rebuild_result.exception
+        if rebuild_result.rebuild.state != BuildState.SUCCESS:
+            raise ValueError(f"Rebuild failed for {recipe.name}")
         print(f"[bold green]Done: '{recipe.name}' [/bold green]")
