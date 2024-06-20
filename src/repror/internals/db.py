@@ -48,6 +48,7 @@ class BuildState(str, Enum):
 def create_db_and_tables():
     """Create the database and tables, if they don't exist."""
     __set_engine()
+    assert engine # This should not fail
     SQLModel.metadata.create_all(engine)
 
 
