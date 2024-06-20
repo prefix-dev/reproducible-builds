@@ -70,7 +70,7 @@ def build_conda_package(recipe_path: Path, output_dir: Path) -> int:
     return run_streaming_command(command=build_command)
 
 
-def rebuild_conda_package(conda_file: Path, output_dir: Path):
+def rebuild_conda_package(conda_file: Path, output_dir: Path) -> int:
     rattler_bin = get_rattler_build()
 
     re_build_command = [
@@ -82,7 +82,7 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_streaming_command(command=re_build_command)
+    return run_streaming_command(command=re_build_command)
 
 
 def build_recipe(
