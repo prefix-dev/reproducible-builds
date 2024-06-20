@@ -1,0 +1,20 @@
+# on osx, keep this in sync with llvm_version in meta.yaml.
+# linux-aarch hits a compiler bug with GCC 12, upgrade; needs override
+# for two versions on linux: one for non-CUDA & one for 11.8
+c_compiler_version:            # [unix]
+  - 16                         # [osx]
+  - 13                         # [linux and (aarch64 or ppc64le)]
+  - 10                         # [linux and (aarch64 or ppc64le)]
+cxx_compiler_version:          # [unix]
+  - 16                         # [osx]
+  - 13                         # [linux and (aarch64 or ppc64le)]
+  - 10                         # [linux and (aarch64 or ppc64le)]
+
+# override global pinning to only take one version
+libarrow:
+  - 16
+libarrow_all:
+  - 16
+# currently still zipped with arrow_cpp in global pinning
+arrow_cpp:
+  - 16

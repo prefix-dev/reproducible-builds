@@ -1,0 +1,24 @@
+From c2212240eb6161e31fb995a1446562acd22c1066 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sun, 4 Sep 2022 18:14:41 +0200
+Subject: [PATCH 1/5] do not link msvc runtime statically
+
+---
+ python/setup.py | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/python/setup.py b/python/setup.py
+index e65631013..b6de92d1d 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -396,10 +396,6 @@ if __name__ == '__main__':
+     if sys.platform == 'win32' and  '64 bit' in sys.version:
+       extra_compile_args.append('-DMS_WIN64')
+ 
+-    # MSVS default is dymanic
+-    if sys.platform == 'win32':
+-      extra_compile_args.append('/MT')
+-
+     if 'clang' in os.popen('$CC --version 2> /dev/null').read():
+       extra_compile_args.append('-Wno-shorten-64-to-32')
+ 

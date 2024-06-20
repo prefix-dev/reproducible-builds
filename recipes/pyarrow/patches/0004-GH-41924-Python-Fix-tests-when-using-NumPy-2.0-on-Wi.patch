@@ -1,0 +1,79 @@
+From c7e74e697a66537c2a88b5ed14c7fe3bc48b2e6a Mon Sep 17 00:00:00 2001
+From: Joris Van den Bossche <jorisvandenbossche@gmail.com>
+Date: Tue, 11 Jun 2024 12:09:08 +0200
+Subject: [PATCH 4/4] GH-41924: [Python] Fix tests when using NumPy 2.0 on
+ Windows
+
+---
+ python/pyarrow/tests/parquet/common.py | 2 +-
+ python/pyarrow/tests/test_array.py     | 2 +-
+ python/pyarrow/tests/test_pandas.py    | 2 +-
+ python/pyarrow/tests/test_table.py     | 2 +-
+ python/scripts/test_leak.py            | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/python/pyarrow/tests/parquet/common.py b/python/pyarrow/tests/parquet/common.py
+index 8365ed5b28..c3094ee20b 100644
+--- a/python/pyarrow/tests/parquet/common.py
++++ b/python/pyarrow/tests/parquet/common.py
+@@ -83,7 +83,7 @@ def _random_integers(size, dtype):
+     iinfo = np.iinfo(dtype)
+     return np.random.randint(max(iinfo.min, platform_int_info.min),
+                              min(iinfo.max, platform_int_info.max),
+-                             size=size).astype(dtype)
++                             size=size, dtype=dtype)
+ 
+ 
+ def _range_integers(size, dtype):
+diff --git a/python/pyarrow/tests/test_array.py b/python/pyarrow/tests/test_array.py
+index 156d58326b..dd1d484cc7 100644
+--- a/python/pyarrow/tests/test_array.py
++++ b/python/pyarrow/tests/test_array.py
+@@ -3323,7 +3323,7 @@ def test_numpy_array_protocol():
+     result = np.asarray(arr)
+     np.testing.assert_array_equal(result, expected)
+ 
+-    if Version(np.__version__) < Version("2.0"):
++    if Version(np.__version__) < Version("2.0.0.dev0"):
+         # copy keyword is not strict and not passed down to __array__
+         result = np.array(arr, copy=False)
+         np.testing.assert_array_equal(result, expected)
+diff --git a/python/pyarrow/tests/test_pandas.py b/python/pyarrow/tests/test_pandas.py
+index 3678b4e57a..5071058848 100644
+--- a/python/pyarrow/tests/test_pandas.py
++++ b/python/pyarrow/tests/test_pandas.py
+@@ -769,7 +769,7 @@ class TestConvertPrimitiveTypes:
+             info = np.iinfo(dtype)
+             values = np.random.randint(max(info.min, np.iinfo(np.int_).min),
+                                        min(info.max, np.iinfo(np.int_).max),
+-                                       size=num_values)
++                                       size=num_values, dtype=dtype)
+             data[dtype] = values.astype(dtype)
+             fields.append(pa.field(dtype, arrow_dtype))
+ 
+diff --git a/python/pyarrow/tests/test_table.py b/python/pyarrow/tests/test_table.py
+index e11efa64db..c44414d0bc 100644
+--- a/python/pyarrow/tests/test_table.py
++++ b/python/pyarrow/tests/test_table.py
+@@ -3244,7 +3244,7 @@ def test_numpy_array_protocol(constructor):
+     table = constructor([[1, 2, 3], [4.0, 5.0, 6.0]], names=["a", "b"])
+     expected = np.array([[1, 4], [2, 5], [3, 6]], dtype="float64")
+ 
+-    if Version(np.__version__) < Version("2.0"):
++    if Version(np.__version__) < Version("2.0.0.dev0"):
+         # copy keyword is not strict and not passed down to __array__
+         result = np.array(table, copy=False)
+         np.testing.assert_array_equal(result, expected)
+diff --git a/python/scripts/test_leak.py b/python/scripts/test_leak.py
+index f2bbe8d051..86a87f5e74 100644
+--- a/python/scripts/test_leak.py
++++ b/python/scripts/test_leak.py
+@@ -98,7 +98,7 @@ def test_leak3():
+ 
+ 
+ def test_ARROW_8801():
+-    x = pd.to_datetime(np.random.randint(0, 2**32, size=2**20),
++    x = pd.to_datetime(np.random.randint(0, 2**32, size=2**20, dtype=np.int64),
+                        unit='ms', utc=True)
+     table = pa.table(pd.DataFrame({'x': x}))
+ 

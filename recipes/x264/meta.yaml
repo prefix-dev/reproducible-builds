@@ -1,0 +1,73 @@
+{% set so_number = '164' %}
+{% set epoch = '1' %}
+{% set version_prefix = epoch + '!' + so_number %}
+{% set revision = '3095' %}
+{% set version = version_prefix + '.' + revision %}
+# This is revision 3095. (git rev-list HEAD | wc -l)
+{% set commit = "baee400fa9ced6f5481a728138fed6e867b0ff7f" %}
+{% set posix = 'm2-' if win else '' %}
+
+package:
+  name: x264
+  version: {{ version }}
+
+source:
+  # need to use the git source to make version.sh in source work
+  - url: https://code.videolan.org/videolan/x264/-/archive/{{ commit }}/x264-{{ commit }}.tar.gz
+    sha256: 436a2be54d8bc0cb05dd33ecbbcb7df9c3b57362714fcdaa3a5991189a33319b
+  # 2022/07 hmaarrfk
+  # x264 attempts to detect the version from the git information.
+  # however, installing (and using) git on windows is tricky
+  # with m2- tools installed in parallel.
+  # Since the version file is easy to recreate, we use
+  # a thin stub of a file, along with exporting a few variables
+  # from this recipe as environment variables in the build process
+  # to recreate it
+  - path: version.sh
+
+build:
+  number: 2
+  run_exports:
+    - x264 >={{ version }},<{{ epoch + '!' }}{{ so_number|int + 1 }}
+  script_env:
+    - X264_REV={{ revision }}
+    - X264_VERSION=r{{ revision }} {{ commit[:7] }}
+    - X264_POINTVER=0.{{ so_number }}.{{ revision }} {{ commit[:7] }}
+
+requirements:
+  build:
+    - gnuconfig  # [unix]
+    - {{ compiler("c") }}
+    - perl
+    - nasm
+    - make
+    - {{ posix }}bash  # [win]
+    - {{ posix }}coreutils  # [win]
+    - {{ posix }}grep  # [win]
+    - {{ posix }}sed  # [win]
+
+test:
+  commands:
+    - test -f ${PREFIX}/include/x264.h                     # [unix]
+    - test ! -f ${PREFIX}/lib/libx264.a                    # [unix]
+    - test -f ${PREFIX}/lib/libx264${SHLIB_EXT}            # [unix]
+    - test -f ${PREFIX}/lib/libx264.{{ so_number }}.dylib  # [osx]
+    - test -f ${PREFIX}/lib/libx264.so.{{ so_number }}     # [linux]
+    - if not exist %LIBRARY_INC%\\x264.h exit 1            # [win]
+    - if not exist %LIBRARY_BIN%\\libx264-{{ so_number }}.dll exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\libx264.lib exit 1       # [win]
+    - x264 --help
+
+about:
+  home: http://www.videolan.org/developers/x264.html
+  license: GPL-2.0-or-later
+  license_file: COPYING
+  summary: A free software library for encoding video streams into the H.264/MPEG-4 AVC format.
+  dev_url: https://code.videolan.org/videolan/x264
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - 183amir
+    - carlodri
+    - sdvillal

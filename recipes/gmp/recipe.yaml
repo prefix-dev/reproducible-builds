@@ -1,0 +1,64 @@
+schema_version: 1
+
+context:
+  version: 6.3.0
+
+package:
+  name: gmp
+  version: ${{ version }}
+
+source:
+  url:
+    - https://gmplib.org/download/gmp/gmp-${{ version }}.tar.xz
+    - https://ftp.gnu.org/gnu/gmp/gmp-${{ version }}.tar.xz
+  sha256: a3c2b80201b89e68616f4ad30bc66aee4927c3ce50e33929ca819d5c43538898
+
+build:
+  number: 1
+  skip:
+    - win
+
+requirements:
+  build:
+    - if: unix
+      then: gnuconfig
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+    - m4
+    - make
+  host:
+  run_exports:
+    - ${{ pin_subpackage("gmp") }}
+
+tests:
+  - files:
+      recipe:
+        - test.c
+    requirements:
+      run:
+        - ${{ compiler('c') }}
+    script:
+      - if: unix
+        then: test -f ${PREFIX}/lib/libgmp.a
+      - if: osx
+        then: test -f ${PREFIX}/lib/libgmp.dylib
+      - if: linux
+        then: test -f ${PREFIX}/lib/libgmp.so
+      - if: unix
+        then: test -f ${PREFIX}/lib/libgmpxx.a
+      - if: osx
+        then: test -f ${PREFIX}/lib/libgmpxx.dylib
+      - if: linux
+        then: test -f ${PREFIX}/lib/libgmpxx.so
+
+about:
+  license: GPL-2.0-or-later OR LGPL-3.0-or-later
+  license_file: COPYING.LESSERv3
+  summary: The GNU multiprecision library.
+  homepage: http://gmplib.org/
+
+extra:
+  recipe-maintainers:
+    - asmeurer
+    - isuruf
+    - jakirkham

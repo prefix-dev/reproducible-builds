@@ -1,0 +1,8 @@
+pin_run_as_build:
+  libsodium:
+    max_pin: x.x.x
+    min_pin: x.x.x
+  zeromq:
+    # zeromq on Windows requires strict pinning
+    min_pin: x.x.x  # [win]
+    max_pin: x.x.x  # [win]

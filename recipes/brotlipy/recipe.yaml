@@ -1,0 +1,59 @@
+context:
+  name: brotlipy
+  version: 0.7.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: 36def0b859beaf21910157b4c33eb3b06d8ce459c942102f16988cca6ea164df
+  file_name: ${{ name }}-${{ version }}.tar.gz
+
+build:
+  number: 1006
+  script:
+    # Remove linking to C++ runtime on unix
+    - if: unix
+      then: "sed -i.bak 's/stdc++/m/g' src/brotli/build.py"
+    - python -m pip install . -vv
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - if: build_platform != target_platform
+      then: cffi        >=1.0.0
+    - ${{ compiler('c') }}
+  host:
+    - python
+    - setuptools
+    - cffi        >=1.0.0
+    - pip
+  run:
+    - python
+    - cffi        >=1.0.0
+    - if: py2k
+      then: enum34
+
+tests:
+  - python:
+      imports:
+        - brotli
+      pip_check: false
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: Python bindings to the Brotli compression library
+  homepage: https://github.com/python-hyper/brotlipy
+  repository: https://github.com/python-hyper/brotlipy
+
+extra:
+  recipe-maintainers:
+    - primozgodec
+    - astaric
+    - isuruf
