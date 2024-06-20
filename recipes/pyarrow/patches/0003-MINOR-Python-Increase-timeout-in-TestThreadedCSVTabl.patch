@@ -1,0 +1,45 @@
+From a013f41d4809b7a6c8ef887eab9159fc32b35571 Mon Sep 17 00:00:00 2001
+From: h-vetinari <h.vetinari@gmx.com>
+Date: Fri, 24 May 2024 02:11:18 +1100
+Subject: [PATCH 3/4] MINOR: [Python] Increase timeout in
+ TestThreadedCSVTableRead::test_cancellation (#41768)
+
+We hit this in conda-forge on some runners:
+```
+=================================== FAILURES ===================================
+__________________ TestThreadedCSVTableRead.test_cancellation __________________
+[...]
+        # Interruption should have arrived timely
+>       assert last_duration <= 1.0
+E       assert 1.2137842178344727 <= 1.0
+
+pyarrow/tests/test_csv.py:1473: AssertionError
+----------------------------- Captured stdout call -----------------------------
+workload size: 100000
+workload size: 300000
+workload size: 900000
+workload size: 2700000
+workload size: 8100000
+```
+
+Give a little bit more time for the expected duration so conda-forge's test suite doesn't fail spuriously (and then have to be restarted manually).
+
+Authored-by: H. Vetinari <h.vetinari@gmx.com>
+Signed-off-by: Antoine Pitrou <antoine@python.org>
+---
+ python/pyarrow/tests/test_csv.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/python/pyarrow/tests/test_csv.py b/python/pyarrow/tests/test_csv.py
+index bc1dd8a09a..9ddb5197e9 100644
+--- a/python/pyarrow/tests/test_csv.py
++++ b/python/pyarrow/tests/test_csv.py
+@@ -1470,7 +1470,7 @@ class BaseCSVTableRead(BaseTestCSV):
+             pytest.fail("Failed to get an interruption during CSV reading")
+ 
+         # Interruption should have arrived timely
+-        assert last_duration <= 1.0
++        assert last_duration <= 2.0
+         e = exc_info.__context__
+         assert isinstance(e, pa.ArrowCancelled)
+         assert e.signum == signum

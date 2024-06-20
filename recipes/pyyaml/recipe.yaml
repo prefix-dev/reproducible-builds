@@ -1,0 +1,71 @@
+context:
+  version: 6.0.1
+
+
+package:
+  name: pyyaml
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/P/PyYAML/PyYAML-${{ version }}.tar.gz
+  sha256: bfdf460b1736c775f2ba9f6a92bca30bc2095067b8a9d77876d1fad6cc3b4a43
+  patches:
+    - 0001-Ensure-we-do-not-end-up-wih-CRLF-line-endings-on-tes.patch
+    - if: python < 3.9
+      then:
+        - 0002-remove-setuptools-use-distutils-py38.patch
+
+build:
+  number: 1
+  script:
+    - if: unix
+      then:
+       - >
+        python -m pip install .
+        --global-option="--with-libyaml"
+        --global-option="build_ext"
+        --global-option="-I${PREFIX}/include"  # [unix]
+        --global-option="-L${PREFIX}/lib"      # [unix]
+    - if: win
+      then:
+       - >
+        python -m pip install .
+        --global-option="--with-libyaml"
+        --global-option="build_ext"
+        --global-option="-I%LIBRARY_INC%"      # [win]
+        --global-option="-L%LIBRARY_LIB%"      # [win]
+
+requirements:
+  build:
+    # - python                                 # [build_platform != target_platform]
+    # - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    # - cython <3.0.0                          # [build_platform != target_platform]
+    - ${{ compiler('c') }}
+  host:
+    - python
+    - cython <3.0.0  # https://github.com/yaml/pyyaml/issues/601
+    - setuptools
+    - pip
+    - yaml
+  run:
+    - python
+    - yaml
+
+tests:
+  - python:
+      imports:
+        - yaml
+    # - _yaml   # [python_impl == "cpython"]
+
+about:
+  homepage: http://pyyaml.org/wiki/PyYAML
+  license_file: LICENSE
+  license: MIT
+  summary: YAML parser and emitter for Python
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - msarahan
+    - pelson
+    - ocefpaf

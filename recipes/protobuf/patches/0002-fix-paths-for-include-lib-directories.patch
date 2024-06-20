@@ -1,0 +1,47 @@
+From fc05924f4174d570d5ea17803f48b6333b2f6ae7 Mon Sep 17 00:00:00 2001
+From: "H. Vetinari" <h.vetinari@gmx.com>
+Date: Sun, 4 Sep 2022 18:42:34 +0200
+Subject: [PATCH 2/5] fix paths for include & lib directories
+
+---
+ python/setup.py | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/python/setup.py b/python/setup.py
+index b6de92d1d..73b4aeffb 100755
+--- a/python/setup.py
++++ b/python/setup.py
+@@ -37,6 +37,7 @@ from distutils import util
+ import fnmatch
+ import glob
+ import os
++import pathlib
+ import pkg_resources
+ import re
+ import subprocess
+@@ -403,16 +404,23 @@ if __name__ == '__main__':
+       extra_compile_args.append('-Werror')
+       sys.argv.remove(warnings_as_errors)
+ 
++    # correct lib dir for usage in conda builds
++    if sys.platform == 'win32':
++        prefix = pathlib.Path(os.environ["LIBRARY_PREFIX"])
++    else:
++        prefix = pathlib.Path(os.environ["PREFIX"])
++    lib_dir = prefix / "lib"
++
+     # C++ implementation extension
+     ext_module_list.extend([
+         Extension(
+             'google.protobuf.pyext._message',
+             glob.glob('google/protobuf/pyext/*.cc'),
+-            include_dirs=['.', '../src', '../third_party/abseil-cpp'],
++            include_dirs=['.', str(prefix / 'include')],
+             libraries=libraries,
+             extra_objects=extra_objects,
+             extra_link_args=message_extra_link_args,
+-            library_dirs=library_dirs,
++            library_dirs=[str(lib_dir)],
+             extra_compile_args=extra_compile_args,
+         ),
+         Extension(

@@ -1,0 +1,62 @@
+context:
+  name: contourpy
+  version: 1.2.1
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/${{ name[0] }}/${{ name }}/contourpy-${{ version }}.tar.gz
+  sha256: 4d8908b3bee1c889e547867ca4cdc54e5ab6be6d3e078556814a22457f49423c
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - if: build_platform != target_platform
+      then: meson >=1.2.0
+    - if: build_platform != target_platform
+      then: meson-python >=0.13.1
+    - if: build_platform != target_platform
+      then: ninja
+    - if: build_platform != target_platform
+      then: pybind11 >=2.12.0
+    - if: build_platform != target_platform
+      then: python
+  host:
+    - pip
+    - meson >=1.2.0
+    - meson-python >=0.13.1
+    - ninja
+    - pkg-config
+    - pybind11 >=2.12.0
+    - python >=3.9
+  run:
+    - numpy >=1.20
+    - python >=3.9
+
+tests:
+  - python:
+      imports:
+        - contourpy
+        - contourpy.util
+      pip_check: true
+
+about:
+  description: |
+    ContourPy is a Python library for calculating contours of 2D quadrilateral
+    grids.  It is written in C++11 and wrapped using pybind11.
+  summary: Python library for calculating contours of 2D quadrilateral grids.
+  license: BSD-3-Clause
+  license_file: LICENSE
+  homepage: https://github.com/contourpy/contourpy
+  documentation: https://contourpy.readthedocs.io
+
+extra:
+  recipe-maintainers:
+    - ianthomas23
