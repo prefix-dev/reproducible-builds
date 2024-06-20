@@ -141,18 +141,16 @@ def _rebuild_package(
         f"ci_artifacts/{build_info.platform}/build/{Path(build.build_loc).name}",
     )
 
-    # raise exception to top
-    try:
-        rebuild_conda_package(Path(build.build_loc), output_dir)
-    except CalledProcessError as e:
+    if rebuild_conda_package(Path(build.build_loc), output_dir) != 0:
         print(f"Failed to build recipe: {recipe.name}")
         failed_build = Rebuild(
             build_id=build.id,
             state=BuildState.FAIL,
-            reason=e.stderr[-1000:].decode("utf-8"),
+            # Catch this later
+            reason=None,
             build=build,
         )
-        return RebuildResult(rebuild=failed_build, exception=e)
+        return RebuildResult(rebuild=failed_build, exception=None)
 
     conda_file = find_conda_file(output_dir)
     shutil.copyfile(
