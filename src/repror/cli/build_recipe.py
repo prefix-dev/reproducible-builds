@@ -3,6 +3,8 @@ import shutil
 from typing import Optional
 import platform
 from pathlib import Path
+
+from repror.cli.utils import build_to_table
 from repror.internals.build import (
     BuildInfo,
     BuildResult,
@@ -118,7 +120,7 @@ def build_recipes(
     print(table)
     for recipe, tmp_dir, build_dir, build_info in to_build:
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
-        print(f"{build_result.build}")
+        print(build_to_table(build_result.build))
 
         if actions_url:
             build_result.build.actions_url = actions_url

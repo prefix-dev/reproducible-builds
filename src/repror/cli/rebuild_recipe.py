@@ -2,6 +2,7 @@ from pathlib import Path
 import platform
 from typing import Optional
 
+from repror.cli.utils import rebuild_to_table
 from repror.internals.build import BuildInfo, RebuildResult, Recipe, _rebuild_package
 from repror.internals.db import (
     Build,
@@ -75,7 +76,7 @@ def rebuild_recipe(
             print("Found latest rebuild. Skipping rebuilding it again")
             continue
         rebuild_result = rebuild_package(latest_build, recipe, tmp_dir, build_info)
-        print(f"{rebuild_result.rebuild}")
+        print(rebuild_to_table(rebuild_result.rebuild))
         if actions_url:
             rebuild_result.rebuild.actions_url = actions_url
         if patch:

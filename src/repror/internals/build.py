@@ -13,7 +13,7 @@ from repror.internals.commands import (
     calculate_hash,
     find_conda_file,
     move_file,
-    run_command,
+    run_streaming_command,
 )
 
 
@@ -67,7 +67,7 @@ def build_conda_package(recipe_path: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_command(build_command, silent=True)
+    run_streaming_command(command=build_command)
 
 
 def rebuild_conda_package(conda_file: Path, output_dir: Path):
@@ -82,7 +82,7 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_command(re_build_command, silent=True)
+    run_streaming_command(command=re_build_command)
 
 
 def build_recipe(
