@@ -36,7 +36,7 @@ def run_streaming_command(
     cwd: Optional[list[str]] = None,
     env: Optional[list[str]] = None,
     stream_type: StreamType = StreamType.STDERR,
-):
+) -> int:
     """Run a specific command and stream the output."""
 
     # We can only capture of stdout or stderr, not both
@@ -59,6 +59,7 @@ def run_streaming_command(
         # Also print the other output if there is any
         if other_stream:
             print(other_stream.readline())
+    return process.returncode
 
 
 def calculate_hash(conda_file: Path):

@@ -56,7 +56,7 @@ class RebuildResult(BaseModel):
         return self.rebuild.state == BuildState.FAIL
 
 
-def build_conda_package(recipe_path: Path, output_dir: Path):
+def build_conda_package(recipe_path: Path, output_dir: Path) -> int:
     rattler_bin = get_rattler_build()
     build_command = [
         rattler_bin,
@@ -67,7 +67,7 @@ def build_conda_package(recipe_path: Path, output_dir: Path):
         output_dir,
     ]
 
-    run_streaming_command(command=build_command)
+    return run_streaming_command(command=build_command)
 
 
 def rebuild_conda_package(conda_file: Path, output_dir: Path):
@@ -91,9 +91,7 @@ def build_recipe(
     """Build a single recipe"""
 
     # bypass exception on top
-    try:
-        build_conda_package(recipe.path, output_dir)
-    except CalledProcessError as e:
+    if build_conda_package(recipe.path, output_dir) != 0:
         print(f"Failed to build recipe: {recipe.path}")
         failed_build = Build(
             recipe_name=recipe.name,
@@ -102,9 +100,10 @@ def build_recipe(
             recipe_hash=recipe.content_hash(),
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
-            reason=e.stderr[-1000:].decode("utf-8"),
+            # TODO: capture reason later
+            reason=None,
         )
-        return BuildResult(build=failed_build, exception=e)
+        return BuildResult(build=failed_build, exception=None)
 
     # let's record first hash
     conda_file = find_conda_file(output_dir)
