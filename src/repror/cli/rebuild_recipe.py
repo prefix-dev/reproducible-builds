@@ -84,8 +84,11 @@ def rebuild_recipe(
             rebuild_result.rebuild.actions_url = actions_url
         if patch:
             save_patch(rebuild_result.rebuild)
-        else:
-            save(rebuild_result.rebuild)
+
+        # We need to save the rebuild result to the database
+        # even though we are using patches because we might invoke
+        # the process again before the patch being applied
+        save(rebuild_result.rebuild)
 
         if failure:
             raise ValueError(f"Rebuild failed for {recipe.name}")

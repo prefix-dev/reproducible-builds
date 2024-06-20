@@ -127,9 +127,12 @@ def build_recipes(
 
         failure = build_result.failed
         if patch:
-            print(f"Saving patch for {build_result.build}")
+            print(f"Saving patch for {build_result.build.recipe_name}")
             save_patch(build_result.build)
-        else:
-            save(build_result.build)
+
+        # We need to save the rebuild result to the database
+        # even though we are using patches because we might invoke
+        # the process again before the patch being applied
+        save(build_result.build)
         if failure:
             raise ValueError(f"Build failed for {recipe.name}")
