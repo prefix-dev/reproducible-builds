@@ -1,6 +1,0 @@
-# grpci requires a specific minimum SDK
-# https://github.com/grpc/grpc/blob/v1.39.0/setup.py#L415
-MACOSX_DEPLOYMENT_TARGET:  # [osx and x86_64]
-  - "10.10"                # [osx and x86_64]
-MACOSX_SDK_VERSION:        # [osx and x86_64]
-  - "10.10"                # [osx and x86_64]
