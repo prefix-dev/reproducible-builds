@@ -7,8 +7,8 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 
 [tasks]
-# Rewrite the readme with the updated data
-rewrite-readme = "repror rewrite-readme"
+# Rewrite the html with the updated data
+generate-html = "repror generate-html"
 # Used to generate build matrix for github
 generate-recipes = "repror generate-recipes"
 # Build recipes in the recipes folder
@@ -21,6 +21,8 @@ reproduce = "repror build-recipe --rebuild"
 check = "repror check"
 # Rebuild a single recipe using the python script
 rebuild-recipe = "repror rebuild-recipe"
+# Same as above but skip rattler-build setup
+rebuild-recipe-skip = "repror --skip-setup-rattler-build rebuild-recipe"
 # Convert a meta.yaml to a recipe.yaml
 convert-recipe = "convert-conda-recipe"
 # Run tests
@@ -54,4 +56,4 @@ conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-
 
 
 [environments]
-dev = {features = ["dev"], no-default-feature = true}
+dev = { features = ["dev"], no-default-feature = true }
