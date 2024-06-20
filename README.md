@@ -17,6 +17,12 @@ It uses The [Rattler Build](https://github.com/prefix-dev/rattler-build) project
 This repository has CI setup to build packages for the latests: windows, linux and osx platforms.
 It then tries to vary the build environment to see if the build is reproducible.
 
+## What is a reproducible build?
+We want to create a build process that reproduces bit-for-bit identical packages when run from the same build environment, while allowing for minor variations in the build environment. Mainly to test said reproducibility.
+
+## How do we validate reproducibility?
+We validate that rattler-build is a reproducible build tool by ensuring that it can recreate identical packages given the same recipe and build environment. We verify this by comparing the SHA256 hash of the original build and the rebuild. If the hashes differ, we inspect the packages with `diffoscope` to identify the differences. Common issues affecting reproducibility include unsorted files, differing archive timestamps, and reset script permissions during the archiving step.
+
 ### Platform variations
 The following variations are tested (per platform):
 * **Linux**: Locale, timezone
@@ -24,6 +30,7 @@ The following variations are tested (per platform):
 * **Windows**: None yet (TODO). Open to suggestions!
 
 This is similar to what other projects in the [Reproducible Builds](https://reproducible-builds.org/) project do, but for Conda packages.
+If you have any more suggestions for variations, please let us know!
 
 ## Getting Started 🚀
 
@@ -111,3 +118,5 @@ The CI has the following stages:
 ### Contributing 🤝
 Easiest way to contribute is to create a PR with a new recipe, by adding it to the `config.yaml` file, either through a `remote` or a `local` source. This way we can check
 the reproducibility for this specific recipe. This should also help us find `rattler-build` changes that we can make to prodoce more reproducible builds.
+
+You can also help us by debugging packages that fail in build or reproducibility, we've tried to make it easy to run the project locally. We know how annoying it can be to wait for CI. Any improvements here are welcome as well!
