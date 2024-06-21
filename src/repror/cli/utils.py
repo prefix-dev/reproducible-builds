@@ -7,7 +7,7 @@ from pathlib import Path
 def pixi_root_cli():
     """Get the pixi root otherwise use the current directory."""
     root_folder = pixi_root()
-    if root_folder is None:
+    if not root_folder:
         root_folder = Path.cwd()
         print(
             "[bold yellow]No PIXI_PROJECT_ROOT found, using current directory, "

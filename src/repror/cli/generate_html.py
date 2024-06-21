@@ -34,10 +34,7 @@ class StatisticData(BaseModel):
 
 def get_docs_dir(root_folder: Path):
     """Get the docs directory path. By default get the local docs directory."""
-    docs = os.getenv("REPRO_DOCS_DIR")
-    if not docs:
-        return root_folder / "docs.local"
-
+    docs = os.getenv("REPRO_DOCS_DIR", "docs.local")
     return Path(root_folder) / Path(docs)
 
 
