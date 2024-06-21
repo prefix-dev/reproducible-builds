@@ -1,0 +1,104 @@
+context:
+  version: 2.6.2
+  ver: "{{\"version|replace(\".\", \"_\")\"}}"
+
+recipe:
+  name: expat-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/libexpat/libexpat/releases/download/R_${{ ver }}/expat-${{ version }}.tar.bz2
+  sha256: 9c7c1b5dcbc3c237c500a8fb1493e14d9582146dd9b42aa8d3ffb856a3b927e0
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - if: win
+      then: cmake-no-system
+    - if: unix
+      then: make
+    - if: unix
+      then: gnuconfig
+    - ${{ compiler('c') }}
+    - ${{ compiler('cxx') }}
+  host:
+
+outputs:
+  - package:
+      name: libexpat
+    files:
+      - if: linux
+        then: lib/libexpat.so.*
+      - if: osx
+        then: lib/libexpat.*.dylib
+      - if: win
+        then: Library/bin/libexpat.dll
+    build:
+      ignore_run_exports_from:
+        # This package needs the compiler for the tests, but the library
+        # does not link to libstdc++.so
+        - ${{ compiler('cxx') }}
+    requirements:
+      build:
+        - if: win
+          then: cmake-no-system
+        - if: unix
+          then: make
+        - if: unix
+          then: gnuconfig
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+      run:
+      run_constraints:
+        - expat ${{ version }}.*
+    script: install.sh  # [unix]
+    script: install.bat  # [win]
+  - package:
+      name: expat
+    build:
+      ignore_run_exports_from:
+        # This package needs the compiler for the tests, but the executable
+        # does not link to libstdc++.so
+        - ${{ compiler('cxx') }}
+    requirements:
+      build:
+        - if: win
+          then: cmake-no-system
+        - if: unix
+          then: make
+        - if: unix
+          then: gnuconfig
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - ${{ pin_subpackage('libexpat', exact=True) }}
+      run:
+        - ${{ pin_subpackage('libexpat', exact=True) }}
+      run_exports:
+        - ${{ pin_subpackage('libexpat') }}
+    script: install.sh  # [unix]
+    script: install.bat  # [win]
+
+tests:
+  - script:
+      - xmlwf -h
+
+about:
+  license: MIT
+  license_file: COPYING
+  summary: Expat XML parser library in C
+  homepage: http://expat.sourceforge.net/
+
+extra:
+  feedstock-name: expat
+  recipe-maintainers:
+    - kwilcox
+    - ocefpaf
+    - isuruf
+    - pelson
+    - mingwandroid
+    - msarahan
+    - scopatz

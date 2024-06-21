@@ -1,0 +1,62 @@
+{% set version = "0.14.2" %}
+
+package:
+  name: statsmodels
+  version: {{ version }}
+
+source:
+  url: https://pypi.io/packages/source/s/statsmodels/statsmodels-{{ version }}.tar.gz
+  sha256: 890550147ad3a81cda24f0ba1a5c4021adc1601080bd00e191ae7cd6feecd6ad
+
+build:
+  number: 0
+  script: {{ PYTHON }} -m pip install . -vv
+  skip: true  # [py<39]
+  skip: true  # [python_impl == "pypy"]
+
+requirements:
+  build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - cython >=3.0.10,<4                     # [build_platform != target_platform]
+    - numpy                                  # [build_platform != target_platform]
+    - {{ compiler('c') }}
+    - {{ stdlib("c") }}
+  host:
+    - python
+    - pip
+    - cython >=3.0.10,<4
+    # Do not add any constraint on numpy here to use global pinning
+    - numpy
+    - scipy >=1.13.0
+    - pandas >=1.4
+    - patsy >=0.5.6
+    - setuptools_scm >=8.0.0,<9
+  run:
+    - python
+    - scipy >=1.8,!=1.9.2
+    - pandas >=1.4,!=2.1.0
+    - patsy >=0.5.6
+    - packaging >=21.3
+test:
+  requires:
+    - pip
+  commands:
+    - pip check
+  imports:
+    - statsmodels
+
+about:
+  home: https://www.statsmodels.org
+  license: BSD-3-Clause
+  license_file: INSTALL.txt
+  summary: Statistical computations and models for use with SciPy
+  dev_url: https://github.com/statsmodels/statsmodels
+  doc_url: https://www.statsmodels.org/stable/
+
+extra:
+  recipe-maintainers:
+    - tomaugspurger
+    - croth1
+    - ocefpaf
+    - bashtage

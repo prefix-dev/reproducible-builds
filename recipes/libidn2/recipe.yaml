@@ -1,0 +1,47 @@
+schema_version: 1
+
+context:
+  version: 2.3.7
+
+package:
+  name: libidn2
+  version: ${{ version }}
+
+source:
+  url: https://ftp.gnu.org/gnu/libidn/libidn2-${{ version }}.tar.gz
+  sha256: 4c21a791b610b9519b9d0e12b8097bf2f359b12f8dd92647611a929e6bfd7d64
+
+build:
+  number: 0
+  skip:
+    - win
+
+requirements:
+  build:
+    - if: unix
+      then: gnuconfig
+    - ${{ compiler('c') }}
+    - make
+    - pkg-config
+  host:
+    - gettext
+    - libunistring
+  run_exports:
+    - ${{ pin_subpackage('libidn2', lower_bound='x', upper_bound='x') }}
+
+tests:
+  - script:
+      - "test -f \"${PREFIX}/include/idn2.h\""
+      - "test -f \"${PREFIX}/lib/libidn2${SHLIB_EXT}\""
+
+about:
+  license: LGPL-2.1
+  license_file: COPYING
+  summary: Library for internationalized domain names (IDNA2008) support
+  homepage: https://www.gnu.org/software/libidn/#libidn2
+
+extra:
+  recipe-maintainers:
+    - hmaarrfk
+    # This recipe I got from
+    # - chenghlee

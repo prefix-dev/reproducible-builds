@@ -11,7 +11,7 @@ on:
 env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
   # Name of the production database
-  REPROR_DB_NAME: repro.db
+  REPRO_DB_NAME: repro.db
   # For windows builds
   PYTHONUTF8: 1
 
