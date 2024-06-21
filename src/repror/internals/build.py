@@ -6,8 +6,7 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-from repror.internals.conf import Recipe
-from repror.internals.db import Build, BuildState, Rebuild
+from repror.internals.db import Build, BuildState, Rebuild, Recipe, RemoteRecipe
 from repror.internals.rattler_build import get_rattler_build
 from repror.internals.commands import (
     calculate_hash,
@@ -56,18 +55,18 @@ class RebuildResult(BaseModel):
         return self.rebuild.state == BuildState.FAIL
 
 
-def build_conda_package(recipe_path: Path, output_dir: Path) -> int:
+def build_conda_package(recipe: Recipe | RemoteRecipe, output_dir: Path) -> int:
     rattler_bin = get_rattler_build()
-    build_command = [
-        rattler_bin,
-        "build",
-        "-r",
-        recipe_path,
-        "--output-dir",
-        output_dir,
-    ]
-
-    return run_streaming_command(command=build_command)
+    with recipe.local_path as path:
+        build_command = [
+            rattler_bin,
+            "build",
+            "-r",
+            path,
+            "--output-dir",
+            output_dir,
+        ]
+        return run_streaming_command(command=build_command)
 
 
 def rebuild_conda_package(conda_file: Path, output_dir: Path) -> int:
@@ -86,18 +85,23 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path) -> int:
 
 
 def build_recipe(
-    recipe: Recipe, output_dir: Path, build_info: BuildInfo
+    recipe: Recipe | RemoteRecipe, output_dir: Path, build_info: BuildInfo
 ) -> BuildResult:
     """Build a single recipe"""
+    print(f"Building recipe: {recipe.name}")
+
+    if isinstance(recipe, RemoteRecipe):
+        output_dir = output_dir / f"{recipe.name}_build"
+        output_dir.mkdir(parents=True, exist_ok=True)
 
     # bypass exception on top
-    if build_conda_package(recipe.path, output_dir) != 0:
+    if build_conda_package(recipe, output_dir) != 0:
         print(f"Failed to build recipe: {recipe.path}")
         failed_build = Build(
             recipe_name=recipe.name,
             state=BuildState.FAIL,
             build_tool_hash=build_info.rattler_build_hash,
-            recipe_hash=recipe.content_hash(),
+            recipe_hash=recipe.content_hash,
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
             # TODO: capture reason later
@@ -117,7 +121,7 @@ def build_recipe(
         state=BuildState.SUCCESS,
         build_hash=calculate_hash(new_file_loc),
         build_tool_hash=build_info.rattler_build_hash,
-        recipe_hash=recipe.content_hash(),
+        recipe_hash=recipe.content_hash,
         platform_name=build_info.platform,
         platform_version=build_info.platform_version,
         build_loc=str(new_file_loc),
@@ -166,18 +170,3 @@ def _rebuild_package(
     )
 
     return RebuildResult(rebuild=rebuild)
-
-
-def build_remote_recipe(
-    recipe: Recipe, build_dir: Path, cloned_prefix_dir: Path, build_info: BuildInfo
-) -> BuildResult:
-    build_dir = build_dir / f"{recipe.name}_build"
-    build_dir.mkdir(parents=True, exist_ok=True)
-
-    return build_recipe(recipe, build_dir, build_info)
-
-
-def build_local_recipe(recipe: Recipe, build_dir, build_info: BuildInfo) -> BuildResult:
-    print(f"Building recipe: {recipe.name}")
-
-    return build_recipe(recipe, build_dir, build_info)
