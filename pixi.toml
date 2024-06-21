@@ -29,9 +29,14 @@ convert-recipe = "convert-conda-recipe"
 test = "pytest tests/"
 
 
+[feature.fmt.dependencies]
 # Formatting python
-[feature.dev.dependencies]
 ruff = ">=0.4.7,<0.5"
+
+[feature.profile.dependencies]
+# Profiling in python
+pyinstrument = ">=4.6.2,<4.7"
+
 [feature.dev.tasks]
 # Format recipes using ruff
 fmt = "ruff format"
@@ -49,7 +54,6 @@ python-dotenv = "*"
 pandas = "*"
 sqlmodel = "*"
 pydantic = "*"
-pyinstrument = ">=4.6.2,<4.7"
 
 [pypi-dependencies]
 repror = { path = ".", editable = true }
@@ -57,4 +61,6 @@ conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-
 
 
 [environments]
-dev = { features = ["dev"], no-default-feature = true }
+default = { features = [], solve-group = "default" }
+fmt = { features = ["fmt"], no-default-feature = true }
+profile = { features = ["profile"], solve-group = "default" }
