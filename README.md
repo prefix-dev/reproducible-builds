@@ -33,14 +33,14 @@ This is similar to what other projects in the [Reproducible Builds](https://repr
 If you have any more suggestions for variations, please let us know!
 
 ## Getting Started 🚀
-
 This project uses [pixi](https://github.com/prefix-dev/pixi) for project management.
 
 ### Prerequisite
 Complete the following steps only once:
 
 1. Install Pixi by following the instructions on https://prefix.dev/
-2. Clone the repository and navigate to the root directory:
+2. For building of local `rattler-build` versions install [rust](https://rustup.rs/). We might include this in the pixi configuration in the future.
+3. Clone the repository and navigate to the root directory:
     ```bash
     git clone https://github.com/prefix-dev/reproducible-builds # or ssh
     cd reproducible-builds
@@ -66,10 +66,10 @@ When running locally a local version of the database is created, this will ensur
 You can also use the `--in-memory-sql` flag to use an in-memory database, which is useful for testing.
 E.g `pixi run repror --in-memory-sql build-recipe boltons`, this will build the boltons recipe in an in-memory database.
 
-### Running locally 🏃‍♂️
+## Running locally 🏃‍♂️
 This project exposes a Python CLI called `repror` to interact with the project. We also re-expose the CLI using pixi tasks.
 
-#### Using the pixi tasks 📋
+### Using the pixi tasks 📋
 Currently the following tasks are available for **building/reproducing**:
 * `reproduce` builds and rebuilds a recipe for the current platform.
 * `build-recipe <name>` to build a recipe.
@@ -79,18 +79,22 @@ Currently the following tasks are available for **building/reproducing**:
 * `check` checks the database which recipes are reproducible.
 Note, that you can use the `--force` flag to force a rebuild of the recipe.
 
+#### Recipe conversion
 There is also the following task for **converting recipes**:
 * `convert-recipe` that converts a `conda-build` `meta.yaml` to a `rattler-build` `recipe.yaml`.
 
+#### HTML generation
 A static html page is generated with the results of the builds, this can be found in the `docs` folder.
 to **create the html** page run the following task:
-* `generate-html` to generate the html page.
+* `generate-html` to generate the html page, from your local database.
 * `serve-html` to serve the html page. This will generate the html page first.
+There are additional `-prod` tasks that work on the production data, e.g. `generate-html-prod`.
 
+#### Testing
 Testing the repository can be done by running the following task:
 * `test` to run the pytests.
 
-#### Using the Python CLI directly 🐍
+### Using the Python CLI directly 🐍
 Sometimes, the tasks do not cover the full functionality of the CLI. In such cases, you can use the CLI directly. Make sure that the environment has been installed using `pixi install` or by running one of the tasks.
 To use the CLI directly, run the following command:
 
@@ -100,7 +104,7 @@ Use `pixi r repror`
 
 This should give you some `--help` on how to use the CLI.
 
-### Running on CI 🌎
+## Running on CI 🌎
 The project is setup to run on CI, and will build the recipes for the different platforms.
 
 ### Caching strategy
@@ -115,7 +119,7 @@ The CI has the following stages:
 * `patch-db` because the database is a SQLite database we cannot update per job, so we create metadata files that are `patched` into the database, the database is pushed to `main`, this step also generates the `index.html` file.
 
 
-### Contributing 🤝
+## Contributing 🤝
 Easiest way to contribute is to create a PR with a new recipe, by adding it to the `config.yaml` file, either through a `remote` or a `local` source. This way we can check
 the reproducibility for this specific recipe. This should also help us find `rattler-build` changes that we can make to prodoce more reproducible builds.
 
