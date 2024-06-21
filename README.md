@@ -70,31 +70,24 @@ Verifying if rebuilds are reproducible...
 ┡━━━━━━━━━╇━━━━━━━━━━━┩
 │ boltons │ Yes       │
 └─────────┴───────────┘
-# Serve the html page
+# We have now successfully built the boltons package and verified that it is reproducible.
+```
+Once this is done we can generate the html page to view the results, similar as to what is shown at [Results](https://prefix-dev.github.io/reproducible-builds/). To do this run the following command:
+
+```bash
 pixi r serve-html
 ✨ Pixi task (serve-html in html): livereload -d ./docs.local/
-[I 240621 16:46:23 server:335] Serving on http://127.0.0.1:35729
-[I 240621 16:46:23 server:335] Serving on http://127.0.0.1:35729
-[I 240621 16:46:23 handlers:62] Start watching changes
-[I 240621 16:46:23 handlers:62] Start watching changes
-[I 240621 16:46:23 handlers:64] Start detecting changes
-[I 240621 16:46:23 handlers:64] Start detecting changes
-[I 240621 16:46:47 web:2348] 200 GET / (127.0.0.1) 11.97ms
-[I 240621 16:46:47 web:2348] 200 GET / (127.0.0.1) 11.97ms
-[I 240621 16:46:47 web:2348] 304 GET /livereload.js?port=35729 (127.0.0.1) 3.05ms
-[I 240621 16:46:47 web:2348] 304 GET /livereload.js?port=35729 (127.0.0.1) 3.05ms
-^C[I 240621 16:46:52 server:358] Shutting down...
-[I 240621 16:46:52 server:358] Shutting down...
+Serving on http://127.0.0.1:35729
 ```
 
-You can now view the html page at http://127.0.1.:35729. Changes to this page will automatically be picked up.
+You can now view the html page at http://127.0.1.1:35729. Changes to this page will automatically be picked up.
 
 ### Configuration
 #### Config.yaml (what recipes to build) ⚙️
 The `config.yaml` file contains the configuration for the project. You can add `remote` or `local` recipes, that are local to the project or remote repositories.
 The config also contains the rattler-build version that its using, this way we can depend on unreleased versions. This project automatically sets this up for you.
 
-### SQLite Database (stores the build information) 📕
+#### SQLite Database (stores the build information) 📕
 This project uses a Sqlite database to store the build information. The database is created automatically when the project is setup.
 When running locally a local version of the database is created, this will ensure that you have a clean database to work with.
 You can also use the `--in-memory-sql` flag to use an in-memory database, which is useful for testing.
