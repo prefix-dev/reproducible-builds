@@ -22,6 +22,8 @@ from sqlmodel import (
     Session as SqlModelSession,
     col,
 )
+
+from repror.internals.recipe import clone_remote_recipe
 from .print import print
 from .options import global_options
 
@@ -165,9 +167,10 @@ class RemoteRecipe(Recipe, SQLModel, table=True):
     @contextmanager
     def local_path(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
-            recipe_file = Path(tmp_dir) / f"{self.name}.yaml"
-            recipe_file.write_text(self.raw_config, encoding="utf8")
-            yield recipe_file
+            clone_dir = Path(tmp_dir)
+            clone_remote_recipe(self.url, self.rev, clone_dir)
+            recipe_path = clone_dir / self.path
+            yield recipe_path
 
 
 def get_latest_builds(

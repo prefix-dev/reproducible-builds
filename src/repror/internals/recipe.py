@@ -7,13 +7,7 @@ import yaml
 from repror.internals import git
 
 
-def load_remote_recipe_config(
-    url: str, rev: str, path: str, clone_dir: Optional[Path] = None
-) -> tuple[dict, str]:
-    if not clone_dir:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            clone_dir = Path(tmp_dir)
-
+def clone_remote_recipe(url: str, rev: str, clone_dir: Path):
     clone_dir = clone_dir.joinpath(
         url.replace(".git", "").replace("/", "").replace("https:", "")
     )
@@ -22,6 +16,16 @@ def load_remote_recipe_config(
         git.clone_repo(url, clone_dir)
 
     git.checkout_branch_or_commit(clone_dir, rev)
+
+
+def load_remote_recipe_config(
+    url: str, rev: str, path: str, clone_dir: Optional[Path] = None
+) -> tuple[dict, str]:
+    if not clone_dir:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            clone_dir = Path(tmp_dir)
+
+    clone_remote_recipe(url, rev, clone_dir)
 
     recipe_path = clone_dir / path
     config = load_recipe_config(recipe_path)
