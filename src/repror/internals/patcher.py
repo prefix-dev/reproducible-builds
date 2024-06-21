@@ -35,7 +35,7 @@ def aggregate_patches(
                 "build",
                 "rebuild",
             }, f"Invalid patch type {patch_type}"
-            patches[file_path.parent][platform_type][patch_type] = data
+            patches[str(file_path.parent)][platform_type][patch_type] = data
 
     return patches
 
@@ -52,21 +52,20 @@ def save_patch(model: Build | Rebuild):
 
 
 # Load the patch data
-def load_patch(patch_data: dict[Literal["build", "rebuild"]]):
+def load_patch(patch_data: dict[Literal["build", "rebuild"], Any]):
     build = patch_data["build"]
     build = Build.model_validate(build)
     build.id = None
 
-    if "rebuild" in patch_data:
-        rebuild = patch_data["rebuild"]
-        rebuild = Rebuild.model_validate(rebuild)
-        rebuild.id = None
-        rebuild.build_id = None
-        rebuild.build = build
-
     with get_session() as session:
         session.add(build)
+
         if "rebuild" in patch_data:
+            rebuild = patch_data["rebuild"]
+            rebuild = Rebuild.model_validate(rebuild)
+            rebuild.id = None
+            rebuild.build_id = None
+            rebuild.build = build
             session.add(rebuild)
 
         session.commit()

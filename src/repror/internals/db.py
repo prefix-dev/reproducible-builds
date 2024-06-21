@@ -165,7 +165,7 @@ class RemoteRecipe(Recipe, SQLModel, table=True):
     @contextmanager
     def local_path(self):
         with tempfile.TemporaryDirectory() as tmp_dir:
-            recipe_file = Path(tmp_dir / f"{self.name}.yaml")
+            recipe_file = Path(tmp_dir) / f"{self.name}.yaml"
             recipe_file.write_text(self.raw_config, encoding="utf8")
             yield recipe_file
 
@@ -283,7 +283,7 @@ def get_rebuild_data() -> Sequence[Build]:
 
 
 # Function to query the database and return recipe data
-def get_recipe(url: str, path: str | Path, rev: str) -> RemoteRecipe:
+def get_recipe(url: str, path: str | Path, rev: str) -> Optional[RemoteRecipe]:
     path = str(path)
     with get_session() as session:
         # Subquery to get the latest build per platform

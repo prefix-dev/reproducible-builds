@@ -28,5 +28,6 @@ def rattler_build_version(cwd):
 
 def rattler_build_hash():
     config = load_config()
+    assert config.rattler_build
     url, rev = config.rattler_build.url, config.rattler_build.rev
     return hashlib.sha256(f"{url}{rev}".encode()).hexdigest()

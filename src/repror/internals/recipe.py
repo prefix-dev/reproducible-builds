@@ -31,7 +31,8 @@ def load_remote_recipe_config(
     return config, raw_config
 
 
-def load_recipe_config(recipe_path: Path) -> dict:
+def load_recipe_config(recipe_path: str | Path) -> dict:
+    recipe_path = Path(recipe_path) if isinstance(recipe_path, str) else recipe_path
     raw_config = recipe_path.read_text(encoding="utf8")
     return yaml.safe_load(raw_config)
 

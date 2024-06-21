@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class LocalRecipe(BaseModel):
-    path: Path
+    path: str
 
 
 class RemoteRepository(BaseModel):
@@ -81,12 +81,13 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
 
     for local in config.local:
         local_config = load_recipe_config(local.path)
+        local_path = Path(local.path)
         recipe_name = get_recipe_name(local_config)
-        recipe_hash = get_content_hash(local.path.read_text(encoding="utf8"))
+        recipe_hash = get_content_hash(local_path.read_text(encoding="utf8"))
         recipe = RecipeDB(
             name=recipe_name,
-            path=str(local.path),
-            raw_config=local.path.read_text(encoding="utf8"),
+            path=local.path,
+            raw_config=local_path.read_text(encoding="utf8"),
             content_hash=recipe_hash,
         )
         recipes.append(recipe)

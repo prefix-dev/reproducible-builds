@@ -32,6 +32,8 @@ test = "pytest tests/"
 # Formatting python
 [feature.dev.dependencies]
 ruff = ">=0.4.7,<0.5"
+pyright = "*"
+
 [feature.dev.tasks]
 # Format recipes using ruff
 fmt = "ruff format"

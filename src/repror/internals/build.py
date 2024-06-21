@@ -105,7 +105,7 @@ def build_recipe(
             recipe_name=recipe.name,
             state=BuildState.FAIL,
             build_tool_hash=build_info.rattler_build_hash,
-            recipe_hash=recipe.content_hash(),
+            recipe_hash=recipe.content_hash,
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
             reason=e.stderr[-1000:].decode("utf-8"),
