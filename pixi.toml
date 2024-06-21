@@ -29,6 +29,12 @@ convert-recipe = "convert-conda-recipe"
 test = "pytest tests/"
 
 
+[feature.html.dependencies]
+livereload = ">=2.6.3,<2.7"
+[feature.html.tasks]
+# Serve html locally
+serve-html = { cmd = "livereload -d ./docs.local/", depends-on = "generate-html" }
+
 [feature.fmt.dependencies]
 # Formatting python
 ruff = ">=0.4.7,<0.5"
@@ -37,7 +43,7 @@ ruff = ">=0.4.7,<0.5"
 # Profiling in python
 pyinstrument = ">=4.6.2,<4.7"
 
-[feature.dev.tasks]
+[feature.fmt.tasks]
 # Format recipes using ruff
 fmt = "ruff format"
 
@@ -64,3 +70,4 @@ conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-
 default = { features = [], solve-group = "default" }
 fmt = { features = ["fmt"], no-default-feature = true }
 profile = { features = ["profile"], solve-group = "default" }
+html = { features = ["html"], no-default-feature = true }

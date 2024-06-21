@@ -48,7 +48,11 @@ def run_streaming_command(
         kwargs = {"stdout": subprocess.PIPE}
 
     with subprocess.Popen(args=command, cwd=cwd, env=env, **kwargs) as process:
-        main_stream, other_stream = (process.stderr, process.stdout) if stream_type.is_stderr else (process.stdout, process.stderr)
+        main_stream, other_stream = (
+            (process.stderr, process.stdout)
+            if stream_type.is_stderr
+            else (process.stdout, process.stderr)
+        )
         if main_stream:
             # Print stderr or stdout as it comes in
             for line in io.TextIOWrapper(

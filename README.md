@@ -70,7 +70,7 @@ E.g `pixi run repror --in-memory-sql build-recipe boltons`, this will build the 
 This project exposes a Python CLI called `repror` to interact with the project. We also re-expose the CLI using pixi tasks.
 
 #### Using the pixi tasks 📋
-Currently the following tasks are available for building/reproducing:
+Currently the following tasks are available for **building/reproducing**:
 * `reproduce` builds and rebuilds a recipe for the current platform.
 * `build-recipe <name>` to build a recipe.
 * `build-recipe-skip` same as above but uses the `rattler-build` defined in the `pixi.toml`.
@@ -79,16 +79,16 @@ Currently the following tasks are available for building/reproducing:
 * `check` checks the database which recipes are reproducible.
 Note, that you can use the `--force` flag to force a rebuild of the recipe.
 
-There is also the following task for converting recipes:
+There is also the following task for **converting recipes**:
 * `convert-recipe` that converts a `conda-build` `meta.yaml` to a `rattler-build` `recipe.yaml`.
 
 A static html page is generated with the results of the builds, this can be found in the `docs` folder.
-to create the html page run the following task:
+to **create the html** page run the following task:
 * `generate-html` to generate the html page.
+* `serve-html` to serve the html page. This will generate the html page first.
 
 Testing the repository can be done by running the following task:
 * `test` to run the pytests.
-
 
 #### Using the Python CLI directly 🐍
 Sometimes, the tasks do not cover the full functionality of the CLI. In such cases, you can use the CLI directly. Make sure that the environment has been installed using `pixi install` or by running one of the tasks.
@@ -98,7 +98,7 @@ To use the CLI directly, run the following command:
 Use `pixi r repror`
 ```
 
-This should give you some help on how to use the CLI.
+This should give you some `--help` on how to use the CLI.
 
 ### Running on CI 🌎
 The project is setup to run on CI, and will build the recipes for the different platforms.

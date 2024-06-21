@@ -1,14 +1,16 @@
+import os
 from collections import defaultdict
 from typing import Optional
 
 from pydantic import BaseModel
-from rich import print
+from rich.panel import Panel
 
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from repror.internals.db import BuildState, get_rebuild_data
 from repror.internals.git import github_api
+from repror.internals.print import print
 
 
 class StatisticData(BaseModel):
@@ -30,7 +32,19 @@ class StatisticData(BaseModel):
         )
 
 
-def rerender_html(update_remote: bool = False):
+def get_docs_dir(root_folder: Path):
+    """Get the docs directory path. By default get the local docs directory."""
+    docs = os.getenv("REPRO_DOCS_DIR")
+    if not docs:
+        return root_folder / "docs.local"
+
+    return Path(root_folder) / Path(docs)
+
+
+def rerender_html(root_folder: Path, update_remote: bool = False):
+    docs_folder = get_docs_dir(root_folder)
+    print(f"Generating into : {docs_folder}")
+
     env = Environment(
         loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
     )
@@ -70,15 +84,18 @@ def rerender_html(update_remote: bool = False):
 
     html_content = template.render(by_platform=by_platform)
     # Save the table to README.md
-    index_html_path = Path("docs/index.html")
+    index_html_path = docs_folder / Path("index.html")
     index_html_path.parent.mkdir(exist_ok=True)
     index_html_path.write_text(html_content)
 
+    panel = Panel(f"Generated {index_html_path}.\n Run [bold]pixi r serve-html[/bold] to view", title="Success", style="green")
+    print(panel)
     if update_remote:
-        # Update the README.md using GitHub API
+        # Update the index.html using GitHub API
         print(":running: Updating index.html with new data")
         github_api.update_obj(
             html_content,
+            # Always update the index.html in the docs folder
             "docs/index.html",
             "Update statistics",
         )

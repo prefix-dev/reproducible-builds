@@ -78,7 +78,6 @@ def rebuild_recipe(
         rebuild_result = rebuild_package(latest_build, recipe, tmp_dir, build_info)
         print(rebuild_to_table(rebuild_result.rebuild))
 
-
         failure = rebuild_result.failed
         if actions_url:
             rebuild_result.rebuild.actions_url = actions_url
