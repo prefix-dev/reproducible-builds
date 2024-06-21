@@ -17,7 +17,7 @@ from repror.internals import build_metadata_to_sql
 # Different CLI commands
 from . import build_recipe as build
 from . import generate_recipes as generate
-from . import rewrite_readme as rewrite
+from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
 from . import check_recipe
@@ -143,7 +143,7 @@ def generate_html(
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
     """Rewrite the README.md file with updated statistics"""
-    rewrite.rerender_html(update_remote or False)
+    html.rerender_html(update_remote or False)
 
 
 @app.command()
