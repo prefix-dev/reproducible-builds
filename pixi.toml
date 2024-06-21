@@ -8,8 +8,17 @@ platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 
 [tasks]
 # Rewrite the html with the updated data
-generate-html = "repror generate-html"
-# Used to generate build matrix for github
+generate-html = { cmd = "repror generate-html", inputs = [
+    "repro.local.db",
+], outputs = [
+    "docs.local/index.html",
+] }
+generate-html-prod = { cmd = "repror generate-html", env = { REPRO_DB_NAME = "repro.db" }, inputs = [
+    "repro.db",
+], outputs = [
+    "./docs.local/index.html",
+] }
+# Used to generate build matrix for githubgenerate-html = "repror generate-html"
 generate-recipes = "repror generate-recipes"
 # Build recipes in the recipes folder
 build-recipe = "repror build-recipe"
@@ -29,6 +38,13 @@ convert-recipe = "convert-conda-recipe"
 test = "pytest tests/"
 
 
+[feature.html.dependencies]
+livereload = ">=2.6.3,<2.7"
+[feature.html.tasks]
+# Serve html locally
+serve-html = { cmd = "livereload -d ./docs.local/", depends-on = "generate-html" }
+serve-html-prod = { cmd = "livereload -d ./docs.local/", depends-on = "generate-html-prod" }
+
 [feature.fmt.dependencies]
 # Formatting python
 ruff = ">=0.4.7,<0.5"
@@ -37,7 +53,7 @@ ruff = ">=0.4.7,<0.5"
 # Profiling in python
 pyinstrument = ">=4.6.2,<4.7"
 
-[feature.dev.tasks]
+[feature.fmt.tasks]
 # Format recipes using ruff
 fmt = "ruff format"
 
@@ -64,3 +80,4 @@ conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-
 default = { features = [], solve-group = "default" }
 fmt = { features = ["fmt"], no-default-feature = true }
 profile = { features = ["profile"], solve-group = "default" }
+html = { features = ["html"], no-default-feature = true }

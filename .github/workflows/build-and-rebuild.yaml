@@ -12,6 +12,10 @@ env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
   # Name of the production database
   REPRO_DB_NAME: repro.db
+  # Set the directory where the docs are stored
+  # because we try to be local first this needs to
+  # be explicitly set in CI
+  REPRO_DOCS_DIR: docs
   # For windows builds
   PYTHONUTF8: 1
 
