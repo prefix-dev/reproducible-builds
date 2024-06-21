@@ -7,15 +7,17 @@ import yaml
 from repror.internals import git
 
 
-def clone_remote_recipe(url: str, rev: str, clone_dir: Path):
-    clone_dir = clone_dir.joinpath(
+def clone_remote_recipe(url: str, rev: str, clone_dir: Path) -> Path:
+    print(f"Cloning remote recipe {url} at revision {rev}")
+    repo_dir = clone_dir.joinpath(
         url.replace(".git", "").replace("/", "").replace("https:", "")
     )
 
-    if not clone_dir.exists():
-        git.clone_repo(url, clone_dir)
+    if not repo_dir.exists():
+        git.clone_repo(url, repo_dir)
 
-    git.checkout_branch_or_commit(clone_dir, rev)
+    git.checkout_branch_or_commit(repo_dir, rev)
+    return repo_dir
 
 
 def load_remote_recipe_config(

@@ -55,7 +55,7 @@ class RebuildResult(BaseModel):
         return self.rebuild.state == BuildState.FAIL
 
 
-def build_conda_package(recipe: Recipe, output_dir: Path):
+def build_conda_package(recipe: Recipe | RemoteRecipe, output_dir: Path):
     rattler_bin = get_rattler_build()
 
     with recipe.local_path as path:
@@ -67,7 +67,6 @@ def build_conda_package(recipe: Recipe, output_dir: Path):
             "--output-dir",
             output_dir,
         ]
-
         run_command(build_command, silent=True)
 
 
@@ -87,7 +86,7 @@ def rebuild_conda_package(conda_file: Path, output_dir: Path):
 
 
 def build_recipe(
-    recipe: Recipe, output_dir: Path, build_info: BuildInfo
+    recipe: Recipe | RemoteRecipe, output_dir: Path, build_info: BuildInfo
 ) -> BuildResult:
     """Build a single recipe"""
     print(f"Building recipe: {recipe.name}")

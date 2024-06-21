@@ -6,7 +6,7 @@ import logging
 import os
 from pathlib import Path
 import tempfile
-from typing import Optional
+from typing import Generator, Optional
 from pydantic import BaseModel
 from sqlalchemy import func, text
 from typing import Sequence
@@ -154,7 +154,7 @@ class Recipe(BaseModel):
 
     @property
     @contextmanager
-    def local_path(self):
+    def local_path(self) -> Generator[str, None, None]:
         yield self.path
 
 
@@ -165,12 +165,12 @@ class RemoteRecipe(Recipe, SQLModel, table=True):
 
     @property
     @contextmanager
-    def local_path(self):
+    def local_path(self) -> Generator[str, None, None]:
         with tempfile.TemporaryDirectory() as tmp_dir:
             clone_dir = Path(tmp_dir)
-            clone_remote_recipe(self.url, self.rev, clone_dir)
-            recipe_path = clone_dir / self.path
-            yield recipe_path
+            repo_dir = clone_remote_recipe(self.url, self.rev, clone_dir)
+            recipe_path = repo_dir / Path(self.path).parent
+            yield str(recipe_path)
 
 
 def get_latest_builds(
