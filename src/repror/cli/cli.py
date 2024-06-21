@@ -22,29 +22,15 @@ from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
 from . import check_recipe
+from .utils import pixi_root_cli
 
-from ..internals.commands import pixi_root
 from ..internals.options import global_options
 
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
-
 # Set up logging by reading the LOG_LEVEL environment variable
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
-
-
-def pixi_root_cli():
-    """Get the pixi root otherwise use the current directory."""
-    root_folder = pixi_root()
-    if root_folder is None:
-        root_folder = Path.cwd()
-        print(
-            "[bold yellow]No PIXI_PROJECT_ROOT found, using current directory, "
-            "file operations might fail[/bold yellow]"
-        )
-    return root_folder
-
 
 @app.callback()
 def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
@@ -145,8 +131,10 @@ def generate_html(
     update_remote: Annotated[Optional[bool], typer.Option()] = None,
     remote_branch: Annotated[Optional[str], typer.Option()] = None,
 ):
-    """Rewrite the README.md file with updated statistics"""
-    html.rerender_html(update_remote or False)
+    """Generate the HTML file with the statistics of the reproducible builds."""
+    html.rerender_html(
+        root_folder=pixi_root_cli(), update_remote=update_remote or False
+    )
 
 
 @app.command()
