@@ -6,7 +6,6 @@ from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
 
-# from repror.internals.config import Recipe
 from repror.internals.db import Build, BuildState, Rebuild, Recipe, RemoteRecipe
 from repror.internals.rattler_build import get_rattler_build
 from repror.internals.commands import (

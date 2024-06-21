@@ -1,6 +1,5 @@
 import platform
 
-# from repror.internals.config import Recipe
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.db import get_latest_build_with_rebuild, Recipe
 from rich.table import Table
