@@ -53,7 +53,41 @@ To see if the project is setup correctly, run the following command:
 ```bash
 # Build/Rebuild the boltons package
 pixi r reproduce boltons
+# .. rattler-build output ..
+# ...🕒🕒🕒🕒🕒
+# ... a while later ...
+Done: 'boltons'
+Verifying if rebuilds are reproducible...
+                                       Build Info
+┏━━━━━━━━━━┳━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Platform ┃ Version ┃ Rattler Build Hash                                               ┃
+┡━━━━━━━━━━╇━━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ darwin   │ 22.3.0  │ 1c47eafc2fbd6bc6d8d629b40c4d2950e7de35a3f26712dd5d4eeba26dd33aba │
+└──────────┴─────────┴──────────────────────────────────────────────────────────────────┘
+ Is the Recipe Repro?
+┏━━━━━━━━━┳━━━━━━━━━━━┓
+┃ Name    ┃ Is Repro? ┃
+┡━━━━━━━━━╇━━━━━━━━━━━┩
+│ boltons │ Yes       │
+└─────────┴───────────┘
+# Serve the html page
+pixi r serve-html
+✨ Pixi task (serve-html in html): livereload -d ./docs.local/
+[I 240621 16:46:23 server:335] Serving on http://127.0.0.1:35729
+[I 240621 16:46:23 server:335] Serving on http://127.0.0.1:35729
+[I 240621 16:46:23 handlers:62] Start watching changes
+[I 240621 16:46:23 handlers:62] Start watching changes
+[I 240621 16:46:23 handlers:64] Start detecting changes
+[I 240621 16:46:23 handlers:64] Start detecting changes
+[I 240621 16:46:47 web:2348] 200 GET / (127.0.0.1) 11.97ms
+[I 240621 16:46:47 web:2348] 200 GET / (127.0.0.1) 11.97ms
+[I 240621 16:46:47 web:2348] 304 GET /livereload.js?port=35729 (127.0.0.1) 3.05ms
+[I 240621 16:46:47 web:2348] 304 GET /livereload.js?port=35729 (127.0.0.1) 3.05ms
+^C[I 240621 16:46:52 server:358] Shutting down...
+[I 240621 16:46:52 server:358] Shutting down...
 ```
+
+You can now view the html page at http://127.0.1.:35729. Changes to this page will automatically be picked up.
 
 ### Configuration
 #### Config.yaml (what recipes to build) ⚙️
