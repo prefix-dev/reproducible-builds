@@ -23,9 +23,9 @@
                 
                 <div class="bg-white p-4 rounded shadow border border-gray-300">
                     <h3 class="text-lg font-semibold">windows</h3>
-                    <p>Total Builds: 68</p>
+                    <p>Total Builds: 62</p>
                     <p>Reproducible Builds: 21</p>
-                    <p>Reproducibility: 30.88%</p>
+                    <p>Reproducibility: 33.87%</p>
                 </div>
                 
                 
@@ -68,38 +68,46 @@
                 <tbody>
                     
                     <tr class="bg-red-100">
-                        <td class="py-2 px-4 border-b">ca-certificates</td>
-                        <td class="py-2 px-4 border-b">BuildState.FAIL</td>
-                        <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
-                        <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
-                        </td> -->
-                    </tr>
-                    
-                    <tr class="bg-red-100">
                         <td class="py-2 px-4 border-b">contourpy</td>
                         <td class="py-2 px-4 border-b">BuildState.FAIL</td>
                         <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
+                        <td class="py-2 px-4 border-b"><pre> │ Traceback (most recent call last):
+ │ │   File "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpwxsD1t\\conda_build_script.py", line 1, in <module>
+ │ │     import contourpy
+ │ │ ModuleNotFoundError: No module named 'contourpy'
+ │ │
+ │ ╰─────────────────── (took 16 seconds)
+ │
+ ╰─────────────────── (took 45 seconds)
+ × error Error building package: failed to run test: Script failed with status Some(1).
+ × error Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpwxsD1t"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × failed to run test: Script failed with status Some(1).
+  │ Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpwxsD1t"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre></td>
+                        <td class="py-2 px-4 border-b">2024-06-21 14:28:03</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9615026674">url to github actions run</a></td>
                         <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
-                        </td> -->
-                    </tr>
-                    
-                    <tr class="bg-red-100">
-                        <td class="py-2 px-4 border-b">font-ttf-source-code-pro</td>
-                        <td class="py-2 px-4 border-b">BuildState.FAIL</td>
-                        <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
-                        <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs(' │ Traceback (most recent call last):
+ │ │   File "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpwxsD1t\\conda_build_script.py", line 1, in <module>
+ │ │     import contourpy
+ │ │ ModuleNotFoundError: No module named 'contourpy'
+ │ │
+ │ ╰─────────────────── (took 16 seconds)
+ │
+ ╰─────────────────── (took 45 seconds)
+ × error Error building package: failed to run test: Script failed with status Some(1).
+ × error Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpwxsD1t"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × failed to run test: Script failed with status Some(1).
+  │ Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpwxsD1t"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+')">View Logs</button>
                         </td> -->
                     </tr>
                     
@@ -107,59 +115,43 @@
                         <td class="py-2 px-4 border-b">freetype</td>
                         <td class="py-2 px-4 border-b">BuildState.FAIL</td>
                         <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
+                        <td class="py-2 px-4 border-b"><pre>× error Error building package: Failed to download source from url: error sending request for url (https://download.savannah.gnu.org/releases/freetype/freetype-
+ × error 2.12.1.tar.gz)
+Error:   × Failed to download source from url: error sending request for url
+  │ (https://download.savannah.gnu.org/releases/freetype/freetype-
+  │ 2.12.1.tar.gz)
+  ├─▶ error sending request for url (https://download.savannah.gnu.org/
+  │   releases/freetype/freetype-2.12.1.tar.gz)
+  ├─▶ client error (Connect)
+  ├─▶ tcp connect error: A connection attempt failed because the connected
+  │   party did not properly respond after a period of time, or established
+  │   connection failed because connected host has failed to respond. (os
+  │   error 10060)
+  ╰─▶ A connection attempt failed because the connected party did not properly
+      respond after a period of time, or established connection failed because
+      connected host has failed to respond. (os error 10060)
+
+</pre></td>
+                        <td class="py-2 px-4 border-b">2024-06-21 14:28:03</td>
+                        <td class="py-2 px-4 border-b"><a href="https://github.com/nichmor/reproducible-builds/actions/runs/9615026674">url to github actions run</a></td>
                         <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
-                        </td> -->
-                    </tr>
-                    
-                    <tr class="bg-red-100">
-                        <td class="py-2 px-4 border-b">lerc</td>
-                        <td class="py-2 px-4 border-b">BuildState.FAIL</td>
-                        <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
-                        <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
-                        </td> -->
-                    </tr>
-                    
-                    <tr class="bg-red-100">
-                        <td class="py-2 px-4 border-b">libopus</td>
-                        <td class="py-2 px-4 border-b">BuildState.FAIL</td>
-                        <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
-                        <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
-                        </td> -->
-                    </tr>
-                    
-                    <tr class="bg-red-100">
-                        <td class="py-2 px-4 border-b">libsodium</td>
-                        <td class="py-2 px-4 border-b">BuildState.FAIL</td>
-                        <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
-                        <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
-                        </td> -->
-                    </tr>
-                    
-                    <tr class="bg-red-100">
-                        <td class="py-2 px-4 border-b">zlib-split</td>
-                        <td class="py-2 px-4 border-b">BuildState.FAIL</td>
-                        <td class="py-2 px-4 border-b">N/A</td>
-                        <td class="py-2 px-4 border-b"><pre>None</pre></td>
-                        <td class="py-2 px-4 border-b">2024-06-21 11:39:24</td>
-                        <td class="py-2 px-4 border-b"><a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9612693619">url to github actions run</a></td>
-                        <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('× error Error building package: Failed to download source from url: error sending request for url (https://download.savannah.gnu.org/releases/freetype/freetype-
+ × error 2.12.1.tar.gz)
+Error:   × Failed to download source from url: error sending request for url
+  │ (https://download.savannah.gnu.org/releases/freetype/freetype-
+  │ 2.12.1.tar.gz)
+  ├─▶ error sending request for url (https://download.savannah.gnu.org/
+  │   releases/freetype/freetype-2.12.1.tar.gz)
+  ├─▶ client error (Connect)
+  ├─▶ tcp connect error: A connection attempt failed because the connected
+  │   party did not properly respond after a period of time, or established
+  │   connection failed because connected host has failed to respond. (os
+  │   error 10060)
+  ╰─▶ A connection attempt failed because the connected party did not properly
+      respond after a period of time, or established connection failed because
+      connected host has failed to respond. (os error 10060)
+
+')">View Logs</button>
                         </td> -->
                     </tr>
                     
