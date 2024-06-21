@@ -66,6 +66,14 @@ repositories:
   recipes:
   - path: examples/rich/recipe.yaml
   - path: examples/curl/recipe.yaml
+  - path: examples/bitfurnace/recipe.yaml
+  - path: examples/cargo-edit/recipe.yaml
+  - path: examples/linking/recipe.yaml
+  - path: examples/mamba/recipe.yaml
+  - path: examples/match_and_cdt/recipe.yaml
+  - path: examples/rattler-build/recipe.yaml
+  - path: examples/ros-humble-turtlebot4-msgs/recipe.yaml
+  - path: examples/xtensor/recipe.yaml
   url: https://github.com/prefix-dev/rattler-build.git
 - branch: main
   recipes:
