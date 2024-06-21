@@ -30,6 +30,7 @@ from ..internals.options import global_options
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 
 
+# Set up logging by reading the LOG_LEVEL environment variable
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
 
 
