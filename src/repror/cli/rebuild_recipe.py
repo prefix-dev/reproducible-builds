@@ -2,6 +2,7 @@ from pathlib import Path
 import platform
 from typing import Optional
 
+from repror.cli.utils import rebuild_to_table
 from repror.internals.build import BuildInfo, RebuildResult, Recipe, _rebuild_package
 from repror.internals.db import (
     Build,
@@ -75,13 +76,20 @@ def rebuild_recipe(
             print("Found latest rebuild. Skipping rebuilding it again")
             continue
         rebuild_result = rebuild_package(latest_build, recipe, tmp_dir, build_info)
-        print(f"{rebuild_result.rebuild}")
+        print(rebuild_to_table(rebuild_result.rebuild))
+
+
+        failure = rebuild_result.failed
         if actions_url:
             rebuild_result.rebuild.actions_url = actions_url
         if patch:
             save_patch(rebuild_result.rebuild)
+
+        # We need to save the rebuild result to the database
+        # even though we are using patches because we might invoke
+        # the process again before the patch being applied
         save(rebuild_result.rebuild)
 
-        if rebuild_result.exception:
-            raise rebuild_result.exception
+        if failure:
+            raise ValueError(f"Rebuild failed for {recipe.name}")
         print(f"[bold green]Done: '{recipe.name}' [/bold green]")

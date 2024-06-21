@@ -33,33 +33,33 @@ class StreamType(Enum):
 
 def run_streaming_command(
     command: list[str],
-    cwd: Optional[list[str]],
+    cwd: Optional[list[str]] = None,
     env: Optional[list[str]] = None,
     stream_type: StreamType = StreamType.STDERR,
-):
+) -> int:
     """Run a specific command and stream the output."""
 
     # We can only capture of stdout or stderr, not both
     # Otherwise it will block
     # See: https://stackoverflow.com/questions/18421757/live-output-from-subprocess-command
-
     if stream_type.is_stderr:
         kwargs = {"stderr": subprocess.PIPE}
     else:
         kwargs = {"stdout": subprocess.PIPE}
 
-    with subprocess.Popen(command, cwd=cwd, env=env, **kwargs) as process:
-        # Print stderr as it comes in
-        for line in io.TextIOWrapper(
-            process.stderr, encoding="utf-8"
-        ):  # or another encoding
-            print(line, end="")
+    with subprocess.Popen(args=command, cwd=cwd, env=env, **kwargs) as process:
+        main_stream, other_stream = (process.stderr, process.stdout) if stream_type.is_stderr else (process.stdout, process.stderr)
+        if main_stream:
+            # Print stderr or stdout as it comes in
+            for line in io.TextIOWrapper(
+                main_stream, encoding="utf-8"
+            ):  # or another encoding
+                print(line, end="")
 
         # Also print the other output if there is any
-
-        out = process.stdout if stream_type.is_stderr else process.stderr
-        if out:
-            print(process.stdout.readline())
+        if other_stream:
+            print(other_stream.readline())
+    return process.returncode
 
 
 def calculate_hash(conda_file: Path):

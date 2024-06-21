@@ -3,6 +3,8 @@ import shutil
 from typing import Optional
 import platform
 from pathlib import Path
+
+from repror.cli.utils import build_to_table
 from repror.internals.build import (
     BuildInfo,
     BuildResult,
@@ -118,15 +120,19 @@ def build_recipes(
     print(table)
     for recipe, tmp_dir, build_dir, build_info in to_build:
         build_result = _build_recipe(recipe, tmp_dir, build_dir, build_info)
-        print(f"{build_result.build}")
+        print(build_to_table(build_result.build))
 
         if actions_url:
             build_result.build.actions_url = actions_url
 
+        failure = build_result.failed
         if patch:
-            print(f"Saving patch for {build_result.build}")
+            print(f"Saving patch for {build_result.build.recipe_name}")
             save_patch(build_result.build)
 
+        # We need to save the rebuild result to the database
+        # even though we are using patches because we might invoke
+        # the process again before the patch being applied
         save(build_result.build)
-        if build_result.exception:
-            raise build_result.exception
+        if failure:
+            raise ValueError(f"Build failed for {recipe.name}")
