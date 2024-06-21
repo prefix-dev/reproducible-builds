@@ -1,12 +1,12 @@
 import json
-from repror.internals import conf
+from repror.internals import config
 
 
 def generate_recipes():
     """Generate list of recipes from the configuration file."""
     # Prepare the matrix
 
-    all_recipes = conf.load_all_recipes()
+    all_recipes = config.load_all_recipes()
 
     recipe_list = [recipe.name for recipe in all_recipes]
 

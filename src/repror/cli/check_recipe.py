@@ -1,7 +1,8 @@
 import platform
-from repror.internals.conf import Recipe
+
+# from repror.internals.config import Recipe
 from repror.internals.rattler_build import rattler_build_hash
-from repror.internals.db import get_latest_build_with_rebuild
+from repror.internals.db import get_latest_build_with_rebuild, Recipe
 from rich.table import Table
 from repror.internals.print import print
 
@@ -21,11 +22,7 @@ def check(
 
     status = {}
 
-    recipes_to_find = []
-    for recipe in recipes:
-        recipe_name = recipe.name
-        recipe_hash = recipe.content_hash()
-        recipes_to_find.append((recipe_name, recipe_hash))
+    recipes_to_find = [(recipe.name, recipe.content_hash) for recipe in recipes]
 
     latest_build_and_rebuild = get_latest_build_with_rebuild(
         recipes_to_find,

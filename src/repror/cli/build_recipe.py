@@ -6,11 +6,10 @@ from pathlib import Path
 from repror.internals.build import (
     BuildInfo,
     BuildResult,
-    build_local_recipe,
-    build_remote_recipe,
+    build_recipe,
 )
-from repror.internals.conf import Recipe, load_all_recipes
-from repror.internals.db import get_latest_builds, save
+from repror.internals.config import load_all_recipes
+from repror.internals.db import get_latest_builds, save, Recipe, RemoteRecipe
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
 from repror.internals.patcher import save_patch
@@ -18,7 +17,7 @@ from rich.table import Table
 from rich import print
 
 
-def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:
+def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe | RemoteRecipe]:
     """
     Get recipes objects for the given names. If no names are given, return all recipes
     """
@@ -42,25 +41,18 @@ def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe]:
 
 
 def _build_recipe(
-    recipe: Recipe, tmp_dir: Path, build_dir: Path, build_info: BuildInfo
+    recipe: Recipe | RemoteRecipe, tmp_dir: Path, build_dir: Path, build_info: BuildInfo
 ) -> BuildResult:
-    cloned_prefix_dir = Path(tmp_dir) / "cloned"
-
     # make output dir per package
     package_output_dir = build_dir / recipe.name
     if package_output_dir.exists():
         shutil.rmtree(package_output_dir)
 
-    if recipe.is_local():
-        return build_local_recipe(recipe, package_output_dir, build_info)
-    else:
-        return build_remote_recipe(
-            recipe, package_output_dir, cloned_prefix_dir, build_info
-        )
+    return build_recipe(recipe, package_output_dir, build_info)
 
 
 def build_recipes(
-    recipes: list[Recipe],
+    recipes: list[Recipe | RemoteRecipe],
     tmp_dir: Path,
     force: bool = False,
     patch: bool = False,
@@ -80,12 +72,8 @@ def build_recipes(
     to_build = []
 
     recipe_status: list[tuple[str, BuildStatus]] = []
-    recipes_to_find = []
 
-    for recipe in recipes:
-        recipe_name = recipe.name
-        recipe_hash = recipe.content_hash()
-        recipes_to_find.append((recipe_name, recipe_hash))
+    recipes_to_find = [(recipe.name, recipe.content_hash) for recipe in recipes]
 
     latest_builds = get_latest_builds(
         recipes_to_find,

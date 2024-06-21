@@ -11,6 +11,7 @@ from repror.internals.git import (
     fetch_changes,
 )
 from repror.internals.rattler_build import build_rattler
+from repror.internals.config import ConfigYaml
 from rich.panel import Panel
 
 
@@ -22,16 +23,14 @@ class SetupRattlerBuild(str, Enum):
     Built = "Built version"
 
 
-def setup_rattler_build(
-    rattler_build_config: dict, root_folder: Path
-) -> SetupRattlerBuild:
+def setup_rattler_build(config: ConfigYaml, root_folder: Path) -> SetupRattlerBuild:
     """
     Setup a local rattler-build environment
     this is used when using a custom rattler-build version
     """
 
     # read the rattler-build configuration from the configuration file
-    rattler_build_config = rattler_build_config.get("rattler-build", {})
+    rattler_build_config = config.rattler_build
     if not rattler_build_config:
         print(
             Panel(
@@ -44,8 +43,8 @@ def setup_rattler_build(
         return SetupRattlerBuild.Pixi
 
     # Branch and url of the rattler-build repository
-    url = rattler_build_config["url"]
-    revision = rattler_build_config["rev"]
+    url = rattler_build_config.url
+    revision = rattler_build_config.rev
 
     # Check the hash of rattler_build_hash if it is the same skip the
     # clone and build

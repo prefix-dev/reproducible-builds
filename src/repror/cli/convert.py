@@ -6,7 +6,7 @@ import tempfile
 import shutil
 from typing import Optional, Annotated
 
-from repror.internals import conf
+from repror.internals import config as project_config
 from repror.internals import git
 
 
@@ -76,8 +76,8 @@ def process_packages(package_names: list[str], save: bool) -> int:
 
     saved = 0
     base_dest_dir = os.getcwd()
-    config = conf.load_config()
-    all_existing_paths = {recipe["path"] for recipe in config["local"]}
+    config = project_config.load_config()
+    all_existing_paths = {recipe["path"] for recipe in config.local}
     for package_name in track(package_names, description="Converting packages"):
         print(f"[green bold]Processing package: {package_name}[/green bold]")
 
@@ -120,11 +120,11 @@ def process_packages(package_names: list[str], save: bool) -> int:
             # Get the relative path
             rel_path = os.path.relpath(recipe_path, base_dest_dir)
             if rel_path not in all_existing_paths:
-                config["local"].append({"path": rel_path})
+                config.local.append(project_config.LocalRecipe(path=rel_path))
 
     # Update the configuration file
     if save:
-        conf.save_config(config)
+        project_config.save_config(config)
 
     return saved
 
@@ -146,7 +146,95 @@ def run(
     """
     Convert the feedstock meta.yaml to recipe.yaml using conda-recipe-manager (crm) convert.
     """
-    package_names = package_names or ["libblas", "liblapack", "libcblas", "libsqlite", "libopenblas", "libcxx", "libssh2", "ncurses", "readline", "tk", "bzip2", "brotlipy", "pyyaml", "tornado", "icu", "libiconv", "psutil", "libedit", "c-ares", "libwebp-base", "numpy", "libev", "ruamel.yaml", "fonttools", "libjpeg-turbo", "libxml2", "gettext", "libbrotlienc", "libbrotlicommon", "libbrotlidec", "brotli-bin", "unicodedata2", "grpcio", "libsodium", "h5py", "argon2-cffi-bindings", "expat", "zeromq", "pandoc", "libxcb", "xorg-libxau", "xorg-libxdmcp", "markupsafe", "hdf5", "zstd", "python", "libglib", "fontconfig", "matplotlib-base", "yaml", "gmp", "libprotobuf", "snappy", "liblapacke", "protobuf", "giflib", "libdeflate", "aiohttp", "cairo", "frozenlist", "pyzmq", "lz4-c", "lame", "matplotlib", "openblas", "wrapt", "arrow-cpp", "pycosat", "pyarrow", "libopus", "aom", "libidn2", "blas", "blas-devel", "scipy", "libxslt", "libtasn1", "openh264", "gnutls", "libunistring", "statsmodels", "boost-cpp", "nettle", "contourpy", "mpfr", "libllvm14", "x264"]
+    package_names = package_names or [
+        "libblas",
+        "liblapack",
+        "libcblas",
+        "libsqlite",
+        "libopenblas",
+        "libcxx",
+        "libssh2",
+        "ncurses",
+        "readline",
+        "tk",
+        "bzip2",
+        "brotlipy",
+        "pyyaml",
+        "tornado",
+        "icu",
+        "libiconv",
+        "psutil",
+        "libedit",
+        "c-ares",
+        "libwebp-base",
+        "numpy",
+        "libev",
+        "ruamel.yaml",
+        "fonttools",
+        "libjpeg-turbo",
+        "libxml2",
+        "gettext",
+        "libbrotlienc",
+        "libbrotlicommon",
+        "libbrotlidec",
+        "brotli-bin",
+        "unicodedata2",
+        "grpcio",
+        "libsodium",
+        "h5py",
+        "argon2-cffi-bindings",
+        "expat",
+        "zeromq",
+        "pandoc",
+        "libxcb",
+        "xorg-libxau",
+        "xorg-libxdmcp",
+        "markupsafe",
+        "hdf5",
+        "zstd",
+        "python",
+        "libglib",
+        "fontconfig",
+        "matplotlib-base",
+        "yaml",
+        "gmp",
+        "libprotobuf",
+        "snappy",
+        "liblapacke",
+        "protobuf",
+        "giflib",
+        "libdeflate",
+        "aiohttp",
+        "cairo",
+        "frozenlist",
+        "pyzmq",
+        "lz4-c",
+        "lame",
+        "matplotlib",
+        "openblas",
+        "wrapt",
+        "arrow-cpp",
+        "pycosat",
+        "pyarrow",
+        "libopus",
+        "aom",
+        "libidn2",
+        "blas",
+        "blas-devel",
+        "scipy",
+        "libxslt",
+        "libtasn1",
+        "openh264",
+        "gnutls",
+        "libunistring",
+        "statsmodels",
+        "boost-cpp",
+        "nettle",
+        "contourpy",
+        "mpfr",
+        "libllvm14",
+        "x264",
+    ]
     saved = process_packages(package_names, save)
     if saved > 0:
         print(f"[green]Successfully saved {saved} new[/green] :scroll:")

@@ -1,9 +1,13 @@
+from contextlib import contextmanager
 from datetime import datetime
 from enum import Enum
 import hashlib
 import logging
 import os
+from pathlib import Path
+import tempfile
 from typing import Optional
+from pydantic import BaseModel
 from sqlalchemy import func, text
 from typing import Sequence
 from sqlalchemy.orm import sessionmaker
@@ -27,7 +31,7 @@ logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 engine = None
 # Create a session class that binds to SQLModelSession
-__Session = sessionmaker(class_=SqlModelSession)
+__Session = sessionmaker(class_=SqlModelSession, expire_on_commit=False)
 
 # Name of the production database
 PROD_DB = "repro.db"
@@ -48,7 +52,7 @@ class BuildState(str, Enum):
 def create_db_and_tables():
     """Create the database and tables, if they don't exist."""
     __set_engine()
-    assert engine # This should not fail
+    assert engine  # This should not fail
     SQLModel.metadata.create_all(engine)
 
 
@@ -77,7 +81,9 @@ def setup_engine(in_memory: bool = False):
         sqlite_url = f"sqlite:///{sqlite_file_name}"
         engine = create_engine(sqlite_url, echo=False)
 
-    __Session.configure(bind=engine)
+    __Session.configure(
+        bind=engine,
+    )
     create_db_and_tables()
 
 
@@ -136,6 +142,32 @@ class Rebuild(SQLModel, table=True):
     @property
     def recipe_name(self):
         return self.build.recipe_name
+
+
+class Recipe(BaseModel):
+    name: str
+    path: str
+    raw_config: str
+    content_hash: str
+
+    @property
+    @contextmanager
+    def local_path(self):
+        yield self.path
+
+
+class RemoteRecipe(Recipe, SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    url: str
+    rev: str
+
+    @property
+    @contextmanager
+    def local_path(self):
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            recipe_file = Path(tmp_dir / f"{self.name}.yaml")
+            recipe_file.write_text(self.raw_config, encoding="utf8")
+            yield recipe_file
 
 
 def get_latest_builds(
@@ -224,8 +256,8 @@ def get_latest_build_with_rebuild(
         }
 
 
-# Function to save the new build or rebuild in the database
-def save(build: Build | Rebuild):
+# Function to save the build, rebuild or recipe in the database
+def save(build: Build | Rebuild | Recipe):
     with get_session() as session:
         session.add(build)
         session.commit()
@@ -248,3 +280,18 @@ def get_rebuild_data() -> Sequence[Build]:
 
         [build.rebuilds for build in latest_builds]
         return latest_builds
+
+
+# Function to query the database and return recipe data
+def get_recipe(url: str, path: str | Path, rev: str) -> RemoteRecipe:
+    path = str(path)
+    with get_session() as session:
+        # Subquery to get the latest build per platform
+        recipe_query = (
+            select(RemoteRecipe)
+            .where(RemoteRecipe.url == url)
+            .where(RemoteRecipe.path == path)
+            .where(RemoteRecipe.rev == rev)
+        )
+
+        return session.exec(recipe_query).first()

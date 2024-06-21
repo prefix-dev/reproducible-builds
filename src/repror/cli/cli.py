@@ -1,6 +1,7 @@
 import os
 import platform
 import tempfile
+import logging
 from pathlib import Path
 from typing import Annotated, Optional
 
@@ -9,7 +10,7 @@ import typer
 from rich.spinner import Spinner
 from rich.live import Live
 
-from repror.internals.conf import load_config
+from repror.internals.config import load_config
 from repror.internals.print import print
 from repror.internals import build_metadata_to_sql
 
@@ -27,6 +28,9 @@ from ..internals.options import global_options
 
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
+
+
+logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
 
 
 def pixi_root_cli():
@@ -78,9 +82,7 @@ def _check_local_rattler_build():
     spinner = Spinner(spinner_type, "Setting up rattler build...")
     with Live(spinner) as live:
         config = load_config()
-        outcome = setup.setup_rattler_build(
-            rattler_build_config=config, root_folder=pixi_root_cli()
-        )
+        outcome = setup.setup_rattler_build(config=config, root_folder=pixi_root_cli())
         live.update(live_update_message.format(outcome=outcome))
 
 
@@ -93,7 +95,7 @@ def build_recipe(
     run_rebuild: Annotated[bool, typer.Option("--rebuild")] = False,
     actions_url: Annotated[Optional[str], typer.Option()] = None,
 ):
-    """Build recipe from a string in the form of url::branch::path."""
+    """Build recipe for specified recipe name."""
     with tempfile.TemporaryDirectory() as tmp_dir:
         if not rattler_build_exe:
             _check_local_rattler_build()

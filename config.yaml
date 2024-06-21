@@ -62,12 +62,13 @@ rattler-build:
   rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
   url: https://github.com/prefix-dev/rattler-build.git
 repositories:
-- branch: main
+- rev: 9cd4895abf7c4850605784e1e417d0df642803b1
   recipes:
   - path: examples/rich/recipe.yaml
   - path: examples/curl/recipe.yaml
   url: https://github.com/prefix-dev/rattler-build.git
-- branch: main
+
+- rev: f9500fe929aee1f01d88136b783e67030d07d611
   recipes:
   - path: bottom/recipe.yaml
   - path: cargo-insta/recipe.yaml
