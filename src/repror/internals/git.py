@@ -8,7 +8,7 @@ import subprocess
 from typing import Optional
 
 import requests
-from .commands import run_command
+from .commands import StreamType, run_command, run_streaming_command
 
 from dotenv import load_dotenv
 
@@ -115,7 +115,9 @@ github_api = GithubAPI()
 
 def clone_repo(repo_url, clone_dir) -> CompletedProcess:
     """Simple git clone command."""
-    return run_command(["git", "clone", repo_url, str(clone_dir)], silent=True)
+    return run_streaming_command(
+        ["git", "clone", repo_url, str(clone_dir)], stream_type=StreamType.STDOUT
+    )
 
 
 def fetch_changes(clone_dir: Path) -> CompletedProcess:
