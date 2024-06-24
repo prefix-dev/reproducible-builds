@@ -1,5 +1,6 @@
 from functools import lru_cache
 from pathlib import Path
+import tempfile
 from typing import Optional
 import yaml
 from pydantic import BaseModel, Field
@@ -61,9 +62,10 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
                 logger.debug(
                     f"Recipe {recipe.path} not found in the database, adding it"
                 )
-                remote_config, raw_config = load_remote_recipe_config(
-                    repo.url, repo.rev, recipe.path
-                )
+                with tempfile.TemporaryDirectory() as clone_dir:
+                    remote_config, raw_config = load_remote_recipe_config(
+                        repo.url, repo.rev, recipe.path, Path(clone_dir)
+                    )
                 recipe_name = get_recipe_name(remote_config)
                 recipe_hash = get_content_hash(raw_config)
                 stored_recipe = RemoteRecipe(

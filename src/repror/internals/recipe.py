@@ -1,7 +1,5 @@
 import hashlib
 from pathlib import Path
-import tempfile
-from typing import Optional
 
 import yaml
 from repror.internals import git
@@ -21,15 +19,11 @@ def clone_remote_recipe(url: str, rev: str, clone_dir: Path) -> Path:
 
 
 def load_remote_recipe_config(
-    url: str, rev: str, path: str, clone_dir: Optional[Path] = None
+    url: str, rev: str, path: str, clone_dir: Path
 ) -> tuple[dict, str]:
-    if not clone_dir:
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            clone_dir = Path(tmp_dir)
+    cloned_recipe = clone_remote_recipe(url, rev, clone_dir)
 
-    clone_remote_recipe(url, rev, clone_dir)
-
-    recipe_path = clone_dir / path
+    recipe_path = cloned_recipe / path
     config = load_recipe_config(recipe_path)
 
     raw_config = recipe_path.read_text(encoding="utf8")

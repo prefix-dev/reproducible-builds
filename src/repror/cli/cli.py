@@ -32,6 +32,7 @@ app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
 # Set up logging by reading the LOG_LEVEL environment variable
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
 
+
 @app.callback()
 def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
     """
