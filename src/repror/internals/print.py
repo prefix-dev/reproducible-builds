@@ -1,8 +1,10 @@
+import logging
 import re
 import platform
 
 from rich import print as rich_print
 from typing import Any, IO, Optional
+from .options import global_options
 
 
 def strip_emojis(text: str) -> str:
@@ -52,6 +54,10 @@ def print(
     file: Optional[IO[str]] = None,
     flush: bool = False,
 ) -> None:
+    if global_options.no_output:
+        logging.debug("Disabled output")
+        return
+
     if platform.system() == "Windows":
         return rich_print(
             strip_emojis(*objects), sep=sep, end=end, file=file, flush=flush
