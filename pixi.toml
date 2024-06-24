@@ -37,7 +37,7 @@ rebuild-recipe-skip = "repror --skip-setup-rattler-build rebuild-recipe"
 # Convert a meta.yaml to a recipe.yaml
 convert-recipe = "convert-conda-recipe"
 # Run tests
-test = "pytest tests/"
+test = "pytest tests"
 
 
 [feature.html.dependencies]
