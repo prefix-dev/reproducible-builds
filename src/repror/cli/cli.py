@@ -34,13 +34,18 @@ logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
 
 
 @app.callback()
-def main(skip_setup_rattler_build: bool = False, in_memory_sql: bool = False):
+def main(
+    skip_setup_rattler_build: bool = False,
+    in_memory_sql: bool = False,
+    no_output: bool = False,
+):
     """
     \bRepror is a tool to:
     - Build/rebuild packages using conda build
     - Manage a local rattler-build environment for custom builds
     - Rewrite the reproducible-builds README.md file with update statistics
     """
+    global_options.no_output = True
     if skip_setup_rattler_build:
         print("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
         global_options.skip_setup_rattler_build = True
