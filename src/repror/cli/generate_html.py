@@ -85,7 +85,11 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
     index_html_path.parent.mkdir(exist_ok=True)
     index_html_path.write_text(html_content)
 
-    panel = Panel(f"Generated {index_html_path}.\n Run [bold]pixi r serve-html[/bold] to view", title="Success", style="green")
+    panel = Panel(
+        f"Generated {index_html_path}.\n Run [bold]pixi r serve-html[/bold] to view",
+        title="Success",
+        style="green",
+    )
     print(panel)
     if update_remote:
         # Update the index.html using GitHub API
