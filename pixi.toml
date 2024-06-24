@@ -9,14 +9,16 @@ platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 [tasks]
 # Rewrite the html with the updated data
 generate-html = { cmd = "repror generate-html", inputs = [
+    "src/repror/cli/templates/index.html.jinja",
     "repro.local.db",
 ], outputs = [
     "docs.local/index.html",
 ] }
 generate-html-prod = { cmd = "repror generate-html", env = { REPRO_DB_NAME = "repro.db" }, inputs = [
     "repro.db",
+    "src/repror/cli/templates/index.html.jinja",
 ], outputs = [
-    "./docs.local/index.html",
+    "docs.local/index.html",
 ] }
 # Used to generate build matrix for githubgenerate-html = "repror generate-html"
 generate-recipes = "repror --no-output generate-recipes"

@@ -32,6 +32,32 @@ class StatisticData(BaseModel):
         )
 
 
+def get_platform_fa(platform):
+    if platform == "windows":
+        return "fa-brands fa-windows"  # Emoji for Windows
+    elif platform == "darwin":
+        return "fa-brands fa-apple"  # Emoji for macOS
+    elif platform == "linux":
+        return "fa-brands fa-linux"  # Emoji for Linux
+    else:
+        return "fa-solid fa-question"  # Default emoji if platform is unknown
+
+
+def get_build_state_fa(build_state: BuildState):
+    if build_state == BuildState.SUCCESS:
+        return "fa-solid fa-check text-green-600"
+    elif build_state == BuildState.FAIL:
+        return "fa-solid fa-times text-red-600"
+
+
+def platform_fa(platform):
+    return get_platform_fa(platform)
+
+
+def build_state_fa(platform):
+    return get_build_state_fa(platform)
+
+
 def get_docs_dir(root_folder: Path):
     """Get the docs directory path. By default get the local docs directory."""
     docs = os.getenv("REPRO_DOCS_DIR", "docs.local")
@@ -45,6 +71,8 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
     env = Environment(
         loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
     )
+    env.filters["platform_fa"] = platform_fa
+    env.filters["build_state_fa"] = build_state_fa
 
     builds = get_rebuild_data()
 
@@ -77,13 +105,13 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
             )
         )
 
-    template = env.get_template("index.html")
+    template = env.get_template("index.html.jinja")
 
     html_content = template.render(by_platform=by_platform)
     # Save the table to README.md
     index_html_path = docs_folder / Path("index.html")
     index_html_path.parent.mkdir(exist_ok=True)
-    index_html_path.write_text(html_content)
+    index_html_path.write_text(html_content, encoding="utf-8")
 
     panel = Panel(
         f"Generated {index_html_path}.\n Run [bold]pixi r serve-html[/bold] to view",
