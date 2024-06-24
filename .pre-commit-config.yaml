@@ -3,7 +3,7 @@ repos:
       rev: v4.5.0
       hooks:
         -   id: check-yaml
-            exclude: meta.yaml
+            exclude: ^(recipes/)
         -   id: end-of-file-fixer
             exclude: ^(recipes/|docs/)
         -   id: trailing-whitespace

@@ -18,7 +18,7 @@ then
     cat $BUILD_PREFIX/meson_cross_file.txt
 
     $PYTHON -m pip install . -vv --no-build-isolation \
-        --config-settings=setup-args=--cross-file=$BUILD_PREFIX/meson_cross_file.txt
+        --config-settings=setup-args=--cross-file=$BUILD_PREFIX/meson_cross_file.txt -Cbuilddir=.mesonpy-build
 else
-    $PYTHON -m pip install . -vv --no-build-isolation
+    $PYTHON -m pip install . -vv --no-build-isolation -Cbuilddir=.mesonpy-build
 fi

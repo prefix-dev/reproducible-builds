@@ -8,10 +8,10 @@ from pydantic import BaseModel, Field
 # from repror.internals.git import checkout_branch_or_commit, clone_repo
 from repror.internals.db import Recipe as RecipeDB, RemoteRecipe, get_recipe, save
 from repror.internals.recipe import (
-    get_content_hash,
     get_recipe_name,
     load_recipe_config,
     load_remote_recipe_config,
+    recipe_files_hash,
 )
 
 import logging
@@ -67,14 +67,14 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
                         repo.url, repo.rev, recipe.path, Path(clone_dir)
                     )
                 recipe_name = get_recipe_name(remote_config)
-                recipe_hash = get_content_hash(raw_config)
+                recipe_content_hash = recipe_files_hash(Path(recipe.path).parent)
                 stored_recipe = RemoteRecipe(
                     name=recipe_name,
                     url=repo.url,
                     path=str(recipe.path),
                     raw_config=raw_config,
                     rev=repo.rev,
-                    content_hash=recipe_hash,
+                    content_hash=recipe_content_hash,
                 )
                 save(stored_recipe)
             else:
@@ -85,12 +85,12 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
         local_config = load_recipe_config(local.path)
         local_path = Path(local.path)
         recipe_name = get_recipe_name(local_config)
-        recipe_hash = get_content_hash(local_path.read_text(encoding="utf8"))
+        recipe_content_hash = recipe_files_hash(local_path.parent)
         recipe = RecipeDB(
             name=recipe_name,
             path=local.path,
             raw_config=local_path.read_text(encoding="utf8"),
-            content_hash=recipe_hash,
+            content_hash=recipe_content_hash,
         )
         recipes.append(recipe)
 

@@ -10,7 +10,7 @@ def test_build_boltons():
     result = runner.invoke(app, ["--in-memory-sql", "build-recipe", "boltons"])
     assert result.exit_code == 0, result.stdout
     result = runner.invoke(app, ["--in-memory-sql", "build-recipe", "boltons"])
-    assert "Found latest build" in result.stdout
+    assert "Already Built" in result.stdout
 
 
 def test_rebuild_build_boltons():
