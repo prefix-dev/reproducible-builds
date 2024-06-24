@@ -85,7 +85,6 @@ def rebuild_recipe(
         # even though we are using patches because we might invoke
         # the process again before the patch being applied
         save(rebuild_result.rebuild)
-
         if failure:
             raise ValueError(f"Rebuild failed for {recipe.name}")
         print(f"[bold green]Done: '{recipe.name}' [/bold green]")

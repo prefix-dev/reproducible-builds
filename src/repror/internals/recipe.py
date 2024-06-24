@@ -48,9 +48,7 @@ def recipe_files_hash(recipe_folder: Path) -> str:
     total_hash = hashlib.sha256()
     for file in list_recipe_files(recipe_folder):
         if file.is_file():
-            with open(file, "r") as f:
-                content = f.read()
-                total_hash.update(content.encode())
+            total_hash.update(file.read_bytes())
         else:
             total_hash.update(recipe_files_hash(file).encode())
 
