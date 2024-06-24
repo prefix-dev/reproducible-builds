@@ -45,7 +45,7 @@ def main(
     - Manage a local rattler-build environment for custom builds
     - Rewrite the reproducible-builds README.md file with update statistics
     """
-    global_options.no_output = True
+    global_options.no_output = no_output
     if skip_setup_rattler_build:
         print("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
         global_options.skip_setup_rattler_build = True
