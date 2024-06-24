@@ -80,9 +80,6 @@
                     href="https://github.com/prefix-dev/reproducible-builds">Click Here</a>
             </p>
         </section>
-        <div>
-            <canvas id="myChart"></canvas>
-        </div>
 
         <!-- Reproducibility Percentages -->
         <div class="my-6">
@@ -118,6 +115,10 @@
                 </div>
                 {% endfor %}
             </div>
+        </div>
+
+        <div>
+            <canvas id="myChart"></canvas>
         </div>
 
         {% for platform, builds in by_platform.items() %}
