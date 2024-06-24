@@ -185,6 +185,7 @@
 </body>
 
 <script>
+
     const ctx = document.getElementById('myChart');
     const DATA_COUNT = 7;
     const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
@@ -195,15 +196,16 @@
             {
                 label: 'Builds',
                 data: [10, 20],
-                borderColor: 'red',
-                backgroundColor: 'red',
-                fill: false
+                fill: true,
             },
             {
                 label: 'Rebuilds',
                 data: [5, 10],
-                borderColor: 'blue',
-                backgroundColor: 'blue',
+                fill: true,
+            },
+            {
+                label: 'Total Builds',
+                data: [12, 24],
                 fill: false
             },
         ]
@@ -217,7 +219,7 @@
             plugins: {
                 title: {
                     display: true,
-                    text: 'Rebuild Statistics (Linux)',
+                    text: 'Rebuild Statistics',
                     font: {
                         size: 16 // Change this value to the desired font size
                     }
@@ -254,7 +256,7 @@
                     }
                 },
                 y: {
-                    stacked: true,
+                    stacked: false,
                     title: {
                         display: true,
                         text: 'Number of Success(es)',
