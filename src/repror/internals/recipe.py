@@ -41,6 +41,23 @@ def get_content_hash(content: str) -> str:
     return hashlib.sha256(content.encode()).hexdigest()
 
 
+def list_recipe_files(recipe_path: Path) -> list[Path]:
+    return list(recipe_path.rglob("*"))
+
+
+def recipe_files_hash(recipe_folder: Path) -> str:
+    total_hash = hashlib.sha256()
+    for file in list_recipe_files(recipe_folder):
+        if file.is_file():
+            with open(file, "r") as f:
+                content = f.read()
+                total_hash.update(content.encode())
+        else:
+            total_hash.update(recipe_files_hash(file).encode())
+
+    return total_hash.hexdigest()
+
+
 def get_recipe_name(config: dict) -> str:
     if "context" in config:
         if "name" in config["context"]:
