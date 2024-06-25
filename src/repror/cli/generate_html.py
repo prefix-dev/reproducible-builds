@@ -1,4 +1,5 @@
 import os
+import re
 from collections import defaultdict
 from typing import Optional
 
@@ -77,6 +78,11 @@ def get_docs_dir(root_folder: Path):
     return Path(root_folder) / Path(docs)
 
 
+def remove_ansi_codes(text: str) -> str:
+    ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+    return ansi_escape.sub("", text)
+
+
 def rerender_html(root_folder: Path, update_remote: bool = False):
     docs_folder = get_docs_dir(root_folder)
     print(f"Generating into : {docs_folder}")
@@ -97,7 +103,7 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
                     build_state=build.state,
                     recipe_name=build.recipe_name,
                     time=str(build.timestamp),
-                    reason=build.reason,
+                    reason=remove_ansi_codes(build.reason) if build.reason else None,
                     actions_url=build.actions_url,
                 )
             )
@@ -108,7 +114,9 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
                 recipe_name=build.recipe_name,
                 build_state=build.state,
                 rebuild_state=rebuild.state if rebuild else None,
-                reason=rebuild.reason if rebuild else None,
+                reason=remove_ansi_codes(rebuild.reason)
+                if rebuild and rebuild.reason
+                else None,
                 time=str(rebuild.timestamp) if rebuild else str(build.timestamp),
                 equal_hash=build.build_hash == rebuild.rebuild_hash
                 if rebuild

@@ -271,12 +271,12 @@
                         <td class="py-2 px-4">
                             Success
                         </td>
-                        <td class="py-2 px-4" data-timestamp="2024-06-25 12:47:49"></td>
+                        <td class="py-2 px-4" data-timestamp="2024-06-25 14:16:51"></td>
                         <td class="py-2 px-4">
                             <pre></pre>
                         </td>
                         <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9662342317"
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9663618935"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -2775,12 +2775,12 @@
                         <td class="py-2 px-4">
                             Success
                         </td>
-                        <td class="py-2 px-4" data-timestamp="2024-06-25 12:47:49"></td>
+                        <td class="py-2 px-4" data-timestamp="2024-06-25 14:16:51"></td>
                         <td class="py-2 px-4">
                             <pre></pre>
                         </td>
                         <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9662342317"
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9663618935"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -4712,19 +4712,81 @@
                         <td class="py-2 px-4">
                             N/A
                         </td>
-                        <td class="py-2 px-4" data-timestamp="2024-06-25 12:47:49"></td>
+                        <td class="py-2 px-4" data-timestamp="2024-06-25 14:16:51"></td>
                         <td class="py-2 px-4">
-                            <pre></pre>
+                            <pre>────
+  help: expected field `script` to be a list of commands
+Error:   × Parsing: missing field `script`
+    ╭─[34:10]
+ 33 │     tests:
+ 34 │ ╭─▶   - files:
+ 35 │ │         recipe:
+ 36 │ │           - test.c
+ 37 │ │       requirements:
+ 38 │ │         run:
+ 39 │ │           - ${{ compiler('c') }}
+ 40 │ │       script:
+ 41 │ │         - if: unix
+ 42 │ │           then: test -f ${PREFIX}/lib/libgmp.a
+ 43 │ │         - if: osx
+ 44 │ │           then: test -f ${PREFIX}/lib/libgmp.dylib
+ 45 │ │         - if: linux
+ 46 │ │           then: test -f ${PREFIX}/lib/libgmp.so
+ 47 │ │         - if: unix
+ 48 │ │           then: test -f ${PREFIX}/lib/libgmpxx.a
+ 49 │ │         - if: osx
+ 50 │ │           then: test -f ${PREFIX}/lib/libgmpxx.dylib
+ 51 │ │         - if: linux
+ 52 │ │           then: test -f ${PREFIX}/lib/libgmpxx.so
+ 53 │ │   
+ 54 │ ├─▶ about:
+    · ╰──── here
+ 55 │       license: GPL-2.0-or-later OR LGPL-3.0-or-later
+    ╰────
+  help: expected field `script` to be a list of commands
+
+</pre>
                         </td>
                         <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9662342317"
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9663618935"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
                             </a>
                         </td>
                         <!-- <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('None')">View Logs</button>
+                            <button class="bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-700" onclick="viewLogs('────
+  help: expected field `script` to be a list of commands
+Error:   × Parsing: missing field `script`
+    ╭─[34:10]
+ 33 │     tests:
+ 34 │ ╭─▶   - files:
+ 35 │ │         recipe:
+ 36 │ │           - test.c
+ 37 │ │       requirements:
+ 38 │ │         run:
+ 39 │ │           - ${{ compiler('c') }}
+ 40 │ │       script:
+ 41 │ │         - if: unix
+ 42 │ │           then: test -f ${PREFIX}/lib/libgmp.a
+ 43 │ │         - if: osx
+ 44 │ │           then: test -f ${PREFIX}/lib/libgmp.dylib
+ 45 │ │         - if: linux
+ 46 │ │           then: test -f ${PREFIX}/lib/libgmp.so
+ 47 │ │         - if: unix
+ 48 │ │           then: test -f ${PREFIX}/lib/libgmpxx.a
+ 49 │ │         - if: osx
+ 50 │ │           then: test -f ${PREFIX}/lib/libgmpxx.dylib
+ 51 │ │         - if: linux
+ 52 │ │           then: test -f ${PREFIX}/lib/libgmpxx.so
+ 53 │ │   
+ 54 │ ├─▶ about:
+    · ╰──── here
+ 55 │       license: GPL-2.0-or-later OR LGPL-3.0-or-later
+    ╰────
+  help: expected field `script` to be a list of commands
+
+')">View Logs</button>
                         </td> -->
                     </tr>
                     

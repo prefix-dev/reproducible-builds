@@ -117,26 +117,43 @@ def clone_repo(repo_url, clone_dir) -> int:
     """Simple git clone command."""
     return run_streaming_command(
         ["git", "clone", repo_url, str(clone_dir)], stream_type=StreamType.STDOUT
-    )
+    ).return_code
+
+
 
 def clone_no_checkout(repo_url: str, clone_dir: Path) -> int:
     """Clone a repository without checking out the files."""
     return run_streaming_command(
-        ["git", "clone", "--filter=blob:none", "--no-checkout", repo_url, str(clone_dir)], stream_type=StreamType.STDOUT
-    )
+        [
+            "git",
+            "clone",
+            "--filter=blob:none",
+            "--no-checkout",
+            repo_url,
+            str(clone_dir),
+        ],
+        stream_type=StreamType.STDOUT,
+    ).return_code
+
 
 def sparse_checkout_init(clone_dir: Path) -> int:
     """Initialize sparse checkout."""
     return run_streaming_command(
-        ["git", "sparse-checkout", "init", "--cone"], cwd=str(clone_dir), stream_type=StreamType.STDOUT
-    )
+        ["git", "sparse-checkout", "init", "--cone"],
+        cwd=str(clone_dir),
+        stream_type=StreamType.STDOUT,
+    ).return_code
 
 
 def sparse_checkout_set(clone_dir: Path, sparse_path: Path) -> int:
-    """"Sparse checkout the repository."""
+    """ "Sparse checkout the repository."""
     return run_streaming_command(
-        ["git", "sparse-checkout", "set", str(sparse_path)], cwd=str(clone_dir), stream_type=StreamType.STDOUT
-    )
+        ["git", "sparse-checkout", "set", str(sparse_path)],
+        cwd=str(clone_dir),
+        stream_type=StreamType.STDOUT,
+    ).return_code
+
+
 
 def fetch_changes(clone_dir: Path) -> CompletedProcess:
     """Fetch latest changes from remote."""
