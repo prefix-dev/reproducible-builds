@@ -120,6 +120,7 @@ def clone_repo(repo_url, clone_dir) -> int:
     ).return_code
 
 
+
 def clone_no_checkout(repo_url: str, clone_dir: Path) -> int:
     """Clone a repository without checking out the files."""
     return run_streaming_command(
@@ -151,6 +152,7 @@ def sparse_checkout_set(clone_dir: Path, sparse_path: Path) -> int:
         cwd=str(clone_dir),
         stream_type=StreamType.STDOUT,
     ).return_code
+
 
 
 def fetch_changes(clone_dir: Path) -> CompletedProcess:

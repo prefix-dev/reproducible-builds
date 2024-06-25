@@ -14,7 +14,7 @@ from repror.internals.config import load_all_recipes
 from repror.internals.db import get_latest_builds, save, Recipe, RemoteRecipe
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
-from repror.internals.patcher import save_patch
+from repror.internals.patcher import save_patch, save_recipe_patch
 from rich.table import Table
 from rich import print
 
@@ -117,6 +117,8 @@ def build_recipes(
         if patch:
             print(f"Saving patch for {build_result.build.recipe_name}")
             save_patch(build_result.build)
+            if isinstance(recipe, RemoteRecipe):
+                save_recipe_patch(recipe)
 
         # We need to save the rebuild result to the database
         # even though we are using patches because we might invoke

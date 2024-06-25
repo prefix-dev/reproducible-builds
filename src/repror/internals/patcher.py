@@ -6,18 +6,18 @@ from pathlib import Path
 from typing import Any, Literal
 
 
-from repror.internals.db import Build, Rebuild, get_session
+from repror.internals.db import Build, Rebuild, RemoteRecipe, get_session
 
 
 def find_patches(folder_path: str) -> list[Path]:
     """
     Use glob to find all .json files in the folder
     """
-    json_files = glob.glob(os.path.join(folder_path, "*/*/**.json"))
+    json_files = glob.glob(os.path.join(folder_path, "**/*.json"))
     return [Path(file) for file in json_files]
 
 
-def aggregate_patches(
+def aggregate_build_patches(
     folder_path: str,
 ) -> dict[str, dict[Literal["build", "rebuild"], dict]]:
     """
@@ -40,6 +40,21 @@ def aggregate_patches(
     return patches
 
 
+def aggregate_recipe_patches(
+    folder_path: str,
+) -> list[RemoteRecipe]:
+    """
+    Aggregate all found patches, and return list of what should be saved
+    """
+    recipes_patches = list()
+    json_files = find_patches(folder_path)
+
+    for file_path in json_files:
+        recipes_patches.append(RemoteRecipe.model_validate_json(file_path.read_bytes()))
+
+    return recipes_patches
+
+
 def save_patch(model: Build | Rebuild):
     """
     Save the patch to a file
@@ -49,6 +64,17 @@ def save_patch(model: Build | Rebuild):
 
     with open(patch_file, "w") as file:
         file.write(model.model_dump_json())
+
+
+def save_recipe_patch(recipe: RemoteRecipe):
+    """
+    Save the patch to a file
+    """
+    patch_file = f"recipe_info/{recipe.name}/{recipe.__class__.__name__.lower()}.json"
+    os.makedirs(os.path.dirname(patch_file), exist_ok=True)
+
+    with open(patch_file, "w") as file:
+        file.write(recipe.model_dump_json())
 
 
 # Load the patch data
