@@ -5,14 +5,25 @@ import yaml
 from repror.internals import git
 
 
-def clone_remote_recipe(url: str, rev: str, clone_dir: Path) -> Path:
+def clone_remote_recipe(
+    url: str, rev: str, clone_dir: Path, path_to_recipe_folder: Path
+) -> Path:
     repo_dir = clone_dir.joinpath(
         url.replace(".git", "").replace("/", "").replace("https:", "")
     )
 
+    # Clone without big files and no checkout,
+    # so that it is a lot faster
     if not repo_dir.exists():
-        git.clone_repo(url, repo_dir)
+        git.clone_no_checkout(url, repo_dir)
 
+    # Check if we have the sparsely checked out folder
+    # Even if we have the repo, we might not have the folder
+    if not repo_dir.joinpath(path_to_recipe_folder).exists():
+        git.sparse_checkout_init(repo_dir)
+        git.sparse_checkout_set(repo_dir, path_to_recipe_folder)
+
+    # Checkout the commit
     git.checkout_branch_or_commit(repo_dir, rev)
     return repo_dir
 
@@ -20,7 +31,9 @@ def clone_remote_recipe(url: str, rev: str, clone_dir: Path) -> Path:
 def load_remote_recipe_config(
     url: str, rev: str, path: str, clone_dir: Path
 ) -> tuple[dict, str]:
-    cloned_recipe = clone_remote_recipe(url, rev, clone_dir)
+    cloned_recipe = clone_remote_recipe(
+        url, rev, clone_dir, path_to_recipe_folder=Path(path).parent
+    )
 
     recipe_path = cloned_recipe / path
     config = load_recipe_config(recipe_path)

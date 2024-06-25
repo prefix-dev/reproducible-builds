@@ -8,8 +8,8 @@ from repror.internals.patcher import (
 )
 
 
-def metadata_to_db(metadata_dir: str = "build_info", update_remote: bool = False):
-    patches = aggregate_build_patches(metadata_dir)
+def patch_builds_to_db(build_dir: str = "build_info") -> int:
+    patches = aggregate_build_patches(build_dir)
     for recipe_name in patches:
         for platform in patches[recipe_name]:
             if (
@@ -25,11 +25,10 @@ def metadata_to_db(metadata_dir: str = "build_info", update_remote: bool = False
             patch_for_recipe = patches[recipe_name][platform]
             load_patch(patch_for_recipe)
 
-    if update_remote:
-        _update_remote()
+    return len(patches)
 
 
-def recipes_to_db(recipes_dir: str = "recipe_info", update_remote: bool = False):
+def patch_recipes_to_db(recipes_dir: str = "recipe_info") -> int:
     patches = aggregate_recipe_patches(recipes_dir)
     with get_session() as session:
         for recipe_obj in patches:
@@ -45,12 +44,10 @@ def recipes_to_db(recipes_dir: str = "recipe_info", update_remote: bool = False)
                 )
 
         session.commit()
-
-    if update_remote:
-        _update_remote()
+    return len(patches)
 
 
-def _update_remote():
+def write_database_to_remote():
     """Update the remote repro.db file with the new data"""
     print(":running: Updating repro.db")
     with open(PROD_DB, "rb") as repro_db:

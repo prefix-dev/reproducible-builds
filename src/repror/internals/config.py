@@ -55,31 +55,31 @@ def save_config(data: ConfigYaml, config_path: str = "config.yaml"):
 def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | RemoteRecipe]:
     config = load_config(config_path)
     recipes = []
-    for repo in config.repositories:
-        for recipe in repo.recipes:
-            stored_recipe = get_recipe(repo.url, recipe.path, repo.rev)
-            if not stored_recipe:
-                logger.debug(
-                    f"Recipe {recipe.path} not found in the database, adding it"
-                )
-                with tempfile.TemporaryDirectory() as clone_dir:
+    with tempfile.TemporaryDirectory() as clone_dir:
+        for repo in config.repositories:
+            for recipe in repo.recipes:
+                stored_recipe = get_recipe(repo.url, recipe.path, repo.rev)
+                if not stored_recipe:
+                    logger.debug(
+                        f"Recipe {recipe.path} not found in the database, adding it"
+                    )
                     remote_config, raw_config = load_remote_recipe_config(
                         repo.url, repo.rev, recipe.path, Path(clone_dir)
                     )
-                recipe_name = get_recipe_name(remote_config)
-                recipe_content_hash = recipe_files_hash(Path(recipe.path).parent)
-                stored_recipe = RemoteRecipe(
-                    name=recipe_name,
-                    url=repo.url,
-                    path=str(recipe.path),
-                    raw_config=raw_config,
-                    rev=repo.rev,
-                    content_hash=recipe_content_hash,
-                )
-                save(stored_recipe)
-            else:
-                logger.debug(f"Recipe {recipe.path} found in the database")
-            recipes.append(stored_recipe)
+                    recipe_name = get_recipe_name(remote_config)
+                    recipe_content_hash = recipe_files_hash(Path(recipe.path).parent)
+                    stored_recipe = RemoteRecipe(
+                        name=recipe_name,
+                        url=repo.url,
+                        path=str(recipe.path),
+                        raw_config=raw_config,
+                        rev=repo.rev,
+                        content_hash=recipe_content_hash,
+                    )
+                    save(stored_recipe)
+                else:
+                    logger.debug(f"Recipe {recipe.path} found in the database")
+                recipes.append(stored_recipe)
 
     for local in config.local:
         local_config = load_recipe_config(local.path)
