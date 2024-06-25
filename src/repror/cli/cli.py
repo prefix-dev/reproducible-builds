@@ -11,6 +11,7 @@ from rich.spinner import Spinner
 from rich.live import Live
 
 from repror.internals.config import load_config
+from repror.internals.db import get_rebuild_data
 from repror.internals.print import print
 from repror.internals import patch_database
 
@@ -22,7 +23,7 @@ from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
 from . import check_recipe
-from .utils import pixi_root_cli
+from .utils import pixi_root_cli, reproducible_table
 
 from ..internals.options import global_options
 
@@ -162,3 +163,13 @@ def check(recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None)
     """Check if recipe name[s] is reproducible, by verifying it's build and rebuild hash."""
     recipes_to_check = build.recipes_for_names(recipe_names)
     check_recipe.check(recipes_to_check)
+
+
+@app.command()
+def status(
+    platform: Annotated[str, typer.Option()] = platform.system().lower(),
+):
+    """Check status of reproducing builds for your platform."""
+    current_platform = platform.system().lower()
+    builds = get_rebuild_data(current_platform)
+    print(reproducible_table(builds))

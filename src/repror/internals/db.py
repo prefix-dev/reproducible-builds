@@ -169,7 +169,9 @@ class RemoteRecipe(Recipe, SQLModel, table=True):
         with tempfile.TemporaryDirectory() as tmp_dir:
             clone_dir = Path(tmp_dir)
             path_to_recipe_folder = Path(self.path).parent
-            repo_dir = clone_remote_recipe(self.url, self.rev, clone_dir, path_to_recipe_folder)
+            repo_dir = clone_remote_recipe(
+                self.url, self.rev, clone_dir, path_to_recipe_folder
+            )
             recipe_path = repo_dir / path_to_recipe_folder
             yield str(recipe_path)
 
@@ -268,7 +270,7 @@ def save(build: Build | Rebuild | Recipe):
 
 
 # Function to query the database and return rebuild data
-def get_rebuild_data() -> Sequence[Build]:
+def get_rebuild_data(platform: Optional[str] = None) -> Sequence[Build]:
     with get_session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
@@ -277,6 +279,10 @@ def get_rebuild_data() -> Sequence[Build]:
             .group_by(Build.recipe_name)
             .order_by(col(Build.timestamp).desc())
         )
+        if platform:
+            latest_build_subquery = latest_build_subquery.where(
+                Build.platform_name == platform
+            )
 
         # Main query to get the latest builds
         all_group_builds = session.exec(latest_build_subquery).all()

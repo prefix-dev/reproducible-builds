@@ -54,3 +54,22 @@ def rebuild_to_table(rebuild: Rebuild) -> Table:
         rebuild.actions_url,
     )
     return table
+
+
+def reproducible_table(builds: list[Build]) -> Table:
+    """Converts a a list of Build instance to a rich table that shows the reproducibility of the builds"""
+    cols = [
+        "Name",
+        "Platform",
+        "Is Repro",
+    ]
+    table = Table(*cols, title="Are we repro ?")
+
+    for build in builds:
+        rebuild_hash = build.rebuilds[-1].rebuild_hash if build.rebuilds else None
+        is_same = build.build_hash == rebuild_hash if rebuild_hash else False
+        table.add_row(
+            build.recipe_name, build.platform_name, "Yes" if is_same else "No"
+        )
+
+    return table
