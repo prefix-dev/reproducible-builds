@@ -1,3 +1,4 @@
+import platform
 from rich.table import Table
 from ..internals.db import Build, Rebuild
 from ..internals.commands import pixi_root
@@ -73,3 +74,13 @@ def reproducible_table(builds: list[Build]) -> Table:
         )
 
     return table
+
+
+def platform_name() -> str:
+    """Get the platform name."""
+    return platform.system().lower()
+
+
+def platform_version() -> str:
+    """Get the platform version."""
+    return platform.release()

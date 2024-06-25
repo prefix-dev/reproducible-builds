@@ -22,8 +22,7 @@ from . import generate_recipes as generate
 from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
-from . import check_recipe
-from .utils import pixi_root_cli, reproducible_table
+from .utils import pixi_root_cli, platform_name, platform_version, reproducible_table
 
 from ..internals.options import global_options
 
@@ -104,7 +103,8 @@ def build_recipe(
                 recipes_to_build, Path(tmp_dir), force, patch, actions_url
             )
             print("Verifying if rebuilds are reproducible...")
-            check_recipe.check(recipes_to_build)
+            builds = get_rebuild_data(recipe_names, platform_name(), platform_version())
+            print(reproducible_table(builds))
 
 
 @app.command()
@@ -159,17 +159,11 @@ def setup_rattler_build():
 
 
 @app.command()
-def check(recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None):
-    """Check if recipe name[s] is reproducible, by verifying it's build and rebuild hash."""
-    recipes_to_check = build.recipes_for_names(recipe_names)
-    check_recipe.check(recipes_to_check)
-
-
-@app.command()
 def status(
+    recipe_names: Annotated[Optional[list[str]], typer.Argument()] = None,
     platform: Annotated[str, typer.Option()] = platform.system().lower(),
 ):
-    """Check status of reproducing builds for your platform."""
-    current_platform = platform.system().lower()
-    builds = get_rebuild_data(current_platform)
+    """Check if recipe name[s] is reproducible for your platform, by verifying it's build and rebuild hash."""
+    recipe_names = [recipe.name for recipe in build.recipes_for_names(recipe_names)]
+    builds = get_rebuild_data(recipe_names, platform)
     print(reproducible_table(builds))

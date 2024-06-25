@@ -270,7 +270,10 @@ def save(build: Build | Rebuild | Recipe):
 
 
 # Function to query the database and return rebuild data
-def get_rebuild_data(platform: Optional[str] = None) -> Sequence[Build]:
+def get_rebuild_data(
+    recipe_names: Optional[list[str]] = None,
+    platform: Optional[str] = None,
+) -> Sequence[Build]:
     with get_session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
@@ -282,6 +285,11 @@ def get_rebuild_data(platform: Optional[str] = None) -> Sequence[Build]:
         if platform:
             latest_build_subquery = latest_build_subquery.where(
                 Build.platform_name == platform
+            )
+
+        if recipe_names:
+            latest_build_subquery = latest_build_subquery.where(
+                or_(col(Build.recipe_name).in_(recipe_names))
             )
 
         # Main query to get the latest builds
