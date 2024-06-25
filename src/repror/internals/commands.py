@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from typing import Optional
 
 import glob
@@ -31,13 +32,23 @@ class StreamType(Enum):
         return self == StreamType.STDERR
 
 
+@dataclass
+class StreamingCmdOutput:
+    stdout: str
+    stderr: str
+    return_code: int
+
+
 def run_streaming_command(
     command: list[str],
     cwd: Optional[str | bytes | os.PathLike[str] | os.PathLike[bytes]] = None,
     env: Optional[list[str]] = None,
     stream_type: StreamType = StreamType.STDERR,
-) -> int:
+) -> StreamingCmdOutput:
     """Run a specific command and stream the output."""
+
+    # Current stream to capture as a string
+    main_output = io.StringIO()
 
     # We can only capture of stdout or stderr, not both
     # Otherwise it will block
@@ -59,11 +70,26 @@ def run_streaming_command(
                 main_stream, encoding="utf-8"
             ):  # or another encoding
                 print(line, end="")
+                main_output.write(line)
 
         # Also print the other output if there is any
+        other_output = ""
         if other_stream:
-            print(other_stream.readline())
-    return process.returncode
+            other_output = other_output.join(other_stream.readlines())
+            print(other_output)
+
+    if stream_type.is_stderr:
+        return StreamingCmdOutput(
+            stdout=other_output,
+            stderr=main_output.getvalue(),
+            return_code=process.returncode,
+        )
+    else:
+        return StreamingCmdOutput(
+            stdout=main_output.getvalue(),
+            stderr=other_output,
+            return_code=process.returncode,
+        )
 
 
 def calculate_hash(conda_file: Path):

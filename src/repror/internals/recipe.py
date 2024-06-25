@@ -5,7 +5,9 @@ import yaml
 from repror.internals import git
 
 
-def clone_remote_recipe(url: str, rev: str, clone_dir: Path, path_to_recipe_folder: Path) -> Path:
+def clone_remote_recipe(
+    url: str, rev: str, clone_dir: Path, path_to_recipe_folder: Path
+) -> Path:
     repo_dir = clone_dir.joinpath(
         url.replace(".git", "").replace("/", "").replace("https:", "")
     )
@@ -29,7 +31,9 @@ def clone_remote_recipe(url: str, rev: str, clone_dir: Path, path_to_recipe_fold
 def load_remote_recipe_config(
     url: str, rev: str, path: str, clone_dir: Path
 ) -> tuple[dict, str]:
-    cloned_recipe = clone_remote_recipe(url, rev, clone_dir, path_to_recipe_folder=Path(path).parent)
+    cloned_recipe = clone_remote_recipe(
+        url, rev, clone_dir, path_to_recipe_folder=Path(path).parent
+    )
 
     recipe_path = cloned_recipe / path
     config = load_recipe_config(recipe_path)
