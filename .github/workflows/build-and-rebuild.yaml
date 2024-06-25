@@ -208,7 +208,9 @@ jobs:
         with:
           pixi-version: "latest"
 
+      # Cache might be empty
       - uses: actions/download-artifact@v3
+        continue-on-error: true
         with:
           name: build-info
           path: .
@@ -216,14 +218,22 @@ jobs:
       - run: |
           ls -la build_info/
 
-      - name: Merge patches and update database, html and push to remote
+      - name: Merge patches and update database, push to remote
         if: github.ref == 'refs/heads/main'
         run: |
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches --update-remote
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
 
-      - name: Merge patches and update database, html
+      - name: Merge patches and update database
         if: github.ref != 'refs/heads/main'
         run: |
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html
+
+      - name: Generate html and upload to remote
+        if: github.ref == 'refs/heads/main'
+        run: |
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
+
+      - name: Generate html
+        if: github.ref == 'refs/heads/main'
+        run: |
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote

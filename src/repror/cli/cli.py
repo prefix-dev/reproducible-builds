@@ -12,7 +12,7 @@ from rich.live import Live
 
 from repror.internals.config import load_config
 from repror.internals.print import print
-from repror.internals import build_metadata_to_sql
+from repror.internals import patch_database
 
 
 # Different CLI commands
@@ -129,7 +129,15 @@ def rebuild_recipe(
 @app.command()
 def merge_patches(update_remote: Annotated[bool, typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
-    build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
+    num_patches = patch_database.patch_to_db()
+    if num_patches > 0:
+        print(f":red_car: Database patched. {num_patches} patches applied.")
+    else:
+        print(":man_shrugging: No patches to merge.")
+
+    if update_remote and num_patches > 0:
+        print(":globe_with_meridians: Database patches merged to remote database.")
+        patch_database.patch_to_db()
 
 
 @app.command()
