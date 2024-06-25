@@ -130,6 +130,7 @@ def rebuild_recipe(
 def merge_patches(update_remote: Annotated[bool, typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
     build_metadata_to_sql.metadata_to_db(update_remote=update_remote)
+    build_metadata_to_sql.recipes_to_db(update_remote=update_remote)
 
 
 @app.command()
