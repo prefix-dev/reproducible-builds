@@ -215,7 +215,9 @@ jobs:
           name: build-info
           path: .
 
-      - run: |
+      - name: list files
+        continue-on-error: true
+        run: |
           ls -la build_info/
 
       - name: Merge patches and update database, push to remote
