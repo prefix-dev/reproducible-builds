@@ -196,7 +196,7 @@ jobs:
             build_info/
             ci_artifacts/
 
-  patch-db:
+  patch-db-and-generate-html:
     runs-on: ubuntu-latest
     needs: build-and-rebuild-recipes
 
@@ -228,7 +228,7 @@ jobs:
       - name: Merge patches and update database
         if: github.ref != 'refs/heads/main'
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror merge-patches
+          pixi run repror merge-patches
 
       - name: Generate html and upload to remote
         if: github.ref == 'refs/heads/main'
@@ -236,6 +236,6 @@ jobs:
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
 
       - name: Generate html
-        if: github.ref == 'refs/heads/main'
+        if: github.ref != 'refs/heads/main'
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
+          pixi run repror generate-html
