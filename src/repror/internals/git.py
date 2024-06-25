@@ -113,7 +113,7 @@ class GithubAPI:
 github_api = GithubAPI()
 
 
-def clone_repo(repo_url, clone_dir) -> CompletedProcess:
+def clone_repo(repo_url, clone_dir) -> int:
     """Simple git clone command."""
     return run_streaming_command(
         ["git", "clone", repo_url, str(clone_dir)], stream_type=StreamType.STDOUT
