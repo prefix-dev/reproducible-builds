@@ -60,7 +60,6 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
             for recipe in repo.recipes:
                 stored_recipe = get_recipe(repo.url, recipe.path, repo.rev)
                 if not stored_recipe:
-                    print(f"Recipe {recipe.path} not found in the database, adding it")
                     logger.debug(
                         f"Recipe {recipe.path} not found in the database, adding it"
                     )
