@@ -13,6 +13,7 @@ from repror.internals.commands import (
     find_conda_file,
     move_file,
     run_streaming_command,
+    StreamingCmdOutput,
 )
 
 
@@ -55,7 +56,9 @@ class RebuildResult(BaseModel):
         return self.rebuild.state == BuildState.FAIL
 
 
-def build_conda_package(recipe: Recipe | RemoteRecipe, output_dir: Path) -> int:
+def build_conda_package(
+    recipe: Recipe | RemoteRecipe, output_dir: Path
+) -> StreamingCmdOutput:
     rattler_bin = get_rattler_build()
     with recipe.local_path as path:
         build_command = [
@@ -69,7 +72,7 @@ def build_conda_package(recipe: Recipe | RemoteRecipe, output_dir: Path) -> int:
         return run_streaming_command(command=build_command)
 
 
-def rebuild_conda_package(conda_file: Path, output_dir: Path) -> int:
+def rebuild_conda_package(conda_file: Path, output_dir: Path) -> StreamingCmdOutput:
     rattler_bin = get_rattler_build()
 
     re_build_command = [
@@ -95,7 +98,8 @@ def build_recipe(
         output_dir.mkdir(parents=True, exist_ok=True)
 
     # bypass exception on top
-    if build_conda_package(recipe, output_dir) != 0:
+    output = build_conda_package(recipe, output_dir)
+    if output.return_code != 0:
         print(f"Failed to build recipe: {recipe.path}")
         failed_build = Build(
             recipe_name=recipe.name,
@@ -105,9 +109,12 @@ def build_recipe(
             platform_name=build_info.platform,
             platform_version=build_info.platform_version,
             # TODO: capture reason later
-            reason=None,
+            reason=output.stderr[-1000:],
         )
-        return BuildResult(build=failed_build, exception=None)
+        return BuildResult(
+            build=failed_build,
+            exception=None,
+        )
 
     # let's record first hash
     conda_file = find_conda_file(output_dir)
@@ -145,13 +152,14 @@ def _rebuild_package(
         f"ci_artifacts/{build_info.platform}/build/{Path(build.build_loc).name}",
     )
 
-    if rebuild_conda_package(Path(build.build_loc), output_dir) != 0:
+    output = rebuild_conda_package(Path(build.build_loc), output_dir)
+    if output.return_code != 0:
         print(f"Failed to build recipe: {recipe.name}")
         failed_build = Rebuild(
             build_id=build.id,
             state=BuildState.FAIL,
             # Catch this later
-            reason=None,
+            reason=output.stdout[-1000:],
             build=build,
         )
         return RebuildResult(rebuild=failed_build, exception=None)
