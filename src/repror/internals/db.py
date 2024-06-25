@@ -168,8 +168,9 @@ class RemoteRecipe(Recipe, SQLModel, table=True):
     def local_path(self) -> Generator[str, None, None]:
         with tempfile.TemporaryDirectory() as tmp_dir:
             clone_dir = Path(tmp_dir)
-            repo_dir = clone_remote_recipe(self.url, self.rev, clone_dir)
-            recipe_path = repo_dir / Path(self.path).parent
+            path_to_recipe_folder = Path(self.path).parent
+            repo_dir = clone_remote_recipe(self.url, self.rev, clone_dir, path_to_recipe_folder)
+            recipe_path = repo_dir / path_to_recipe_folder
             yield str(recipe_path)
 
 

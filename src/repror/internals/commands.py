@@ -33,7 +33,7 @@ class StreamType(Enum):
 
 def run_streaming_command(
     command: list[str],
-    cwd: Optional[list[str]] = None,
+    cwd: Optional[str | bytes | os.PathLike[str] | os.PathLike[bytes]] = None,
     env: Optional[list[str]] = None,
     stream_type: StreamType = StreamType.STDERR,
 ) -> int:
