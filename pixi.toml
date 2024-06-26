@@ -9,12 +9,14 @@ platforms = ["osx-arm64", "linux-64", "osx-64", "win-64"]
 [tasks]
 # Rewrite the html with the updated data
 generate-html = { cmd = "repror generate-html", inputs = [
+    "src/repror/**",
     "src/repror/cli/templates/index.html.jinja",
     "repro.local.db",
 ], outputs = [
     "docs.local/index.html",
 ] }
 generate-html-prod = { cmd = "repror generate-html", env = { REPRO_DB_NAME = "repro.db" }, inputs = [
+    "src/repror/**",
     "repro.db",
     "src/repror/cli/templates/index.html.jinja",
 ], outputs = [

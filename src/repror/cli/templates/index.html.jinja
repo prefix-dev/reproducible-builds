@@ -120,7 +120,13 @@
         <div>
             <canvas id="myChart"></canvas>
         </div>
-
+        <div class="inline-flex gap-4 border py-3 px-4 bg-gray-50 rounded-xl">
+            <div>Reproducible: <i class="{{ reproducible }}"></i></div>
+            <span>｜</span>
+            <div>Non-reproducible: <i class="{{ non_reproducible }}"></i></div>
+            <span>｜</span>
+            <div>Failure: <i class="{{ failure }}"></i></div>
+        </div>
         {% for platform, builds in by_platform.items() %}
         <div class="max-w-xl min-w-full py-2 mt-2 mb-6 overflow-x-auto" x-show="activeTab === {{loop.index}}">
             <table class="min-w-full bg-white border border-gray-300">
@@ -140,7 +146,7 @@
                     {% for build in builds | sort(attribute='build_state') %}
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
-                            <span class="{{build.build_state | build_state_fa}}"></span>
+                            <span class="{{ build_state_fa(build.build_state, build.rebuild_state) }}"></span>
                             <b>{{ build.recipe_name }}</b>
                         </td>
                         <td class="py-2 px-4">
