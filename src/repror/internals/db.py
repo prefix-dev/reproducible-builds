@@ -347,10 +347,6 @@ def get_total_successful_builds_and_rebuilds(
             )
             .group_by(Build.recipe_name)
         )
-
-        all = session.exec(select_matching_builds).all()
-        print(all)
-
         subquery = select_matching_builds.subquery()
         # Query to get the total number of successful builds
         successful_builds_query = (
