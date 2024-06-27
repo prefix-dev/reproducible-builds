@@ -77,7 +77,7 @@ def process_packages(package_names: list[str], save: bool) -> int:
     saved = 0
     base_dest_dir = os.getcwd()
     config = project_config.load_config()
-    all_existing_paths = {recipe["path"] for recipe in config.local}
+    all_existing_paths = {recipe.path for recipe in config.local}
     for package_name in track(package_names, description="Converting packages"):
         print(f"[green bold]Processing package: {package_name}[/green bold]")
 

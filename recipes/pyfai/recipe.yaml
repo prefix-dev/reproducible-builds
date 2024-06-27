@@ -1,0 +1,124 @@
+context:
+  name: pyfai
+  version: 2024.5.0
+
+recipe:
+  name: ${ pyfai }}-base
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: c75e0c7093e2f35eb9281671f45d36835b1393b8ca7a00511345219cd68fdb65
+
+build:
+  number: 1
+  skip:
+    - "python_impl == \"pypy\""
+  
+
+outputs:
+  - package:
+      name: pyfai-base
+    build:
+      script: build_base
+      python:
+        entry_points:
+        - check_calib = pyFAI.app.check_calib:main
+        - detector2nexus = pyFAI.app.detector2nexus:main
+        - diff_map = pyFAI.app.diff_map:main
+        - diff_tomo = pyFAI.app.diff_tomo:main
+        - eiger-mask = pyFAI.app.eiger_mask:main
+        - MX-calibrate = pyFAI.app.mx_calibrate:main
+        - pyFAI-average = pyFAI.app.average:main
+        - pyFAI-benchmark = pyFAI.app.benchmark:main
+        - pyFAI-calib = pyFAI.app.calib:main
+        - pyFAI-recalib = pyFAI.app.recalib:main
+        - pyFAI-saxs = pyFAI.app.saxs:main
+        - pyFAI-waxs = pyFAI.app.waxs:main
+        - sparsify-Bragg = pyFAI.app.sparsify:main
+        - peakfinder = pyFAI.app.peakfinder:main
+        - pyFAI-calib2 = pyFAI.app.calib2:main
+        - pyFAI-drawmask = pyFAI.app.drawmask:main
+        - pyFAI-diffmap = pyFAI.app.diff_map:main
+        - pyFAI-integrate = pyFAI.app.integrate:main
+    requirements:
+      build: #TODO: put under one if
+        - if: build_platform != target_platform
+          then: python
+        - if: build_platform != target_platform
+          then: cross-python_${{ target_platform }}
+        - if: build_platform != target_platform
+          then: cython
+        - if: build_platform != target_platform
+          then: ninja
+        - if: build_platform != target_platform
+          then: pkg-config
+        - if: build_platform != target_platform
+          then: numpy
+        - ${{ compiler('c') }}
+        # - ${{ stdlib("c") }}
+        - ${{ compiler('cxx') }}
+      host:
+        - python
+        - python-build
+        - pip
+        - meson-python >=0.11
+        - meson >=0.64
+        - ninja
+        - wheel
+        - numpy
+        - cython >=0.29.31
+        - pyproject-metadata >=0.5.0
+        - tomli >=1.0.0
+      run:
+        - python
+        - h5py
+        - fabio
+        - silx-base >=1.1
+        - numexpr
+        - scipy
+        - matplotlib-base
+  - package:
+      name: pyfai
+    build:
+      noarch: generic
+    requirements:
+      run:
+        - ${{ pin_subpackage('pyfai-base', upper_bound="x.x.x.x") }}
+        - matplotlib
+        - silx >=1.1
+        - hdf5plugin
+
+    tests:
+      - python:
+          imports:
+            - pyFAI
+            - pyFAI.test
+            - pyFAI.third_party
+
+
+about:
+  license: MIT
+  license_file: copyright
+  summary: Python implementation of fast azimuthal integration
+  description: |
+    pyFAI is an azimuthal integration library that tries to be fast (as fast
+    as C and even more using OpenCL and GPU). It is based on histogramming of
+    the 2theta/Q positions of each (center of) pixel weighted by the intensity
+    of each pixel, but parallel version uses a SparseMatrix-DenseVector
+    multiplication. Neighboring output bins get also a contribution of pixels
+    next to the border thanks to pixel splitting. Finally pyFAI provides also
+    tools to calibrate the experimental setup using Debye-Scherrer rings of a
+    reference compound.
+  homepage: https://github.com/silx-kit/pyFAI/
+  repository: https://github.com/silx-kit/pyFAI/
+  documentation: http://www.silx.org/doc/pyFAI/latest/
+
+extra:
+  recipe-maintainers:
+    - CJ-Wright
+    - tacaswell
+    - chiahaoliu
+    - tschoonj
+    - kif
+    - t20100

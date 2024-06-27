@@ -1,0 +1,24 @@
+From 388b9fce809300e8da44a56e00a52281d647e077 Mon Sep 17 00:00:00 2001
+From: Gil Forsyth <gil@forsyth.dev>
+Date: Mon, 2 Oct 2023 14:18:16 -0400
+Subject: [PATCH] fix(arrowfs): skip arrow fs test on windows
+
+---
+ tools/pythonpkg/tests/fast/test_filesystem.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/pythonpkg/tests/fast/test_filesystem.py b/tools/pythonpkg/tests/fast/test_filesystem.py
+index 84649f1382..79ef682c85 100644
+--- a/tools/pythonpkg/tests/fast/test_filesystem.py
++++ b/tools/pythonpkg/tests/fast/test_filesystem.py
+@@ -139,6 +139,7 @@ class TestPythonFilesystem:
+         with raises(ModuleNotFoundError):
+             duckdb_cursor.register_filesystem(None)
+ 
++    @mark.skipif(sys.platform.startswith("win"), reason="Untested on windows upstream and fails on conda-forge")
+     @mark.skipif(sys.version_info < (3, 8), reason="ArrowFSWrapper requires python 3.8 or higher")
+     def test_arrow_fs_wrapper(self, tmp_path: Path, duckdb_cursor: DuckDBPyConnection):
+         fs = importorskip('pyarrow.fs')
+-- 
+2.34.1
+

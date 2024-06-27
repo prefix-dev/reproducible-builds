@@ -1,0 +1,25 @@
+From 365171510f0f163f69d348be5343df222d77ecf6 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Wed, 15 Dec 2021 07:32:32 +0100
+Subject: [PATCH 02/13] Fix trio config.h include depth issue
+
+---
+ src/extra/trio/Makefile.win | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/extra/trio/Makefile.win b/src/extra/trio/Makefile.win
+index 5a8abf8..935ba50 100644
+--- a/src/extra/trio/Makefile.win
++++ b/src/extra/trio/Makefile.win
+@@ -2,7 +2,7 @@
+ include ../../gnuwin32/MkRules
+ 
+ # triop.h says this does not work, but useful to debug wchar conversions.
+-trio-CPPFLAGS=-DTRIO_FEATURE_WIDECHAR=1
++trio-CPPFLAGS=-DTRIO_FEATURE_WIDECHAR=1  -I../../include -I.
+ 
+ CPPFLAGS = -I../../include -I../../main
+ 
+-- 
+2.39.3 (Apple Git-146)
+

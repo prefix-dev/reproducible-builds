@@ -1,0 +1,53 @@
+{% set provider = "oauth2-proxy" %}
+{% set goname = "github.com/oauth2-proxy/"+provider.lower() %}
+{% set version = "7.6.0" %}
+
+{% set name = goname.split('/')[-1] %}
+{% set pkg_src = ('src/'+goname).replace("/",os.sep) %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  - folder: {{ pkg_src }}
+    url: https://{{ goname }}/archive/v{{ version }}.tar.gz
+    sha256: 2beac9e817d59b37f2277efefeda68447418355792a60da709a80c278628fcd8
+
+build:
+  number: 0
+  script:
+    - pushd {{ pkg_src }}
+    - GOBIN=$(go env GOBIN)  # [not win]
+    - FOR /F "delims=" %%i IN ('go env GOBIN') DO set "GOBIN=%%i"  # [win]
+    - go build -v -o $GOBIN/{{ name }} .       # [unix]
+    - go build -v -o %GOBIN%\{{ name }}.exe .  # [win]
+
+requirements:
+  build:
+    - {{ compiler('go') }}
+
+test:
+  requires:
+    - m2-bash       # [win]
+    - m2-coreutils  # [win]
+
+  commands:
+    - oauth2-proxy --version
+
+about:
+  home: https://github.com/oauth2-proxy/{{ name }}
+  license: MIT
+  license_file: {{ pkg_src }}/LICENSE
+  summary: A reverse proxy and static file server that provides authentication using Providers (Google, GitHub, and others) to validate accounts by email, domain or group.
+  doc_url: https://oauth2-proxy.github.io/oauth2-proxy/
+  dev_url: https://github.com/oauth2-proxy/{{ name }}
+
+extra:
+  recipe-maintainers:
+    - asford
+    - mxr-conda
+    - rluria14
+    - ndmaxar
+    - oblute
+    - RyanHackney

@@ -1,0 +1,29 @@
+From 4473a2eb84deb2f6509e0ae576a478661a9d3b49 Mon Sep 17 00:00:00 2001
+From: Isuru Fernando <isuruf@gmail.com>
+Date: Tue, 19 Sep 2023 17:28:19 -0500
+Subject: [PATCH] Fix path to TCL/TK
+
+---
+ src/library/tcltk/R/windows/zzz.R | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/library/tcltk/R/windows/zzz.R b/src/library/tcltk/R/windows/zzz.R
+index 87cb0a2d73..4d6626273d 100644
+--- a/src/library/tcltk/R/windows/zzz.R
++++ b/src/library/tcltk/R/windows/zzz.R
+@@ -21,10 +21,10 @@
+ .onLoad <- function(libname, pkgname)
+ {
+     if(!nzchar(tclbin <- Sys.getenv("MY_TCLTK"))) {
+-        tclbin <- file.path(R.home(), "Tcl", "bin")
++        tclbin <- file.path(R.home(), "..", "..", "Library", "bin")
+         if(!file.exists(tclbin))
+             stop("Tcl/Tk support files were not installed", call.=FALSE)
+-        lib <- gsub("\\", "/", file.path(R.home(), "Tcl", "lib"),
++        lib <- gsub("\\", "/", file.path(R.home(), "..", "..", "Library", "lib"),
+                       fixed=TRUE)
+         Sys.setenv(TCLLIBPATH = lib)
+     }
+-- 
+2.42.0
+

@@ -1,0 +1,25 @@
+From 359a6f705c6b4871a69d4ca7c6b2a9a6b688c884 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Sun, 29 Apr 2018 19:30:59 +0100
+Subject: [PATCH 10/13] Allow @rpath in tcltk dylib LC_LOAD_DYLIB command
+
+---
+ src/library/tcltk/R/unix/zzz.R | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/library/tcltk/R/unix/zzz.R b/src/library/tcltk/R/unix/zzz.R
+index 9715367..658cf5c 100644
+--- a/src/library/tcltk/R/unix/zzz.R
++++ b/src/library/tcltk/R/unix/zzz.R
+@@ -46,7 +46,7 @@
+         ind <- grep("^/.*libtk[.0-9]+[.]dylib", loads)
+         if (length(ind)) {
+             this <- loads[ind]
+-            if (!file.exists(this)) {
++            if(!file.exists(this) && !grepl("@rpath",this)) {
+                 ## one issue here is that libtk built from unpatched
+                 ## sources has wrong id, so we report what it is looking for
+                 ## (/opt/R/arm64/lib:/usr/X11R6/lib/libtk8.6.dylib is wrong)
+-- 
+2.39.3 (Apple Git-146)
+
