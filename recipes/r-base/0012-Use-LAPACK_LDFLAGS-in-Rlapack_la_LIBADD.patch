@@ -1,0 +1,25 @@
+From a9df83a1aea2b219a598ff49198ee4ba8e20d5c3 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Sat, 27 Apr 2019 00:36:24 +0100
+Subject: [PATCH 12/13] Use LAPACK_LDFLAGS in Rlapack_la_LIBADD
+
+---
+ src/modules/lapack/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/modules/lapack/Makefile.in b/src/modules/lapack/Makefile.in
+index 0a1c9cb..36007a1 100644
+--- a/src/modules/lapack/Makefile.in
++++ b/src/modules/lapack/Makefile.in
+@@ -61,7 +61,7 @@ Rlapack_la = libRlapack$(R_DYLIB_EXT)
+ ## needed being loaded into R.bin/libR.so, and that need not be the
+ ## case for a static libfortran or if a package is compiled under a
+ ## different compiler.
+-@BUILD_NEW_ACCELERATE_LAPACK_FALSE@Rlapack_la_LIBADD =  $(FLIBS_IN_SO) @DYLIB_UNDEFINED_ALLOWED_FALSE@ $(LIBR)
++@BUILD_NEW_ACCELERATE_LAPACK_FALSE@Rlapack_la_LIBADD =  @LAPACK_LDFLAGS@ $(FLIBS_IN_SO) @DYLIB_UNDEFINED_ALLOWED_FALSE@ $(LIBR)
+ @BUILD_NEW_ACCELERATE_LAPACK_TRUE@Rlapack_la_LIBADD = -framework Accelerate
+ 
+ ALL_CFLAGS = $(ALL_CFLAGS_LO)
+-- 
+2.39.3 (Apple Git-146)
+

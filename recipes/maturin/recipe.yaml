@@ -1,0 +1,70 @@
+
+context:
+  name: maturin
+  version: 1.6.0
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/${{ name[0] }}/${{ name }}/${{ name }}-${{ version }}.tar.gz
+  sha256: b955025c24c8babc808db49e0ff90db8b4b1320dcc16b14eb26132841737230d
+
+build:
+  number: 0
+  skip:
+    - py==27
+  dynamic_linking:
+    missing_dso_allowlist:
+      - if: osx
+        then: /usr/lib/libresolv.9.dylib
+
+requirements:
+  build:
+    - if: build_platform != target_platform
+      then: python
+    - if: build_platform != target_platform
+      then: cross-python_${{ target_platform }}
+    - if: unix
+      then: ${{ compiler('c') }}
+    # - if: unix
+    #   then: ${{ stdlib("c") }}
+    - if: win
+      then: ${{ compiler('m2w64_c') }}
+    - if: win
+      then: ${{ stdlib("m2w64_c") }}
+    - ${{ compiler('rust') }}
+    - if: unix
+      then: openssl
+    - if: unix
+      then: pkg-config
+  host:
+    - pip
+    - setuptools-rust
+    - wheel
+    - python
+    - tomli >=1.1.0
+    - if: unix
+      then: openssl
+  run:
+    - python
+    - tomli >=1.1.0
+
+tests:
+  - script:
+      - maturin --help
+
+about:
+  license: MIT
+  license_file: license-mit
+  summary: Build and publish crates with pyo3, rust-cpython and cffi bindings as well as rust binaries as python packages
+
+
+  homepage: https://github.com/PyO3/maturin
+
+extra:
+  recipe-maintainers:
+    - messense
+    - apcamargo
+    - synapticarbors

@@ -1,0 +1,39 @@
+package:
+  name: r
+  version: {{ r_base }}
+
+build:
+  number: 1007
+  noarch: generic
+
+requirements:
+  host:
+    - r-base
+  run:
+    - r-base
+    - r-recommended
+
+# test to force the test env creation
+# if any dependency is missing the test env creation will fail
+test:
+  commands:
+    - $R -e "library('MASS')"           # [not win]
+    - "\"%R%\" -e \"library('MASS')\""  # [win]
+
+about:
+  home: http://www.r-project.org/
+  license: GPL-3.0-only
+  summary: 'R is a free software environment for statistical computing and graphics.'
+  license_family: GPL3
+  license_file: '{{ environ["PREFIX"] }}/lib/R/share/licenses/GPL-3'
+
+extra:
+  recipe-maintainers:
+    # N.B., this is the master list of users who (aside from conda-forge/core) maintain R packages across conda-forge. Edit with care!
+    - johanneskoester
+    - bgruening
+    - daler
+    - cbrueffer
+    - dbast
+    - dpryan79
+    - mfansler

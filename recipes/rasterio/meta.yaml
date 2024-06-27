@@ -1,0 +1,101 @@
+{% set tests_to_skip = "test_reproject_view" %}
+{% set version = "1.3.10" %}
+
+package:
+  name: rasterio
+  version: {{ version }}
+
+source:
+  url: https://github.com/mapbox/rasterio/archive/{{ version }}.tar.gz
+  sha256: 0da4bea271a7f2ef2c44f528245a4f5c76ec635d075a0bd834300c75924b62c5
+  patches:
+    - gh2704_numpy2.patch
+    - gh2805_numpy2.patch
+    - gh3091_gdal39.patch
+
+build:
+  skip: true  # [py<38 or ppc64le]
+  number: 4
+  entry_points:
+    - rio = rasterio.rio.main:main_group
+
+requirements:
+  build:
+    - python                                 # [build_platform != target_platform]
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+    - cython                                 # [build_platform != target_platform]
+    - numpy                                  # [build_platform != target_platform]
+    - {{ compiler('c') }}
+    - {{ stdlib("c") }}
+    - {{ compiler('cxx') }}
+  host:
+    - python
+    - pip
+    - cython
+    - numpy
+    - libgdal
+    - proj
+  run:
+    - python
+    - setuptools >=0.9.8
+    - libgdal
+    - affine
+    - attrs
+    - certifi
+    - click >=4
+    - cligj >=0.5
+    - importlib-metadata  # [py<310]
+    - snuggs >=1.4.1
+    - click-plugins
+    - proj
+
+test:
+  source_files:
+    - tests
+  requires:
+    - pip
+    # awaiting upstream pytest=8 support
+    - pytest >=2.8.2,<8
+    - pytest-cov >=2.2.0
+    - ipython >=2.0
+    - boto3 >=1.2.4
+    - matplotlib-base
+    - packaging
+    - hypothesis
+    - shapely
+  files:
+    - test_data/test.tif
+  imports:
+    - rasterio
+  commands:
+    - rio --help
+    - rio info {{ RECIPE_DIR }}/test_data/test.tif  # [not win]
+    - rio info {{ RECIPE_DIR }}\\test_data\\test.tif  # [win]
+    # skip linux tests for cross-compiled targets
+    # xylar 2022-Jul-6: disabling test_search_gdal_data_debian and test_decimated_no_use_overview under win.
+    #                   test_decimated_no_use_overview fails because of trying to overwrite an existing file.
+    # akrherz 2023-Feb-26: tests that fail on GDAL 3.6.2, but work on 3.6.0, shrug
+    {% set tests_to_skip = "test_reproject_view" %}
+    {% set tests_to_skip = tests_to_skip + " or test_reproject_nodata" %}
+    {% set tests_to_skip = tests_to_skip + " or test_reproject_nodata_nan" %}
+    {% set tests_to_skip = tests_to_skip + " or test_reproject_dst_nodata_default" %}
+    # unknown numpy 2 segfault
+    {% set tests_to_skip = tests_to_skip + " or test_merge_out_of_range_nodata" %}
+    - $PYTHON -m pytest -v -m "not wheel" -rxXs -k "not ({{ tests_to_skip }})" tests  # [linux and build_platform == target_platform]
+    - $PYTHON -m pytest -v -m "not wheel" -rxXs -k "not ({{ tests_to_skip }})" tests  # [osx]
+    - python -m pytest -v -m "not wheel" -rxXs -k "not (test_search_gdal_data_debian or test_decimated_no_use_overview or test_copyfiles_same_dataset_another_name or {{ tests_to_skip }})" tests  # [win]
+    - pip check
+about:
+  home: https://github.com/rasterio/rasterio
+  license: BSD-3-Clause
+  license_file: LICENSE.txt
+  summary: Rasterio reads and writes geospatial raster datasets
+
+extra:
+  recipe-maintainers:
+    - weiji14
+    - ocefpaf
+    - ceholden
+    - snowman2
+    - xylar
+    - akrherz

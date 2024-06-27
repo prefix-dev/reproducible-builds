@@ -1,0 +1,51 @@
+
+context:
+  name: nomad-driver-podman
+  version: 0.5.2
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/hashicorp/${{ name }}/archive/refs/tags/v${{ version }}.tar.gz
+    sha256: e7e8691198e1ddaedc348545a7abf3325d7e4e805967eacb30111685aec8c5af
+    target_directory: src
+  - url: https://raw.githubusercontent.com/hashicorp/cronexpr/a5b9ff11e6c27ab08e1dfd6ad1fe99179f441d0a/APLv2
+    sha256: cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+    file_name: LICENSE-cronexpr
+
+build:
+  number: 0
+  script:
+    - cd src
+    - go-licenses save . --save_path ../library_licenses --ignore github.com/hashicorp/cronexpr
+    - if: not win
+      then: go build -v -o $PREFIX/bin/nomad-driver-podman
+    - if: win
+      then: go build -v -o %LIBRARY_BIN%\nomad-driver-podman.exe
+    # Clear out cache to avoid file not removable warnings
+    - if: unix
+      then: chmod -R u+w $(go env GOPATH) && rm -r $(go env GOPATH)
+
+requirements:
+  build:
+    - ${{ compiler('go-nocgo') }}
+    - go-licenses
+
+tests:
+  - script:
+      - if: unix
+        then: test -f $PREFIX/bin/nomad-driver-podman
+      - if: win
+        then: if not exist %LIBRARY_BIN%\nomad-driver-podman.exe exit 1
+
+about:
+  license: MPL-2.0
+  summary: Podman driver for Nomad
+  description: A nomad task driver plugin for sandboxing workloads in podman containers
+  homepage: https://github.com/hashicorp/nomad-driver-podman
+
+extra:
+  recipe-maintainers:
+    - xhochy

@@ -1,0 +1,47 @@
+context:
+  version: 0.61.0
+
+package:
+  name: memory_profiler
+  version: ${{ version }}
+
+source:
+  url: https://pypi.io/packages/source/m/memory_profiler/memory_profiler-${{ version }}.tar.gz
+  sha256: 4e5b73d7864a1d1292fb76a03e82a3e78ef934d06828a698d9dada76da2067b0
+
+build:
+  number: 0
+  noarch: python
+  script: python -m pip install . -vv
+  python:
+    entry_points:
+      - mprof = mprof:main
+
+requirements:
+  host:
+    - python >=3.5
+    - pip
+  run:
+    - python >=3.5
+    - psutil
+
+tests:
+  - python:
+      imports:
+        - memory_profiler
+        - mprof
+  - script:
+      - mprof list
+      - python -m memory_profiler --help
+
+about:
+  license: BSD-3-Clause
+  license_file: COPYING
+  summary: A module for monitoring memory usage of a python program
+  homepage: http://pypi.python.org/pypi/memory_profiler
+  repository: https://github.com/pythonprofilers/memory_profiler
+
+extra:
+  recipe-maintainers:
+    - jakirkham
+    - carlodri

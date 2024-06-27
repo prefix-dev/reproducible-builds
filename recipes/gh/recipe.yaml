@@ -1,0 +1,44 @@
+context:
+  name: gh
+  version: 2.52.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/cli/cli/archive/v${{ version }}.tar.gz
+  sha256: 41de39d0f1bcacb454d9b8a46e5b97ff8b8e803cd26d284e553e45bf025325d9
+
+build:
+  number: 0
+  # script:
+  #   env:
+  #     GH_VERSION: v${{ version }}
+
+requirements:
+  build:
+    - ${{ compiler('go-nocgo') }}
+    # - ${{ stdlib("c") }}
+    - if: unix
+      then: make
+
+tests:
+  - script:
+      - gh help
+      - gh version
+
+about:
+  license: Apache-2.0
+  license_file: LICENSE
+  summary: Github CLI.
+  homepage: https://github.com/cli/cli
+  repository: https://github.com/cli/cli
+  documentation: https://cli.github.com/
+
+extra:
+  recipe-maintainers:
+    - mxr-conda
+    - rluria14
+    - oblute
+    - matthiasdiener
