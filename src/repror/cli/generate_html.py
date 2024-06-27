@@ -106,7 +106,7 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
 
         # Do it in the loop so that we do this only once per platform
         # and we dont have to hardcode the platforms
-        if not counts_per_platform.get(build.platform_name):
+        if build.platform_name not in counts_per_platform:
             counts = [get_total_successful_builds_and_rebuilds(build.platform_name, before_time=time) for time in timestamps]
             counts_per_platform[build.platform_name] = {
                 # Total successful builds
