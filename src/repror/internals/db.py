@@ -1,4 +1,5 @@
 from contextlib import contextmanager
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 import hashlib
@@ -17,10 +18,12 @@ from sqlmodel import (
     SQLModel,
     and_,
     create_engine,
+    distinct,
     or_,
     select,
     Session as SqlModelSession,
     col,
+    literal,
 )
 
 from repror.internals.recipe import clone_remote_recipe
@@ -87,6 +90,15 @@ def setup_engine(in_memory: bool = False):
         bind=engine,
     )
     create_db_and_tables()
+
+
+def setup_local_db() -> sessionmaker[SqlModelSession]:
+    """Setup in-mmory database for testing."""
+    engine = create_engine("sqlite:///:memory:", echo=True)
+    session = sessionmaker(class_=SqlModelSession, expire_on_commit=False)
+    session.configure(bind=engine)
+    SQLModel.metadata.create_all(engine)
+    return session
 
 
 def __set_engine() -> None:
@@ -301,3 +313,57 @@ def get_recipe(url: str, path: str | Path, rev: str) -> Optional[RemoteRecipe]:
         )
 
         return session.exec(recipe_query).first()
+
+
+def get_total_unique_recipes(session: Optional[SqlModelSession] = None) -> int:
+    """Query to get the total number of unique recipes"""
+    with get_session() if not session else session as session:
+        return session.exec(select(func.count(distinct(RemoteRecipe.name)))).one()
+
+
+@dataclass
+class SuccessfulBuildsAndRebuilds:
+    builds: int
+    rebuilds: int
+
+
+def get_total_successful_builds_and_rebuilds(
+    before_time: datetime,
+    after_time: Optional[datetime],
+    session: Optional[SqlModelSession] = None,
+) -> SuccessfulBuildsAndRebuilds:
+    """Query to get the total number of successful builds and rebuilds before the given timestamp."""
+    with get_session() if not session else session as session:
+        # Subquery to find the latest build for each unique recipe_name before the given timestamp
+        select_matching_builds = (
+            select(
+                Build.id,
+            )
+            .where(
+                col(Build.timestamp) <= before_time,
+                (col(Build.timestamp) > after_time)
+                if after_time is not None
+                else literal(True),
+            )
+            .group_by(Build.recipe_name)
+        )
+        subquery = select_matching_builds.subquery()
+        # Query to get the total number of successful builds
+        successful_builds_query = (
+            select(func.count(col(Build.id)))
+            .join(subquery, (col(Build.id) == subquery.c.id))
+            .where(Build.state == BuildState.SUCCESS)
+        )
+
+        # Query to get the total number of successful rebuilds for the selected builds
+        successful_rebuilds_query = select(func.count(col(Rebuild.id))).where(
+            col(Rebuild.build_id).in_(select(subquery)),
+            Rebuild.state == BuildState.SUCCESS,
+        )
+
+        # Execute the queries and count the results
+        successful_builds_count = session.exec(successful_builds_query).one()
+        successful_rebuilds_count = session.exec(successful_rebuilds_query).one()
+        return SuccessfulBuildsAndRebuilds(
+            successful_builds_count, successful_rebuilds_count
+        )
