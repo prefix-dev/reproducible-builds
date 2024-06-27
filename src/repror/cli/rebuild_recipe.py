@@ -71,9 +71,7 @@ def rebuild_recipe(
             )
 
         if latest_build.state == BuildState.FAIL:
-            raise ValueError(
-                f"Build failed for recipe {recipe.name}. Cannot rebuild."
-            )
+            raise ValueError(f"Build failed for recipe {recipe.name}. Cannot rebuild.")
 
         if latest_rebuild and not force:
             print("Found latest rebuild. Skipping rebuilding it again")

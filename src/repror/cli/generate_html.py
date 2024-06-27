@@ -1,5 +1,6 @@
 import os
 import re
+from datetime import datetime, timedelta
 from collections import defaultdict
 from typing import Optional
 
@@ -9,7 +10,7 @@ from rich.panel import Panel
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
-from repror.internals.db import BuildState, get_rebuild_data
+from repror.internals.db import BuildState, get_rebuild_data, get_total_successful_builds_and_rebuilds
 from repror.internals.git import github_api
 from repror.internals.print import print
 
@@ -94,9 +95,28 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
 
     builds = get_rebuild_data()
 
+    # Statistics for graph
+    counts_per_platform = {}
+    # Get the last 10 days
+    start = datetime.now() - timedelta(days=9)
+    end_of_day = datetime(start.year, start.month, start.day, 23, 59, 59)
+    timestamps = [end_of_day + timedelta(days=i) for i in range(0, 10)]
     by_platform = defaultdict(list)
-
     for build in builds:
+
+        # Do it in the loop so that we do this only once per platform
+        # and we dont have to hardcode the platforms
+        if build.platform_name not in counts_per_platform:
+            counts = [get_total_successful_builds_and_rebuilds(build.platform_name, before_time=time) for time in timestamps]
+            counts_per_platform[build.platform_name] = {
+                # Total successful builds
+                "builds": [count.builds for count in counts],
+                # Total reproducible builds
+                "rebuilds": [count.rebuilds for count in counts],
+                # Total builds = builds + failed builds
+                "total_builds": [count.total_builds for count in counts]
+            }
+
         if build.state == BuildState.FAIL:
             by_platform[build.platform_name].append(
                 StatisticData(
@@ -129,6 +149,8 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
 
     html_content = template.render(
         by_platform=by_platform,
+        dates=[time.strftime("%Y-%m-%d") for time in timestamps],
+        counts_per_platform=counts_per_platform,
         build_state_fa=build_state_fa,
         reproducible=reproducible,
         failure=failure,

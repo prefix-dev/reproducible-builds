@@ -22,7 +22,7 @@ def seed_data(session: Session):
             state=BuildState.SUCCESS,
             build_tool_hash="hash1",
             recipe_hash="rhash1",
-            platform_name="Platform1",
+            platform_name="windows",
             platform_version="v1",
             build_hash="bh1",
             build_loc="loc1",
@@ -36,7 +36,7 @@ def seed_data(session: Session):
             state=BuildState.SUCCESS,
             build_tool_hash="hash2",
             recipe_hash="rhash2",
-            platform_name="Platform2",
+            platform_name="windows",
             platform_version="v2",
             build_hash="bh2",
             build_loc="loc2",
@@ -50,7 +50,7 @@ def seed_data(session: Session):
             state=BuildState.SUCCESS,
             build_tool_hash="hash3",
             recipe_hash="rhash3",
-            platform_name="Platform3",
+            platform_name="windows",
             platform_version="v3",
             build_hash="bh3",
             build_loc="loc3",
@@ -64,7 +64,21 @@ def seed_data(session: Session):
             state=BuildState.SUCCESS,
             build_tool_hash="hash4",
             recipe_hash="rhash4",
-            platform_name="Platform4",
+            platform_name="windows",
+            platform_version="v4",
+            build_hash="bh4",
+            build_loc="loc4",
+            reason=None,
+            timestamp=timestamp2,
+            actions_url="url4",
+        ),
+        Build(
+            id=5,
+            recipe_name="Recipe4Fail",
+            state=BuildState.FAIL,
+            build_tool_hash="hash4",
+            recipe_hash="rhash4",
+            platform_name="windows",
             platform_version="v4",
             build_hash="bh4",
             build_loc="loc4",
@@ -124,11 +138,15 @@ def test_aggregation():
         # Seed data
         seed_data(session)
         assert timestamp2 > timestamp1
-        result = get_total_successful_builds_and_rebuilds(timestamp1, None, session)
-        assert result.builds == 1, result.rebuilds == 1
-        print(result.builds, result.rebuilds)
         result = get_total_successful_builds_and_rebuilds(
-            timestamp2, timestamp1, session
+            "windows", before_time=timestamp1, session=session
         )
-        print(result.builds, result.rebuilds)
-        assert result.builds == 3, result.rebuilds == 3
+        assert result.builds == 1
+        assert result.rebuilds == 1
+        assert result.total_builds == 1
+        result = get_total_successful_builds_and_rebuilds(
+            "windows", before_time=timestamp2, session=session
+        )
+        assert result.builds == 4
+        assert result.rebuilds == 4
+        assert result.total_builds == 5
