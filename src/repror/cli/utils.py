@@ -1,5 +1,6 @@
 import platform
 from rich.table import Table
+from rich.text import Text
 from ..internals.db import Build, Rebuild
 from ..internals.commands import pixi_root
 from pathlib import Path
@@ -32,7 +33,7 @@ def build_to_table(build: Build) -> Table:
         build.state.value,
         build.build_hash,
         build.build_loc,
-        build.reason,
+        Text.from_ansi(build.reason or ""),
         str(build.timestamp),
         build.actions_url,
     )
@@ -50,7 +51,7 @@ def rebuild_to_table(rebuild: Rebuild) -> Table:
     table = Table(*cols, title=f"Re-build Details ({rebuild.recipe_name})")
     table.add_row(
         rebuild.state.value,
-        rebuild.reason,
+        Text.from_ansi(rebuild.reason or ""),
         str(rebuild.timestamp),
         rebuild.actions_url,
     )

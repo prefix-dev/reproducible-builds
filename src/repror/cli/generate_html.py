@@ -1,4 +1,5 @@
 import os
+import re
 from collections import defaultdict
 from typing import Optional
 
@@ -43,25 +44,43 @@ def get_platform_fa(platform):
         return "fa-solid fa-question"  # Default emoji if platform is unknown
 
 
-def get_build_state_fa(build_state: BuildState):
-    if build_state == BuildState.SUCCESS:
-        return "fa-solid fa-check text-green-600"
+reproducible = "fa-solid fa-thumbs-up text-green-600"
+failure = "fa-solid fa-times text-red-600"
+non_reproducible = "fa-solid fa-thumbs-down text-red-300"
+
+
+def get_build_state_fa(
+    build_state: BuildState, rebuild_state: Optional[BuildState] = None
+):
+    if build_state == BuildState.SUCCESS and (
+        rebuild_state is None or rebuild_state == BuildState.SUCCESS
+    ):
+        return reproducible
     elif build_state == BuildState.FAIL:
-        return "fa-solid fa-times text-red-600"
+        return failure
+    elif build_state == BuildState.SUCCESS and rebuild_state == BuildState.FAIL:
+        return non_reproducible
+    else:
+        return "fa-solid fa-question"
 
 
 def platform_fa(platform):
     return get_platform_fa(platform)
 
 
-def build_state_fa(platform):
-    return get_build_state_fa(platform)
+def build_state_fa(build, rebuild):
+    return get_build_state_fa(build, rebuild)
 
 
 def get_docs_dir(root_folder: Path):
     """Get the docs directory path. By default get the local docs directory."""
     docs = os.getenv("REPRO_DOCS_DIR", "docs.local")
     return Path(root_folder) / Path(docs)
+
+
+def remove_ansi_codes(text: str) -> str:
+    ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+    return ansi_escape.sub("", text)
 
 
 def rerender_html(root_folder: Path, update_remote: bool = False):
@@ -72,7 +91,6 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
         loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
     )
     env.filters["platform_fa"] = platform_fa
-    env.filters["build_state_fa"] = build_state_fa
 
     builds = get_rebuild_data()
 
@@ -85,7 +103,7 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
                     build_state=build.state,
                     recipe_name=build.recipe_name,
                     time=str(build.timestamp),
-                    reason=build.reason,
+                    reason=remove_ansi_codes(build.reason) if build.reason else None,
                     actions_url=build.actions_url,
                 )
             )
@@ -96,7 +114,9 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
                 recipe_name=build.recipe_name,
                 build_state=build.state,
                 rebuild_state=rebuild.state if rebuild else None,
-                reason=rebuild.reason if rebuild else None,
+                reason=remove_ansi_codes(rebuild.reason)
+                if rebuild and rebuild.reason
+                else None,
                 time=str(rebuild.timestamp) if rebuild else str(build.timestamp),
                 equal_hash=build.build_hash == rebuild.rebuild_hash
                 if rebuild
@@ -107,7 +127,13 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
 
     template = env.get_template("index.html.jinja")
 
-    html_content = template.render(by_platform=by_platform)
+    html_content = template.render(
+        by_platform=by_platform,
+        build_state_fa=build_state_fa,
+        reproducible=reproducible,
+        failure=failure,
+        non_reproducible=non_reproducible,
+    )
     # Save the table to README.md
     index_html_path = docs_folder / Path("index.html")
     index_html_path.parent.mkdir(exist_ok=True)

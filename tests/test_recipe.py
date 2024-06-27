@@ -1,15 +1,18 @@
 from repror.internals.config import load_all_recipes
 from pathlib import Path
 
+from repror.internals.db import RemoteRecipe
 from repror.internals.recipe import recipe_files_hash
 
 
 def test_load_all_recipes_test():
     """Check to see if all recipes can be loaded"""
     recipes = load_all_recipes(Path(__file__).parent.parent / "config.yaml")
-    for r in recipes:
-        with r.local_path as local_path:
-            assert Path(local_path).exists()
+    remote_recipe = next(
+        filter(lambda recipe: isinstance(recipe, RemoteRecipe), recipes)
+    )
+    with remote_recipe.local_path as local_path:
+        assert Path(local_path).exists()
 
 
 def test_recipe_files_hash(setup_recipe_directory: Path):

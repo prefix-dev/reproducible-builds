@@ -6,6 +6,7 @@ from repror.cli.utils import rebuild_to_table
 from repror.internals.build import BuildInfo, RebuildResult, Recipe, _rebuild_package
 from repror.internals.db import (
     Build,
+    BuildState,
     get_latest_build_with_rebuild,
     save,
 )
@@ -68,6 +69,9 @@ def rebuild_recipe(
             raise ValueError(
                 f"No build found for recipe {recipe.name}. Cannot rebuild."
             )
+
+        if latest_build.state == BuildState.FAIL:
+            raise ValueError(f"Build failed for recipe {recipe.name}. Cannot rebuild.")
 
         if latest_rebuild and not force:
             print("Found latest rebuild. Skipping rebuilding it again")
