@@ -7,7 +7,7 @@ import logging
 import os
 from pathlib import Path
 import tempfile
-from typing import Generator, Optional
+from typing import Generator, Literal as Lit, Optional
 from pydantic import BaseModel
 from sqlalchemy import func, text
 from typing import Sequence
@@ -23,7 +23,6 @@ from sqlmodel import (
     select,
     Session as SqlModelSession,
     col,
-    literal,
 )
 
 from repror.internals.recipe import clone_remote_recipe
@@ -325,11 +324,12 @@ def get_total_unique_recipes(session: Optional[SqlModelSession] = None) -> int:
 class SuccessfulBuildsAndRebuilds:
     builds: int
     rebuilds: int
+    total_builds: int
 
 
 def get_total_successful_builds_and_rebuilds(
+    platform_name: Lit["linux", "darwin", "windows"] | str,
     before_time: datetime,
-    after_time: Optional[datetime],
     session: Optional[SqlModelSession] = None,
 ) -> SuccessfulBuildsAndRebuilds:
     """Query to get the total number of successful builds and rebuilds before the given timestamp."""
@@ -340,10 +340,8 @@ def get_total_successful_builds_and_rebuilds(
                 Build.id,
             )
             .where(
+                col(Build.platform_name) == platform_name,
                 col(Build.timestamp) <= before_time,
-                (col(Build.timestamp) > after_time)
-                if after_time is not None
-                else literal(True),
             )
             .group_by(Build.recipe_name)
         )
@@ -361,9 +359,12 @@ def get_total_successful_builds_and_rebuilds(
             Rebuild.state == BuildState.SUCCESS,
         )
 
+        total_builds_query = select(func.count(col(Build.id))).join(subquery, (col(Build.id) == subquery.c.id))
+
         # Execute the queries and count the results
         successful_builds_count = session.exec(successful_builds_query).one()
         successful_rebuilds_count = session.exec(successful_rebuilds_query).one()
+        total_builds: int = session.exec(total_builds_query).one()
         return SuccessfulBuildsAndRebuilds(
-            successful_builds_count, successful_rebuilds_count
+            successful_builds_count, successful_rebuilds_count, total_builds=total_builds
         )

@@ -142,7 +142,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for build in builds | sort(attribute='build_state') | sort(attribute="recipe_name") %}
+                    {% for build in builds | sort(attribute='build_state, recipe_name') %}
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="{{ build_state_fa(build.build_state, build.rebuild_state) }}"></span>
@@ -176,33 +176,9 @@
 </body>
 
 <script>
-    const DATA_COUNT = 7;
-    const NUMBER_CFG = { count: DATA_COUNT, min: -100, max: 100 };
-
-    const data = {
-        labels: ['2021-01-01', '2021-01-02'],
-        datasets: [
-            {
-                label: 'Builds',
-                data: [10, 20],
-                fill: true,
-            },
-            {
-                label: 'Rebuilds',
-                data: [5, 10],
-                fill: true,
-            },
-            {
-                label: 'Total Builds',
-                data: [12, 24],
-                fill: false
-            },
-        ]
-    };
 
     const config = {
         type: 'line',
-        data: data,
         options: {
             responsive: true,
             plugins: {
@@ -265,9 +241,41 @@
 
     {% for platform in by_platform.keys() %}
     // Change the title of the chart
-      const config_{{ platform }} = {...config};
-      config.options.plugins.title.text = 'Rebuild Statistics for {{ platform | capitalize }}';
-    const chart_{{ platform }} = new Chart(document.getElementById("chart-{{ platform }}"), config);
+    const data_{{platform}} = {
+        labels: {{ dates | tojson }},
+        datasets: [
+            {
+                label: 'Reproducible',
+                data: {{ counts_per_platform[platform].rebuilds | tojson }},
+                fill: true,
+            },
+            {
+                label: 'Builds',
+                data: {{ counts_per_platform[platform].builds | tojson }},
+                fill: true,
+            },
+            {
+                label: 'Total Recipes',
+                data: {{ counts_per_platform[platform].total_builds | tojson }},
+                fill: false
+            },
+        ]
+    };
+    const config_{{ platform }} = {
+      ...config,
+      options: {
+        ...config.options,
+        plugins: {
+          ...config.options.plugins,
+          title: {
+            ...config.options.plugins.title,
+            text: 'Rebuild Statistics for {{ platform | capitalize }}',
+          },
+        },
+      },
+      data: data_{{platform}},
+    };
+    const chart_{{ platform }} = new Chart(document.getElementById("chart-{{ platform }}"), config_{{ platform }});
     {% endfor %}
 </script>
 
