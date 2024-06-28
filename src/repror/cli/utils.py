@@ -1,4 +1,5 @@
 import platform
+from typing import Sequence
 from rich.table import Table
 from rich.text import Text
 from ..internals.db import Build, Rebuild
@@ -59,7 +60,7 @@ def rebuild_to_table(rebuild: Rebuild) -> Table:
 
 
 def reproducible_table(
-    recipe_names: list[str], builds: list[Build], platform: str
+    recipe_names: list[str], builds: Sequence[Build], platform: str
 ) -> Table:
     """Converts a a list of Build instance to a rich table that shows the reproducibility of the builds"""
     cols = [

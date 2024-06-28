@@ -22,7 +22,7 @@ from . import generate_recipes as generate
 from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
-from .utils import pixi_root_cli, platform_name, platform_version, reproducible_table
+from .utils import pixi_root_cli, platform_name, reproducible_table
 
 from ..internals.options import global_options
 
@@ -103,8 +103,14 @@ def build_recipe(
                 recipes_to_build, Path(tmp_dir), force, patch, actions_url
             )
             print("Verifying if rebuilds are reproducible...")
-            builds = get_rebuild_data(recipe_names, platform_name(), platform_version())
-            print(reproducible_table(builds))
+            builds = get_rebuild_data(recipe_names, platform_name())
+            print(
+                reproducible_table(
+                    [recipe.name for recipe in recipes_to_build],
+                    builds,
+                    platform_name(),
+                )
+            )
 
 
 @app.command()
