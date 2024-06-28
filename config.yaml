@@ -1,110 +1,111 @@
 local:
-- path: recipes/boltons/recipe.yaml
-- path: recipes/fastapi/recipe.yaml
-- path: recipes/pip/recipe.yaml
-- path: recipes/pthread-stubs/recipe.yaml
-- path: recipes/zlib/recipe.yaml
-- path: recipes/ca-certificates/recipe.yaml
-- path: recipes/conda/recipe.yaml
-- path: recipes/setuptools/recipe.yaml
-- path: recipes/pytz/recipe.yaml
-- path: recipes/six/recipe.yaml
-- path: recipes/python-dateutil/recipe.yaml
-- path: recipes/freetype/recipe.yaml
-- path: recipes/xz/recipe.yaml
-- path: recipes/libffi/recipe.yaml
-- path: recipes/_libgcc_mutex/recipe.yaml
-- path: recipes/lerc/recipe.yaml
-- path: recipes/tomli/recipe.yaml
-- path: recipes/pyparsing/recipe.yaml
-- path: recipes/pixman/recipe.yaml
-- path: recipes/fonts-conda-forge/recipe.yaml
-- path: recipes/fonts-conda-ecosystem/recipe.yaml
-- path: recipes/cycler/recipe.yaml
-- path: recipes/font-ttf-source-code-pro/recipe.yaml
-- path: recipes/font-ttf-inconsolata/recipe.yaml
-- path: recipes/font-ttf-ubuntu/recipe.yaml
-- path: recipes/xorg-kbproto/recipe.yaml
-- path: recipes/jpeg/recipe.yaml
-- path: recipes/pcre2/recipe.yaml
-- path: recipes/kiwisolver/recipe.yaml
-- path: recipes/munkres/recipe.yaml
-- path: recipes/toml/recipe.yaml
-- path: recipes/sqlite/recipe.yaml
-- path: recipes/wheel/recipe.yaml
-- path: recipes/tornado/recipe.yaml
-- path: recipes/unicodedata2/recipe.yaml
-- path: recipes/ruamel.yaml/recipe.yaml
-- path: recipes/readline/recipe.yaml
-- path: recipes/pyyaml/recipe.yaml
-- path: recipes/psutil/recipe.yaml
-- path: recipes/pandoc/recipe.yaml
-- path: recipes/nettle/recipe.yaml
-- path: recipes/mpfr/recipe.yaml
-- path: recipes/matplotlib/recipe.yaml
-- path: recipes/markupsafe/recipe.yaml
-- path: recipes/libxslt/recipe.yaml
-- path: recipes/libxml2/recipe.yaml
-- path: recipes/libssh2/recipe.yaml
-- path: recipes/libsodium/recipe.yaml
-- path: recipes/libopus/recipe.yaml
-- path: recipes/libidn2/recipe.yaml
-- path: recipes/libedit/recipe.yaml
-- path: recipes/libdeflate/recipe.yaml
-- path: recipes/gmp/recipe.yaml
-- path: recipes/frozenlist/recipe.yaml
-- path: recipes/fonttools/recipe.yaml
-- path: recipes/contourpy/recipe.yaml
-- path: recipes/brotlipy/recipe.yaml
-- path: recipes/argon2-cffi-bindings/recipe.yaml
-- path: recipes/aom/recipe.yaml
-- path: recipes/vhs/recipe.yaml
-- path: recipes/gocommands/recipe.yaml
-- path: recipes/loki-logcli/recipe.yaml
-- path: recipes/nomad-driver-podman/recipe.yaml
-- path: recipes/oauth2-proxy/recipe.yaml
-- path: recipes/gh/recipe.yaml
-- path: recipes/rasterio/recipe.yaml
-- path: recipes/polars/recipe.yaml
-- path: recipes/maturin/recipe.yaml
-- path: recipes/cython/recipe.yaml
-- path: recipes/jupyterlab/recipe.yaml
-- path: recipes/mold/recipe.yaml
-- path: recipes/python-duckdb/recipe.yaml
-- path: recipes/dartsim/recipe.yaml
-- path: recipes/pyfai/recipe.yaml
-- path: recipes/memory_profiler/recipe.yaml
+  - path: recipes/boltons/recipe.yaml
+  - path: recipes/fastapi/recipe.yaml
+  - path: recipes/pip/recipe.yaml
+  - path: recipes/pthread-stubs/recipe.yaml
+  - path: recipes/zlib/recipe.yaml
+  - path: recipes/ca-certificates/recipe.yaml
+  - path: recipes/conda/recipe.yaml
+  - path: recipes/setuptools/recipe.yaml
+  - path: recipes/pytz/recipe.yaml
+  - path: recipes/six/recipe.yaml
+  - path: recipes/python-dateutil/recipe.yaml
+  - path: recipes/freetype/recipe.yaml
+  - path: recipes/xz/recipe.yaml
+  - path: recipes/libffi/recipe.yaml
+  - path: recipes/_libgcc_mutex/recipe.yaml
+  - path: recipes/lerc/recipe.yaml
+  - path: recipes/tomli/recipe.yaml
+  - path: recipes/pyparsing/recipe.yaml
+  - path: recipes/pixman/recipe.yaml
+  - path: recipes/fonts-conda-forge/recipe.yaml
+  - path: recipes/fonts-conda-ecosystem/recipe.yaml
+  - path: recipes/cycler/recipe.yaml
+  - path: recipes/font-ttf-source-code-pro/recipe.yaml
+  - path: recipes/font-ttf-inconsolata/recipe.yaml
+  - path: recipes/font-ttf-ubuntu/recipe.yaml
+  - path: recipes/xorg-kbproto/recipe.yaml
+  - path: recipes/jpeg/recipe.yaml
+  - path: recipes/pcre2/recipe.yaml
+  - path: recipes/kiwisolver/recipe.yaml
+  - path: recipes/munkres/recipe.yaml
+  - path: recipes/toml/recipe.yaml
+  - path: recipes/sqlite/recipe.yaml
+  - path: recipes/wheel/recipe.yaml
+  - path: recipes/tornado/recipe.yaml
+  - path: recipes/unicodedata2/recipe.yaml
+  - path: recipes/ruamel.yaml/recipe.yaml
+  - path: recipes/readline/recipe.yaml
+  - path: recipes/pyyaml/recipe.yaml
+  - path: recipes/psutil/recipe.yaml
+  - path: recipes/pandoc/recipe.yaml
+  - path: recipes/nettle/recipe.yaml
+  - path: recipes/mpfr/recipe.yaml
+  - path: recipes/matplotlib/recipe.yaml
+  - path: recipes/markupsafe/recipe.yaml
+  - path: recipes/libxslt/recipe.yaml
+  - path: recipes/libxml2/recipe.yaml
+  - path: recipes/libssh2/recipe.yaml
+  - path: recipes/libsodium/recipe.yaml
+  - path: recipes/libopus/recipe.yaml
+  - path: recipes/libidn2/recipe.yaml
+  - path: recipes/libedit/recipe.yaml
+  - path: recipes/libdeflate/recipe.yaml
+  - path: recipes/gmp/recipe.yaml
+  - path: recipes/frozenlist/recipe.yaml
+  - path: recipes/fonttools/recipe.yaml
+  - path: recipes/contourpy/recipe.yaml
+  - path: recipes/brotlipy/recipe.yaml
+  - path: recipes/argon2-cffi-bindings/recipe.yaml
+  - path: recipes/aom/recipe.yaml
+  - path: recipes/vhs/recipe.yaml
+  - path: recipes/gocommands/recipe.yaml
+  - path: recipes/loki-logcli/recipe.yaml
+  - path: recipes/nomad-driver-podman/recipe.yaml
+  - path: recipes/oauth2-proxy/recipe.yaml
+  - path: recipes/gh/recipe.yaml
+  - path: recipes/rasterio/recipe.yaml
+  - path: recipes/polars/recipe.yaml
+  - path: recipes/maturin/recipe.yaml
+  - path: recipes/cython/recipe.yaml
+  - path: recipes/jupyterlab/recipe.yaml
+  - path: recipes/mold/recipe.yaml
+  - path: recipes/python-duckdb/recipe.yaml
+  - path: recipes/dartsim/recipe.yaml
+  - path: recipes/pyfai/recipe.yaml
+  - path: recipes/memory_profiler/recipe.yaml
+  - path: recipes/ruby/recipe.yaml
 rattler-build:
   rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
   url: https://github.com/prefix-dev/rattler-build.git
 repositories:
-- recipes:
-  - path: examples/rich/recipe.yaml
-  - path: examples/curl/recipe.yaml
-  - path: examples/bitfurnace/recipe.yaml
-  - path: examples/cargo-edit/recipe.yaml
-  - path: examples/linking/recipe.yaml
-  - path: examples/mamba/recipe.yaml
-  - path: examples/match_and_cdt/recipe.yaml
-  - path: examples/ros-humble-turtlebot4-msgs/recipe.yaml
-  - path: examples/xtensor/recipe.yaml
-  rev: c609b1d5ea67ebd095c2077d113d07694cf55fdb
-  url: https://github.com/prefix-dev/rattler-build.git
-- recipes:
-  - path: bottom/recipe.yaml
-  - path: cargo-insta/recipe.yaml
-  - path: cargo-sweep/recipe.yaml
-  - path: daktilo/recipe.yaml
-  - path: dua-cli/recipe.yaml
-  - path: gping/recipe.yaml
-  - path: lsd/recipe.yaml
-  - path: repgrep/recipe.yaml
-  - path: tokio-console/recipe.yaml
-  - path: trippy/recipe.yaml
-  - path: tui-journal/recipe.yaml
-  - path: watchexec/recipe.yaml
-  - path: yazi/recipe.yaml
-  - path: zenith/recipe.yaml
-  - path: zoxide/recipe.yaml
-  rev: f9500fe929aee1f01d88136b783e67030d07d611
-  url: https://github.com/wolfv/rust-forge.git
+  - recipes:
+      - path: examples/rich/recipe.yaml
+      - path: examples/curl/recipe.yaml
+      - path: examples/bitfurnace/recipe.yaml
+      - path: examples/cargo-edit/recipe.yaml
+      - path: examples/linking/recipe.yaml
+      - path: examples/mamba/recipe.yaml
+      - path: examples/match_and_cdt/recipe.yaml
+      - path: examples/ros-humble-turtlebot4-msgs/recipe.yaml
+      - path: examples/xtensor/recipe.yaml
+    rev: c609b1d5ea67ebd095c2077d113d07694cf55fdb
+    url: https://github.com/prefix-dev/rattler-build.git
+  - recipes:
+      - path: bottom/recipe.yaml
+      - path: cargo-insta/recipe.yaml
+      - path: cargo-sweep/recipe.yaml
+      - path: daktilo/recipe.yaml
+      - path: dua-cli/recipe.yaml
+      - path: gping/recipe.yaml
+      - path: lsd/recipe.yaml
+      - path: repgrep/recipe.yaml
+      - path: tokio-console/recipe.yaml
+      - path: trippy/recipe.yaml
+      - path: tui-journal/recipe.yaml
+      - path: watchexec/recipe.yaml
+      - path: yazi/recipe.yaml
+      - path: zenith/recipe.yaml
+      - path: zoxide/recipe.yaml
+    rev: f9500fe929aee1f01d88136b783e67030d07d611
+    url: https://github.com/wolfv/rust-forge.git

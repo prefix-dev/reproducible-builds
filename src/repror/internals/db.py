@@ -359,12 +359,16 @@ def get_total_successful_builds_and_rebuilds(
             Rebuild.state == BuildState.SUCCESS,
         )
 
-        total_builds_query = select(func.count(col(Build.id))).join(subquery, (col(Build.id) == subquery.c.id))
+        total_builds_query = select(func.count(col(Build.id))).join(
+            subquery, (col(Build.id) == subquery.c.id)
+        )
 
         # Execute the queries and count the results
         successful_builds_count = session.exec(successful_builds_query).one()
         successful_rebuilds_count = session.exec(successful_rebuilds_query).one()
         total_builds: int = session.exec(total_builds_query).one()
         return SuccessfulBuildsAndRebuilds(
-            successful_builds_count, successful_rebuilds_count, total_builds=total_builds
+            successful_builds_count,
+            successful_rebuilds_count,
+            total_builds=total_builds,
         )

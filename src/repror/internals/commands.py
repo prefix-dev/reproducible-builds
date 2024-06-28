@@ -128,6 +128,22 @@ def move_file(conda_file: Path, destination_directory: Path) -> Path:
     return file_loc
 
 
+def move_files(conda_files: list[str], destination_directory: Path) -> list[Path]:
+    # Make dirs if they don't exist
+    os.makedirs(destination_directory, exist_ok=True)
+    # Get the base filename
+
+    new_locations = []
+    # Move the file to the destination directory
+    for conda_file in conda_files:
+        filename = Path(os.path.basename(conda_file))
+        file_loc = destination_directory / filename
+        shutil.move(conda_file, file_loc)
+        new_locations.append(file_loc)
+
+    return new_locations
+
+
 def pixi_root() -> Optional[Path]:
     """Get the pixi root location"""
     pixi_root = os.environ.get("PIXI_PROJECT_ROOT")

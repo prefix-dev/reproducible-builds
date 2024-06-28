@@ -19,7 +19,7 @@ app = typer.Typer()
 
 
 def checkout_feedstock(
-    package_name: str, dest_recipe_dir: Path, clone_dir: str | bytes, copy: bool
+    package_name: str, dest_recipe_dir: Path, clone_dir: str, copy: bool
 ):
     """
     Check out the feedstock repository for the given package name.
@@ -27,7 +27,7 @@ def checkout_feedstock(
     repo_url = f"https://github.com/conda-forge/{package_name}-feedstock"
     try:
         git.clone_repo(repo_url, clone_dir)
-        recipe_dir = os.path.join(clone_dir, "recipe")
+        recipe_dir = Path(os.path.join(clone_dir, "recipe"))
         if copy:
             print(f"Saving to: {dest_recipe_dir}")
             shutil.copytree(recipe_dir, dest_recipe_dir, dirs_exist_ok=True)
@@ -59,13 +59,11 @@ def apply_crm_convert(
         return captured.stdout
 
 
-def generate_and_save_new_recipe(
-    dest_recipe_dir: Optional[Path], save: bool = False
-) -> bytes:
+def generate_and_save_new_recipe(dest_recipe_dir: Path, save: bool = False) -> bytes:
     """
     Save the new recipe in the specified directory.
     """
-    meta_yaml_path = os.path.join(dest_recipe_dir, "meta.yaml")
+    meta_yaml_path = dest_recipe_dir / "meta.yaml"
     return apply_crm_convert(dest_recipe_dir, meta_yaml_path, save)
 
 
@@ -83,7 +81,7 @@ def process_packages(package_names: list[str], save: bool) -> int:
 
         # Create the destination director
         # If there is no destination directory, we don't save the recipe
-        dest_recipe_dir = os.path.join(base_dest_dir, "recipes", package_name)
+        dest_recipe_dir = Path(os.path.join(base_dest_dir, "recipes", package_name))
         # And output file
         recipe_path = Path(os.path.join(dest_recipe_dir, "recipe.yaml"))
 
