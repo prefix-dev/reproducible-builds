@@ -89,8 +89,8 @@
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% for platform, builds in by_platform.items() %}
-                {% set total_builds = builds|length %}
-                {% set reproducible_builds = builds|selectattr('is_success', 'equalto', True)|list|length %}
+                {% set total_builds = counts_per_platform[platform].total_builds[-1] %}
+                {% set reproducible_builds = counts_per_platform[platform].rebuilds[-1] %}
                 {% set reproducibility_percentage = (reproducible_builds / total_builds) * 100 %}
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
                     :class="{ 'border-blue-600 border-4': activeTab === {{loop.index}}, 'border-gray-300 border-1': activeTab !== {{loop.index}} }"
@@ -99,15 +99,18 @@
                         <span class="{{ platform | platform_fa }}"></span>
                         {{ platform | capitalize }}
                     </h3>
-                    <div class="flex flex-col">
-                        <p>Total Builds: {{ total_builds }}</p>
-                        <p>
-                            Reproducible Builds: {{ reproducible_builds }}
-                        </p>
-                        <p>
-                            Reproducibility: {{ reproducibility_percentage |
-                            round(2) }}%
-                        </p>
+                    <div class="flex flex-col mt-4 ml-2" style="max-width: 60%;">
+                        <div class="flex justify-between">
+                            <p class="flex-shrink-0">Total Builds:</p > <p>{{ total_builds }}</p >
+                        </div >
+                        <div class="flex justify-between">
+                            <p class="flex-shrink-0">Reproducible Builds:</p > <p>{{ reproducible_builds }}
+                        </div>
+                        <div class="flex justify-between">
+                        <p class="flex-shrink-0">
+                            Total Reproducibility:</p> <p>{{ reproducibility_percentage |
+                            round(2) }}%</p>
+                        </div >
                     </div>
                 </div>
                 {% endfor %}
