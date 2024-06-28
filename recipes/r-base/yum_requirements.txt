@@ -1,0 +1,9 @@
+# TODO get rid of this and use xorg package.
+mesa-libGL-devel
+mesa-libGLU-devel
+libX11-devel
+libXt-devel
+libXrender-devel
+libXext-devel
+libXdmcp-devel
+xorg-x11-server-Xvfb

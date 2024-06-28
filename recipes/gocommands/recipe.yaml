@@ -1,0 +1,40 @@
+context:                                                                                                                                   
+  name: gocommands                                                                                                                         
+  version: 0.9.9                                                                                                                           
+                                                                                                                                           
+package:                                                                                                                                   
+  name: ${{ name|lower }}                                                                                                                  
+  version: ${{ version }}                                                                                                                  
+                                                                                                                                           
+source:                                                                                                                                    
+  url: https://github.com/cyverse/gocommands/archive/v${{ version }}.tar.gz                                                                
+  sha256: 56923ef23babdb0d178b37f68f4978699eb206de83b89f683658e621f84e73d0                                                                 
+                                                                                                                                           
+build:                                                                                                                                     
+  number: 0                                                                                                                                
+  skip:                                                                                                                                    
+    - win                                                                                                                                  
+                                                                                                                                           
+requirements:                                                                                                                              
+  build:                                                                                                                                   
+    - ${{ compiler('go-nocgo') }}                                                                                                                
+    - ca-certificates                                                                                                                      
+    - go-licenses                                                                                                                          
+                                                                                                                                           
+                                                                                                                                           
+about:                                                                                                                                     
+  summary: A protable command-line toolkit for iRODS                                                                                       
+  description: |                                                                                                                           
+    gocommands is a portable command-line toolkit for iRODS data management service.                                                       
+    It can run on any systems, including linux, osx, and windows. As it is written in                                                      
+    pure Go language, it has no dependencies.                                                                                              
+  license: BSD-3-Clause                                                                                                                    
+  license_file:                                                                                                                            
+    - LICENSE                                                                                                                              
+    - THIRDPARTY_LICENSES                                                                                                                  
+  homepage: https://github.com/cyverse/gocommands                                                                                          
+  documentation: https://github.com/cyverse/gocommands                                                                                     
+                                                                                                                                           
+extra:                                                                                                                                     
+  recipe-maintainers:                                                                                                                      
+    - iychoi                                                                                                                               

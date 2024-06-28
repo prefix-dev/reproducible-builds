@@ -1,0 +1,91 @@
+
+context:
+  name: dartsim
+  version: 6.14.1
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  - url: https://github.com/dartsim/dart/archive/v${{ version }}.tar.gz
+    sha256: 07bc1442a80abc03b2c1984bdb9b5843446047ac6a37c18b834533c871631fde
+    patches:
+      - disable_gui.patch
+      - disable_test_Issue1596.patch
+
+build:
+  number: 1
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - ${{ compiler('c') }}
+    # - ${{ stdlib("c") }}
+    - cmake
+    - pkg-config
+    - if: not win
+      then: make
+    - if: win
+      then: ninja
+    - if: win
+      then: perl
+  host:
+    - assimp
+    - bullet-cpp
+    - console_bridge
+    - eigen
+    - fcl
+    - flann
+    - libccd-double
+    - libode
+    - lz4-c
+    - octomap
+    - tinyxml2
+    - urdfdom
+    - if: win
+      then: freeglut
+    - fmt
+    - spdlog
+  run:
+    - eigen
+    - flann
+    - lz4-c
+    - octomap
+  run_exports:
+    - ${{ pin_subpackage(name, upper_bound='x.x') }}
+
+tests:
+  - script:
+      - if: osx
+        then: test -f $PREFIX/lib/libdart.dylib
+      - if: linux
+        then: test -f $PREFIX/lib/libdart.so
+      - if: not win
+        then: test -f $PREFIX/share/dart/cmake/dart_collision-odeTargets.cmake
+      - if: not win
+        then: test -f $PREFIX/share/dart/cmake/dart_collision-bulletTargets.cmake
+      - if: win
+        then: if not exist %LIBRARY_LIB%\\dart.lib exit 1
+      - if: win
+        then:
+          - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-odeTargets.cmake
+          - exit 1
+      - if: win
+        then:
+          - if not exist %PREFIX%\\Library\\share\\dart\\cmake\\dart_collision-bulletTargets.cmake
+          - exit 1
+
+about:
+  license: BSD-2-Clause
+  license_file: LICENSE
+  summary: The DART (Dynamic Animation and Robotics Toolkit) library provides data structures and algorithms for kinematic and dynamic applications in robotics and computer animation.
+  description: The DART (Dynamic Animation and Robotics Toolkit) library provides data structures and algorithms for kinematic and dynamic applications in robotics and computer animation.
+  homepage: http://dartsim.github.io/
+  repository: https://github.com/dartsim/dart
+
+extra:
+  recipe-maintainers:
+    - jslee02
+    - traversaro
+    - wolfv

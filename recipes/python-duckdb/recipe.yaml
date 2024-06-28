@@ -1,0 +1,108 @@
+context:
+  name: duckdb
+  version: 1.0.0
+
+recipe:
+  name: python-${{ name|lower }}-split
+  version: ${{ version }}
+
+source:
+  url: https://github.com/duckdb/${{ name }}/archive/v${{ version }}.tar.gz
+  sha256: 04e472e646f5cadd0a3f877a143610674b0d2bcf9f4102203ac3c3d02f1c5f26
+  patches:
+    - 0001-fix-arrowfs-skip-arrow-fs-test-on-windows.patch
+
+build:
+  number: 0
+  # script:
+  #   env:
+  #     SETUPTOOLS_SCM_PRETEND_VERSION: ${{ version }}
+  # script:
+  # env:
+
+outputs:
+  - package:
+      name: python-${{ name|lower }}
+    build:
+      script: 
+      - if: unix
+        then: build-duckdb.sh
+      - if: win
+        then: build-duckdb.bat
+        
+      
+    requirements:
+      build:
+        - if: build_platform != target_platform
+          then: python
+        - if: build_platform != target_platform
+          then: cross-python_${{ target_platform }}
+        - if: build_platform != target_platform
+          then: pybind11 >=2.6
+        - setuptools_scm <7
+        - python
+        - pip
+        - pybind11
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+      host:
+        - pybind11 >=2.6
+        - python
+        - pip
+        - setuptools_scm <7
+      run:
+        - python
+    tests:
+      - python:
+          imports:
+            - duckdb
+          pip_check: true
+      - files:
+          source:
+            - tools/pythonpkg/tests
+        requirements:
+          run:
+            - pip
+            - pytest
+            - mypy
+            - fsspec
+            - google-cloud-storage
+            - pandas
+            - pytest<8
+        script:
+          - if: not (ppc64le or aarch64)
+            then: pytest tools/pythonpkg/tests --ignore=tools/pythonpkg/tests/slow/ --ignore=tools/pythonpkg/tests/stubs/
+  - package:
+      name: ${{ name|lower }}
+    build:
+      skip:
+        - not linux64
+      noarch: generic
+    requirements:
+      run:
+        - ${{ pin_subpackage('python-duckdb', upper_bound="x.x.x") }}
+    tests:
+      - python:
+          imports:
+            - duckdb
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: An Embeddable Analytical Database
+  description: |
+    DuckDB is an embedded database designed to execute analytical SQL queries
+    fast while embedded in another process. It is designed to be easy to
+    install and easy to use.
+  homepage: https://www.duckdb.org/
+  repository: https://github.com/duckdb/duckdb
+  documentation: https://duckdb.org/docs/index.html
+
+extra:
+  recipe-maintainers:
+    - jonashaag
+    - sugatoray
+    - dhirschfeld
+    - xhochy
+    - mariusvniekerk
+    - gforsyth

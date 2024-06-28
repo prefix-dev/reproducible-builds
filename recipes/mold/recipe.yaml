@@ -1,0 +1,44 @@
+context:
+  name: mold
+  version: 2.32.0
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://github.com/rui314/mold/archive/v${{ version }}.tar.gz
+  sha256: 4b7e4146ea0f52be9adae8b417399f3676a041e65b55e3f25f088120d30a320b
+
+build:
+  number: 0
+  skip:
+    - win
+
+requirements:
+  build:
+    - ${{ compiler('cxx') }}
+    - cmake
+    - ninja
+  host:
+    - if: not osx
+      then: mimalloc
+    - if: not osx
+      then: openssl
+    - tbb-devel
+    - zlib
+    - zstd
+
+tests:
+  - script:
+      - mold --version
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: A Modern Linker
+  homepage: https://github.com/rui314/mold
+
+extra:
+  recipe-maintainers:
+    - apmorton

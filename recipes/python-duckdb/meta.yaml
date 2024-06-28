@@ -1,0 +1,91 @@
+{% set name = "duckdb" %}
+{% set version = "1.0.0" %}
+
+package:
+  name: python-{{ name|lower }}-split
+  version: {{ version }}
+
+source:
+  url: https://github.com/duckdb/{{ name }}/archive/v{{ version }}.tar.gz
+  sha256: 04e472e646f5cadd0a3f877a143610674b0d2bcf9f4102203ac3c3d02f1c5f26
+  patches:
+    - 0001-fix-arrowfs-skip-arrow-fs-test-on-windows.patch
+
+build:
+  number: 0
+  script_env:
+    - SETUPTOOLS_SCM_PRETEND_VERSION={{ version }}
+
+outputs:
+  - name: python-{{ name|lower }}
+    script: build-duckdb.sh  # [unix]
+    script: build-duckdb.bat  # [win]
+    requirements:
+      build:
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - pybind11 >=2.6                         # [build_platform != target_platform]
+        - setuptools_scm <7
+        - {{ stdlib('c') }}
+        - {{ compiler('c') }}
+        - {{ compiler('cxx') }}
+      host:
+        - pybind11 >=2.6
+        - python
+        - pip
+        - setuptools_scm <7
+      run:
+        - python
+
+    test:
+      imports:
+        - duckdb
+      requires:
+        - pip
+        - pytest
+        - mypy
+        - fsspec
+        - google-cloud-storage
+        - pandas
+        # Remove again
+        - pytest<8
+      source_files:
+        - tools/pythonpkg/tests
+      commands:
+        - pip check
+        # ppc64le/aarch64 is emulated and fails to run the test suite here
+        # Skip slow tests to avoid memory issues in CI, skip stub tests that is fragile under new version of mypy
+        - pytest tools/pythonpkg/tests --ignore=tools/pythonpkg/tests/slow/ --ignore=tools/pythonpkg/tests/stubs/  # [not (ppc64le or aarch64)]
+  - name: {{ name|lower }}
+    build:
+      noarch: generic
+      skip: true  # [not linux64]
+    requirements:
+      run:
+        - {{ pin_subpackage('python-duckdb', max_pin="x.x.x") }}
+    test:
+      imports:
+        - duckdb
+
+
+about:
+  home: https://www.duckdb.org/
+  license: MIT
+  license_family: MIT
+  license_file: LICENSE
+  summary: An Embeddable Analytical Database
+  description: |
+    DuckDB is an embedded database designed to execute analytical SQL queries
+    fast while embedded in another process. It is designed to be easy to
+    install and easy to use.
+  doc_url: https://duckdb.org/docs/index.html
+  dev_url: https://github.com/duckdb/duckdb
+
+extra:
+  recipe-maintainers:
+    - jonashaag
+    - sugatoray
+    - dhirschfeld
+    - xhochy
+    - mariusvniekerk
+    - gforsyth

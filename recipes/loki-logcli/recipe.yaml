@@ -1,0 +1,45 @@
+
+context:
+  version: 2.9.4
+
+package:
+  name: loki-logcli
+  version: ${{ version }}
+
+source:
+  url: https://github.com/grafana/loki/archive/v${{ version }}.tar.gz
+  sha256: d8d663b3fedbf529a53e9fbf11ddfb899ddaaf253b3b827700ae697c21688b38
+
+build:
+  # Skip Windows build due to open issue regarding `go-licenses` warnings on Windows:
+  # https://github.com/google/go-licenses/issues/255 
+  # skip: true  # [win]
+  number: 1
+  script:
+    # - cd src
+    - go-licenses save ./cmd/logcli --save_path ../library_licenses --ignore github.com/grafana/loki 
+    - cd cmd/logcli
+    - if: not win
+      then: go build -v -o $PREFIX/bin/logcli
+    - if: win
+      then: go install -v .
+    # Clear out cache to avoid file not removable warnings
+    - if: unix
+      then: chmod -R u+w $(go env GOPATH) && rm -r $(go env GOPATH)
+
+requirements:
+  build:
+    - ${{ compiler('go-nocgo') }}
+    - go-licenses
+
+tests:
+  - script:
+    - logcli --version
+
+about:
+  license: AGPL-3.0-only
+
+
+extra:
+  recipe-maintainers:
+    - delsner

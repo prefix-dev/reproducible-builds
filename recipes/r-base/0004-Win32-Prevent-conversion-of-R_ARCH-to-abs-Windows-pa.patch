@@ -1,0 +1,51 @@
+From bda2525c50e23f0f169f1daf8cde387b12f4d079 Mon Sep 17 00:00:00 2001
+From: Ray Donnelly <mingw.android@gmail.com>
+Date: Wed, 15 Dec 2021 07:35:00 +0100
+Subject: [PATCH 04/13] Win32: Prevent conversion of R_ARCH to abs Windows path
+
+---
+ src/main/main.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/src/main/main.c b/src/main/main.c
+index a940dcf..924a4fd 100644
+--- a/src/main/main.c
++++ b/src/main/main.c
+@@ -912,6 +912,34 @@ void setup_Rmainloop(void)
+ 	    snprintf(deferred_warnings[ndeferred_warnings++], 250,
+ 		     "Setting LC_TIME=%.200s failed\n", p);
+ 
++	/* Prevent conversion of R_ARCH to an absolute Windows path
++	   when calling from POSIX (sh.exe) to Windows (R.exe) as
++	   happens in configure.win scripts while building packages
++	   using MSYS2. MSYS2_ENV_CONV_EXCL was added for R initially,
++	   and follows from MSYS2_ARG_CONV_EXCL on which it was modelled.
++	*/
++
++	char MSYS2ECE_equals[1000+strlen("MSYS2_ENV_CONV_EXCL=")];
++	strcpy(MSYS2ECE_equals, "MSYS2_ENV_CONV_EXCL=");
++	char *MSYS2ECE = &MSYS2ECE_equals[strlen("MSYS2_ENV_CONV_EXCL=")];
++	p = getenv("MSYS2_ENV_CONV_EXCL");
++	/* The strstr will match other things that use R_ARCH as a substring
++	   .. let's assume none do. That part isn't strictly necessary. */
++	if (!p || !strstr(p, "R_ARCH")) {
++	    if (!p) {
++		sprintf(MSYS2ECE, "R_ARCH");
++		putenv(MSYS2ECE_equals);
++	    }
++	    else if (strlen(p) + strlen(";R_ARCH") < 1000) {
++		strncpy(MSYS2ECE, p ? p : "", 1000);
++		strcat(MSYS2ECE, ";R_ARCH");
++		MSYS2ECE[1000 - 1] = '\0';
++		putenv(MSYS2ECE_equals);
++	    }
++	    else
++		snprintf(deferred_warnings[ndeferred_warnings++], 250,
++			 "Adding R_ARCH to MSYS2_ENV_CONV_EXCL failed\n");
++	}
+ 	/* We set R_ARCH here: Unix does it in the shell front-end */
+ 	char Rarch[30];
+ 	strcpy(Rarch, "R_ARCH=");
+-- 
+2.39.3 (Apple Git-146)
+

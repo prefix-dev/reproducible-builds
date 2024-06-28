@@ -36,7 +36,7 @@ class RattlerBuildConfig(BaseModel):
 
 class ConfigYaml(BaseModel):
     repositories: list[RemoteRepository]
-    rattler_build: Optional[RattlerBuildConfig] = Field(alias="rattler-build")
+    rattler_build: Optional[RattlerBuildConfig] = Field(alias="rattler-build", serialization_alias="rattler-build")
     local: list[LocalRecipe]
 
 
@@ -48,7 +48,7 @@ def load_config(config_path: str = "config.yaml") -> ConfigYaml:
 
 def save_config(data: ConfigYaml, config_path: str = "config.yaml"):
     with open(config_path, "w", encoding="utf8") as file:
-        data_as_dict = data.model_dump()
+        data_as_dict = data.model_dump(by_alias=True)
         yaml.safe_dump(data_as_dict, file)
 
 
