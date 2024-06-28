@@ -58,20 +58,43 @@ def rebuild_to_table(rebuild: Rebuild) -> Table:
     return table
 
 
-def reproducible_table(builds: list[Build]) -> Table:
+def reproducible_table(
+    recipe_names: list[str], builds: list[Build], platform: str
+) -> Table:
     """Converts a a list of Build instance to a rich table that shows the reproducibility of the builds"""
     cols = [
         "Name",
         "Platform",
         "Is Repro",
     ]
-    table = Table(*cols, title="Are we repro ?")
+    table = Table(
+        *cols, title=f"Are we repro ? Total recipes in our queue: {len(recipe_names)}"
+    )
 
-    for build in builds:
-        rebuild_hash = build.rebuilds[-1].rebuild_hash if build.rebuilds else None
-        is_same = build.build_hash == rebuild_hash if rebuild_hash else False
+    build_map = {build.recipe_name: build for build in builds}
+
+    for name in recipe_names:
+        build_by_name = build_map.get(name)
+        if not build_by_name:
+            table.add_row(name, platform, "Not build yet")
+            continue
+
+        if not build_by_name.rebuilds:
+            table.add_row(
+                build_by_name.recipe_name,
+                build_by_name.platform_name,
+                "Not rebuild yet",
+            )
+            continue
+
+        rebuild_hash = (
+            build_by_name.rebuilds[-1].rebuild_hash if build_by_name.rebuilds else None
+        )
+        is_same = build_by_name.build_hash == rebuild_hash if rebuild_hash else False
         table.add_row(
-            build.recipe_name, build.platform_name, "Yes" if is_same else "No"
+            build_by_name.recipe_name,
+            build_by_name.platform_name,
+            "Yes" if is_same else "No",
         )
 
     return table

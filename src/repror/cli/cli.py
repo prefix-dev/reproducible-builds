@@ -179,4 +179,4 @@ def status(
     """Check if recipe name[s] is reproducible for your platform, by verifying it's build and rebuild hash."""
     recipe_names = [recipe.name for recipe in build.recipes_for_names(recipe_names)]
     builds = get_rebuild_data(recipe_names, platform)
-    print(reproducible_table(builds))
+    print(reproducible_table(recipe_names, builds, platform))
