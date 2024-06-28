@@ -1,0 +1,86 @@
+schema_version: 1
+
+context:
+  version: 3.3.3
+  name: ruby
+  major_minor: "3.3"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://cache.ruby-lang.org/pub/ruby/${{ major_minor }}/ruby-${{ version }}.tar.gz
+  sha256: 83c05b2177ee9c335b631b29b8c077b4770166d02fa527f3a9f6a40d13f3cce2
+
+build:
+  number: 0
+
+# Maybe need to add down_prioritize at some point
+
+requirements:
+  ignore_run_exports:
+    from_package:
+      - libstdcxx-ng
+  build:
+    - if: unix
+      then:
+        - gnuconfig
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        # - {{ stdlib("c") }}
+        - ${{ compiler("rust") }}
+        - autoconf
+        - automake
+        - make
+        - pkg-config
+    - ruby
+  host:
+    - if: x86 and unix
+      then: gdbm
+    - if: osx
+      then: gettext
+    - if: linux
+      then: libxcrypt
+    - if: unix
+      then:
+        - ncurses
+        - readline
+        - gmp
+    - libffi
+    - openssl
+    - yaml
+    - zlib
+  run:
+    - if: osx
+      then: gettext
+
+tests:
+  - script:
+      - ruby --version
+      - gem --version
+      - ruby -e 'puts "Hi, from Ruby!"'
+      - ruby -r rubygems -e 'puts "Has gems."; exit 0'
+      - ruby -r fiddle -r openssl -r yaml -r zlib -e 'puts "Has all dependencies."; exit 0'
+      - if: unix
+        then: ruby -r readline -e 'puts "Has readline."; exit 0'
+    requirements:
+      build:
+        - ${{ compiler('c') }}
+        - ${{ compiler('cxx') }}
+        - make
+    files:
+      source:
+        - native/hello.c
+        - native/config.rb
+
+about:
+  homepage: https://www.ruby-lang.org/
+  license: BSD-2-Clause
+  license_file: COPYING
+  summary: A dynamic, open source programming language with a focus on simplicity and productivity.
+  description: |
+    A dynamic, open source programming language with a focus on simplicity and productivity.
+    It has an elegant syntax that is natural to read and easy to write.
+  documentation: https://www.ruby-lang.org/en/documentation/
+  repository: https://svn.ruby-lang.org/cgi-bin/viewvc.cgi/
