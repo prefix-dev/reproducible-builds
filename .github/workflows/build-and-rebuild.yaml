@@ -195,6 +195,7 @@ jobs:
           path: |
             build_info/
             ci_artifacts/
+            recipe_info/
 
   patch-db-and-generate-html:
     runs-on: ubuntu-latest
