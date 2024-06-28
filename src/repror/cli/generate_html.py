@@ -10,7 +10,11 @@ from rich.panel import Panel
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
-from repror.internals.db import BuildState, get_rebuild_data, get_total_successful_builds_and_rebuilds
+from repror.internals.db import (
+    BuildState,
+    get_rebuild_data,
+    get_total_successful_builds_and_rebuilds,
+)
 from repror.internals.git import github_api
 from repror.internals.print import print
 
@@ -103,18 +107,22 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
     timestamps = [end_of_day + timedelta(days=i) for i in range(0, 10)]
     by_platform = defaultdict(list)
     for build in builds:
-
         # Do it in the loop so that we do this only once per platform
         # and we dont have to hardcode the platforms
         if build.platform_name not in counts_per_platform:
-            counts = [get_total_successful_builds_and_rebuilds(build.platform_name, before_time=time) for time in timestamps]
+            counts = [
+                get_total_successful_builds_and_rebuilds(
+                    build.platform_name, before_time=time
+                )
+                for time in timestamps
+            ]
             counts_per_platform[build.platform_name] = {
                 # Total successful builds
                 "builds": [count.builds for count in counts],
                 # Total reproducible builds
                 "rebuilds": [count.rebuilds for count in counts],
                 # Total builds = builds + failed builds
-                "total_builds": [count.total_builds for count in counts]
+                "total_builds": [count.total_builds for count in counts],
             }
 
         if build.state == BuildState.FAIL:

@@ -280,8 +280,11 @@ def save(build: Build | Rebuild | Recipe):
         session.commit()
 
 
-# Function to query the database and return rebuild data
-def get_rebuild_data() -> Sequence[Build]:
+# Function to query the database and return latest rebuild data
+def get_rebuild_data(
+    recipe_names: Optional[list[str]] = None,
+    platform: Optional[str] = None,
+) -> Sequence[Build]:
     with get_session() as session:
         # Subquery to get the latest build per platform
         latest_build_subquery = (
@@ -290,6 +293,15 @@ def get_rebuild_data() -> Sequence[Build]:
             .group_by(Build.recipe_name)
             .order_by(col(Build.timestamp).desc())
         )
+        if platform:
+            latest_build_subquery = latest_build_subquery.where(
+                Build.platform_name == platform
+            )
+
+        if recipe_names:
+            latest_build_subquery = latest_build_subquery.where(
+                or_(col(Build.recipe_name).in_(recipe_names))
+            )
 
         # Main query to get the latest builds
         all_group_builds = session.exec(latest_build_subquery).all()
@@ -359,12 +371,16 @@ def get_total_successful_builds_and_rebuilds(
             Rebuild.state == BuildState.SUCCESS,
         )
 
-        total_builds_query = select(func.count(col(Build.id))).join(subquery, (col(Build.id) == subquery.c.id))
+        total_builds_query = select(func.count(col(Build.id))).join(
+            subquery, (col(Build.id) == subquery.c.id)
+        )
 
         # Execute the queries and count the results
         successful_builds_count = session.exec(successful_builds_query).one()
         successful_rebuilds_count = session.exec(successful_rebuilds_query).one()
         total_builds: int = session.exec(total_builds_query).one()
         return SuccessfulBuildsAndRebuilds(
-            successful_builds_count, successful_rebuilds_count, total_builds=total_builds
+            successful_builds_count,
+            successful_rebuilds_count,
+            total_builds=total_builds,
         )
