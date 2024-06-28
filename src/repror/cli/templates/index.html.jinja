@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Rattler Build - Reproducibility</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://kit.fontawesome.com/d97e8cb8b0.js" crossorigin="anonymous" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -89,26 +89,30 @@
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% for platform, builds in by_platform.items() %}
-                {% set total_builds = builds|length %}
-                {% set reproducible_builds = builds|selectattr('is_success', 'equalto', True)|list|length %}
+                {% set total_builds = counts_per_platform[platform].total_builds[-1] %}
+                {% set reproducible_builds = counts_per_platform[platform].rebuilds[-1] %}
                 {% set reproducibility_percentage = (reproducible_builds / total_builds) * 100 %}
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
-                    :class="{ 'border-blue-600 border-4': activeTab === {{loop.index}}, 'border-gray-300 border-1': activeTab !== {{loop.index}} }"
+                    :class="{ 'outline outline-blue-600 outline-4': activeTab === {{loop.index}}, 'outline outline-gray-300 outline-1': activeTab !== {{loop.index}} }"
                     @click="selectTab({{loop.index}})">
                     <h3 class="text-lg font-semibold">
                         <span class="{{ platform | platform_fa }}"></span>
                         {{ platform | capitalize }}
                     </h3>
-                    <div class="flex flex-col">
-                        <p>Total Builds: {{ total_builds }}</p>
-                        <p>
-                            Reproducible Builds: {{ reproducible_builds }}
-                        </p>
-                        <p>
-                            Reproducibility: {{ reproducibility_percentage |
-                            round(2) }}%
-                        </p>
-                    </div>
+                    <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Builds:</td>
+                            <td class="font-bold">{{ total_builds }}</td >
+                        </tr>
+                        <tr>
+                            <td>Reproducible Builds:</td>
+                            <td class="font-bold">{{ reproducible_builds }}</td >
+                        </tr>
+                        <tr>
+                            <td>Total Reproducibility:</td>
+                            <td class="font-bold" style="color: rgb{{interpolate_color(reproducibility_percentage)}}">{{ reproducibility_percentage | round(2) }}%</td >
+                        </tr>
+                    </table>
                 </div>
                 {% endfor %}
             </div>
