@@ -92,6 +92,7 @@
                 
                 
                 
+                
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
                     :class="{ 'outline outline-blue-600 outline-4': activeTab === 1, 'outline outline-gray-300 outline-1': activeTab !== 1 }"
                     @click="selectTab(1)">
@@ -100,6 +101,10 @@
                         Darwin
                     </h3>
                     <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Recipes:</td>
+                            <td class="font-bold">100</td >
+                        </tr>
                         <tr>
                             <td>Total Builds:</td>
                             <td class="font-bold">83</td >
@@ -118,6 +123,7 @@
                 
                 
                 
+                
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
                     :class="{ 'outline outline-blue-600 outline-4': activeTab === 2, 'outline outline-gray-300 outline-1': activeTab !== 2 }"
                     @click="selectTab(2)">
@@ -126,6 +132,10 @@
                         Linux
                     </h3>
                     <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Recipes:</td>
+                            <td class="font-bold">100</td >
+                        </tr>
                         <tr>
                             <td>Total Builds:</td>
                             <td class="font-bold">83</td >
@@ -144,6 +154,7 @@
                 
                 
                 
+                
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
                     :class="{ 'outline outline-blue-600 outline-4': activeTab === 3, 'outline outline-gray-300 outline-1': activeTab !== 3 }"
                     @click="selectTab(3)">
@@ -152,6 +163,10 @@
                         Windows
                     </h3>
                     <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Recipes:</td>
+                            <td class="font-bold">100</td >
+                        </tr>
                         <tr>
                             <td>Total Builds:</td>
                             <td class="font-bold">75</td >
@@ -6114,8 +6129,13 @@
                 fill: true,
             },
             {
-                label: 'Total Recipes',
+                label: 'Total Builds',
                 data: [76, 83, 83, 83, 83, 83, 83, 83, 83, 83],
+                fill: false
+            },
+            {
+                label: 'Total Recipes',
+                data: 100,
                 fill: false
             },
         ]
@@ -6151,8 +6171,13 @@
                 fill: true,
             },
             {
-                label: 'Total Recipes',
+                label: 'Total Builds',
                 data: [76, 83, 83, 83, 83, 83, 83, 83, 83, 83],
+                fill: false
+            },
+            {
+                label: 'Total Recipes',
+                data: 100,
                 fill: false
             },
         ]
@@ -6188,8 +6213,13 @@
                 fill: true,
             },
             {
-                label: 'Total Recipes',
+                label: 'Total Builds',
                 data: [62, 75, 75, 75, 75, 75, 75, 75, 75, 75],
+                fill: false
+            },
+            {
+                label: 'Total Recipes',
+                data: 100,
                 fill: false
             },
         ]
