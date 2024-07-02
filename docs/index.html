@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Rattler Build - Reproducibility</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://kit.fontawesome.com/d97e8cb8b0.js" crossorigin="anonymous" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -93,63 +93,78 @@
                 
                 
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
-                    :class="{ 'border-blue-600 border-4': activeTab === 1, 'border-gray-300 border-1': activeTab !== 1 }"
+                    :class="{ 'outline outline-blue-600 outline-4': activeTab === 1, 'outline outline-gray-300 outline-1': activeTab !== 1 }"
                     @click="selectTab(1)">
                     <h3 class="text-lg font-semibold">
                         <span class="fa-brands fa-apple"></span>
                         Darwin
                     </h3>
-                    <div class="flex flex-col">
-                        <p>Total Builds: 83</p>
-                        <p>
-                            Reproducible Builds: 73
-                        </p>
-                        <p>
-                            Reproducibility: 87.95%
-                        </p>
-                    </div>
+                    <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Builds:</td>
+                            <td class="font-bold">83</td >
+                        </tr>
+                        <tr>
+                            <td>Reproducible Builds:</td>
+                            <td class="font-bold">76</td >
+                        </tr>
+                        <tr>
+                            <td>Total Reproducibility:</td>
+                            <td class="font-bold" style="color: rgb(22, 117, 0)">91.57%</td >
+                        </tr>
+                    </table>
                 </div>
                 
                 
                 
                 
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
-                    :class="{ 'border-blue-600 border-4': activeTab === 2, 'border-gray-300 border-1': activeTab !== 2 }"
+                    :class="{ 'outline outline-blue-600 outline-4': activeTab === 2, 'outline outline-gray-300 outline-1': activeTab !== 2 }"
                     @click="selectTab(2)">
                     <h3 class="text-lg font-semibold">
                         <span class="fa-brands fa-linux"></span>
                         Linux
                     </h3>
-                    <div class="flex flex-col">
-                        <p>Total Builds: 83</p>
-                        <p>
-                            Reproducible Builds: 65
-                        </p>
-                        <p>
-                            Reproducibility: 78.31%
-                        </p>
-                    </div>
+                    <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Builds:</td>
+                            <td class="font-bold">83</td >
+                        </tr>
+                        <tr>
+                            <td>Reproducible Builds:</td>
+                            <td class="font-bold">68</td >
+                        </tr>
+                        <tr>
+                            <td>Total Reproducibility:</td>
+                            <td class="font-bold" style="color: rgb(46, 105, 0)">81.93%</td >
+                        </tr>
+                    </table>
                 </div>
                 
                 
                 
                 
                 <div class="bg-white p-4 rounded shadow border cursor-pointer"
-                    :class="{ 'border-blue-600 border-4': activeTab === 3, 'border-gray-300 border-1': activeTab !== 3 }"
+                    :class="{ 'outline outline-blue-600 outline-4': activeTab === 3, 'outline outline-gray-300 outline-1': activeTab !== 3 }"
                     @click="selectTab(3)">
                     <h3 class="text-lg font-semibold">
                         <span class="fa-brands fa-windows"></span>
                         Windows
                     </h3>
-                    <div class="flex flex-col">
-                        <p>Total Builds: 75</p>
-                        <p>
-                            Reproducible Builds: 0
-                        </p>
-                        <p>
-                            Reproducibility: 0.0%
-                        </p>
-                    </div>
+                    <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Builds:</td>
+                            <td class="font-bold">75</td >
+                        </tr>
+                        <tr>
+                            <td>Reproducible Builds:</td>
+                            <td class="font-bold">34</td >
+                        </tr>
+                        <tr>
+                            <td>Total Reproducibility:</td>
+                            <td class="font-bold" style="color: rgb(139, 58, 0)">45.33%</td >
+                        </tr>
+                    </table>
                 </div>
                 
             </div>
@@ -6086,21 +6101,21 @@
     
     // Change the title of the chart
     const data_darwin = {
-        labels: ["2024-06-18", "2024-06-19", "2024-06-20", "2024-06-21", "2024-06-22", "2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27"],
+        labels: ["2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02"],
         datasets: [
             {
                 label: 'Reproducible',
-                data: [34, 48, 73, 73, 73, 73, 76, 76, 76, 76],
+                data: [73, 76, 76, 76, 76, 76, 76, 76, 76, 76],
                 fill: true,
             },
             {
                 label: 'Builds',
-                data: [35, 49, 74, 74, 74, 74, 79, 79, 79, 79],
+                data: [74, 79, 79, 79, 79, 79, 79, 79, 79, 79],
                 fill: true,
             },
             {
                 label: 'Total Recipes',
-                data: [35, 50, 76, 76, 76, 76, 83, 83, 83, 83],
+                data: [76, 83, 83, 83, 83, 83, 83, 83, 83, 83],
                 fill: false
             },
         ]
@@ -6123,21 +6138,21 @@
     
     // Change the title of the chart
     const data_linux = {
-        labels: ["2024-06-18", "2024-06-19", "2024-06-20", "2024-06-21", "2024-06-22", "2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27"],
+        labels: ["2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02"],
         datasets: [
             {
                 label: 'Reproducible',
-                data: [31, 45, 66, 66, 66, 66, 68, 68, 68, 68],
+                data: [66, 68, 68, 68, 68, 68, 68, 68, 68, 68],
                 fill: true,
             },
             {
                 label: 'Builds',
-                data: [33, 47, 68, 68, 68, 68, 71, 71, 71, 71],
+                data: [68, 71, 71, 71, 71, 71, 71, 71, 71, 71],
                 fill: true,
             },
             {
                 label: 'Total Recipes',
-                data: [35, 50, 76, 76, 76, 76, 83, 83, 83, 83],
+                data: [76, 83, 83, 83, 83, 83, 83, 83, 83, 83],
                 fill: false
             },
         ]
@@ -6160,21 +6175,21 @@
     
     // Change the title of the chart
     const data_windows = {
-        labels: ["2024-06-18", "2024-06-19", "2024-06-20", "2024-06-21", "2024-06-22", "2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27"],
+        labels: ["2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02"],
         datasets: [
             {
                 label: 'Reproducible',
-                data: [16, 27, 32, 32, 32, 32, 34, 34, 34, 34],
+                data: [32, 34, 34, 34, 34, 34, 34, 34, 34, 34],
                 fill: true,
             },
             {
                 label: 'Builds',
-                data: [17, 28, 33, 33, 33, 33, 35, 35, 35, 35],
+                data: [33, 35, 35, 35, 35, 35, 35, 35, 35, 35],
                 fill: true,
             },
             {
                 label: 'Total Recipes',
-                data: [30, 42, 60, 62, 62, 62, 75, 75, 75, 75],
+                data: [62, 75, 75, 75, 75, 75, 75, 75, 75, 75],
                 fill: false
             },
         ]
