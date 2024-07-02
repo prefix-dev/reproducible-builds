@@ -2,7 +2,6 @@ import json
 from repror.internals import config
 
 
-
 def generate_recipes():
     """Generate list of recipes from the configuration file."""
     # Prepare the matrix

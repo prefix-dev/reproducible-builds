@@ -108,7 +108,6 @@ def find_conda_file(build_folder: Path) -> Path:
     conda_files = glob.glob(str(build_folder) + "/**/*.conda", recursive=True)
     if conda_files:
         return Path(conda_files[0])
-    # conda_file = glob.glob(str(build_folder) + "/**/*.conda", recursive=True)[0]
 
     raise FileNotFoundError(f"No conda file found in the build folder {build_folder}")
 

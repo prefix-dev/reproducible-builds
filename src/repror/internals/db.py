@@ -27,7 +27,6 @@ from sqlmodel import (
 
 from repror.internals.recipe import clone_remote_recipe
 from .print import print
-from .options import global_options
 
 
 # Suppress SQLAlchemy INFO logs
@@ -71,8 +70,6 @@ def setup_engine(in_memory: bool = False):
         return
 
     if in_memory:
-        # As suggested per:
-        # engine = create_engine("sqlite:///:memory:", echo=False, connect_args={'check_same_thread':False}, poolclass=StaticPool)
         engine = create_engine("sqlite:///:memory:")
     else:
         # Get the name of the database from an environment variable
@@ -104,15 +101,10 @@ def setup_local_db() -> sessionmaker[SqlModelSession]:
     return session
 
 
-def __set_engine() -> None:
-    global engine
-    if not engine:
-        setup_engine(global_options.in_memory_sql)
-
-
 def get_session() -> SqlModelSession:
     """Get a new session."""
-    # __set_engine()
+    global engine
+    assert engine
     return __Session()
 
 
