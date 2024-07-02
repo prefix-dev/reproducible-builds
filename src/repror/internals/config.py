@@ -1,3 +1,4 @@
+from collections import defaultdict
 from functools import lru_cache
 from pathlib import Path
 import tempfile
@@ -5,7 +6,7 @@ from typing import Optional
 import yaml
 from pydantic import BaseModel, Field
 
-# from repror.internals.git import checkout_branch_or_commit, clone_repo
+from multiprocessing.pool import ThreadPool
 from repror.internals.db import Recipe as RecipeDB, RemoteRecipe, get_recipe, save
 from repror.internals.recipe import (
     get_recipe_name,
@@ -27,6 +28,9 @@ class RemoteRepository(BaseModel):
     url: str
     rev: str
     recipes: list[LocalRecipe]
+
+    def __hash__(self):
+        return hash((self.url, self.rev))
 
 
 class RattlerBuildConfig(BaseModel):
@@ -54,34 +58,58 @@ def save_config(data: ConfigYaml, config_path: str = "config.yaml"):
         yaml.safe_dump(data_as_dict, file)
 
 
+def load_remote_recipes(
+    repo: RemoteRepository, recipes: list[LocalRecipe], clone_dir: Path
+) -> list[RemoteRecipe]:
+    remote_recipes = []
+    for recipe in recipes:
+        logger.debug(f"Recipe {recipe.path} not found in the database, adding it")
+        remote_config, raw_config = load_remote_recipe_config(
+            repo.url, repo.rev, recipe.path, Path(clone_dir)
+        )
+        recipe_name = get_recipe_name(remote_config)
+        recipe_content_hash = recipe_files_hash(Path(recipe.path).parent)
+        stored_recipe = RemoteRecipe(
+            name=recipe_name,
+            url=repo.url,
+            path=str(recipe.path),
+            raw_config=raw_config,
+            rev=repo.rev,
+            content_hash=recipe_content_hash,
+        )
+        remote_recipes.append(stored_recipe)
+    return remote_recipes
+
+
 def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | RemoteRecipe]:
     config = load_config(config_path)
     recipes = []
     with tempfile.TemporaryDirectory() as clone_dir:
+        # iterate over existing recipes
+        # this is done to avoid not-so-intuitive setup of the :memory: database
+        # with the StaticPool for the Session
+        # it also seems to throw flush errors when same session is used for multiple threads
+        # so I thought that it would be better to separate fetching and saving
+        recipes_to_fetch = defaultdict(list)
         for repo in config.repositories:
             for recipe in repo.recipes:
                 stored_recipe = get_recipe(repo.url, recipe.path, repo.rev)
-                if not stored_recipe:
-                    logger.debug(
-                        f"Recipe {recipe.path} not found in the database, adding it"
-                    )
-                    remote_config, raw_config = load_remote_recipe_config(
-                        repo.url, repo.rev, recipe.path, Path(clone_dir)
-                    )
-                    recipe_name = get_recipe_name(remote_config)
-                    recipe_content_hash = recipe_files_hash(Path(recipe.path).parent)
-                    stored_recipe = RemoteRecipe(
-                        name=recipe_name,
-                        url=repo.url,
-                        path=str(recipe.path),
-                        raw_config=raw_config,
-                        rev=repo.rev,
-                        content_hash=recipe_content_hash,
-                    )
-                    save(stored_recipe)
-                else:
+                if stored_recipe:
                     logger.debug(f"Recipe {recipe.path} found in the database")
-                recipes.append(stored_recipe)
+                    recipes.append(stored_recipe)
+                else:
+                    recipes_to_fetch[repo].append(recipe)
+
+        with ThreadPool() as pool:
+            remote_recipes = pool.starmap(
+                load_remote_recipes,
+                [
+                    (repo, recipes, clone_dir)
+                    for repo, recipes in recipes_to_fetch.items()
+                ],
+            )
+            [save(recipe) for recipe in recipes for recipes in remote_recipes]
+            [recipes.extend(recipe_list) for recipe_list in remote_recipes]
 
     for local in config.local:
         local_config = load_recipe_config(local.path)

@@ -11,7 +11,7 @@ from rich.spinner import Spinner
 from rich.live import Live
 
 from repror.internals.config import load_config
-from repror.internals.db import get_rebuild_data
+from repror.internals.db import get_rebuild_data, setup_engine
 from repror.internals.print import print
 from repror.internals import patch_database
 
@@ -35,6 +35,7 @@ logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO").upper())
 
 @app.callback()
 def main(
+    ctx: typer.Context,
     skip_setup_rattler_build: bool = False,
     in_memory_sql: bool = False,
     no_output: bool = False,
@@ -52,6 +53,8 @@ def main(
     if in_memory_sql:
         print("[yellow]Will use in-memory SQLite database[/yellow]")
         global_options.in_memory_sql = True
+    # ctx.db_session = ctx.with_resource(get_session())
+    setup_engine(in_memory_sql)
 
 
 @app.command()
