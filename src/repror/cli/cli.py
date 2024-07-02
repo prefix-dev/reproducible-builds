@@ -38,6 +38,7 @@ def main(
     skip_setup_rattler_build: bool = False,
     in_memory_sql: bool = False,
     no_output: bool = False,
+    config_path: str = "config.yaml",
 ):
     """
     \bRepror is a tool to:
@@ -46,6 +47,7 @@ def main(
     - Rewrite the reproducible-builds README.md file with update statistics
     """
     global_options.no_output = no_output
+    global_options.config_path = config_path
     if skip_setup_rattler_build:
         print("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
         global_options.skip_setup_rattler_build = True
@@ -95,7 +97,9 @@ def build_recipe(
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
-        recipes_to_build = build.recipes_for_names(recipe_names)
+        recipes_to_build = build.recipes_for_names(
+            recipe_names, global_options.config_path
+        )
 
         build.build_recipes(recipes_to_build, Path(tmp_dir), force, patch, actions_url)
         if run_rebuild:
@@ -122,7 +126,9 @@ def rebuild_recipe(
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
-        recipes_to_rebuild = build.recipes_for_names(recipe_names)
+        recipes_to_rebuild = build.recipes_for_names(
+            recipe_names, global_options.config_path
+        )
         rebuild.rebuild_recipe(
             recipes_to_rebuild, Path(tmp_dir), force, patch, actions_url
         )

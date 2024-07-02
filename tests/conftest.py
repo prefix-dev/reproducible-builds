@@ -19,3 +19,8 @@ def setup_recipe_directory(tmp_path: Path):
     (sub_dir / "script.sh").write_text("echo hellooo")
 
     return recipe_folder
+
+
+@pytest.fixture
+def test_config_yaml_path():
+    return Path(__file__).parent / "data" / "test_config.yaml"
