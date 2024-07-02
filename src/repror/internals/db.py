@@ -11,7 +11,7 @@ from typing import Generator, Literal as Lit, Optional
 from pydantic import BaseModel
 from sqlalchemy import func, text
 from typing import Sequence
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlmodel import (
     Field,
     Relationship,
@@ -27,7 +27,6 @@ from sqlmodel import (
 
 from repror.internals.recipe import clone_remote_recipe
 from .print import print
-from .options import global_options
 
 
 # Suppress SQLAlchemy INFO logs
@@ -35,7 +34,8 @@ logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
 engine = None
 # Create a session class that binds to SQLModelSession
-__Session = sessionmaker(class_=SqlModelSession, expire_on_commit=False)
+session_factory = sessionmaker(class_=SqlModelSession, expire_on_commit=False)
+__Session = scoped_session(session_factory)
 
 # Name of the production database
 PROD_DB = "repro.db"
@@ -55,7 +55,7 @@ class BuildState(str, Enum):
 
 def create_db_and_tables():
     """Create the database and tables, if they don't exist."""
-    __set_engine()
+    global engine
     assert engine  # This should not fail
     SQLModel.metadata.create_all(engine)
 
@@ -66,10 +66,11 @@ def setup_engine(in_memory: bool = False):
     global engine, __Session
     if engine:
         # Engine is already set, skip initialization
+        print("Engine already set, skipping initialization")
         return
 
     if in_memory:
-        engine = create_engine("sqlite:///:memory:", echo=False)
+        engine = create_engine("sqlite:///:memory:")
     else:
         # Get the name of the database from an environment variable
         # or use the default name which is a local database
@@ -100,15 +101,10 @@ def setup_local_db() -> sessionmaker[SqlModelSession]:
     return session
 
 
-def __set_engine() -> None:
-    global engine
-    if not engine:
-        setup_engine(global_options.in_memory_sql)
-
-
 def get_session() -> SqlModelSession:
     """Get a new session."""
-    __set_engine()
+    global engine
+    assert engine
     return __Session()
 
 

@@ -29,6 +29,11 @@ def setup_recipe_directory(tmp_path: Path):
     return recipe_folder
 
 
+@pytest.fixture
+def test_config_yaml_path():
+    return Path(__file__).parent / "data" / "test_config.yaml"
+
+
 @pytest.fixture(scope="session")
 def in_memory_session():
     return setup_local_db()

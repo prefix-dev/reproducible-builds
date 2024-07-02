@@ -1,0 +1,11 @@
+# A smaller subset of config.yaml used for testing
+local:
+- path: recipes/boltons/recipe.yaml
+rattler-build:
+  rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
+  url: https://github.com/prefix-dev/rattler-build.git
+repositories:
+- recipes:
+  - path: examples/rich/recipe.yaml
+  rev: c609b1d5ea67ebd095c2077d113d07694cf55fdb
+  url: https://github.com/prefix-dev/rattler-build.git

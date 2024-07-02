@@ -19,11 +19,13 @@ from rich.table import Table
 from rich import print
 
 
-def recipes_for_names(recipe_names: Optional[list[str]]) -> list[Recipe | RemoteRecipe]:
+def recipes_for_names(
+    recipe_names: Optional[list[str]], config_path: str = "config.yaml"
+) -> list[Recipe | RemoteRecipe]:
     """
     Get recipes objects for the given names. If no names are given, return all recipes
     """
-    all_recipes = load_all_recipes()
+    all_recipes = load_all_recipes(config_path)
     if recipe_names:
         recipes_to_build = []
         all_recipes_names = [recipe.name for recipe in all_recipes]

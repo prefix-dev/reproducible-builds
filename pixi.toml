@@ -60,6 +60,7 @@ pyinstrument = ">=4.6.2,<4.7"
 [feature.fmt.tasks]
 # Format recipes using ruff
 fmt = "ruff format"
+check-fmt = "ruff check --fix"
 
 
 # Default dependencies
@@ -78,6 +79,7 @@ pydantic = "*"
 [pypi-dependencies]
 repror = { path = ".", editable = true }
 conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
+pytest-depends = "*"
 
 
 [environments]

@@ -11,7 +11,7 @@ from rich.spinner import Spinner
 from rich.live import Live
 
 from repror.internals.config import load_config
-from repror.internals.db import get_rebuild_data
+from repror.internals.db import get_rebuild_data, setup_engine
 from repror.internals.print import print
 from repror.internals import patch_database
 from repror.internals.rattler_build import rattler_build_hash
@@ -39,6 +39,7 @@ def main(
     skip_setup_rattler_build: bool = False,
     in_memory_sql: bool = False,
     no_output: bool = False,
+    config_path: str = "config.yaml",
 ):
     """
     \bRepror is a tool to:
@@ -47,17 +48,23 @@ def main(
     - Rewrite the reproducible-builds README.md file with update statistics
     """
     global_options.no_output = no_output
+    global_options.config_path = config_path
     if skip_setup_rattler_build:
         print("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
         global_options.skip_setup_rattler_build = True
     if in_memory_sql:
         print("[yellow]Will use in-memory SQLite database[/yellow]")
         global_options.in_memory_sql = True
+    setup_engine(in_memory_sql)
 
 
 @app.command()
-def generate_recipes(all_: Annotated[bool, typer.Option()] = False):
-    """Generate list of recipes from the configuration file."""
+def generate_recipes(
+    all_: Annotated[
+        bool, typer.Option("--all", help="Generate all recipe names")
+    ] = False,
+):
+    """Generate list of recipes from the configuration file. By default it will print only the ones that are not built yet."""
     generate.generate_recipes(rattler_build_hash=rattler_build_hash(), all_=all_)
 
 
@@ -95,7 +102,9 @@ def build_recipe(
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
-        recipes_to_build = build.recipes_for_names(recipe_names)
+        recipes_to_build = build.recipes_for_names(
+            recipe_names, global_options.config_path
+        )
 
         build.build_recipes(recipes_to_build, Path(tmp_dir), force, patch, actions_url)
         if run_rebuild:
@@ -128,7 +137,9 @@ def rebuild_recipe(
             _check_local_rattler_build()
         else:
             os.environ["RATTLER_BUILD_BIN"] = str(rattler_build_exe)
-        recipes_to_rebuild = build.recipes_for_names(recipe_names)
+        recipes_to_rebuild = build.recipes_for_names(
+            recipe_names, global_options.config_path
+        )
         rebuild.rebuild_recipe(
             recipes_to_rebuild, Path(tmp_dir), force, patch, actions_url
         )
