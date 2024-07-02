@@ -89,6 +89,7 @@
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {% for platform, builds in by_platform.items() %}
+                {% set total_recipes = counts_per_platform[platform].total_recipes %}
                 {% set total_builds = counts_per_platform[platform].total_builds[-1] %}
                 {% set reproducible_builds = counts_per_platform[platform].rebuilds[-1] %}
                 {% set reproducibility_percentage = (reproducible_builds / total_builds) * 100 %}
@@ -100,6 +101,10 @@
                         {{ platform | capitalize }}
                     </h3>
                     <table class="mt-3 w-full">
+                        <tr>
+                            <td>Total Recipes:</td>
+                            <td class="font-bold">{{ total_recipes }}</td >
+                        </tr>
                         <tr>
                             <td>Total Builds:</td>
                             <td class="font-bold">{{ total_builds }}</td >
@@ -259,8 +264,13 @@
                 fill: true,
             },
             {
-                label: 'Total Recipes',
+                label: 'Total Builds',
                 data: {{ counts_per_platform[platform].total_builds | tojson }},
+                fill: false
+            },
+            {
+                label: 'Total Recipes',
+                data: {{ counts_per_platform[platform].total_recipes | tojson }},
                 fill: false
             },
         ]
