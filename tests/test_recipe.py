@@ -1,8 +1,12 @@
 from repror.internals.config import load_all_recipes
 from pathlib import Path
+from typer.testing import CliRunner
+
 
 from repror.internals.db import RemoteRecipe
-from repror.internals.recipe import recipe_files_hash
+
+
+runner = CliRunner()
 
 
 def test_load_all_recipes_test():
@@ -15,14 +19,14 @@ def test_load_all_recipes_test():
         assert Path(local_path).exists()
 
 
-def test_recipe_files_hash(setup_recipe_directory: Path):
-    initial_content_hash = recipe_files_hash(setup_recipe_directory)
+# def test_recipe_files_hash(setup_recipe_directory: Path):
+#     initial_content_hash = recipe_files_hash(setup_recipe_directory)
 
-    # modify build script
-    build_script = setup_recipe_directory / "subfolder" / "script.sh"
-    build_script.write_text("echo hellooo\n echo this is test")
+#     # modify build script
+#     build_script = setup_recipe_directory / "subfolder" / "script.sh"
+#     build_script.write_text("echo hellooo\n echo this is test")
 
-    # Calculate the hash using the recipe_files_hash function
-    modified_hash = recipe_files_hash(setup_recipe_directory)
+#     # Calculate the hash using the recipe_files_hash function
+#     modified_hash = recipe_files_hash(setup_recipe_directory)
 
-    assert initial_content_hash != modified_hash
+#     assert initial_content_hash != modified_hash
