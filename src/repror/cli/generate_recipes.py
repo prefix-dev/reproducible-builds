@@ -2,16 +2,12 @@ import json
 from repror.cli.utils import platform_name, platform_version
 from repror.internals import config
 from repror.internals.db import get_latest_build_with_rebuild
-from typing import Optional
 from pathlib import Path
 
 
 def _generate_recipes(
-    rattler_build_hash: str, all_: bool = False, config_path: Optional[Path] = None
+    rattler_build_hash: str, all_: bool = False, config_path: Path = Path("config.yaml")
 ):
-    if not config_path:
-        config_path = Path("config.yaml")
-
     # Prepare the matrix
     all_recipes = config.load_all_recipes(config_path=str(config_path))
 
@@ -36,7 +32,7 @@ def _generate_recipes(
 
 
 def generate_recipes(
-    rattler_build_hash: str, all_: bool = False, config_path: Optional[Path] = None
+    rattler_build_hash: str, all_: bool = False, config_path: Path = Path("config.yaml")
 ):
     """Generate list of recipes from the configuration file."""
     recipe_list = _generate_recipes(rattler_build_hash, all_, config_path)
