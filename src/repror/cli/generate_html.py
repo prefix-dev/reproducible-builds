@@ -17,6 +17,7 @@ from repror.internals.db import (
 )
 from repror.internals.git import github_api
 from repror.internals.print import print
+from repror.internals.config import load_all_recipes
 
 
 class StatisticData(BaseModel):
@@ -107,7 +108,7 @@ def remove_ansi_codes(text: str) -> str:
     return ansi_escape.sub("", text)
 
 
-def rerender_html(root_folder: Path, update_remote: bool = False):
+def rerender_html(root_folder: Path, update_remote: bool = False, config_path: Path = Path("config.yaml")):
     docs_folder = get_docs_dir(root_folder)
     print(f"Generating into : {docs_folder}")
 
@@ -117,6 +118,8 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
     env.filters["platform_fa"] = platform_fa
 
     builds = get_rebuild_data()
+
+    total_recipes = len(load_all_recipes(str(config_path)))
 
     # Statistics for graph
     counts_per_platform = {}
@@ -142,6 +145,8 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
                 "rebuilds": [count.rebuilds for count in counts],
                 # Total builds = builds + failed builds
                 "total_builds": [count.total_builds for count in counts],
+                # Total recipes
+                "total_recipes": total_recipes,
             }
 
         if build.state == BuildState.FAIL:
