@@ -77,6 +77,25 @@ def build_state_fa(build, rebuild):
     return get_build_state_fa(build, rebuild)
 
 
+def interpolate_color(percentage: float):
+    """Interpolate between red and green based on a percentage.
+    Linear interpolation is used to calculate the color.
+    """
+    if percentage < 0 or percentage > 100:
+        raise ValueError("Percentage must be between 0 and 100")
+
+    # Normalize percentage to a range of 0 to 1
+    normalized = percentage / 100
+
+    # Calculate the red, green, and blue components
+    r = round(255 * (1 - normalized))
+    g = round(128 * normalized)
+    b = 0
+
+    # Return the color in RGB format
+    return (r, g, b)
+
+
 def get_docs_dir(root_folder: Path):
     """Get the docs directory path. By default get the local docs directory."""
     docs = os.getenv("REPRO_DOCS_DIR", "docs.local")
@@ -163,6 +182,7 @@ def rerender_html(root_folder: Path, update_remote: bool = False):
         reproducible=reproducible,
         failure=failure,
         non_reproducible=non_reproducible,
+        interpolate_color=interpolate_color,
     )
     # Save the table to README.md
     index_html_path = docs_folder / Path("index.html")

@@ -29,7 +29,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - uses: prefix-dev/setup-pixi@v0.5.1
+      - uses: prefix-dev/setup-pixi@v0.8.1
         with:
           pixi-version: "latest"
 
@@ -195,6 +195,7 @@ jobs:
           path: |
             build_info/
             ci_artifacts/
+            recipe_info/
 
   patch-db-and-generate-html:
     runs-on: ubuntu-latest

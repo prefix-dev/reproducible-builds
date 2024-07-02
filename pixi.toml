@@ -60,6 +60,7 @@ pyinstrument = ">=4.6.2,<4.7"
 [feature.fmt.tasks]
 # Format recipes using ruff
 fmt = "ruff format"
+check-fmt = "ruff check --fix"
 
 
 # Default dependencies

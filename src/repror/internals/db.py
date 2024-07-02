@@ -324,7 +324,7 @@ def get_recipe(url: str, path: str | Path, rev: str) -> Optional[RemoteRecipe]:
 
 def get_total_unique_recipes(session: Optional[SqlModelSession] = None) -> int:
     """Query to get the total number of unique recipes"""
-    with get_session() if not session else session as session:
+    with get_session() as session:
         return session.exec(select(func.count(distinct(RemoteRecipe.name)))).one()
 
 
@@ -338,10 +338,9 @@ class SuccessfulBuildsAndRebuilds:
 def get_total_successful_builds_and_rebuilds(
     platform_name: Lit["linux", "darwin", "windows"] | str,
     before_time: datetime,
-    session: Optional[SqlModelSession] = None,
 ) -> SuccessfulBuildsAndRebuilds:
     """Query to get the total number of successful builds and rebuilds before the given timestamp."""
-    with get_session() if not session else session as session:
+    with get_session() as session:
         # Subquery to find the latest build for each unique recipe_name before the given timestamp
         select_matching_builds = (
             select(

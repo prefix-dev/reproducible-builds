@@ -39,9 +39,9 @@ class RattlerBuildConfig(BaseModel):
 
 
 class ConfigYaml(BaseModel):
-    repositories: list[RemoteRepository]
+    repositories: list[RemoteRepository] = Field(default_factory=list)
     rattler_build: Optional[RattlerBuildConfig] = Field(
-        alias="rattler-build", serialization_alias="rattler-build"
+        default=None, alias="rattler-build", serialization_alias="rattler-build"
     )
     local: list[LocalRecipe]
 

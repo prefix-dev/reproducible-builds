@@ -14,6 +14,7 @@ from repror.internals.config import load_config
 from repror.internals.db import get_rebuild_data, setup_engine
 from repror.internals.print import print
 from repror.internals import patch_database
+from repror.internals.rattler_build import rattler_build_hash
 
 
 # Different CLI commands
@@ -22,7 +23,7 @@ from . import generate_recipes as generate
 from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
-from .utils import pixi_root_cli, platform_name, platform_version, reproducible_table
+from .utils import pixi_root_cli, platform_name, reproducible_table
 
 from ..internals.options import global_options
 
@@ -58,9 +59,13 @@ def main(
 
 
 @app.command()
-def generate_recipes():
-    """Generate list of recipes from the configuration file."""
-    generate.generate_recipes()
+def generate_recipes(
+    all_: Annotated[
+        bool, typer.Option("--all", help="Generate all recipe names")
+    ] = False,
+):
+    """Generate list of recipes from the configuration file. By default it will print only the ones that are not built yet."""
+    generate.generate_recipes(rattler_build_hash=rattler_build_hash(), all_=all_)
 
 
 def _check_local_rattler_build():
@@ -108,8 +113,14 @@ def build_recipe(
                 recipes_to_build, Path(tmp_dir), force, patch, actions_url
             )
             print("Verifying if rebuilds are reproducible...")
-            builds = get_rebuild_data(recipe_names, platform_name(), platform_version())
-            print(reproducible_table(builds))
+            builds = get_rebuild_data(recipe_names, platform_name())
+            print(
+                reproducible_table(
+                    [recipe.name for recipe in recipes_to_build],
+                    builds,
+                    platform_name(),
+                )
+            )
 
 
 @app.command()

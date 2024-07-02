@@ -1,0 +1,2 @@
+local:
+  - path: tests/data/boltons/boltons_recipe.yaml
