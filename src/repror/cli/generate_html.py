@@ -76,6 +76,7 @@ def platform_fa(platform):
 def build_state_fa(build, rebuild):
     return get_build_state_fa(build, rebuild)
 
+
 def interpolate_color(percentage: float):
     """Interpolate between red and green based on a percentage.
     Linear interpolation is used to calculate the color.
