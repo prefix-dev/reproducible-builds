@@ -14,6 +14,7 @@ from repror.internals.config import load_config
 from repror.internals.db import get_rebuild_data
 from repror.internals.print import print
 from repror.internals import patch_database
+from repror.internals.rattler_build import rattler_build_hash
 
 
 # Different CLI commands
@@ -55,9 +56,9 @@ def main(
 
 
 @app.command()
-def generate_recipes():
+def generate_recipes(all: Annotated[bool, typer.Option()] = False):
     """Generate list of recipes from the configuration file."""
-    generate.generate_recipes()
+    generate.generate_recipes(rattler_build_hash=rattler_build_hash(), all=all)
 
 
 def _check_local_rattler_build():
