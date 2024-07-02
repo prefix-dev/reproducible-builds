@@ -47,7 +47,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pydantic-2.7.4-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pydantic-core-2.18.4-py312h4413252_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pygments-2.18.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/pyinstrument-4.6.2-py312h98912ed_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytest-8.2.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/python-3.12.4-h194c7f8_0_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0-pyhd8ed1ab_0.conda
@@ -119,7 +118,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pydantic-2.7.4-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/pydantic-core-2.18.4-py312ha47ea1c_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pygments-2.18.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-64/pyinstrument-4.6.2-py312h41838bb_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytest-8.2.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-64/python-3.12.4-h37a9e06_0_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0-pyhd8ed1ab_0.conda
@@ -191,7 +189,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pydantic-2.7.4-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pydantic-core-2.18.4-py312h552d48e_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pygments-2.18.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pyinstrument-4.6.2-py312he37b823_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytest-8.2.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/python-3.12.4-h30c5eda_0_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0-pyhd8ed1ab_0.conda
@@ -263,7 +260,6 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/noarch/pydantic-2.7.4-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/pydantic-core-2.18.4-py312h2615798_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pygments-2.18.0-pyhd8ed1ab_0.conda
-      - conda: https://conda.anaconda.org/conda-forge/win-64/pyinstrument-4.6.2-py312he70551f_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pytest-8.2.2-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/win-64/python-3.12.4-h889d299_0_cpython.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/python-dateutil-2.9.0-pyhd8ed1ab_0.conda
@@ -1110,6 +1106,12 @@ packages:
 - kind: pypi
   name: charset-normalizer
   version: 3.3.2
+  url: https://files.pythonhosted.org/packages/b6/7c/8debebb4f90174074b827c63242c23851bdf00a532489fba57fef3416e40/charset_normalizer-3.3.2-cp312-cp312-win_amd64.whl
+  sha256: 96b02a3dc4381e5494fad39be677abcb5e6634bf7b4fa83a6dd3112607547001
+  requires_python: '>=3.7.0'
+- kind: pypi
+  name: charset-normalizer
+  version: 3.3.2
   url: https://files.pythonhosted.org/packages/ee/fb/14d30eb4956408ee3ae09ad34299131fb383c47df355ddb428a7331cfa1e/charset_normalizer-3.3.2-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   sha256: 90d558489962fd4918143277a773316e56c72da56ec7aa3dc3dbbe20fdfed15b
   requires_python: '>=3.7.0'
@@ -1124,12 +1126,6 @@ packages:
   version: 3.3.2
   url: https://files.pythonhosted.org/packages/2e/7d/2259318c202f3d17f3fe6438149b3b9e706d1070fe3fcbb28049730bb25c/charset_normalizer-3.3.2-cp312-cp312-macosx_10_9_x86_64.whl
   sha256: ddbb2551d7e0102e7252db79ba445cdab71b26640817ab1e3e3648dad515003b
-  requires_python: '>=3.7.0'
-- kind: pypi
-  name: charset-normalizer
-  version: 3.3.2
-  url: https://files.pythonhosted.org/packages/b6/7c/8debebb4f90174074b827c63242c23851bdf00a532489fba57fef3416e40/charset_normalizer-3.3.2-cp312-cp312-win_amd64.whl
-  sha256: 96b02a3dc4381e5494fad39be677abcb5e6634bf7b4fa83a6dd3112607547001
   requires_python: '>=3.7.0'
 - kind: conda
   name: click
@@ -1195,8 +1191,8 @@ packages:
   - pyyaml
   - jsonschema
   - requests
-  - pytest ; extra == 'dev'
   - conda-build ; extra == 'conda-build'
+  - pytest ; extra == 'dev'
   requires_python: '>=3.11'
 - kind: conda
   name: exceptiongroup
@@ -4197,6 +4193,12 @@ packages:
 - kind: pypi
   name: rpds-py
   version: 0.18.1
+  url: https://files.pythonhosted.org/packages/01/7d/8552e329973a198e5e150cc6be068f5cbae797a89e64c02bbd47bd397dee/rpds_py-0.18.1-cp312-none-win_amd64.whl
+  sha256: 720edcb916df872d80f80a1cc5ea9058300b97721efda8651efcd938a9c70a72
+  requires_python: '>=3.8'
+- kind: pypi
+  name: rpds-py
+  version: 0.18.1
   url: https://files.pythonhosted.org/packages/28/1c/2e208636275eab9636981fee10cb5cdaf3d5a202c3c16bf31fdd52ee08d0/rpds_py-0.18.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
   sha256: 6e30ac5e329098903262dc5bdd7e2086e0256aa762cc8b744f9e7bf2a427d3f8
   requires_python: '>=3.8'
@@ -4211,12 +4213,6 @@ packages:
   version: 0.18.1
   url: https://files.pythonhosted.org/packages/03/04/a39fc930b1ab45943b7f3a8d990a3c731b37541d9eb58c5664374c2ce007/rpds_py-0.18.1-cp312-cp312-macosx_10_12_x86_64.whl
   sha256: 3dd3cd86e1db5aadd334e011eba4e29d37a104b403e8ca24dcd6703c68ca55b3
-  requires_python: '>=3.8'
-- kind: pypi
-  name: rpds-py
-  version: 0.18.1
-  url: https://files.pythonhosted.org/packages/01/7d/8552e329973a198e5e150cc6be068f5cbae797a89e64c02bbd47bd397dee/rpds_py-0.18.1-cp312-none-win_amd64.whl
-  sha256: 720edcb916df872d80f80a1cc5ea9058300b97721efda8651efcd938a9c70a72
   requires_python: '>=3.8'
 - kind: conda
   name: ruff
