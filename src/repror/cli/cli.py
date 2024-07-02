@@ -56,9 +56,9 @@ def main(
 
 
 @app.command()
-def generate_recipes(all: Annotated[bool, typer.Option()] = False):
+def generate_recipes(all_: Annotated[bool, typer.Option()] = False):
     """Generate list of recipes from the configuration file."""
-    generate.generate_recipes(rattler_build_hash=rattler_build_hash(), all=all)
+    generate.generate_recipes(rattler_build_hash=rattler_build_hash(), all_=all_)
 
 
 def _check_local_rattler_build():

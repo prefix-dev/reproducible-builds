@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def _generate_recipes(
-    rattler_build_hash: str, all: bool = False, config_path: Optional[Path] = None
+    rattler_build_hash: str, all_: bool = False, config_path: Optional[Path] = None
 ):
     if not config_path:
         config_path = Path("config.yaml")
@@ -15,7 +15,7 @@ def _generate_recipes(
     # Prepare the matrix
     all_recipes = config.load_all_recipes(config_path=str(config_path))
 
-    if not all:
+    if not all_:
         # Get the name and hash of all the recipes
         name_and_hash = [(recipe.name, recipe.content_hash) for recipe in all_recipes]
         # Current rattler hash
@@ -36,9 +36,9 @@ def _generate_recipes(
 
 
 def generate_recipes(
-    rattler_build_hash: str, all: bool = False, config_path: Optional[Path] = None
+    rattler_build_hash: str, all_: bool = False, config_path: Optional[Path] = None
 ):
     """Generate list of recipes from the configuration file."""
-    recipe_list = _generate_recipes(rattler_build_hash, all, config_path)
+    recipe_list = _generate_recipes(rattler_build_hash, all_, config_path)
     # Convert the matrix to JSON
     print(json.dumps(recipe_list))
