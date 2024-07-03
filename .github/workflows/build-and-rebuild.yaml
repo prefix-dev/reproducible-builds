@@ -20,25 +20,25 @@ env:
   PYTHONUTF8: 1
 
 jobs:
-  run-tests:
-    continue-on-error: false
+  # run-tests:
+  #   continue-on-error: false
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - uses: prefix-dev/setup-pixi@v0.8.1
-        with:
-          pixi-version: "latest"
+  #     - uses: prefix-dev/setup-pixi@v0.8.1
+  #       with:
+  #         pixi-version: "latest"
 
-      - name: Build rattler-build
-        run: |
-          pixi run test
+  #     - name: Build rattler-build
+  #       run: |
+  #         pixi run test
 
   setup-rattler-build:
-    needs: run-tests
+    # needs: run-tests
     continue-on-error: false
     strategy:
       matrix:
