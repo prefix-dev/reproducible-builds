@@ -46,6 +46,8 @@ def main(
     - Build/rebuild packages using conda build
     - Manage a local rattler-build environment for custom builds
     - Rewrite the reproducible-builds README.md file with update statistics
+
+    Use REPRO_DB_NAME to set the database name. Default is local.repror.db, and production is repror.db
     """
     global_options.no_output = no_output
     global_options.config_path = config_path

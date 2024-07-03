@@ -76,7 +76,7 @@ local:
   - path: recipes/memory_profiler/recipe.yaml
   - path: recipes/ruby/recipe.yaml
 rattler-build:
-  rev: a47f907eaacc345dcd9441fe08d43057b18e2e83
+  rev: ba692c24ff2fe2448f5f1dc0d342fcbd873ac2dc
   url: https://github.com/prefix-dev/rattler-build.git
 repositories:
   - recipes:
