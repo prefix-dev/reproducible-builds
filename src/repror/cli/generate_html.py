@@ -108,7 +108,11 @@ def remove_ansi_codes(text: str) -> str:
     return ansi_escape.sub("", text)
 
 
-def rerender_html(root_folder: Path, update_remote: bool = False, config_path: Path = Path("config.yaml")):
+def rerender_html(
+    root_folder: Path,
+    update_remote: bool = False,
+    config_path: Path = Path("config.yaml"),
+):
     docs_folder = get_docs_dir(root_folder)
     print(f"Generating into : {docs_folder}")
 

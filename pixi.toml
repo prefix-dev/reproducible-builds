@@ -24,6 +24,7 @@ generate-html-prod = { cmd = "repror generate-html", env = { REPRO_DB_NAME = "re
 ] }
 # Used to generate build matrix for githubgenerate-html = "repror generate-html"
 generate-recipes = "repror --no-output generate-recipes"
+generate-recipes-failed = "repror --no-output generate-recipes --only-failed"
 # Build recipes in the recipes folder
 build-recipe = "repror build-recipe"
 # Same as above but skip rattler-build setup

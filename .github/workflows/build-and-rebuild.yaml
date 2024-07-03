@@ -42,7 +42,9 @@ jobs:
     continue-on-error: false
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest]
+
 
     runs-on: ${{ matrix.os }}
 
@@ -84,7 +86,7 @@ jobs:
           key: v4-${{ runner.os }}-rattler-build-${{ steps.read-yaml.outputs['rattler-build.rev'] }}
 
   generate-recipes:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     needs: setup-rattler-build
     outputs:
       recipe: ${{ steps.generate-matrix.outputs.recipes }}
@@ -99,7 +101,7 @@ jobs:
       - name: Generate matrix
         id: generate-matrix
         run: |
-          message="$(pixi r generate-recipes)"
+          message="$(pixi r generate-recipes-failed)"
           echo "$message"
           echo "recipes=$message" >> "$GITHUB_OUTPUT"
         env:
@@ -113,7 +115,9 @@ jobs:
       matrix:
         recipe_name: ${{ fromJson(needs.generate-recipes.outputs.recipe) }}
         # os: [ubuntu-latest]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        # os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest]
+
 
     runs-on: ${{ matrix.os }}
 
