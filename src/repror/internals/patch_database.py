@@ -37,6 +37,7 @@ def patch_recipes_to_db(recipes_dir: str = "recipe_info") -> int:
             )
             if not exisiting_recipe:
                 print(f":running: Writing {recipe_obj.name} to the database")
+                recipe_obj.id = None
                 session.add(recipe_obj)
             else:
                 print(
