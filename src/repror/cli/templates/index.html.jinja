@@ -136,7 +136,7 @@
             <div>Failure: <i class="{{ failure }}"></i></div>
         </div>
         {% for platform, builds in by_platform.items() %}
-        <div class="max-w-xl min-w-full py-2 mt-2 mb-6 overflow-x-auto" x-show="activeTab === {{loop.index}}">
+        <div class="max-w-xl min-w-full py-2 mt-2 mb-6" x-show="activeTab === {{loop.index}}">
             <table class="min-w-full bg-white border border-gray-300">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr class="border-b">
@@ -165,8 +165,8 @@
                             build.rebuild_state else 'N/A' }}
                         </td>
                         <td class="py-2 px-4" x-data="{ humanTime: timeAgo('{{ build.time }}') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4"></td>
-                            <pre>{{ build.reason if build.reason else "" }}</pre>
+                        <td class="py-2 px-4">
+                            <pre class="max-w-md overflow-auto">{{ build.reason if build.reason else "" }}</pre >
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="{{ build.actions_url }}"
