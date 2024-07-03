@@ -27,7 +27,7 @@ def _generate_recipes(
             name_and_hash,
             build_tool_hash=rattler_build_hash,
             platform_name=platform_name(),
-            platform_version=platform_version(),
+            # platform_version=platform_version(),
         )
         to_run = []
 
@@ -44,6 +44,7 @@ def _generate_recipes(
                 to_run.append(name)
 
         # Get the recipes that are failed, non-repro, or didn't run yet
+        import pdb; pdb.set_trace()
         return list(set(to_run))
 
     if not all_:
