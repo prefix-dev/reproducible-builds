@@ -13,7 +13,7 @@ def find_patches(folder_path: str) -> list[Path]:
     """
     Use glob to find all .json files in the folder
     """
-    json_files = glob.glob(os.path.join(folder_path, "**/*.json"))
+    json_files = glob.glob(os.path.join(folder_path, "**/*.json"), recursive=True)
     return [Path(file) for file in json_files]
 
 
