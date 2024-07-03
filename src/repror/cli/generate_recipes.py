@@ -41,7 +41,7 @@ def _generate_recipes(
 
         for name, hash in name_and_hash:
             if name not in finished_recipes:
-                to_run.append(recipe_name)
+                to_run.append(name)
 
         # Get the recipes that are failed, non-repro, or didn't run yet
         return list(set(to_run))
