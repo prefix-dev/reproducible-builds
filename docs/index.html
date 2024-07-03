@@ -107,15 +107,15 @@
                         </tr>
                         <tr>
                             <td>Total Builds:</td>
-                            <td class="font-bold">83</td >
+                            <td class="font-bold">100</td >
                         </tr>
                         <tr>
                             <td>Reproducible Builds:</td>
-                            <td class="font-bold">76</td >
+                            <td class="font-bold">84</td >
                         </tr>
                         <tr>
                             <td>Total Reproducibility:</td>
-                            <td class="font-bold" style="color: rgb(22, 117, 0)">91.57%</td >
+                            <td class="font-bold" style="color: rgb(41, 108, 0)">84.0%</td >
                         </tr>
                     </table>
                 </div>
@@ -138,15 +138,15 @@
                         </tr>
                         <tr>
                             <td>Total Builds:</td>
-                            <td class="font-bold">83</td >
+                            <td class="font-bold">100</td >
                         </tr>
                         <tr>
                             <td>Reproducible Builds:</td>
-                            <td class="font-bold">68</td >
+                            <td class="font-bold">76</td >
                         </tr>
                         <tr>
                             <td>Total Reproducibility:</td>
-                            <td class="font-bold" style="color: rgb(46, 105, 0)">81.93%</td >
+                            <td class="font-bold" style="color: rgb(61, 97, 0)">76.0%</td >
                         </tr>
                     </table>
                 </div>
@@ -169,7 +169,7 @@
                         </tr>
                         <tr>
                             <td>Total Builds:</td>
-                            <td class="font-bold">75</td >
+                            <td class="font-bold">91</td >
                         </tr>
                         <tr>
                             <td>Reproducible Builds:</td>
@@ -177,7 +177,7 @@
                         </tr>
                         <tr>
                             <td>Total Reproducibility:</td>
-                            <td class="font-bold" style="color: rgb(139, 58, 0)">45.33%</td >
+                            <td class="font-bold" style="color: rgb(160, 48, 0)">37.36%</td >
                         </tr>
                     </table>
                 </div>
@@ -217,6 +217,378 @@
                     </tr>
                 </thead>
                 <tbody>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>duckdb</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre> │ │ + python /var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/.tmpQqjAwk/conda_build_script.py
+ │ │ Traceback (most recent call last):
+ │ │   File "/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/.tmpQqjAwk/conda_build_script.py", line 1, in <module>
+ │ │     import duckdb
+ │ │ ModuleNotFoundError: No module named 'duckdb'
+ │ │
+ │ ╰─────────────────── (took 3 seconds)
+ │
+ ╰─────────────────── (took 5 minutes)
+ × error Error building package: failed to run test: Script failed with status Some(1).
+ × error Work directory: "/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/.tmpQqjAwk"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × failed to run test: Script failed with status Some(1).
+  │ Work directory: "/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/
+  │ T/.tmpQqjAwk"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gh</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[21:7]
+ 20 │   build:
+ 21 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 22 │     # - ${{ stdlib("c") }}
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gocommands</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[20:7]
+ 19 │   build:                                                                                                                                   
+ 20 │     - ${{ compiler('go-nocgo') }}                                                                                                                
+    ·       ─────────────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────────────
+    ·                                                                            ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                                                                              │ You should add `go-nocgo_compiler` to your variant config file.
+ 21 │     - ca-certificates                                                                                                                      
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>loki-logcli</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[32:7]
+ 31 │   build:
+ 32 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 33 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>nomad-driver-podman</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[33:7]
+ 32 │   build:
+ 33 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 34 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>oauth2-proxy</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[28:7]
+ 27 │   build:
+ 28 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 29 │ 
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>polars</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>rnal.exceptions.InstallationError: Could not build wheels for polars, which is required to install pyproject.toml-based projects
+ │ │ Removed build tracker: '/private/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/pip-build-tracker-e29_6w7v'
+ │ │
+ │ ╰─────────────────── (took 35 seconds)
+ │
+ ╰─────────────────── (took 65 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "/Users/runner/work/reproducible-builds/reproducible-builds/build_outputs/polars/bld/rattler-build_polars_1719996322/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "/Users/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/polars/bld/rattler-build_polars_1719996322/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>pyfai</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>sr/local/src/conda-prefix
+ │ │ + build_base
+ │ │ /Users/runner/work/reproducible-builds/reproducible-builds/build_outputs/pyfai/bld/rattler-build_pyfai-base_1719996293/work/conda_build.sh: line 10: build_
+ │ │ base: command not found
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ ╰─────────────────── (took 10 seconds)
+ × error Error building package: Script failed with status Some(127).
+ × error Work directory: "/Users/runner/work/reproducible-builds/reproducible-builds/build_outputs/pyfai/bld/rattler-build_pyfai-base_1719996293/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(127).
+  │ Work directory: "/Users/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/pyfai/bld/rattler-build_pyfai-base_1719996293/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>vhs</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[34:7]
+ 33 │   build:
+ 34 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 35 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
                     
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
@@ -283,6 +655,246 @@
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>cython</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>dartsim</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>gmp</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>jupyterlab</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>maturin</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>memory_profiler</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>mold</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>nettle</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>rasterio</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>ruby</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -893,30 +1505,6 @@
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>gmp</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4"></td>
-                            <pre></pre>
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>gping</b>
                         </td>
                         <td class="py-2 px-4">
@@ -1326,30 +1914,6 @@
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>munkres</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4"></td>
-                            <pre></pre>
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>nettle</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2233,6 +2797,422 @@
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
+                            <b>duckdb</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre> ┆ pyhd8ed1ab_0       ┆ conda-forge ┆ 485.29 KiB │
+ │ │ ╰──────────────────┴──────────┴────────────────────┴─────────────┴────────────╯
+ │ │ ✔ Successfully updated the environment
+ │ │ + python /tmp/.tmp319nsq/conda_build_script.py
+ │ │ Traceback (most recent call last):
+ │ │   File "/tmp/.tmp319nsq/conda_build_script.py", line 1, in <module>
+ │ │     import duckdb
+ │ │ ModuleNotFoundError: No module named 'duckdb'
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ ╰─────────────────── (took 13 minutes)
+ × error Error building package: failed to run test: Script failed with status Some(1).
+ × error Work directory: "/tmp/.tmp319nsq"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × failed to run test: Script failed with status Some(1).
+  │ Work directory: "/tmp/.tmp319nsq"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gh</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[21:7]
+ 20 │   build:
+ 21 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 22 │     # - ${{ stdlib("c") }}
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gocommands</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[20:7]
+ 19 │   build:                                                                                                                                   
+ 20 │     - ${{ compiler('go-nocgo') }}                                                                                                                
+    ·       ─────────────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────────────
+    ·                                                                            ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                                                                              │ You should add `go-nocgo_compiler` to your variant config file.
+ 21 │     - ca-certificates                                                                                                                      
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>loki-logcli</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[32:7]
+ 31 │   build:
+ 32 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 33 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>nettle</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>│ │ make[1]: *** Waiting for unfinished jobs....
+ │ │ make[1]: Leaving directory '/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/nettle/bld/rattler-build_nettle_1719995717/work'
+ │ │ make: *** [Makefile:47: all] Error 2
+ │ │
+ │ ╰─────────────────── (took 16 seconds)
+ │
+ ╰─────────────────── (took 20 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/nettle/bld/rattler-build_nettle_1719995717/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/nettle/bld/rattler-build_nettle_1719995717/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>nomad-driver-podman</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[33:7]
+ 32 │   build:
+ 33 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 34 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>oauth2-proxy</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[28:7]
+ 27 │   build:
+ 28 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 29 │ 
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>polars</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>n run
+ │ │     raise InstallationError(
+ │ │ pip._internal.exceptions.InstallationError: Could not build wheels for polars, which is required to install pyproject.toml-based projects
+ │ │ Removed build tracker: '/tmp/pip-build-tracker-ioogsqjg'
+ │ │
+ │ ╰─────────────────── (took 26 seconds)
+ │
+ ╰─────────────────── (took 42 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/polars/bld/rattler-build_polars_1719995717/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/polars/bld/rattler-build_polars_1719995717/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>pyfai</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>in/x86_64-conda-linux-gnu-g++
+ │ │ + build_base
+ │ │ /home/runner/work/reproducible-builds/reproducible-builds/build_outputs/pyfai/bld/rattler-build_pyfai-base_1719995717/work/conda_build.sh: line 10: build_b
+ │ │ ase: command not found
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 8 seconds)
+ × error Error building package: Script failed with status Some(127).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/pyfai/bld/rattler-build_pyfai-base_1719995717/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(127).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/pyfai/bld/rattler-build_pyfai-base_1719995717/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>vhs</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[34:7]
+ 33 │   build:
+ 34 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 35 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>cargo-edit</b>
                         </td>
                         <td class="py-2 px-4">
@@ -2401,30 +3381,6 @@
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>nettle</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4"></td>
-                            <pre></pre>
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>pyyaml</b>
                         </td>
                         <td class="py-2 px-4">
@@ -2511,6 +3467,222 @@
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>cython</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>dartsim</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>gmp</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>jupyterlab</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>maturin</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>memory_profiler</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>mold</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>rasterio</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>ruby</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -3050,30 +4222,6 @@
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>frozenlist</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4"></td>
-                            <pre></pre>
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>gmp</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -4245,6 +5393,606 @@
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
+                            <b>dartsim</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>262_1001 ┆ conda-forge ┆ 2.26 MiB   │
+ │ │ │ libxml2         ┆ 2.12.7       ┆ h283a6d9_1            ┆ conda-forge ┆ 1.63 MiB   │
+ │ │ │ pthreads-win32  ┆ 2.9.1        ┆ hfa6e2cd_3            ┆ conda-forge ┆ 140.92 KiB │
+ │ │ │ vc              ┆ 14.3         ┆ h8a93ad2_20           ┆ conda-forge ┆ 16.98 KiB  │
+ │ │ ╰─────────────────┴──────────────┴───────────────────────┴─────────────┴────────────╯
+ │ │
+ │ ╰─────────────────── (took 3 seconds)
+ │
+ ╰─────────────────── (took 58 seconds)
+ × error Error building package: failed to setup test environment: failed to link console_bridge-1.0.2-h5362a0b_1.tar.bz2
+Error:   × failed to setup test environment: failed to link console_bridge-1.0.2-
+  │ h5362a0b_1.tar.bz2
+  ├─▶ failed to link console_bridge-1.0.2-h5362a0b_1.tar.bz2
+  ├─▶ failed to link 'Library/CMake/console_bridge-config-version.cmake'
+  ├─▶ failed to copy file to destination
+  ╰─▶ The process cannot access the file because it is being used by another
+      process. (os error 32)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gmp</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>────
+  help: expected field `script` to be a list of commands
+Error:   × Parsing: missing field `script`
+    ╭─[34:10]
+ 33 │     tests:
+ 34 │ ╭─▶   - files:
+ 35 │ │         recipe:
+ 36 │ │           - test.c
+ 37 │ │       requirements:
+ 38 │ │         run:
+ 39 │ │           - ${{ compiler('c') }}
+ 40 │ │       script:
+ 41 │ │         - if: unix
+ 42 │ │           then: test -f ${PREFIX}/lib/libgmp.a
+ 43 │ │         - if: osx
+ 44 │ │           then: test -f ${PREFIX}/lib/libgmp.dylib
+ 45 │ │         - if: linux
+ 46 │ │           then: test -f ${PREFIX}/lib/libgmp.so
+ 47 │ │         - if: unix
+ 48 │ │           then: test -f ${PREFIX}/lib/libgmpxx.a
+ 49 │ │         - if: osx
+ 50 │ │           then: test -f ${PREFIX}/lib/libgmpxx.dylib
+ 51 │ │         - if: linux
+ 52 │ │           then: test -f ${PREFIX}/lib/libgmpxx.so
+ 53 │ │   
+ 54 │ ├─▶ about:
+    · ╰──── here
+ 55 │       license: GPL-2.0-or-later OR LGPL-3.0-or-later
+    ╰────
+  help: expected field `script` to be a list of commands
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>polars</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>0.0.22621.0 
+ │ │ **********************************************************************
+ │ │ ** Visual Studio 2022 Developer Command Prompt v17.10.3
+ │ │ ** Copyright (c) 2022 Microsoft Corporation
+ │ │ **********************************************************************
+ │ │ [vcvarsall.bat] Environment initialized for: 'x64'
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ │ ╭─ Packaging new files
+ │ │ Copying done!
+ │ │ Post-processing done!
+ │ │ Writing metadata for package
+ │ │ Copying license files
+ │ │ × error File already exists: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\polarsjQlgxR\\info/licenses/LICENSE"
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 4 minutes)
+ × error Error building package: FileSystem error: 'Path "C:\Users\RUNNER~1\AppData\Local\Temp\polarsjQlgxR\info/licenses/LICENSE" already exists!'
+Error:   × FileSystem error: 'Path "C:
+  │ \Users\RUNNER~1\AppData\Local\Temp\polarsjQlgxR\info/licenses/LICENSE"
+  │ already exists!'
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>cython</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>ionError(
+ │ │ pip._internal.exceptions.InstallationError: Could not build wheels for Cython, which is required to install pyproject.toml-based projects
+ │ │ Removed build tracker: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pip-build-tracker-uyk1t99z'
+ │ │
+ │ ╰─────────────────── (took 9 seconds)
+ │
+ ╰─────────────────── (took 21 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\cython\\bld\\rattler-build_cython_1719995743\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\cython\\bld\\rattler-build_cython_1719995743\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>duckdb</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ │ │ Removed build tracker: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pip-build-tracker-wqttly0f'
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\duckdb\bld\rattler-build_python-duckdb_1719995748\work>if 1 NEQ 0 exit 1 
+ │ │
+ │ ╰─────────────────── (took 6 seconds)
+ │
+ ╰─────────────────── (took 28 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\duckdb\\bld\\rattler-build_python-duckdb_1719995748\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\duckdb\\bld\\rattler-build_python-duckdb_1719995748\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gh</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[21:7]
+ 20 │   build:
+ 21 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 22 │     # - ${{ stdlib("c") }}
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>gocommands</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[20:7]
+ 19 │   build:                                                                                                                                   
+ 20 │     - ${{ compiler('go-nocgo') }}                                                                                                                
+    ·       ─────────────────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────────────────────
+    ·                                                                            ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                                                                              │ You should add `go-nocgo_compiler` to your variant config file.
+ 21 │     - ca-certificates                                                                                                                      
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>loki-logcli</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[32:7]
+ 31 │   build:
+ 32 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 33 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>maturin</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: m2w64_c
+  │ You should add `m2w64_c_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[34:13]
+ 33 │     - if: win
+ 34 │       then: ${{ compiler('m2w64_c') }}
+    ·             ─────────────┬────────────
+    ·                          ╰─┤ undefined value: No compiler found for language: m2w64_c
+    ·                            │ You should add `m2w64_c_compiler` to your variant config file.
+ 35 │     - if: win
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>nomad-driver-podman</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[33:7]
+ 32 │   build:
+ 33 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 34 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>oauth2-proxy</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[28:7]
+ 27 │   build:
+ 28 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 29 │ 
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>pyfai</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>work>exit /B 0 
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\pyfai\bld\rattler-build_pyfai-base_1719995747\work>build_base
+ │ │ 'build_base' is not recognized as an internal or external command,
+ │ │ operable program or batch file.
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 25 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\pyfai\\bld\\rattler-build_pyfai-base_1719995747\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\pyfai\\bld\\rattler-build_pyfai-base_1719995747\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>rasterio</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>│ │ C:\Users\RUNNER~1\AppData\Local\Temp\.tmpY0haB7>IF "" == "" (call C:\Users\RUNNER~1\AppData\Local\Temp\.tmpY0haB7\build_env.bat ) 
+ │ │ Traceback (most recent call last):
+ │ │   File "%PREFIX%\Scripts\rio-script.py", line 6, in <module>
+ │ │     from rasterio.rio.main import main_group
+ │ │ ModuleNotFoundError: No module named 'rasterio'
+ │ │
+ │ ╰─────────────────── (took 9 seconds)
+ │
+ ╰─────────────────── (took 2 minutes)
+ × error Error building package: failed to run test: Script failed with status Some(1).
+ × error Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpY0haB7"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × failed to run test: Script failed with status Some(1).
+  │ Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmpY0haB7"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>vhs</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre>
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: go-nocgo
+  │ You should add `go-nocgo_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[34:7]
+ 33 │   build:
+ 34 │     - ${{ compiler('go-nocgo') }}
+    ·       ─────────────┬─────────────
+    ·                    ╰─┤ undefined value: No compiler found for language: go-nocgo
+    ·                      │ You should add `go-nocgo_compiler` to your variant config file.
+ 35 │     - go-licenses
+    ╰────
+
+</pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>aom</b>
                         </td>
                         <td class="py-2 px-4">
@@ -4510,30 +6258,6 @@
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
                             <b>frozenlist</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4"></td>
-                            <pre></pre>
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>gmp</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -5219,6 +6943,78 @@
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>jupyterlab</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>memory_profiler</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>ruby</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4"></td>
+                            <pre></pre>
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -6117,21 +7913,21 @@
     
     // Change the title of the chart
     const data_darwin = {
-        labels: ["2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02"],
+        labels: ["2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02", "2024-07-03"],
         datasets: [
             {
                 label: 'Reproducible',
-                data: [73, 76, 76, 76, 76, 76, 76, 76, 76, 76],
+                data: [76, 76, 76, 76, 76, 76, 76, 76, 76, 84],
                 fill: true,
             },
             {
                 label: 'Builds',
-                data: [74, 79, 79, 79, 79, 79, 79, 79, 79, 79],
+                data: [79, 79, 79, 79, 79, 79, 79, 79, 79, 87],
                 fill: true,
             },
             {
                 label: 'Total Builds',
-                data: [76, 83, 83, 83, 83, 83, 83, 83, 83, 83],
+                data: [83, 83, 83, 83, 83, 83, 83, 83, 83, 100],
                 fill: false
             },
             {
@@ -6159,21 +7955,21 @@
     
     // Change the title of the chart
     const data_linux = {
-        labels: ["2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02"],
+        labels: ["2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02", "2024-07-03"],
         datasets: [
             {
                 label: 'Reproducible',
-                data: [66, 68, 68, 68, 68, 68, 68, 68, 68, 68],
+                data: [68, 68, 68, 68, 68, 68, 68, 68, 68, 76],
                 fill: true,
             },
             {
                 label: 'Builds',
-                data: [68, 71, 71, 71, 71, 71, 71, 71, 71, 71],
+                data: [71, 71, 71, 71, 71, 71, 71, 71, 71, 79],
                 fill: true,
             },
             {
                 label: 'Total Builds',
-                data: [76, 83, 83, 83, 83, 83, 83, 83, 83, 83],
+                data: [83, 83, 83, 83, 83, 83, 83, 83, 83, 100],
                 fill: false
             },
             {
@@ -6201,21 +7997,21 @@
     
     // Change the title of the chart
     const data_windows = {
-        labels: ["2024-06-23", "2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02"],
+        labels: ["2024-06-24", "2024-06-25", "2024-06-26", "2024-06-27", "2024-06-28", "2024-06-29", "2024-06-30", "2024-07-01", "2024-07-02", "2024-07-03"],
         datasets: [
             {
                 label: 'Reproducible',
-                data: [32, 34, 34, 34, 34, 34, 34, 34, 34, 34],
+                data: [34, 34, 34, 34, 34, 34, 34, 34, 34, 34],
                 fill: true,
             },
             {
                 label: 'Builds',
-                data: [33, 35, 35, 35, 35, 35, 35, 35, 35, 35],
+                data: [35, 35, 35, 35, 35, 35, 35, 35, 35, 38],
                 fill: true,
             },
             {
                 label: 'Total Builds',
-                data: [62, 75, 75, 75, 75, 75, 75, 75, 75, 75],
+                data: [75, 75, 75, 75, 75, 75, 75, 75, 75, 91],
                 fill: false
             },
             {
