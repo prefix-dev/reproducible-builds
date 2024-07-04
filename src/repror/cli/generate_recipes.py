@@ -13,7 +13,9 @@ def _generate_recipes(
 
     if not all_:
         # Get the name and hash of all the recipes
-        name_and_hash = [(recipe.name, recipe.content_hash) for recipe in all_recipes]
+        name_and_hash = [
+            (recipe.name, recipe.content_hash) for recipe in all_recipes.all_recipes
+        ]
         # Current rattler hash
         # Latest build with rebuild, a.k.a. finished recipes
         finished_recipes = get_latest_build_with_rebuild(
@@ -25,10 +27,12 @@ def _generate_recipes(
 
         # Get the recipes that are not finished yet
         return [
-            recipe.name for recipe in all_recipes if recipe.name not in finished_recipes
+            recipe.name
+            for recipe in all_recipes.all_recipes
+            if recipe.name not in finished_recipes
         ]
     else:
-        return [recipe.name for recipe in all_recipes]
+        return [recipe.name for recipe in all_recipes.all_recipes]
 
 
 def generate_recipes(

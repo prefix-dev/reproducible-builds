@@ -123,7 +123,7 @@ def rerender_html(
 
     builds = get_rebuild_data()
 
-    total_recipes = len(load_all_recipes(str(config_path)))
+    total_recipes = len(load_all_recipes(str(config_path)).all_recipes)
 
     # Statistics for graph
     counts_per_platform = {}

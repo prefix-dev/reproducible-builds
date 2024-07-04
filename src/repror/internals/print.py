@@ -3,7 +3,6 @@ import re
 import platform
 
 from rich import print as rich_print
-from rich.table import Table
 from typing import Any, IO, Optional
 from .options import global_options
 
@@ -59,7 +58,7 @@ def print(
         logging.debug("Disabled output")
         return
 
-    if objects and isinstance(objects[0], Table):
+    if objects and not isinstance(objects[0], (str, bytes)):
         return rich_print(*objects, sep=sep, end=end, file=file, flush=flush)
 
     if platform.system() == "Windows":

@@ -13,7 +13,7 @@ def test_load_all_recipes_test():
     """Check to see if all recipes can be loaded"""
     recipes = load_all_recipes(Path(__file__).parent.parent / "config.yaml")
     remote_recipe = next(
-        filter(lambda recipe: isinstance(recipe, RemoteRecipe), recipes)
+        filter(lambda recipe: isinstance(recipe, RemoteRecipe), recipes.all_recipes)
     )
     with remote_recipe.local_path as local_path:
         assert Path(local_path).exists()

@@ -26,6 +26,7 @@ from . import rebuild_recipe as rebuild
 from .utils import pixi_root_cli, platform_name, reproducible_table
 
 from ..internals.options import global_options
+from ..internals.config import load_all_recipes
 
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)
@@ -148,10 +149,7 @@ def rebuild_recipe(
 @app.command()
 def merge_patches(update_remote: Annotated[bool, typer.Option()] = False):
     """Merge database patches after CI jobs run to the database."""
-    num_builds_patches, num_recipes_patches = (
-        patch_database.patch_builds_to_db(),
-        patch_database.patch_recipes_to_db(),
-    )
+    num_builds_patches = patch_database.patch_builds_to_db()
 
     if num_builds_patches > 0:
         print(
@@ -160,14 +158,9 @@ def merge_patches(update_remote: Annotated[bool, typer.Option()] = False):
     else:
         print(":man_shrugging: No build patches to merge.")
 
-    if num_recipes_patches > 0:
-        print(
-            f":red_car: Database patched. {num_builds_patches} recipe patches applied."
-        )
-    else:
-        print(":man_shrugging: No recipe patches to merge.")
+    all_recipes = load_all_recipes()
 
-    if update_remote and (num_builds_patches > 0 or num_recipes_patches > 0):
+    if update_remote and (num_builds_patches > 0 or all_recipes.saved_recipes > 0):
         print(":globe_with_meridians: Database patches merged to remote database.")
         patch_database.write_database_to_remote()
 
