@@ -47,6 +47,8 @@ def main(
     - Build/rebuild packages using conda build
     - Manage a local rattler-build environment for custom builds
     - Rewrite the reproducible-builds README.md file with update statistics
+
+    Use REPRO_DB_NAME to set the database name. Default is local.repror.db, and production is repror.db
     """
     global_options.no_output = no_output
     global_options.config_path = config_path
@@ -64,9 +66,12 @@ def generate_recipes(
     all_: Annotated[
         bool, typer.Option("--all", help="Generate all recipe names")
     ] = False,
+    only_failed: Annotated[bool, typer.Option()] = False,
 ):
     """Generate list of recipes from the configuration file. By default it will print only the ones that are not built yet."""
-    generate.generate_recipes(rattler_build_hash=rattler_build_hash(), all_=all_)
+    generate.generate_recipes(
+        rattler_build_hash=rattler_build_hash(), all_=all_, only_failed=only_failed
+    )
 
 
 def _check_local_rattler_build():

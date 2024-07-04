@@ -48,9 +48,9 @@ def rebuild_recipe(
 
     latest_build_with_rebuild = get_latest_build_with_rebuild(
         recipes_to_find,
-        rattler_hash,
+        # rattler_hash,
         platform_name,
-        platform_version,
+        # platform_version,
     )
 
     for recipe in recipes:

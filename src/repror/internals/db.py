@@ -226,9 +226,9 @@ def get_latest_builds(
 
 def get_latest_build_with_rebuild(
     recipe_names_and_hash: list[tuple[str, str]],
-    build_tool_hash: str,
+    # build_tool_hash: str,
     platform_name: str,
-    platform_version: str,
+    # platform_version: str,
 ) -> dict[str, tuple[Build, Optional[Rebuild]]]:
     with get_session() as session:
         conditions = [
@@ -243,9 +243,9 @@ def get_latest_build_with_rebuild(
                 func.max(Build.timestamp).label("max_timestamp"),
             )
             .where(or_(*conditions))
-            .where(Build.build_tool_hash == build_tool_hash)
+            # .where(Build.build_tool_hash == build_tool_hash)
             .where(Build.platform_name == platform_name)
-            .where(Build.platform_version == platform_version)
+            # .where(Build.platform_version == platform_version)
             .group_by(Build.recipe_name, Build.recipe_hash)
         ).subquery()
 
