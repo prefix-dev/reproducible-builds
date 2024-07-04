@@ -81,9 +81,15 @@ def load_remote_recipes(
     return remote_recipes
 
 
-def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | RemoteRecipe]:
+class LoadedRecipes(BaseModel):
+    all_recipes: list[RecipeDB | RemoteRecipe]
+    saved_recipes: int
+
+
+def load_all_recipes(config_path: str = "config.yaml") -> LoadedRecipes:
     config = load_config(config_path)
     recipes = []
+    saved_recipes = 0
     with tempfile.TemporaryDirectory() as clone_dir:
         # iterate over existing recipes
         # this is done to avoid not-so-intuitive setup of the :memory: database
@@ -108,7 +114,13 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
                     for repo, recipes in recipes_to_fetch.items()
                 ],
             )
-            [save(recipe) for repo_recipes in remote_recipes for recipe in repo_recipes]
+            saved_recipes = len(
+                [
+                    save(recipe)
+                    for repo_recipes in remote_recipes
+                    for recipe in repo_recipes
+                ]
+            )
             [recipes.extend(recipe_list) for recipe_list in remote_recipes]
 
     for local in config.local:
@@ -124,4 +136,4 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
         )
         recipes.append(recipe)
 
-    return recipes
+    return LoadedRecipes(all_recipes=recipes, saved_recipes=saved_recipes)

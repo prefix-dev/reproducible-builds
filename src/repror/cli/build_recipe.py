@@ -14,7 +14,7 @@ from repror.internals.config import load_all_recipes
 from repror.internals.db import get_latest_builds, save, Recipe, RemoteRecipe
 from repror.internals.rattler_build import rattler_build_hash
 from repror.internals.build import BuildStatus
-from repror.internals.patcher import save_patch, save_recipe_patch
+from repror.internals.patcher import save_patch
 from rich.table import Table
 from rich import print
 
@@ -28,18 +28,18 @@ def recipes_for_names(
     all_recipes = load_all_recipes(config_path)
     if recipe_names:
         recipes_to_build = []
-        all_recipes_names = [recipe.name for recipe in all_recipes]
+        all_recipes_names = [recipe.name for recipe in all_recipes.all_recipes]
         for recipe_to_filter in recipe_names:
             if recipe_to_filter not in all_recipes_names:
                 raise ValueError(
                     f"Recipe {recipe_to_filter} not found in the configuration file"
                 )
             recipes_to_build.append(
-                all_recipes[all_recipes_names.index(recipe_to_filter)]
+                all_recipes.all_recipes[all_recipes_names.index(recipe_to_filter)]
             )
 
     else:
-        recipes_to_build = all_recipes
+        recipes_to_build = all_recipes.all_recipes
 
     return recipes_to_build
 
@@ -119,8 +119,6 @@ def build_recipes(
         if patch:
             print(f"Saving patch for {build_result.build.recipe_name}")
             save_patch(build_result.build)
-            if isinstance(recipe, RemoteRecipe):
-                save_recipe_patch(recipe)
 
         # We need to save the rebuild result to the database
         # even though we are using patches because we might invoke
