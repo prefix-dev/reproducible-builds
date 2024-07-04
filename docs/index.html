@@ -116,7 +116,7 @@
                 <pre class="mb-4 max-w-[80vw] overflow-auto" x-html="ansiToHtml($store.modal.modalMessage)"></pre>
                 <button @click="$store.modal.closeModal()" class="px-4 py-2 bg-red-500 text-white rounded">Close Modal</button>
             </div>
-        </div>
+        </div>div>
         </div >
     </div>
     <div class="container mx-auto p-4" x-data="platformTab()">
@@ -8164,8 +8164,9 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
             },
             {
                 label: 'Total Recipes',
-                data: 100,
-                fill: false
+                data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                fill: false,
+                borderDash: [10, 5],
             },
         ]
     };
@@ -8206,8 +8207,9 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
             },
             {
                 label: 'Total Recipes',
-                data: 100,
-                fill: false
+                data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                fill: false,
+                borderDash: [10, 5],
             },
         ]
     };
@@ -8248,8 +8250,9 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
             },
             {
                 label: 'Total Recipes',
-                data: 100,
-                fill: false
+                data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100],
+                fill: false,
+                borderDash: [10, 5],
             },
         ]
     };
