@@ -9,6 +9,7 @@ context:
   xorg_category: xcb
   name: pthread-stubs
   version: 0.4
+  am_version: 1.15
 
 package:
   name: ${{ name|lower }}

@@ -20,16 +20,16 @@ outputs:
     build:
       script:
         - if: unix
-          then: install.sh
+          then: install_library.sh
         - if: win
-          then: install.bat
+          then: install_library.bat
     requirements:
       build:
         - cmake
         - ${{ compiler('c') }}
         - ninja
       run_exports:
-        - ${{ pin_subpackage("libbrotlicommon", max_pin="x.x") }}
+        - ${{ pin_subpackage("libbrotlicommon", upper_bound="x.x") }}
     tests:
       - script:
           - if: unix
@@ -47,9 +47,9 @@ outputs:
     build:
       script:
         - if: unix
-          then: install.sh
+          then: install_library.sh
         - if: win
-          then: install.bat
+          then: install_library.bat
     requirements:
       build:
         - cmake
@@ -60,7 +60,7 @@ outputs:
       run:
         - ${{ pin_subpackage("libbrotlicommon", exact=True) }}
       run_exports:
-        - ${{ pin_subpackage("libbrotlienc", max_pin="x.x") }}
+        - ${{ pin_subpackage("libbrotlienc", upper_bound="x.x") }}
     tests:
       - script:
           - if: unix
@@ -78,9 +78,9 @@ outputs:
     build:
       script:
         - if: unix
-          then: install.sh
+          then: install_library.sh
         - if: win
-          then: install.bat
+          then: install_library.bat
     requirements:
       build:
         - cmake
@@ -91,7 +91,7 @@ outputs:
       run:
         - ${{ pin_subpackage("libbrotlicommon", exact=True) }}
       run_exports:
-        - ${{ pin_subpackage("libbrotlidec", max_pin="x.x") }}
+        - ${{ pin_subpackage("libbrotlidec", upper_bound="x.x") }}
     tests:
       - script:
           - if: unix
@@ -109,9 +109,9 @@ outputs:
     build:
       script:
         - if: unix
-          then: install.sh
+          then: install_library.sh
         - if: win
-          then: install.bat
+          then: install_library.bat
     requirements:
       build:
         - cmake
@@ -131,9 +131,9 @@ outputs:
     build:
       script:
         - if: unix
-          then: install.sh
+          then: install_library.sh
         - if: win
-          then: install.bat
+          then: install_library.bat
     requirements:
       build:
         - cmake
@@ -148,9 +148,9 @@ outputs:
         - ${{ pin_subpackage("libbrotlidec", exact=True) }}
         - ${{ pin_subpackage("brotli-bin", exact=True) }}
       run_exports:
-        - ${{ pin_subpackage("libbrotlicommon", max_pin="x.x") }}
-        - ${{ pin_subpackage("libbrotlienc", max_pin="x.x") }}
-        - ${{ pin_subpackage("libbrotlidec", max_pin="x.x") }}
+        - ${{ pin_subpackage("libbrotlicommon", upper_bound="x.x") }}
+        - ${{ pin_subpackage("libbrotlienc", upper_bound="x.x") }}
+        - ${{ pin_subpackage("libbrotlidec", upper_bound="x.x") }}
     tests:
       - script:
           - brotli --help
@@ -195,9 +195,9 @@ outputs:
     build:
       script:
         - if: unix
-          then: install.sh
+          then: install_python.sh
         - if: win
-          then: install.bat
+          then: install_python.bat
     requirements:
       ignore_run_exports:
         from_package:

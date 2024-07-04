@@ -14,6 +14,8 @@ source:
 build:
   number: 0
   noarch: generic
+  skip: 
+    - win
 
 tests:
   - requirements:
@@ -21,9 +23,9 @@ tests:
         - bzip2
     script:
       - if: unix
-        then: test -f ${PREFIX}/fonts/Inconsolata-Regular.ttf
-      - if: unix
-        then: test -f ${PREFIX}/fonts/Inconsolata-Bold.ttf
+        then: 
+          - test -f ${PREFIX}/fonts/Inconsolata-Regular.ttf
+          - test -f ${PREFIX}/fonts/Inconsolata-Bold.ttf
 
 about:
   summary: Monospace font for pretty code listings
