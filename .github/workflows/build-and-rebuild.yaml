@@ -108,7 +108,7 @@ jobs:
   build-and-rebuild-recipes:
     needs: generate-recipes
     name: ${{ matrix.recipe_name }}-${{ matrix.os }}
-    if: ${{ fromJson(needs.generate-recipes.outputs.recipe) }}[0] != null
+    if: fromJson(needs.generate-recipes.outputs.recipe)[0] != null
     continue-on-error: true
     strategy:
       matrix:
