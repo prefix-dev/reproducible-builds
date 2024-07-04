@@ -163,6 +163,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           # shellcheck disable=SC1012
+          pixi global install m2-patch
           pixi run repror build-recipe ${{ matrix.recipe_name }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Set timezone to Los Angeles

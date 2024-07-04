@@ -24,16 +24,16 @@ build:
         python -m pip install .
         --global-option="--with-libyaml"
         --global-option="build_ext"
-        --global-option="-I${PREFIX}/include"  # [unix]
-        --global-option="-L${PREFIX}/lib"      # [unix]
+        --global-option="-I${PREFIX}/include"
+        --global-option="-L${PREFIX}/lib"
     - if: win
       then:
        - >
         python -m pip install .
         --global-option="--with-libyaml"
         --global-option="build_ext"
-        --global-option="-I%LIBRARY_INC%"      # [win]
-        --global-option="-L%LIBRARY_LIB%"      # [win]
+        --global-option="-I%LIBRARY_INC%"
+        --global-option="-L%LIBRARY_LIB%"
 
 requirements:
   build:

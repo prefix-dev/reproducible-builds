@@ -11,12 +11,11 @@ source:
   - if: linux and not aarch64
     then:
       url: https://github.com/jgm/pandoc/releases/download/${{ version }}/pandoc-${{ version }}-linux-amd64.tar.gz
-      sha256: ea3f96dde56ae1577c81184694b8576d8efec52e168ce49a6e7df1441f428289  # [linux and not aarch64]
-
+      sha256: ea3f96dde56ae1577c81184694b8576d8efec52e168ce49a6e7df1441f428289
   - if: linux and aarch64
     then:
-     url: https://github.com/jgm/pandoc/releases/download/${{ version }}/pandoc-${{ version }}-linux-arm64.tar.gz  # [linux and aarch64]
-     sha256: 93d6c414e5994e254aec840be8428016a70167c835ca3227378217937bd9a01a  # [linux and aarch64]
+     url: https://github.com/jgm/pandoc/releases/download/${{ version }}/pandoc-${{ version }}-linux-arm64.tar.gz
+     sha256: 93d6c414e5994e254aec840be8428016a70167c835ca3227378217937bd9a01a
   - if: osx and not arm64
     then:
       url: https://github.com/jgm/pandoc/releases/download/${{ version }}/pandoc-${{ version }}-x86_64-macOS.zip  # [osx and not arm64]
