@@ -150,7 +150,7 @@ def rerender_html(
                 # Total builds = builds + failed builds
                 "total_builds": [count.total_builds for count in counts],
                 # Total recipes
-                "total_recipes": total_recipes,
+                "total_recipes": [total_recipes for _ in counts],
             }
 
         if build.state == BuildState.FAIL:
