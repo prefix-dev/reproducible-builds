@@ -109,15 +109,14 @@
 
 <body class="bg-gray-100">
     <!-- Error messages modal -->
-    <div x-show="$store.modal.show" x-cloak id="modal" class="modal fixed inset-0 bg-gray-800 bg-opacity-75 items-center justify-center z-10 ">
+    <div x-data x-show="$store.modal.show" x-cloak id="modal" class="modal fixed inset-0 bg-gray-800 bg-opacity-75 items-center justify-center z-10 ">
         <div  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
             <div class="bg-white rounded-lg p-8 mx-auto" @click.outside="$store.modal.closeModal()">
                 <h2 class="text-2xl mb-4">Error Reason</h2>
                 <pre class="mb-4 max-w-[80vw] overflow-auto" x-html="ansiToHtml($store.modal.modalMessage)"></pre>
                 <button @click="$store.modal.closeModal()" class="px-4 py-2 bg-red-500 text-white rounded">Close Modal</button>
             </div>
-        </div>div>
-        </div >
+        </div>
     </div>
     <div class="container mx-auto p-4" x-data="platformTab()">
         <h1 class="text-4xl font-bold py-6 mx-auto">
@@ -777,6 +776,438 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>ca-certificates</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>contourpy</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>font-ttf-inconsolata</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>freetype</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>jpeg</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>lerc</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libdeflate</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libffi</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libopus</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libsodium</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libxslt</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pandoc</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pip</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pthread-stubs</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pyyaml</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>setuptools</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>xorg-kbproto</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>zlib-split</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>cython</b>
                         </td>
                         <td class="py-2 px-4">
@@ -1185,30 +1616,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>ca-certificates</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>cargo-edit</b>
                         </td>
                         <td class="py-2 px-4">
@@ -1305,30 +1712,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>contourpy</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>curl</b>
                         </td>
                         <td class="py-2 px-4">
@@ -1402,30 +1785,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>dua-cli</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>font-ttf-inconsolata</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -1569,30 +1928,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>freetype</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>frozenlist</b>
                         </td>
                         <td class="py-2 px-4">
@@ -1641,79 +1976,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>jpeg</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>kiwisolver</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>lerc</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libdeflate</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -1761,30 +2024,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libffi</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>libidn2</b>
                         </td>
                         <td class="py-2 px-4">
@@ -1809,79 +2048,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libopus</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libsodium</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>libxml2</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libxslt</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2049,55 +2216,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pandoc</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>pcre2-split-recipe</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pip</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2146,30 +2265,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>psutil</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pthread-stubs</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2242,30 +2337,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>pytz</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pyyaml</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2362,30 +2433,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>ruamel.yaml</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>setuptools</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2673,30 +2720,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>xorg-kbproto</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>xz</b>
                         </td>
                         <td class="py-2 px-4">
@@ -2746,30 +2769,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>zenith</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>zlib-split</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -2905,6 +2904,147 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     </tr>
                 </thead>
                 <tbody>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>freetype</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                puts/freety
+ │ │ pe/bld/rattler-build_freetype_1720109083/work/src/bdf/bdf.c -o /home/runner/work/reproducible-builds/reproducible-builds/build_outputs/freetype/bld/rattler
+ │ │ -build_freetype_1720109083/work/objs/bdf.o >/dev/null 2>&1
+ │ │
+ │ ╰─────────────────── (took 11 seconds)
+ │
+ ╰─────────────────── (took 17 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/freetype/bld/rattler-build_freetype_1720109083/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/freetype/bld/rattler-build_freetype_1720109083/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>libxslt</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                 *** [Makefile:674: all-recursive] Error 1
+ │ │ make[1]: Leaving directory '/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/libxslt/bld/rattler-build_libxslt_1720109084/work'
+ │ │ make: *** [Makefile:456: all] Error 2
+ │ │
+ │ ╰─────────────────── (took 8 seconds)
+ │
+ ╰─────────────────── (took 13 seconds)
+ × error Error building package: Script failed with status Some(2).
+ × error Work directory: "/home/runner/work/reproducible-builds/reproducible-builds/build_outputs/libxslt/bld/rattler-build_libxslt_1720109084/work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(2).
+  │ Work directory: "/home/runner/work/reproducible-builds/reproducible-
+  │ builds/build_outputs/libxslt/bld/rattler-build_libxslt_1720109084/work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>pyyaml</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                tools-use-distutils-py38.patch
+ │ │ × error Stdout: can't find file to patch at input line 3
+ │ │ × error Perhaps you used the wrong -p or --strip option?
+ │ │ × error The text leading up to this was:
+ │ │ × error --------------------------
+ │ │ × error |--- setup.py.orig	2021-11-02 21:27:26.000000000 -0700
+ │ │ × error |+++ setup.py	2021-11-02 21:27:45.000000000 -0700
+ │ │ × error --------------------------
+ │ │ × error File to patch: 
+ │ │ × error Skip this patch? [y] 
+ │ │ × error Skipping patch.
+ │ │ × error 1 out of 1 hunk ignored
+ │ │ × error Stderr: 
+ │ │
+ │ ╰─────────────────── (took 0 seconds)
+ │
+ ╰─────────────────── (took 0 seconds)
+ × error Error building package: Failed to apply patch: /home/runner/work/reproducible-builds/reproducible-builds/recipes/pyyaml/0002-remove-setuptools-use-distu
+ × error tils-py38.patch
+Error:   × Failed to apply patch: /home/runner/work/reproducible-builds/reproducible-
+  │ builds/recipes/pyyaml/0002-remove-setuptools-use-distutils-py38.patch
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
                     
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
@@ -3399,30 +3539,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>freetype</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>libidn2</b>
                         </td>
                         <td class="py-2 px-4">
@@ -3471,30 +3587,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>libxslt</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>lsd</b>
                         </td>
                         <td class="py-2 px-4">
@@ -3520,30 +3612,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
                             <b>mamba</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>pyyaml</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -3629,6 +3697,366 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>ca-certificates</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>contourpy</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>font-ttf-inconsolata</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>jpeg</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>lerc</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libdeflate</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libffi</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libopus</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>libsodium</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pandoc</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pip</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pthread-stubs</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>setuptools</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>xorg-kbproto</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>zlib-split</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -4023,30 +4451,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>ca-certificates</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>cargo-insta</b>
                         </td>
                         <td class="py-2 px-4">
@@ -4096,30 +4500,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>conda</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>contourpy</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -4216,30 +4596,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>dua-cli</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>font-ttf-inconsolata</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -4431,30 +4787,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>jpeg</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>kiwisolver</b>
                         </td>
                         <td class="py-2 px-4">
@@ -4479,127 +4811,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>lerc</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libdeflate</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>libedit</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libffi</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libopus</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>libsodium</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -4743,55 +4955,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pandoc</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>pcre2-split-recipe</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pip</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -4840,30 +5004,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>psutil</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>pthread-stubs</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -5032,30 +5172,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>ruamel.yaml</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>setuptools</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -5343,30 +5459,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>xorg-kbproto</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>yazi</b>
                         </td>
                         <td class="py-2 px-4">
@@ -5392,30 +5484,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-thumbs-up text-green-600"></span>
                             <b>zenith</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4">
-                            Success
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
-                            <b>zlib-split</b>
                         </td>
                         <td class="py-2 px-4">
                             Success
@@ -5551,6 +5619,655 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     </tr>
                 </thead>
                 <tbody>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>ca-certificates</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                   ┆ 14.3         ┆ h8a93ad2_20 ┆ conda-forge ┆ 16.98 KiB  │
+ │ │ ╰─────────────────┴──────────────┴─────────────┴─────────────┴────────────╯
+ │ │  Successfully updated the environment
+ │ │ Testing commands:
+ │ │ C:\Users\RUNNER~1\AppData\Local\Temp\.tmp7erGs1>IF "" == "" (call C:\Users\RUNNER~1\AppData\Local\Temp\.tmp7erGs1\build_env.bat ) 
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ ╰─────────────────── (took 2 seconds)
+ × error Error building package: failed to run test: Script failed with status Some(1).
+ × error Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmp7erGs1"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × failed to run test: Script failed with status Some(1).
+  │ Work directory: "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\.tmp7erGs1"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>contourpy</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                he system cannot find the file specified
+ │ │ ..\meson.build:1:0: ERROR: Unknown compiler(s): [['cl.exe']]
+ │ │ The following exception(s) were encountered:
+ │ │ Running `cl.exe /?` gave "[WinError 2] The system cannot find the file specified"
+ │ │
+ │ ╰─────────────────── (took 4 seconds)
+ │
+ ╰─────────────────── (took 29 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\contourpy\\bld\\rattler-build_contourpy_1720109109\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\contourpy\\bld\\rattler-build_contourpy_1720109109\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>font-ttf-inconsolata</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: missing field `script`
+    ╭─[21:17]
+ 20 │     tests:
+ 21 │ ╭─▶   - requirements:
+ 22 │ │         run:
+ 23 │ │           - bzip2
+ 24 │ │       script:
+ 25 │ │         - if: unix
+ 26 │ │           then: 
+ 27 │ │             - test -f ${PREFIX}/fonts/Inconsolata-Regular.ttf
+ 28 │ │             - test -f ${PREFIX}/fonts/Inconsolata-Bold.ttf
+ 29 │ │   
+ 30 │ ├─▶ about:
+    · ╰──── here
+ 31 │       summary: Monospace font for pretty code listings
+    ╰────
+  help: expected field `script` to be a list of commands
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>freetype</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                rror: CMAKE_C_COMPILER not set, after EnableLanguage
+ │ │ -- Configuring incomplete, errors occurred!
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\freetype\bld\rattler-build_freetype_1720109144\work\build>if errorlevel 1 exit 1 
+ │ │
+ │ ╰─────────────────── (took 5 seconds)
+ │
+ ╰─────────────────── (took 41 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\freetype\\bld\\rattler-build_freetype_1720109144\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\freetype\\bld\\rattler-build_freetype_1720109144\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>jpeg</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                /work" does not appear 
+ │ │ to contain CMakeLists.txt.
+ │ │ Specify --help for usage, or press the help button on the CMake GUI.
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\jpeg\bld\rattler-build_jpeg_1720109111\work>if errorlevel 1 exit /b 1 
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 10 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\jpeg\\bld\\rattler-build_jpeg_1720109111\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\jpeg\\bld\\rattler-build_jpeg_1720109111\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>lerc</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                a/reproducible-builds/reproducible-builds/build_outputs/lerc/bld/rattler-build_lerc_1720109130/build_env/Library/bin/ninja.e
+ │ │ xe
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\lerc\bld\rattler-build_lerc_1720109130\work>if errorlevel 1 exit 1 
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 21 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\lerc\\bld\\rattler-build_lerc_1720109130\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\lerc\\bld\\rattler-build_lerc_1720109130\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>libdeflate</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                eflate/bld/rattler-build_libdeflate_1720109119/build_env/Library
+ │ │ /bin/ninja.exe
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\libdeflate\bld\rattler-build_libdeflate_1720109119\work\build>if errorlevel 1 exit 1 
+ │ │
+ │ ╰─────────────────── (took 2 seconds)
+ │
+ ╰─────────────────── (took 15 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\libdeflate\\bld\\rattler-build_libdeflate_1720109119\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\libdeflate\\bld\\rattler-build_libdeflate_1720109119\
+  │ \work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>libffi</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                lds/reproducible-builds/build_outputs/libffi/bld/rattler-build_libffi_1720109114/h_env/Library/lib’: No such file or directory
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\libffi\bld\rattler-build_libffi_1720109114\work>if 1 NEQ 0 exit 1 
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 2 minutes)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\libffi\\bld\\rattler-build_libffi_1720109114\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\libffi\\bld\\rattler-build_libffi_1720109114\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>libopus</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                Configuring incomplete, errors occurred!
+ │ │ CMake Error: CMAKE_C_COMPILER not set, after EnableLanguage
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\libopus\bld\rattler-build_libopus_1720109112\work\build>if errorlevel 1 exit /b 1 
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 10 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\libopus\\bld\\rattler-build_libopus_1720109112\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\libopus\\bld\\rattler-build_libopus_1720109112\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>libsodium</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                 recognized as an internal or external command,
+ │ │ operable program or batch file.
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\libsodium\bld\rattler-build_libsodium_1720109105\work\builds\msvc\vs2017>if errorlevel 1 exit 1 
+ │ │
+ │ ╰─────────────────── (took 1 second)
+ │
+ ╰─────────────────── (took 6 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\libsodium\\bld\\rattler-build_libsodium_1720109105\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\libsodium\\bld\\rattler-build_libsodium_1720109105\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>libxslt</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                vc 
+ │ │ 'nmake' is not recognized as an internal or external command,
+ │ │ operable program or batch file.
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\libxslt\bld\rattler-build_libxslt_1720109125\work\win32>if errorlevel 1 exit 1 
+ │ │
+ │ ╰─────────────────── (took 5 seconds)
+ │
+ ╰─────────────────── (took 16 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\libxslt\\bld\\rattler-build_libxslt_1720109125\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\libxslt\\bld\\rattler-build_libxslt_1720109125\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>pthread-stubs</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: m2w64_c
+  │ You should add `m2w64_c_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[44:13]
+ 43 │     - if: win
+ 44 │       then: ${{ compiler('m2w64_c') }}
+    ·             ─────────────┬────────────
+    ·                          ╰─┤ undefined value: No compiler found for language: m2w64_c
+    ·                            │ You should add `m2w64_c_compiler` to your variant config file.
+ 45 │     - if: unix
+    ╰────
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>xorg-kbproto</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                
+ ╭─ Finding outputs from recipe
+ │
+ ╰─────────────────── (took 0 seconds)
+Error:   × Failed to parse recipe
+
+Error:   × Parsing: failed to render Jinja expression: undefined value: No compiler
+  │ found for language: m2w64_c
+  │ You should add `m2w64_c_compiler` to your variant config file. (in
+  │ <string>:1)
+    ╭─[42:13]
+ 41 │     - if: win
+ 42 │       then: ${{ compiler('m2w64_c') }}
+    ·             ─────────────┬────────────
+    ·                          ╰─┤ undefined value: No compiler found for language: m2w64_c
+    ·                            │ You should add `m2w64_c_compiler` to your variant config file.
+ 43 │     - if: unix
+    ╰────
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
+                            <b>zlib-split</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                ILER not set, after EnableLanguage
+ │ │ -- Configuring incomplete, errors occurred!
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\zlib-split\bld\rattler-build_libzlib-wapi_1720109172\work>if errorlevel 1 exit 1 
+ │ │
+ │ ╰─────────────────── (took 10 seconds)
+ │
+ ╰─────────────────── (took 13 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\zlib-split\\bld\\rattler-build_libzlib-wapi_1720109172\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\zlib-split\\bld\\rattler-build_libzlib-wapi_1720109172\
+  │ \work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
                     
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
@@ -6297,30 +7014,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>ca-certificates</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>cargo-edit</b>
                         </td>
                         <td class="py-2 px-4">
@@ -6345,55 +7038,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>contourpy</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>curl</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>font-ttf-inconsolata</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -6465,55 +7110,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>freetype</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>frozenlist</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>jpeg</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -6561,151 +7158,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>lerc</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>libdeflate</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>libffi</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>libopus</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>libsodium</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>libssh2-split</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>libxslt</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -6801,54 +7254,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>pandoc</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>pip</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>psutil</b>
                         </td>
                         <td class="py-2 px-4">
@@ -6873,79 +7278,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>pthread-stubs</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>pyyaml</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>ros-humble-turtlebot4-msgs</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>setuptools</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -7065,30 +7398,6 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>xorg-kbproto</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>xtensor</b>
                         </td>
                         <td class="py-2 px-4">
@@ -7137,7 +7446,7 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>zlib-split</b>
+                            <b>zlink</b>
                         </td>
                         <td class="py-2 px-4">
                             Fail
@@ -7160,21 +7469,93 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>zlink</b>
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pandoc</b>
                         </td>
                         <td class="py-2 px-4">
-                            Fail
+                            Success
                         </td>
                         <td class="py-2 px-4">
-                            N/A
+                            Success
                         </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-06-24 16:08:46') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
                         <td class="py-2 px-4">
                             
                         </td>
                         <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pip</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>pyyaml</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>setuptools</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-04 16:09:55') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9797224231"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
