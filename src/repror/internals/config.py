@@ -108,7 +108,7 @@ def load_all_recipes(config_path: str = "config.yaml") -> list[RecipeDB | Remote
                     for repo, recipes in recipes_to_fetch.items()
                 ],
             )
-            [save(recipe) for recipe in recipes for recipes in remote_recipes]
+            [save(recipe) for repo_recipes in remote_recipes for recipe in repo_recipes]
             [recipes.extend(recipe_list) for recipe_list in remote_recipes]
 
     for local in config.local:
