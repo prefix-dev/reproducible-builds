@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <title>Rattler Build - Reproducibility</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script >
     <script src="https://kit.fontawesome.com/d97e8cb8b0.js" crossorigin="anonymous" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 </head>
@@ -18,6 +18,9 @@
             },
         };
     }
+
+    function modal() {
+        return     }
 
     // Calculate a human timestamp
     function timeAgo(timestamp) {
@@ -51,7 +54,36 @@
     }
 </script>
 
-<body class="bg-gray-100">
+<script>
+    document.addEventListener('alpine:init', () => {
+        console.log('Alpine initialized');
+        Alpine.store('modal', {
+                      show: false,
+                      modalMessage: string,
+                      init: () => {},
+                      openModalWith(message) {
+                          this.modalMessage = message;
+                          this.show = true;
+                      },
+                      closeModal() {
+                          this.show = false;
+                      },
+                  });
+    });
+</script>
+
+<body class="bg-gray-100" x-data="modal()">
+    <!-- Error messages modal -->
+    <div x-show="$store.modal.show" id="modal" class="modal fixed inset-0 bg-gray-800 bg-opacity-75 items-center justify-center">
+        <div  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+            <div class="bg-white rounded-lg p-8 max-w-lg mx-auto">
+                <h2 class="text-2xl mb-4">Error Reason</h2>
+                <pre class="mb-4"></pre>
+                <button @click="$store.modal.closeModal" class="px-4 py-2 bg-red-500 text-white rounded">Close Modal</button>
+            </div>
+        </div>
+        </div >
+    </div>
     <div class="container mx-auto p-4" x-data="platformTab()">
         <h1 class="text-4xl font-bold py-6 mx-auto">
             How Reproducible is
@@ -165,8 +197,8 @@
                             build.rebuild_state else 'N/A' }}
                         </td>
                         <td class="py-2 px-4" x-data="{ humanTime: timeAgo('{{ build.time }}') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            <pre class="max-w-md overflow-auto">{{ build.reason if build.reason else "" }}</pre >
+                        <td class="py-2 px-4" x-data="{error: '{{ build.reason|e if build.reason else '' }}'">
+                            <button @click="$store.modal.OpenModalWith(error)" class="px-4 py-2 bg-blue-500 text-white rounded">Show Error</button>
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="{{ build.actions_url }}"
