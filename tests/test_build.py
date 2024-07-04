@@ -34,6 +34,8 @@ def test_build_boltons(
             test_config_yaml_path,
             "build-recipe",
             "boltons",
+            "--rattler-build-exe",
+            "non_existing",
         ],
         catch_exceptions=False,
     )
@@ -47,6 +49,8 @@ def test_build_boltons(
             test_config_yaml_path,
             "build-recipe",
             "boltons",
+            "--rattler-build-exe",
+            "non_existing",
         ],
         catch_exceptions=False,
     )
@@ -89,6 +93,8 @@ def test_rebuild_build_boltons(
             test_config_yaml_path,
             "rebuild-recipe",
             "boltons",
+            "--rattler-build-exe",
+            "non_existing",
         ],
         catch_exceptions=False,
     )
@@ -101,6 +107,8 @@ def test_rebuild_build_boltons(
             test_config_yaml_path,
             "rebuild-recipe",
             "boltons",
+            "--rattler-build-exe",
+            "non_existing",
         ],
         catch_exceptions=False,
     )
