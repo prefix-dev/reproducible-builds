@@ -198,7 +198,7 @@ jobs:
             ci_artifacts/
             recipe_info/
 
-  patch-db-and-generate-html:
+  patch-db:
     runs-on: ubuntu-latest
     needs: build-and-rebuild-recipes
 
@@ -231,6 +231,18 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: |
           pixi run repror merge-patches
+
+  generate-html:
+    runs-on: ubuntu-latest
+    needs: patch-db
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.5.1
+        with:
+          pixi-version: "latest"
 
       - name: Generate html and upload to remote
         if: github.ref == 'refs/heads/main'
