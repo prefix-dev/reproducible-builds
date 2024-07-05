@@ -24,25 +24,17 @@ outputs:
   - package:
       name: python-${{ name|lower }}
     build:
-      script: 
-      - if: unix
-        then: build-duckdb.sh
-      - if: win
-        then: build-duckdb.bat
-        
-      
+      script: build-duckdb
+
     requirements:
       build:
         - if: build_platform != target_platform
-          then: python
-        - if: build_platform != target_platform
-          then: cross-python_${{ target_platform }}
-        - if: build_platform != target_platform
-          then: pybind11 >=2.6
-        - setuptools_scm <7
-        - python
-        - pip
-        - pybind11
+          then:
+            - cross-python_${{ target_platform }}
+            - python
+            - pip
+            - pybind11 >=2.6
+            - setuptools_scm <7
         - ${{ compiler('c') }}
         - ${{ compiler('cxx') }}
       host:
@@ -59,7 +51,7 @@ outputs:
           pip_check: true
       - files:
           source:
-            - tools/pythonpkg/tests
+            - tools/pythonpkg/tests/
         requirements:
           run:
             - pip
@@ -69,14 +61,16 @@ outputs:
             - google-cloud-storage
             - pandas
             - pytest<8
+            - numpy<2
         script:
+          - pip check
           - if: not (ppc64le or aarch64)
             then: pytest tools/pythonpkg/tests --ignore=tools/pythonpkg/tests/slow/ --ignore=tools/pythonpkg/tests/stubs/
   - package:
       name: ${{ name|lower }}
     build:
       skip:
-        - not linux64
+        - build_platform != "linux-64"
       noarch: generic
     requirements:
       run:
