@@ -126,7 +126,7 @@ jobs:
   build-and-rebuild-recipes:
     needs: [generate-recipes, handle-workflow-dispatch]
     name: ${{ matrix.recipe_name }}-${{ matrix.os }}
-    if: needs.generate-recipes.result == 'success' || needs.handle-workflow-dispatch.result == 'success'
+    if: fromJson(needs.generate-recipes.outputs.recipe || needs.handle-workflow-dispatch.outputs.recipe)[0] != null
     continue-on-error: true
     strategy:
       matrix:
