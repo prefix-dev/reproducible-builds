@@ -105,8 +105,8 @@ jobs:
         with:
           pixi-version: "latest"
 
-      - name: Generate matrix
-        id: generate-matrix
+      - name: Set Recipe(s) Output
+        id: generate-recipe-names
         run: |
           message="$(pixi r generate-recipes)"
           echo "$message"
@@ -120,7 +120,7 @@ jobs:
     outputs:
       recipe: ${{ github.event.inputs.recipes }}
     steps:
-      - name: Set recipes output
+      - name: Set Recipe(s) Output
         run: echo "recipes=${{ github.event.inputs.recipes }}" >> "$GITHUB_OUTPUT"
 
   build-and-rebuild-recipes:
