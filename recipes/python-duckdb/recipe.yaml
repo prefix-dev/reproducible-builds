@@ -24,7 +24,11 @@ outputs:
   - package:
       name: python-${{ name|lower }}
     build:
-      script: build-duckdb
+      script: 
+       - if: win
+         then: build-duckdb.bat
+       - if: unix
+         then: build-duckdb.sh
 
     requirements:
       build:
