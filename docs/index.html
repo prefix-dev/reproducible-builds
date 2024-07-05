@@ -287,53 +287,6 @@
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>duckdb</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
-                            <pre class="hidden">
-                                 │ │ + python /var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/.tmpQqjAwk/conda_build_script.py
- │ │ Traceback (most recent call last):
- │ │   File "/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/.tmpQqjAwk/conda_build_script.py", line 1, in <module>
- │ │     import duckdb
- │ │ ModuleNotFoundError: No module named 'duckdb'
- │ │
- │ ╰─────────────────── (took 3 seconds)
- │
- ╰─────────────────── (took 5 minutes)
- × error Error building package: failed to run test: Script failed with status Some(1).
- × error Work directory: "/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/T/.tmpQqjAwk"
- × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
-Error:   × failed to run test: Script failed with status Some(1).
-  │ Work directory: "/var/folders/sx/mf6nj_sn1ll2crpml02qjgbr0000gn/
-  │ T/.tmpQqjAwk"
-  │ To debug the build, run it manually in the work directory (execute the `./
-  │ conda_build.sh` or `conda_build.bat` script)
-
-
-                            </pre >
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>gh</b>
                         </td>
                         <td class="py-2 px-4">
@@ -766,6 +719,30 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>duckdb</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-05 14:08:58') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9809387911"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -3049,55 +3026,6 @@ Error:   × Failed to apply patch: /home/runner/work/reproducible-builds/reprodu
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
-                            <b>duckdb</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:16') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
-                            <pre class="hidden">
-                                 ┆ pyhd8ed1ab_0       ┆ conda-forge ┆ 485.29 KiB │
- │ │ ╰──────────────────┴──────────┴────────────────────┴─────────────┴────────────╯
- │ │ ✔ Successfully updated the environment
- │ │ + python /tmp/.tmp319nsq/conda_build_script.py
- │ │ Traceback (most recent call last):
- │ │   File "/tmp/.tmp319nsq/conda_build_script.py", line 1, in <module>
- │ │     import duckdb
- │ │ ModuleNotFoundError: No module named 'duckdb'
- │ │
- │ ╰─────────────────── (took 2 seconds)
- │
- ╰─────────────────── (took 13 minutes)
- × error Error building package: failed to run test: Script failed with status Some(1).
- × error Work directory: "/tmp/.tmp319nsq"
- × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
-Error:   × failed to run test: Script failed with status Some(1).
-  │ Work directory: "/tmp/.tmp319nsq"
-  │ To debug the build, run it manually in the work directory (execute the `./
-  │ conda_build.sh` or `conda_build.bat` script)
-
-
-                            </pre >
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>gh</b>
                         </td>
                         <td class="py-2 px-4">
@@ -3697,6 +3625,30 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                         </td>
                         <td class="py-2 px-4 flex justify-center">
                             <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9647961772"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-thumbs-up text-green-600"></span>
+                            <b>duckdb</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4">
+                            Success
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-05 14:08:58') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9809387911"
                                 class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
                                 <i class="fa-solid fa-arrow-right text-m"></i>
                                 <i class="fa-brands fa-github text-xl"></i>
@@ -5623,6 +5575,51 @@ Error:   × Parsing: failed to render Jinja expression: undefined value: No comp
                     <tr class="border-b border-dashed">
                         <td class="py-2 px-4">
                             <span class="fa-solid fa-times text-red-600"></span>
+                            <b>duckdb</b>
+                        </td>
+                        <td class="py-2 px-4">
+                            Fail
+                        </td>
+                        <td class="py-2 px-4">
+                            N/A
+                        </td>
+                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-05 14:08:58') }" x-html="humanTime"></td>
+                        <td class="py-2 px-4">
+                            
+                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
+                            <pre class="hidden">
+                                
+ │ │ Removed build tracker: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pip-build-tracker-63gmfol9'
+ │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\duckdb\bld\rattler-build_python-duckdb_1720187664\work>if 1 NEQ 0 exit 1 
+ │ │
+ │ ╰─────────────────── (took 6 seconds)
+ │
+ ╰─────────────────── (took 32 seconds)
+ × error Error building package: Script failed with status Some(1).
+ × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\duckdb\\bld\\rattler-build_python-duckdb_1720187664\\work"
+ × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
+Error:   × Script failed with status Some(1).
+  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
+  │ \build_outputs\\duckdb\\bld\\rattler-build_python-duckdb_1720187664\\work"
+  │ To debug the build, run it manually in the work directory (execute the `./
+  │ conda_build.sh` or `conda_build.bat` script)
+
+
+                            </pre >
+                            
+                        </td>
+                        <td class="py-2 px-4 flex justify-center">
+                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9809387911"
+                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
+                                <i class="fa-solid fa-arrow-right text-m"></i>
+                                <i class="fa-brands fa-github text-xl"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    
+                    <tr class="border-b border-dashed">
+                        <td class="py-2 px-4">
+                            <span class="fa-solid fa-times text-red-600"></span>
                             <b>ca-certificates</b>
                         </td>
                         <td class="py-2 px-4">
@@ -6458,51 +6455,6 @@ Error:   × FileSystem error: 'Path "C:
 Error:   × Script failed with status Some(1).
   │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
   │ \build_outputs\\cython\\bld\\rattler-build_cython_1719995743\\work"
-  │ To debug the build, run it manually in the work directory (execute the `./
-  │ conda_build.sh` or `conda_build.bat` script)
-
-
-                            </pre >
-                            
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/9774464403"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="fa-solid fa-times text-red-600"></span>
-                            <b>duckdb</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            Fail
-                        </td>
-                        <td class="py-2 px-4">
-                            N/A
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('2024-07-03 09:18:15') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            
-                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
-                            <pre class="hidden">
-                                
- │ │ Removed build tracker: 'C:\\Users\\runneradmin\\AppData\\Local\\Temp\\pip-build-tracker-wqttly0f'
- │ │ D:\a\reproducible-builds\reproducible-builds\build_outputs\duckdb\bld\rattler-build_python-duckdb_1719995748\work>if 1 NEQ 0 exit 1 
- │ │
- │ ╰─────────────────── (took 6 seconds)
- │
- ╰─────────────────── (took 28 seconds)
- × error Error building package: Script failed with status Some(1).
- × error Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\\build_outputs\\duckdb\\bld\\rattler-build_python-duckdb_1719995748\\work"
- × error To debug the build, run it manually in the work directory (execute the `./conda_build.sh` or `conda_build.bat` script)
-Error:   × Script failed with status Some(1).
-  │ Work directory: "D:\\a\\reproducible-builds\\reproducible-builds\
-  │ \build_outputs\\duckdb\\bld\\rattler-build_python-duckdb_1719995748\\work"
   │ To debug the build, run it manually in the work directory (execute the `./
   │ conda_build.sh` or `conda_build.bat` script)
 
