@@ -151,3 +151,8 @@ Easiest way to contribute is to create a PR with a new recipe, by adding it to t
 the reproducibility for this specific recipe. This should also help us find `rattler-build` changes that we can make to prodoce more reproducible builds.
 
 You can also help us by debugging packages that fail in build or reproducibility, we've tried to make it easy to run the project locally. We know how annoying it can be to wait for CI. Any improvements here are welcome as well!
+
+## Acknowledgments
+
+The recipes were adapted from recipes on [conda-forge](https://conda-forge.org/).
+The recipes on conda-forge are distributed under a BSD-3-Clause license.
