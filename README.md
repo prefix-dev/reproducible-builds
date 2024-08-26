@@ -154,6 +154,6 @@ You can also help us by debugging packages that fail in build or reproducibility
 
 ## Licensing Information
 
-This repository contains modified recipe scripts derived from the conda-forge project. As these scripts are based on work from conda-forge, they are subject to the conda-forge BSD-3-Clause license. You can find the license details in the `license_packages.txt` file in this repository.
+This repository contains modified recipe scripts derived from the conda-forge project. As these scripts are based on work from conda-forge, they are subject to the conda-forge BSD-3-Clause license. You can find the license details in the `LICENSE_PACKAGES.txt` file in this repository.
 
 By using or redistributing the recipes or packages from this repository, you agree to adhere to the terms of the BSD-3-Clause license provided by conda-forge.
