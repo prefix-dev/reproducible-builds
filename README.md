@@ -148,7 +148,7 @@ The CI has the following stages:
 
 ## Contributing 🤝
 Easiest way to contribute is to create a PR with a new recipe, by adding it to the `config.yaml` file, either through a `remote` or a `local` source. This way we can check
-the reproducibility for this specific recipe. This should also help us find `rattler-build` changes that we can make to prodoce more reproducible builds.
+the reproducibility for this specific recipe. This should also help us find `rattler-build` changes that we can make to produce more reproducible builds.
 
 You can also help us by debugging packages that fail in build or reproducibility, we've tried to make it easy to run the project locally. We know how annoying it can be to wait for CI. Any improvements here are welcome as well!
 
