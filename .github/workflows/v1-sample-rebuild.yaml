@@ -1,0 +1,250 @@
+name: V1 Recipe Sampling
+
+on:
+  workflow_dispatch:
+    inputs:
+      sample_size:
+        description: "Number of V1 packages to sample"
+        required: true
+        default: "20"
+      seed:
+        description: "Random seed for reproducible sampling (optional)"
+        required: false
+      packages:
+        description: "Specific packages to test (comma-separated, overrides sample_size)"
+        required: false
+
+  schedule:
+    # Run daily at 3 AM UTC
+    - cron: '0 3 * * *'
+
+env:
+  RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
+  REPRO_DB_NAME: repro.db
+  REPRO_DOCS_DIR: docs
+  PYTHONUTF8: 1
+
+jobs:
+  generate-v1-packages:
+    runs-on: ubuntu-latest
+    outputs:
+      packages: ${{ steps.generate-matrix.outputs.packages }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: "latest"
+
+      - name: Generate V1 package matrix
+        id: generate-matrix
+        run: |
+          # Determine parameters
+          SAMPLE_SIZE="${{ github.event.inputs.sample_size || '20' }}"
+          SEED="${{ github.event.inputs.seed }}"
+          PACKAGES="${{ github.event.inputs.packages }}"
+
+          # Generate the list of packages using the CLI
+          if [ -n "$PACKAGES" ]; then
+            # User specified packages - convert comma-separated to JSON array
+            PACKAGES_JSON=$(echo "$PACKAGES" | python3 -c "import sys, json; print(json.dumps([p.strip() for p in sys.stdin.read().split(',') if p.strip()]))")
+          else
+            # Random sample - use a Python script to generate
+            PACKAGES_JSON=$(pixi run python << EOF
+          import json
+          import random
+          import sys
+          sys.path.insert(0, 'src')
+
+          from repror.cli.v1_sampler import fetch_feedstock_stats, fetch_repodata
+
+          sample_size = int("$SAMPLE_SIZE")
+          seed_str = "$SEED"
+          subdir = 'linux-64'
+
+          # Fetch V1 package stats
+          stats = fetch_feedstock_stats()
+
+          # Fetch repodata to verify packages exist
+          repodata = fetch_repodata(subdir)
+
+          # Random sample
+          if seed_str:
+              random.seed(int(seed_str))
+
+          # Filter to packages available in repodata
+          available_names = {
+              info.get("name")
+              for info in repodata.get("packages.conda", {}).values()
+          }
+          v1_available = [p for p in stats.v1_packages if p in available_names]
+
+          if sample_size >= len(v1_available):
+              package_list = v1_available
+          else:
+              package_list = random.sample(v1_available, sample_size)
+
+          print(json.dumps(package_list))
+          EOF
+          )
+          fi
+
+          echo "packages=$PACKAGES_JSON" >> "$GITHUB_OUTPUT"
+          echo "Generated package list: $PACKAGES_JSON"
+        env:
+          LOG_LEVEL: WARNING
+
+  rebuild-v1-packages:
+    needs: generate-v1-packages
+    if: fromJson(needs.generate-v1-packages.outputs.packages)[0] != null
+    name: v1-${{ matrix.package }}-${{ matrix.os }}
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        package: ${{ fromJson(needs.generate-v1-packages.outputs.packages) }}
+        os: [ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: "latest"
+
+      - name: Get subdir for this OS
+        id: get-subdir
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
+            echo "subdir=linux-64" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            echo "subdir=osx-arm64" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            echo "subdir=win-64" >> "$GITHUB_OUTPUT"
+          fi
+        shell: bash
+
+      - name: Rebuild V1 package with patch
+        run: |
+          pixi run repror v1 sample \
+            --package "${{ matrix.package }}" \
+            --subdir "${{ steps.get-subdir.outputs.subdir }}" \
+            --actions-url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
+            --patch
+        env:
+          LOG_LEVEL: WARNING
+
+      - name: Upload patch artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v1-patch-${{ matrix.package }}-${{ matrix.os }}
+          path: build_info/v1/
+          if-no-files-found: ignore
+
+  patch-v1-db:
+    runs-on: ubuntu-latest
+    needs: rebuild-v1-packages
+    if: always()
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: "latest"
+
+      - name: Download all patch artifacts
+        uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: v1-patch-*
+          path: build_info/v1/
+          merge-multiple: true
+
+      - name: List patches
+        continue-on-error: true
+        run: |
+          echo "=== V1 Patches ==="
+          find build_info/v1 -name "*.json" 2>/dev/null || echo "No patches found"
+
+      - name: Merge V1 patches to database
+        run: |
+          pixi run python << 'EOF'
+          import sys
+          sys.path.insert(0, 'src')
+
+          from repror.internals.db import setup_engine
+          from repror.internals.patch_database import patch_v1_rebuilds_to_db
+
+          setup_engine()
+          count = patch_v1_rebuilds_to_db("build_info/v1")
+          print(f"Merged {count} V1 rebuild patches")
+          EOF
+
+      - name: Push database update
+        if: github.ref == 'refs/heads/main'
+        run: |
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run python << 'EOF'
+          import sys
+          sys.path.insert(0, 'src')
+
+          from repror.internals.patch_database import write_database_to_remote
+          write_database_to_remote()
+          EOF
+
+  summarize-results:
+    runs-on: ubuntu-latest
+    needs: patch-v1-db
+    if: always()
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: "latest"
+
+      - name: Generate summary
+        run: |
+          pixi run python << 'EOF' >> $GITHUB_STEP_SUMMARY
+          import sys
+          sys.path.insert(0, 'src')
+
+          from repror.internals.db import setup_engine, get_session, V1Rebuild, BuildState
+          from sqlmodel import select, func
+
+          setup_engine()
+
+          print("## V1 Recipe Rebuild Results\n")
+
+          with get_session() as session:
+              # Get summary stats
+              total = session.exec(select(func.count(V1Rebuild.id))).one()
+              successful = session.exec(
+                  select(func.count(V1Rebuild.id)).where(V1Rebuild.state == BuildState.SUCCESS)
+              ).one()
+
+              # Count reproducible (where original_hash == rebuild_hash)
+              reproducible = session.exec(
+                  select(func.count(V1Rebuild.id)).where(
+                      V1Rebuild.state == BuildState.SUCCESS,
+                      V1Rebuild.original_hash == V1Rebuild.rebuild_hash
+                  )
+              ).one()
+
+              print(f"| Metric | Count |")
+              print(f"|--------|-------|")
+              print(f"| Total V1 rebuilds | {total} |")
+              print(f"| Successful rebuilds | {successful} |")
+              print(f"| Reproducible | {reproducible} |")
+
+              if successful > 0:
+                  rate = 100 * reproducible / successful
+                  print(f"| Reproducibility rate | {rate:.1f}% |")
+          EOF

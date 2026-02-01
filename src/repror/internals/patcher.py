@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any, Literal
 
 
-from repror.internals.db import Build, Rebuild, get_session
+from repror.internals.db import Build, Rebuild, V1Rebuild, get_session
 
 
 def find_patches(folder_path: str) -> list[Path]:
@@ -51,6 +51,17 @@ def save_patch(model: Build | Rebuild):
         file.write(model.model_dump_json())
 
 
+def save_v1_patch(model: V1Rebuild):
+    """
+    Save a V1 rebuild patch to a file.
+    """
+    patch_file = f"build_info/v1/{model.platform_name}/{model.package_name}.json"
+    os.makedirs(os.path.dirname(patch_file), exist_ok=True)
+
+    with open(patch_file, "w") as file:
+        file.write(model.model_dump_json())
+
+
 # Load the patch data
 def load_patch(patch_data: dict[Literal["build", "rebuild"], Any]):
     build = patch_data["build"]
@@ -69,3 +80,35 @@ def load_patch(patch_data: dict[Literal["build", "rebuild"], Any]):
             session.add(rebuild)
 
         session.commit()
+
+
+def find_v1_patches(folder_path: str = "build_info/v1") -> list[Path]:
+    """
+    Find all V1 rebuild patch files.
+    """
+    if not os.path.exists(folder_path):
+        return []
+    json_files = glob.glob(os.path.join(folder_path, "**/*.json"), recursive=True)
+    return [Path(file) for file in json_files]
+
+
+def load_v1_patches(folder_path: str = "build_info/v1") -> int:
+    """
+    Load all V1 rebuild patches into the database.
+    Returns the number of patches loaded.
+    """
+    patch_files = find_v1_patches(folder_path)
+    count = 0
+
+    for file_path in patch_files:
+        with open(file_path, "r") as file:
+            data = json.load(file)
+            v1_rebuild = V1Rebuild.model_validate(data)
+            v1_rebuild.id = None  # Reset ID for new insert
+
+            with get_session() as session:
+                session.add(v1_rebuild)
+                session.commit()
+                count += 1
+
+    return count

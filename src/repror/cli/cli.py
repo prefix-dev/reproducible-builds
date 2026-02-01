@@ -23,6 +23,7 @@ from . import generate_recipes as generate
 from . import generate_html as html
 from . import setup_rattler_build as setup
 from . import rebuild_recipe as rebuild
+from . import v1_sampler
 from .utils import pixi_root_cli, platform_name, reproducible_table
 
 from ..internals.options import global_options
@@ -191,3 +192,7 @@ def status(
     recipe_names = [recipe.name for recipe in build.recipes_for_names(recipe_names)]
     builds = get_rebuild_data(recipe_names, platform)
     print(reproducible_table(recipe_names, builds, platform))
+
+
+# Add v1 sampler subcommands
+app.add_typer(v1_sampler.app, name="v1", help="Commands for V1 recipe package sampling and rebuilding")

@@ -4,6 +4,7 @@ from repror.internals.print import print
 from repror.internals.patcher import (
     aggregate_build_patches,
     load_patch,
+    load_v1_patches,
 )
 
 
@@ -25,6 +26,14 @@ def patch_builds_to_db(build_dir: str = "build_info") -> int:
             load_patch(patch_for_recipe)
 
     return len(patches)
+
+
+def patch_v1_rebuilds_to_db(build_dir: str = "build_info/v1") -> int:
+    """Patch V1 rebuild results to the database."""
+    count = load_v1_patches(build_dir)
+    if count > 0:
+        print(f":package: Loaded {count} V1 rebuild patches to the database")
+    return count
 
 
 def write_database_to_remote():

@@ -183,6 +183,39 @@ class RemoteRecipe(Recipe, SQLModel, table=True):
             yield str(recipe_path)
 
 
+class V1Rebuild(SQLModel, table=True):
+    """Database model for V1 package rebuild attempts from conda-forge."""
+
+    __tablename__ = "v1_rebuild"
+
+    id: Optional[int] = Field(default=None, primary_key=True)
+    package_name: str
+    version: str
+    original_url: str
+    original_hash: str
+    rebuild_hash: Optional[str] = None
+    state: BuildState
+    reason: Optional[str] = None
+    platform_name: str
+    platform_version: str
+    build_tool_hash: str
+    timestamp: Optional[datetime] = Field(
+        default=None,
+        sa_column_kwargs={
+            "server_default": text("CURRENT_TIMESTAMP"),
+        },
+    )
+    actions_url: Optional[str] = None
+
+    @property
+    def is_reproducible(self) -> bool:
+        return (
+            self.state == BuildState.SUCCESS
+            and self.rebuild_hash is not None
+            and self.original_hash == self.rebuild_hash
+        )
+
+
 def get_latest_builds(
     recipe_names_and_hash: list[tuple[str, str]],
     build_tool_hash: str,

@@ -38,6 +38,11 @@ rebuild-recipe-skip = "repror --skip-setup-rattler-build rebuild-recipe"
 convert-recipe = "convert-conda-recipe"
 # Run tests
 test = "pytest tests"
+# V1 recipe commands
+v1-sample = "repror v1 sample"
+v1-stats = "repror v1 stats"
+v1-list = "repror v1 list-v1"
+v1-check = "repror v1 check"
 
 
 [feature.html.dependencies]
