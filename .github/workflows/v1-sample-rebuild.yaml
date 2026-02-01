@@ -123,6 +123,14 @@ jobs:
           fi
         shell: bash
 
+      - name: Create conda-forge build directory structure
+        run: |
+          # rattler-build rebuild tries to use the original build paths from conda-forge
+          # We need to create these directories with write permissions
+          sudo mkdir -p /home/conda/feedstock_root/build_artifacts
+          sudo chown -R $USER:$USER /home/conda
+        if: runner.os == 'Linux'
+
       - name: Rebuild V1 package
         run: |
           pixi run repror v1 sample \
