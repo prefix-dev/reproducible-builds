@@ -195,4 +195,8 @@ def status(
 
 
 # Add v1 sampler subcommands
-app.add_typer(v1_sampler.app, name="v1", help="Commands for V1 recipe package sampling and rebuilding")
+app.add_typer(
+    v1_sampler.app,
+    name="v1",
+    help="Commands for V1 recipe package sampling and rebuilding",
+)

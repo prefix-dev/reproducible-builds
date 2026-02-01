@@ -198,7 +198,11 @@ class V1Rebuild(SQLModel, table=True):
     reason: Optional[str] = None
     platform_name: str
     platform_version: str
+    # The rattler-build version used for rebuilding
     build_tool_hash: str
+    # Original build tool info extracted from the package
+    original_build_tool: Optional[str] = None  # "conda-build" or "rattler-build"
+    original_build_tool_version: Optional[str] = None
     timestamp: Optional[datetime] = Field(
         default=None,
         sa_column_kwargs={
@@ -214,6 +218,10 @@ class V1Rebuild(SQLModel, table=True):
             and self.rebuild_hash is not None
             and self.original_hash == self.rebuild_hash
         )
+
+    @property
+    def was_built_with_rattler(self) -> bool:
+        return self.original_build_tool == "rattler-build"
 
 
 def get_latest_builds(
