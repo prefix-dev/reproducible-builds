@@ -1,4 +1,4 @@
-[project]
+[workspace]
 name = "reproducible-builds-rattler-build"
 version = "0.1.0"
 description = "Add a short description here"
@@ -78,10 +78,11 @@ python-dotenv = "*"
 pandas = "*"
 sqlmodel = "*"
 pydantic = "*"
+pygraphviz = "*"
+conda-recipe-manager = "*"
 
 [pypi-dependencies]
 repror = { path = ".", editable = true }
-conda-recipe-manager = { git = "https://github.com/conda-incubator/conda-recipe-manager.git" }
 pytest-depends = "*"
 
 
