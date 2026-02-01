@@ -41,6 +41,16 @@ from .utils import platform_name, platform_version
 
 logger = logging.getLogger(__name__)
 
+
+def _print_status(msg: str) -> None:
+    """Print status message to stderr to avoid interfering with stdout capture."""
+    import sys
+    from rich.console import Console
+
+    console = Console(file=sys.stderr)
+    console.print(msg)
+
+
 # URL for the feedstock-stats.toml file
 FEEDSTOCK_STATS_URL = "https://raw.githubusercontent.com/tdejager/are-we-recipe-v1-yet/main/feedstock-stats.toml"
 
@@ -263,7 +273,7 @@ class V1RebuildResult:
 
 def fetch_feedstock_stats(url: str = FEEDSTOCK_STATS_URL) -> FeedstockStats:
     """Fetch and parse the feedstock-stats.toml file."""
-    print(f"[dim]Fetching feedstock stats from {url}[/dim]")
+    _print_status(f"[dim]Fetching feedstock stats from {url}[/dim]")
 
     try:
         req = Request(url, headers={"User-Agent": "repror/1.0"})
@@ -293,7 +303,7 @@ def fetch_feedstock_stats(url: str = FEEDSTOCK_STATS_URL) -> FeedstockStats:
         v1_packages=v1_packages,
     )
 
-    print(f"[green]Found {len(v1_packages)} V1 recipe packages[/green]")
+    _print_status(f"[green]Found {len(v1_packages)} V1 recipe packages[/green]")
     return stats
 
 
@@ -301,7 +311,7 @@ def fetch_repodata(subdir: str) -> dict:
     """Fetch the repodata.json for a given subdir."""
     # Use repodata.json (not current_repodata.json) for more complete data
     url = f"{CONDA_FORGE_BASE}/{subdir}/repodata.json"
-    print(f"[dim]Fetching repodata from {url}[/dim]")
+    _print_status(f"[dim]Fetching repodata from {url}[/dim]")
 
     try:
         req = Request(url, headers={"User-Agent": "repror/1.0"})
