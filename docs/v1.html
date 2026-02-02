@@ -97,20 +97,20 @@
             <!-- Stats Overview -->
             <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold">114</div>
+                    <div class="text-3xl font-bold">119</div>
                     <div class="text-sm text-slate-300">Total Tested</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-blue-400">80</div>
+                    <div class="text-3xl font-bold text-blue-400">85</div>
                     <div class="text-sm text-slate-300">Successful Rebuilds</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-green-400">36</div>
+                    <div class="text-3xl font-bold text-green-400">40</div>
                     <div class="text-sm text-slate-300">Reproducible</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
                     <div class="text-3xl font-bold text-red-400">
-                        45.0%
+                        47.1%
                     </div>
                     <div class="text-sm text-slate-300">Reproducibility Rate</div>
                 </div>
@@ -184,6 +184,321 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-not-equal text-amber-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">vercel-cli</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">50.8.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-02 14:24:48.363872') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/vercel-cli-50.8.0-hee61e0b_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+                                    
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/vercel-cli-50.8.0_diff.html"
+                                       target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                                       title="View detailed diff">
+                                        <i class="fa-solid fa-code-compare"></i>
+                                        View Diff
+                                    </a>
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21593808244" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">types-aiobotocore</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">3.1.1</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-02 14:24:03.171747') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/types-aiobotocore-3.1.1-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21593808244" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">elevenlabs</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">2.33.1</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-02 14:24:01.890210') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/elevenlabs-2.33.1-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21593808244" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">llms-py</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">3.0.24</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-02 14:24:00.327300') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/llms-py-3.0.24-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21593808244" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">anaconda-cli-base</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.8.1</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-02 14:23:58.394430') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/anaconda-cli-base-0.8.1-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21593808244" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
                         
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -316,7 +631,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/storybook_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/storybook-10.2.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -385,7 +702,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/lockfile-lint_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/lockfile-lint-5.0.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -454,7 +773,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/schematics-cli_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/schematics-cli-21.1.2_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -523,7 +844,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/dot-language-server_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/dot-language-server-3.0.3_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -1601,7 +1924,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/code-aster_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/code-aster-18.0.4_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -1670,7 +1995,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/eon_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/eon-2.9.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -1739,7 +2066,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/mlx_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/mlx-0.30.4_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -1808,7 +2137,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/jsonschema-rs_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/jsonschema-rs-0.40.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -1877,7 +2208,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/warp-lang_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/warp-lang-1.10.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -1946,7 +2279,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/cppad-mixed_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/cppad-mixed-2026.0.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -2076,7 +2411,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/html-to-markdown_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/html-to-markdown-2.24.5_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -2145,7 +2482,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/torchcodec_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/torchcodec-0.8.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -3445,7 +3784,9 @@ Error:   × Thread panicked
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/triton_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/triton-3.6.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -3514,7 +3855,9 @@ Error:   × Thread panicked
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/tach_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/tach-0.33.2_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -3583,7 +3926,9 @@ Error:   × Thread panicked
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/pipe-rename_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/pipe-rename-1.6.6_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -3798,7 +4143,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/zig_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/zig-0.15.2_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -3867,7 +4214,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/delve_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/delve-1.26.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -3936,7 +4285,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/stylua_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/stylua-2.3.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -4257,7 +4608,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/macchina_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/macchina-6.4.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -4496,7 +4849,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/s3-proxy_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/s3-proxy-4.19.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -4565,7 +4920,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/collada-dom_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/collada-dom-2.5.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -4950,7 +5307,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/robyn_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/robyn-0.68.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -5019,7 +5378,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/deepspeed_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/deepspeed-0.18.5_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -5295,7 +5656,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/s3-proxy_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/s3-proxy-4.19.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -5547,7 +5910,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/jq_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/jq-1.8.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -5616,7 +5981,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/delve_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/delve-1.26.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -5807,7 +6174,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/pixi-build-rattler-build_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/pixi-build-rattler-build-0.3.7_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -6299,7 +6668,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/rust-sasa-python_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/rust-sasa-python-0.7.2_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -6514,7 +6885,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/torchvision-extra-decoders_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/torchvision-extra-decoders-0.0.2_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -6668,7 +7041,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/rainfrog_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/rainfrog-v0.2.13_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -6737,7 +7112,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/docker-credential-helpers_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/docker-credential-helpers-0.9.5_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -6974,7 +7351,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/fricas_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/fricas-1.3.12_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7128,7 +7507,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/pixi-assistant_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/pixi-assistant-0.1.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7197,7 +7578,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/ouch_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/ouch-0.6.1_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7266,7 +7649,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/source-highlight_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/source-highlight-3.1.9_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7335,7 +7720,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/kelbt_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/kelbt-0.16_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7404,7 +7791,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/torchvision-extra-decoders_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/torchvision-extra-decoders-0.0.2_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7534,7 +7923,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/darwin/go-shfmt_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/go-shfmt-3.12.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7603,7 +7994,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/cherab-lhd_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/cherab-lhd-0.2.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7733,7 +8126,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/correctionlib_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/correctionlib-2.7.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7802,7 +8197,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/octave-sockets_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/octave-sockets-1.5.0_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -7932,7 +8329,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/docker-credential-helpers_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/docker-credential-helpers-0.9.5_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -8184,7 +8583,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/cpp-filesystem_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/cpp-filesystem-1.5.12_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -8253,7 +8654,9 @@ Error:   × Script failed to execute
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     
                                     
-                                    <a href="diffs/linux/libqdldl_diff.html"
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/libqdldl-0.1.9_diff.html"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
@@ -8302,6 +8705,23 @@ Error:   × Script failed to execute
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-medium text-slate-900">vercel-cli</span>
+                                <span class="text-slate-500 text-sm ml-2">50.8.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded font-mono">
+                                    ac7891a001814984...
+                                </code>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded font-mono">
+                                    563e02931c68fa50...
+                                </code>
+                            </td>
+                        </tr>
                         
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
