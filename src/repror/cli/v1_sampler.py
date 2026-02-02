@@ -1178,9 +1178,10 @@ def generate_matrix(
     else:
         sampled = random.sample(recent_packages, sample_size)
 
-    # Output JSON array of package info
+    # Output JSON array of package info to stdout (use builtin print, not rich)
+    import builtins
     matrix = [pkg.to_dict() for pkg in sampled]
-    print(json.dumps(matrix))
+    builtins.print(json.dumps(matrix))
 
 
 @app.command()

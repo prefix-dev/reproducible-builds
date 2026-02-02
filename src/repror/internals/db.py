@@ -29,6 +29,15 @@ from repror.internals.recipe import clone_remote_recipe
 from .print import print
 
 
+def _print_status(msg: str) -> None:
+    """Print status message to stderr to avoid interfering with stdout capture."""
+    import sys
+    from rich.console import Console
+
+    console = Console(file=sys.stderr)
+    console.print(msg)
+
+
 # Suppress SQLAlchemy INFO logs
 logging.getLogger("sqlalchemy.engine").setLevel(logging.WARNING)
 
@@ -62,11 +71,11 @@ def create_db_and_tables():
 
 def setup_engine(in_memory: bool = False):
     """Setup the sqlite engine."""
-    print(f"Setting up engine with in_memory={in_memory}")
+    _print_status(f"Setting up engine with in_memory={in_memory}")
     global engine, __Session
     if engine:
         # Engine is already set, skip initialization
-        print("Engine already set, skipping initialization")
+        _print_status("Engine already set, skipping initialization")
         return
 
     if in_memory:
@@ -77,9 +86,9 @@ def setup_engine(in_memory: bool = False):
         sqlite_file_name = os.getenv("REPRO_DB_NAME", "repro.local.db")
         # Do a manual check for safety
         if sqlite_file_name == PROD_DB:
-            print("[dim yellow]Running on production[/dim yellow]")
+            _print_status("[dim yellow]Running on production[/dim yellow]")
         else:
-            print(f"[dim green]Running on {sqlite_file_name}[/dim green]")
+            _print_status(f"[dim green]Running on {sqlite_file_name}[/dim green]")
 
         # Setup the engine
         # We assume that the database is in the same directory as the project

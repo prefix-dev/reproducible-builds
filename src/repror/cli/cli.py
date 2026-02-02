@@ -17,6 +17,15 @@ from repror.internals import patch_database
 from repror.internals.rattler_build import rattler_build_hash
 
 
+def _print_status(msg: str) -> None:
+    """Print status message to stderr to avoid interfering with stdout capture."""
+    import sys
+    from rich.console import Console
+
+    console = Console(file=sys.stderr)
+    console.print(msg)
+
+
 # Different CLI commands
 from . import build_recipe as build
 from . import generate_recipes as generate
@@ -52,10 +61,10 @@ def main(
     global_options.no_output = no_output
     global_options.config_path = config_path
     if skip_setup_rattler_build:
-        print("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
+        _print_status("[dim yellow]Will skip setting up rattler-build[/dim yellow]")
         global_options.skip_setup_rattler_build = True
     if in_memory_sql:
-        print("[yellow]Will use in-memory SQLite database[/yellow]")
+        _print_status("[yellow]Will use in-memory SQLite database[/yellow]")
         global_options.in_memory_sql = True
     setup_engine(in_memory_sql)
 
