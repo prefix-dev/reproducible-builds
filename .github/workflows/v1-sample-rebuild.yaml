@@ -189,8 +189,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: prefix-dev/setup-pixi@v0.8.1
         with:
@@ -209,56 +207,46 @@ jobs:
         continue-on-error: true
         with:
           pattern: v1-diff-*
-          path: docs/diffs/
+          path: diffs_staging/
           merge-multiple: true
 
-      - name: List downloaded diffs
+      - name: Upload diffs to release
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Create diffs release if it doesn't exist
+          gh release view diffs || gh release create diffs --title "Diffoscope Reports" --notes "Auto-updated diffoscope HTML reports for non-reproducible packages"
+
+          # Find and upload all diff HTML files
+          if [ -d "diffs_staging" ]; then
+            echo "=== Uploading diffs to release ==="
+            find diffs_staging -type f -name "*.html" | while read -r file; do
+              # Get just the filename for the asset name
+              basename=$(basename "$file")
+              echo "Uploading: $basename"
+              gh release upload diffs "$file" --clobber || echo "Failed to upload $file"
+            done
+            echo "Done uploading diffs"
+          else
+            echo "No diffs to upload"
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: List uploaded diffs
         continue-on-error: true
         run: |
-          echo "=== Downloaded Diffs ==="
-          find docs/diffs -type f -name "*.html" 2>/dev/null | head -20 || echo "No diffs found"
-          echo "Total diff files: $(find docs/diffs -type f -name "*.html" 2>/dev/null | wc -l)"
-          echo "=== Directory structure ==="
-          find docs/diffs -type d 2>/dev/null || echo "No dirs"
+          echo "=== Diffs in release ==="
+          gh release view diffs --json assets -q '.assets[].name' | head -30 || echo "No diffs release"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate HTML pages
         run: |
           pixi run repror generate-html
 
-      - name: List generated files
-        run: |
-          echo "=== Generated HTML files ==="
-          ls -la docs/
-          if [ -d "docs/diffs" ]; then
-            echo "=== Diffs directory ==="
-            find docs/diffs -type f | head -30
-          fi
-
-      - name: Commit diffs to repository
-        if: github.ref == 'refs/heads/main'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          # Add the diffs directory if it exists and has files
-          if [ -d "docs/diffs" ] && [ "$(find docs/diffs -type f -name '*.html' 2>/dev/null | wc -l)" -gt 0 ]; then
-            git add docs/diffs/
-            if ! git diff --staged --quiet; then
-              git commit -m "Update diffoscope HTML reports"
-              git push
-              echo "Diffs committed and pushed"
-            else
-              echo "No changes to commit"
-            fi
-          else
-            echo "No diff files to commit"
-          fi
-
       - name: Update remote docs via API
         if: github.ref == 'refs/heads/main'
         run: |
-          # Pull latest changes (including diffs we just pushed)
-          git pull --rebase || true
           REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
 
   summarize-results:

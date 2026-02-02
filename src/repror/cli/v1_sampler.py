@@ -462,17 +462,19 @@ def run_diffoscope(
     original: Path,
     rebuilt: Path,
     package_name: str,
+    version: str,
     platform_name: str,
 ) -> Optional[Path]:
     """Run diffoscope to compare two packages.
 
-    Saves the HTML diff to build_info/v1/diffs/{platform}/{package}_diff.html
+    Saves the HTML diff to build_info/v1/diffs/{platform}/{package}-{version}_diff.html
     and prints a text summary to the log.
 
     Args:
         original: Path to the original .conda package
         rebuilt: Path to the rebuilt .conda package
         package_name: Name of the package (for output filename)
+        version: Version of the package (for unique filename)
         platform_name: Platform name (for output directory)
 
     Returns:
@@ -486,10 +488,11 @@ def run_diffoscope(
         return None
 
     # Save to persistent location for artifact upload
+    # Use name-version for unique identification
     output_dir = Path("build_info/v1/diffs") / platform_name
     output_dir.mkdir(parents=True, exist_ok=True)
-    html_output = output_dir / f"{package_name}_diff.html"
-    text_output = output_dir / f"{package_name}_diff.txt"
+    html_output = output_dir / f"{package_name}-{version}_diff.html"
+    text_output = output_dir / f"{package_name}-{version}_diff.txt"
 
     print(f"[dim]Running diffoscope to compare packages...[/dim]")
 
@@ -834,7 +837,7 @@ def rebuild_v1_package(
     # Run diffoscope if not reproducible
     diff_path: Optional[Path] = None
     if not is_reproducible:
-        diff_path = run_diffoscope(original_file, rebuilt_file, pkg_info.name, platform)
+        diff_path = run_diffoscope(original_file, rebuilt_file, pkg_info.name, pkg_info.version, platform)
 
     # Save successful rebuild
     v1_rebuild = V1Rebuild(

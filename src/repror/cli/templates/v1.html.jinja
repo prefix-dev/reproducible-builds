@@ -165,8 +165,10 @@
 
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     {% if not rebuild.is_reproducible and rebuild.state.value == 'success' %}
-                                    {% set diff_filename = rebuild.package_name ~ "_diff.html" %}
-                                    <a href="diffs/{{ rebuild.platform_name }}/{{ diff_filename }}"
+                                    {% set diff_filename = rebuild.package_name ~ "-" ~ rebuild.version ~ "_diff.html" %}
+                                    {% set diff_url = "https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/" ~ diff_filename %}
+                                    <a href="https://htmlpreview.github.io/?{{ diff_url }}"
+                                       target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">
                                         <i class="fa-solid fa-code-compare"></i>
