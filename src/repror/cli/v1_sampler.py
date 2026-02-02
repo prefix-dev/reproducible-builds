@@ -753,8 +753,18 @@ def rebuild_v1_package(
 
     output = rebuild_package(original_file, rebuild_dir, rattler_build_path)
 
-    if output.return_code != 0:
-        # Save failed rebuild
+    # Try to find rebuilt package even if return code is non-zero
+    # (rattler-build may panic after producing output, e.g., terminal detection issues)
+    rebuilt_file = None
+    rebuild_hash = None
+    try:
+        rebuilt_file = find_conda_file(rebuild_dir)
+        rebuild_hash = calculate_hash(rebuilt_file)
+    except FileNotFoundError:
+        pass
+
+    # If no package was produced and return code is non-zero, it's a real failure
+    if rebuilt_file is None and output.return_code != 0:
         v1_rebuild = V1Rebuild(
             package_name=pkg_info.name,
             version=pkg_info.version,
@@ -783,11 +793,8 @@ def rebuild_v1_package(
             error_message=f"Rebuild failed: {output.stderr[-200:] if output.stderr else output.stdout[-200:]}",
         )
 
-    # Find the rebuilt package and calculate its hash
-    try:
-        rebuilt_file = find_conda_file(rebuild_dir)
-        rebuild_hash = calculate_hash(rebuilt_file)
-    except FileNotFoundError:
+    # No package found even with success return code
+    if rebuilt_file is None:
         v1_rebuild = V1Rebuild(
             package_name=pkg_info.name,
             version=pkg_info.version,

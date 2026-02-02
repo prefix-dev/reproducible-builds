@@ -150,6 +150,13 @@ jobs:
           echo "=== V1 Patches ==="
           find build_info/v1 -name "*.json" 2>/dev/null || echo "No patches found"
 
+      - name: Download existing database from release
+        continue-on-error: true
+        run: |
+          gh release download database --pattern 'repro.db' --clobber || echo "No existing database release found"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Merge V1 patches to database
         run: |
           pixi run python << 'EOF'
@@ -164,16 +171,15 @@ jobs:
           print(f"Merged {count} V1 rebuild patches")
           EOF
 
-      - name: Push database update
+      - name: Upload database to release
         if: github.ref == 'refs/heads/main'
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run python << 'EOF'
-          import sys
-          sys.path.insert(0, 'src')
-
-          from repror.internals.patch_database import write_database_to_remote
-          write_database_to_remote()
-          EOF
+          # Create release if it doesn't exist
+          gh release view database || gh release create database --title "Database" --notes "Auto-updated reproducibility database"
+          # Upload/update the database file
+          gh release upload database repro.db --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   summarize-results:
     runs-on: ubuntu-latest
@@ -187,6 +193,13 @@ jobs:
         with:
           pixi-version: "latest"
           cache: true
+
+      - name: Download database from release
+        continue-on-error: true
+        run: |
+          gh release download database --pattern 'repro.db' --clobber || echo "No database release found"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate summary
         run: |
