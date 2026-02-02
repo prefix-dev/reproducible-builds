@@ -1,0 +1,258 @@
+{% extends "base.html.jinja" %}
+
+{% block title %}Conda-Forge Rebuilds{% endblock %}
+{% block nav_v1 %}text-white border-b-2 border-blue-400{% endblock %}
+{% block nav_v1_mobile %}text-blue-400{% endblock %}
+
+{% block content %}
+<div>
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+                    <span class="text-orange-400">Conda-Forge</span> Reproducibility
+                </h1>
+                <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+                    Testing reproducibility of existing conda-forge packages.
+                    We download packages built with rattler-build and attempt to rebuild them.
+                </p>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold">{{ stats.total }}</div>
+                    <div class="text-sm text-slate-300">Total Tested</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-blue-400">{{ stats.successful }}</div>
+                    <div class="text-sm text-slate-300">Successful Rebuilds</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-green-400">{{ stats.reproducible }}</div>
+                    <div class="text-sm text-slate-300">Reproducible</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold {% if stats.reproducibility_rate >= 80 %}text-green-400{% elif stats.reproducibility_rate >= 50 %}text-amber-400{% else %}text-red-400{% endif %}">
+                        {{ stats.reproducibility_rate | round(1) }}%
+                    </div>
+                    <div class="text-sm text-slate-300">Reproducibility Rate</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Info Box -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-8">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                    <i class="fa-solid fa-circle-info text-blue-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-blue-900">About Conda-Forge Rebuilds</h3>
+                    <p class="mt-1 text-sm text-blue-800">
+                        This page tracks the reproducibility of packages from
+                        <a href="https://conda-forge.org" class="underline hover:text-blue-600">conda-forge</a>
+                        that were originally built using <code class="bg-blue-100 px-1 rounded">rattler-build</code>.
+                        We download the original package, extract its recipe, and rebuild it with the same version
+                        of rattler-build to check if we get an identical result.
+                    </p>
+                    <p class="mt-2 text-sm text-blue-800">
+                        Click on "View Diff" to see detailed differences when packages don't match.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+            <div class="flex items-center gap-2">
+                <span class="status-pill bg-green-100 text-green-700">
+                    <i class="fa-solid fa-check"></i> Reproducible
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="status-pill bg-amber-100 text-amber-700">
+                    <i class="fa-solid fa-not-equal"></i> Hash Mismatch
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="status-pill bg-red-100 text-red-700">
+                    <i class="fa-solid fa-xmark"></i> Failed
+                </span>
+            </div>
+        </div>
+
+        <!-- Packages Table -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+                <h2 class="text-lg font-semibold text-slate-800">
+                    <i class="fa-solid fa-box mr-2 text-orange-500"></i>
+                    Tested Packages
+                </h2>
+            </div>
+
+            {% if rebuilds %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Package</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Version</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Platform</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Build Tool</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Time</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-slate-200">
+                        {% for rebuild in rebuilds %}
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    {% if rebuild.is_reproducible %}
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    {% elif rebuild.state.value == 'success' %}
+                                    <i class="fa-solid fa-not-equal text-amber-500"></i>
+                                    {% else %}
+                                    <i class="fa-solid fa-times-circle text-red-500"></i>
+                                    {% endif %}
+                                    <span class="font-medium text-slate-900">{{ rebuild.package_name }}</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">{{ rebuild.version }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="{{ rebuild.platform_name | platform_fa }} mr-1"></span>
+                                    {{ rebuild.platform_name }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    {% if rebuild.original_build_tool_version %}
+                                    rattler-build {{ rebuild.original_build_tool_version }}
+                                    {% else %}
+                                    {{ rebuild.original_build_tool or 'unknown' }}
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                {% if rebuild.is_reproducible %}
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                {% elif rebuild.state.value == 'success' %}
+                                <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                {% else %}
+                                <span class="status-pill bg-red-100 text-red-700">Failed</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('{{ rebuild.timestamp }}') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="{{ rebuild.original_url }}" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    {% if not rebuild.is_reproducible and rebuild.state.value == 'success' %}
+                                    {% set diff_filename = rebuild.package_name ~ "_diff.html" %}
+                                    <a href="diffs/{{ rebuild.platform_name }}/{{ diff_filename }}"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                                       title="View detailed diff">
+                                        <i class="fa-solid fa-code-compare"></i>
+                                        View Diff
+                                    </a>
+                                    {% endif %}
+
+                                    <!-- Error reason -->
+                                    {% if rebuild.reason %}
+                                    <button @click="$store.modal.openModalWith($event.target.closest('button').nextElementSibling.textContent)"
+                                            class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                        Error
+                                    </button>
+                                    <span class="hidden">{{ rebuild.reason }}</span>
+                                    {% endif %}
+
+                                    <!-- GitHub Actions link -->
+                                    {% if rebuild.actions_url %}
+                                    <a href="{{ rebuild.actions_url }}" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="px-6 py-12 text-center">
+                <i class="fa-solid fa-box-open text-4xl text-slate-300 mb-4"></i>
+                <p class="text-slate-500">No conda-forge rebuilds have been tested yet.</p>
+                <p class="text-sm text-slate-400 mt-2">
+                    Check back later or run the V1 sampling workflow manually.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Hash comparison info for non-reproducible packages -->
+        {% set non_reproducible = rebuilds | selectattr('state.value', 'equalto', 'success') | rejectattr('is_reproducible') | list %}
+        {% if non_reproducible %}
+        <div class="mt-8 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+                <h2 class="text-lg font-semibold text-slate-800">
+                    <i class="fa-solid fa-fingerprint mr-2 text-amber-500"></i>
+                    Hash Comparison (Non-Reproducible Packages)
+                </h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-slate-200">
+                    <thead class="bg-slate-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Package</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Original Hash</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Rebuild Hash</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-slate-200">
+                        {% for rebuild in non_reproducible %}
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-medium text-slate-900">{{ rebuild.package_name }}</span>
+                                <span class="text-slate-500 text-sm ml-2">{{ rebuild.version }}</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded font-mono">
+                                    {{ rebuild.original_hash[:16] }}...
+                                </code>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded font-mono">
+                                    {{ rebuild.rebuild_hash[:16] if rebuild.rebuild_hash else 'N/A' }}...
+                                </code>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

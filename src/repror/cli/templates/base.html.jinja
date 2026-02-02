@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Reproducible Builds{% endblock %} - rattler-build</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://kit.fontawesome.com/d97e8cb8b0.js" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <style>
+        [x-cloak] { display: none !important; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%);
+        }
+        .card-hover {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-slate-50 min-h-screen">
+    {% block scripts %}{% endblock %}
+
+    <!-- Navigation -->
+    <nav class="gradient-bg text-white sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center gap-8">
+                    <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                        <span class="font-bold text-lg">rattler-build</span>
+                    </a>
+                    <div class="hidden md:flex items-center gap-6">
+                        <a href="index.html" class="text-sm font-medium hover:text-blue-300 transition-colors {% block nav_index %}{% endblock %}">
+                            Recipe Builds
+                        </a>
+                        <a href="v1.html" class="text-sm font-medium hover:text-blue-300 transition-colors {% block nav_v1 %}{% endblock %}">
+                            Conda-Forge Rebuilds
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="https://github.com/prefix-dev/rattler-build" target="_blank"
+                       class="text-white/80 hover:text-white transition-colors">
+                        <i class="fa-brands fa-github text-xl"></i>
+                    </a>
+                    <a href="https://github.com/prefix-dev/reproducible-builds" target="_blank"
+                       class="text-sm text-white/80 hover:text-white transition-colors hidden sm:block">
+                        View Source
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation -->
+    <div class="md:hidden bg-slate-800 text-white px-4 py-2 flex gap-4 text-sm">
+        <a href="index.html" class="{% block nav_index_mobile %}{% endblock %}">Recipe Builds</a>
+        <a href="v1.html" class="{% block nav_v1_mobile %}{% endblock %}">Conda-Forge</a>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 py-8 mt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm">
+                Built with <i class="fa-solid fa-heart text-red-500"></i> by
+                <a href="https://prefix.dev" class="text-blue-400 hover:text-blue-300">prefix.dev</a>
+            </p>
+            <p class="text-xs mt-2 text-slate-500">
+                Tracking reproducibility of conda packages built with rattler-build
+            </p>
+        </div>
+    </footer>
+
+    <!-- Modal for Error Messages -->
+    <div x-data x-show="$store.modal.show" x-cloak
+         class="fixed inset-0 z-50 overflow-y-auto"
+         aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div x-show="$store.modal.show"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0"
+                 x-transition:enter-end="opacity-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100"
+                 x-transition:leave-end="opacity-0"
+                 class="fixed inset-0 bg-slate-900/75 transition-opacity"
+                 @click="$store.modal.closeModal()"></div>
+
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+
+            <div x-show="$store.modal.show"
+                 x-transition:enter="ease-out duration-300"
+                 x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave="ease-in duration-200"
+                 x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100"
+                 x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                 class="relative inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full">
+                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 flex items-center justify-center h-10 w-10 rounded-full bg-red-100">
+                            <i class="fa-solid fa-exclamation-triangle text-red-600"></i>
+                        </div>
+                        <div class="ml-4 flex-1">
+                            <h3 class="text-lg leading-6 font-medium text-slate-900" id="modal-title">
+                                Error Details
+                            </h3>
+                            <div class="mt-4">
+                                <pre class="bg-slate-900 text-slate-100 p-4 rounded-lg text-sm overflow-auto max-h-96 max-w-full"
+                                     x-html="ansiToHtml($store.modal.modalMessage)"></pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                    <button type="button" @click="$store.modal.closeModal()"
+                            class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-slate-800 text-base font-medium text-white hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 sm:ml-3 sm:w-auto sm:text-sm">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function ansiToHtml(text) {
+            if (!text) return '';
+            const ansiToHtmlMap = {
+                '0': 'color: inherit; background-color: inherit; font-weight: normal;',
+                '1': 'font-weight: bold;',
+                '4': 'text-decoration: underline;',
+                '30': 'color: #4b5563;', '31': 'color: #ef4444;', '32': 'color: #22c55e;',
+                '33': 'color: #eab308;', '34': 'color: #3b82f6;', '35': 'color: #a855f7;',
+                '36': 'color: #06b6d4;', '37': 'color: #f3f4f6;',
+                '90': 'color: #6b7280;', '91': 'color: #f87171;', '92': 'color: #4ade80;',
+                '93': 'color: #facc15;', '94': 'color: #60a5fa;', '95': 'color: #c084fc;',
+                '96': 'color: #22d3ee;', '97': 'color: #ffffff;'
+            };
+            const ansiRegex = /\x1b\[(\d+;?)*m/g;
+            return text.replace(ansiRegex, (match) => {
+                const codes = match.slice(2, -1).split(';');
+                const styles = codes.map(code => ansiToHtmlMap[code] || '').join('');
+                return styles ? `<span style="${styles}">` : '</span>';
+            }).replace(/\x1b\[0m/g, '</span>');
+        }
+
+        function timeAgo(timestamp) {
+            const now = new Date();
+            const date = new Date(timestamp);
+            const diffInSeconds = Math.floor((now - date) / 1000);
+
+            if (diffInSeconds < 60) return 'just now';
+            if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+            if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+            if (diffInSeconds < 604800) return `${Math.floor(diffInSeconds / 86400)}d ago`;
+            return date.toLocaleDateString();
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('modal', {
+                show: false,
+                modalMessage: "",
+                openModalWith(message) {
+                    this.modalMessage = message;
+                    this.show = true;
+                },
+                closeModal() {
+                    this.show = false;
+                },
+            });
+        });
+    </script>
+</body>
+</html>

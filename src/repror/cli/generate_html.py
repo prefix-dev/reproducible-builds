@@ -14,6 +14,8 @@ from repror.internals.db import (
     BuildState,
     get_rebuild_data,
     get_total_successful_builds_and_rebuilds,
+    get_v1_rebuild_data,
+    get_v1_rebuild_stats,
 )
 from repror.internals.git import github_api
 from repror.internals.print import print
@@ -41,13 +43,13 @@ class StatisticData(BaseModel):
 
 def get_platform_fa(platform):
     if platform == "windows":
-        return "fa-brands fa-windows"  # Emoji for Windows
+        return "fa-brands fa-windows"
     elif platform == "darwin":
-        return "fa-brands fa-apple"  # Emoji for macOS
+        return "fa-brands fa-apple"
     elif platform == "linux":
-        return "fa-brands fa-linux"  # Emoji for Linux
+        return "fa-brands fa-linux"
     else:
-        return "fa-solid fa-question"  # Default emoji if platform is unknown
+        return "fa-solid fa-question"
 
 
 reproducible = "fa-solid fa-thumbs-up text-green-600"
@@ -108,21 +110,22 @@ def remove_ansi_codes(text: str) -> str:
     return ansi_escape.sub("", text)
 
 
-def rerender_html(
-    root_folder: Path,
-    update_remote: bool = False,
-    config_path: Path = Path("config.yaml"),
-):
-    docs_folder = get_docs_dir(root_folder)
-    print(f"Generating into : {docs_folder}")
-
+def create_jinja_env() -> Environment:
+    """Create and configure the Jinja2 environment."""
     env = Environment(
         loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
     )
     env.filters["platform_fa"] = platform_fa
+    return env
 
+
+def render_index_html(
+    env: Environment,
+    docs_folder: Path,
+    config_path: Path = Path("config.yaml"),
+) -> str:
+    """Render the main index.html page with recipe build data."""
     builds = get_rebuild_data()
-
     total_recipes = len(load_all_recipes(str(config_path)).all_recipes)
 
     # Statistics for graph
@@ -132,6 +135,7 @@ def rerender_html(
     end_of_day = datetime(start.year, start.month, start.day, 23, 59, 59)
     timestamps = [end_of_day + timedelta(days=i) for i in range(0, 10)]
     by_platform = defaultdict(list)
+
     for build in builds:
         # Do it in the loop so that we do this only once per platform
         # and we dont have to hardcode the platforms
@@ -193,23 +197,75 @@ def rerender_html(
         non_reproducible=non_reproducible,
         interpolate_color=interpolate_color,
     )
-    # Save the table to README.md
+
+    # Save the index.html
     index_html_path = docs_folder / Path("index.html")
     index_html_path.parent.mkdir(exist_ok=True)
     index_html_path.write_text(html_content, encoding="utf-8")
 
+    return html_content
+
+
+def render_v1_html(env: Environment, docs_folder: Path) -> str:
+    """Render the V1 conda-forge rebuilds page."""
+    rebuilds = get_v1_rebuild_data()
+    stats = get_v1_rebuild_stats()
+
+    template = env.get_template("v1.html.jinja")
+
+    html_content = template.render(
+        rebuilds=rebuilds,
+        stats=stats,
+        platform_fa=platform_fa,
+        interpolate_color=interpolate_color,
+    )
+
+    # Save the v1.html
+    v1_html_path = docs_folder / Path("v1.html")
+    v1_html_path.write_text(html_content, encoding="utf-8")
+
+    return html_content
+
+
+def rerender_html(
+    root_folder: Path,
+    update_remote: bool = False,
+    config_path: Path = Path("config.yaml"),
+):
+    """Render all HTML pages."""
+    docs_folder = get_docs_dir(root_folder)
+    print(f"Generating into : {docs_folder}")
+
+    env = create_jinja_env()
+
+    # Render the main index page
+    index_content = render_index_html(env, docs_folder, config_path)
+
+    # Render the V1 page
+    render_v1_html(env, docs_folder)
+
     panel = Panel(
-        f"Generated {index_html_path}.\n Run [bold]pixi r serve-html[/bold] to view",
+        f"Generated HTML in {docs_folder}.\nRun [bold]pixi r serve-html[/bold] to view",
         title="Success",
         style="green",
     )
     print(panel)
+
     if update_remote:
         # Update the index.html using GitHub API
         print(":running: Updating index.html with new data")
         github_api.update_obj(
-            html_content,
+            index_content,
             # Always update the index.html in the docs folder
             "docs/index.html",
             "Update statistics",
+        )
+
+        # Also update v1.html
+        print(":running: Updating v1.html with new data")
+        v1_content = (docs_folder / "v1.html").read_text(encoding="utf-8")
+        github_api.update_obj(
+            v1_content,
+            "docs/v1.html",
+            "Update V1 statistics",
         )

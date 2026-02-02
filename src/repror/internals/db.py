@@ -429,3 +429,60 @@ def get_total_successful_builds_and_rebuilds(
             successful_rebuilds_count,
             total_builds=total_builds,
         )
+
+
+@dataclass
+class V1RebuildStats:
+    """Statistics for V1 rebuilds."""
+
+    total: int
+    successful: int
+    reproducible: int
+    failed: int
+
+    @property
+    def success_rate(self) -> float:
+        return (self.successful / self.total * 100) if self.total > 0 else 0
+
+    @property
+    def reproducibility_rate(self) -> float:
+        return (self.reproducible / self.successful * 100) if self.successful > 0 else 0
+
+
+def get_v1_rebuild_data(
+    platform: Optional[str] = None,
+) -> Sequence[V1Rebuild]:
+    """Get all V1 rebuild records, optionally filtered by platform."""
+    with get_session() as session:
+        query = select(V1Rebuild).order_by(col(V1Rebuild.timestamp).desc())
+        if platform:
+            query = query.where(V1Rebuild.platform_name == platform)
+        return session.exec(query).all()
+
+
+def get_v1_rebuild_stats(platform: Optional[str] = None) -> V1RebuildStats:
+    """Get statistics for V1 rebuilds."""
+    with get_session() as session:
+        base_query = select(func.count(V1Rebuild.id))
+        if platform:
+            base_query = base_query.where(V1Rebuild.platform_name == platform)
+
+        total = session.exec(base_query).one()
+
+        successful_query = base_query.where(V1Rebuild.state == BuildState.SUCCESS)
+        successful = session.exec(successful_query).one()
+
+        reproducible_query = base_query.where(
+            V1Rebuild.state == BuildState.SUCCESS,
+            V1Rebuild.original_hash == V1Rebuild.rebuild_hash,
+        )
+        reproducible = session.exec(reproducible_query).one()
+
+        failed = total - successful
+
+        return V1RebuildStats(
+            total=total,
+            successful=successful,
+            reproducible=reproducible,
+            failed=failed,
+        )

@@ -1,14 +1,10 @@
-<!doctype html>
-<html>
+{% extends "base.html.jinja" %}
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Rattler Build - Reproducibility</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script >
-    <script src="https://kit.fontawesome.com/d97e8cb8b0.js" crossorigin="anonymous" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-</head>
+{% block title %}Recipe Builds{% endblock %}
+{% block nav_index %}text-white border-b-2 border-blue-400{% endblock %}
+{% block nav_index_mobile %}text-blue-400{% endblock %}
+
+{% block scripts %}
 <script>
     function platformTab() {
         return {
@@ -18,266 +14,245 @@
             },
         };
     }
-
-    function ansiToHtml(text) {
-        const ansiToHtmlMap = {
-            // Reset
-            '0': 'color: initial; background-color: initial; font-weight: normal; font-style: normal; text-decoration: none;',
-            // Bold
-            '1': 'font-weight: bold;',
-            // Underline
-            '4': 'text-decoration: underline;',
-            // Foreground colors
-            '30': 'color: black;',
-            '31': 'color: red;',
-            '32': 'color: green;',
-            '33': 'color: yellow;',
-            '34': 'color: blue;',
-            '35': 'color: magenta;',
-            '36': 'color: cyan;',
-            '37': 'color: white;',
-            // Background colors
-            '40': 'background-color: black;',
-            '41': 'background-color: red;',
-            '42': 'background-color: green;',
-            '43': 'background-color: yellow;',
-            '44': 'background-color: blue;',
-            '45': 'background-color: magenta;',
-            '46': 'background-color: cyan;',
-            '47': 'background-color: white;'
-        };
-
-        // Regex to match ANSI escape codes
-        const ansiRegex = /\x1b\[(\d+;?)*m/g;
-
-        return text.replace(ansiRegex, (match) => {
-            const codes = match.slice(2, -1).split(';');
-            const styles = codes.map(code => ansiToHtmlMap[code] || '').join('');
-            return `<span style="${styles}">`;
-        }).replace(/\x1b\[0m/g, '</span>');
-    }
-
-    // Calculate a human timestamp
-    function timeAgo(timestamp) {
-        const now = new Date();
-        const date = new Date(timestamp);
-        const diffInSeconds = Math.floor((now - date) / 1000);
-
-        const seconds = diffInSeconds;
-        const minutes = Math.floor(seconds / 60);
-        const hours = Math.floor(minutes / 60);
-        const days = Math.floor(hours / 24);
-        const weeks = Math.floor(days / 7);
-        const months = Math.floor(days / 30); // Rough approximation
-        const years = Math.floor(days / 365); // Rough approximation
-
-        if (seconds < 60) {
-            return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
-        } else if (minutes < 60) {
-            return `${minutes} minute${minutes !== 1 ? 's' : ''} ago`;
-        } else if (hours < 24) {
-            return `${hours} hour${hours !== 1 ? 's' : ''} ago`;
-        } else if (days < 7) {
-            return `${days} day${days !== 1 ? 's' : ''} ago`;
-        } else if (weeks < 4) {
-            return `${weeks} week${weeks !== 1 ? 's' : ''} ago`;
-        } else if (months < 12) {
-            return `${months} month${months !== 1 ? 's' : ''} ago`;
-        } else {
-            return `${years} year${years !== 1 ? 's' : ''} ago`;
-        }
-    }
 </script>
+{% endblock %}
 
-<script>
-    document.addEventListener('alpine:init', () => {
-        console.log('Alpine initialized');
-        Alpine.store("me", {me: true});
-        Alpine.store('modal', {
-                      show: false,
-                      modalMessage: "",
-                      openModalWith(message) {
-                          this.modalMessage = message;
-                          this.show = true;
-                      },
-                      closeModal() {
-                          this.show = false;
-                      },
-                  });
-    });
-</script>
+{% block content %}
+<div x-data="platformTab()">
+    <!-- Hero Section -->
+    <div class="gradient-bg text-white py-12 sm:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight">
+                    How Reproducible is <span class="text-blue-400">rattler-build</span>?
+                </h1>
+                <p class="mt-4 text-lg text-slate-300 max-w-2xl mx-auto">
+                    Tracking the reproducibility of conda packages built from source recipes.
+                    Every package is built twice under different conditions to verify reproducibility.
+                </p>
+            </div>
 
-<body class="bg-gray-100">
-    <!-- Error messages modal -->
-    <div x-data x-show="$store.modal.show" x-cloak id="modal" class="modal fixed inset-0 bg-gray-800 bg-opacity-75 items-center justify-center z-10 ">
-        <div  class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-            <div class="bg-white rounded-lg p-8 mx-auto" @click.outside="$store.modal.closeModal()">
-                <h2 class="text-2xl mb-4">Error Reason</h2>
-                <pre class="mb-4 max-w-[80vw] overflow-auto" x-html="ansiToHtml($store.modal.modalMessage)"></pre>
-                <button @click="$store.modal.closeModal()" class="px-4 py-2 bg-red-500 text-white rounded">Close Modal</button>
+            <!-- Stats Overview -->
+            <div class="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+                {% set total_reproducible = 0 %}
+                {% set total_builds = 0 %}
+                {% for platform, builds in by_platform.items() %}
+                    {% set total_builds = total_builds + counts_per_platform[platform].total_builds[-1] %}
+                    {% set total_reproducible = total_reproducible + counts_per_platform[platform].rebuilds[-1] %}
+                {% endfor %}
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold">{{ by_platform | length }}</div>
+                    <div class="text-sm text-slate-300">Platforms</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold">{{ total_builds }}</div>
+                    <div class="text-sm text-slate-300">Total Builds</div>
+                </div>
+                <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
+                    <div class="text-3xl font-bold text-green-400">{{ total_reproducible }}</div>
+                    <div class="text-sm text-slate-300">Reproducible</div>
+                </div>
             </div>
         </div>
     </div>
-    <div class="container mx-auto p-4" x-data="platformTab()">
-        <h1 class="text-4xl font-bold py-6 mx-auto">
-            How Reproducible is
-            <span class="font-mono">rattler-build</span>?
-        </h1>
-        <section>
-            <h2 class="text-xl font-bold py-4">
-                Introduction
-            </h2>
-            <span>
-                This website contains some information about
-                <span class="font-mono">.conda</span> packages that have been using
-                <a href="https://github.com/prefix-dev/rattler-build"
-                    class="text-blue-500 underline hover:text-blue-300">
-                    <span class="font-mono">rattler-build</span>
-                    <i class="fa-brands fa-github"></i>
-                </a> to build their packages.
-            </p>
 
-            <p>
-                More information regarding what we mean by reproducibility can be found
-                at the github repository for this project <a class="text-blue-500 underline hover:text-blue-300"
-                    href="https://github.com/prefix-dev/reproducible-builds">Click Here&nbsp;<i class="fa-brands fa-github"></i></a>
-            </p>
-        </section>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Platform Cards -->
+        <section class="mb-10">
+            <h2 class="text-xl font-semibold text-slate-800 mb-4">Reproducibility by Platform</h2>
+            <p class="text-slate-600 mb-6">Click on a platform to view detailed build information.</p>
 
-        <!-- Reproducibility Percentages -->
-        <div class="my-6">
-            <h2 class="text-xl font-bold mb-2">
-                Reproducibility Per Platform
-            </h2>
-            <p class="py-4">
-                The following table shows the reproducibility of builds per platform. <br />
-                Click on a platform to view the builds for that platform
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for platform, builds in by_platform.items() %}
                 {% set total_recipes = counts_per_platform[platform].total_recipes[-1] %}
                 {% set total_builds = counts_per_platform[platform].total_builds[-1] %}
                 {% set reproducible_builds = counts_per_platform[platform].rebuilds[-1] %}
-                {% set reproducibility_percentage = (reproducible_builds / total_builds) * 100 %}
-                <div class="bg-white p-4 rounded shadow border cursor-pointer"
-                    :class="{ 'outline outline-blue-600 outline-4': activeTab === {{loop.index}}, 'outline outline-gray-300 outline-1': activeTab !== {{loop.index}} }"
-                    @click="selectTab({{loop.index}})">
-                    <h3 class="text-lg font-semibold">
-                        <span class="{{ platform | platform_fa }}"></span>
-                        {{ platform | capitalize }}
-                    </h3>
-                    <table class="mt-3 w-full">
-                        <tr>
-                            <td>Total Recipes:</td>
-                            <td class="font-bold">{{ total_recipes }}</td >
-                        </tr>
-                        <tr>
-                            <td>Total Builds:</td>
-                            <td class="font-bold">{{ total_builds }}</td >
-                        </tr>
-                        <tr>
-                            <td>Reproducible Builds:</td>
-                            <td class="font-bold">{{ reproducible_builds }}</td >
-                        </tr>
-                        <tr>
-                            <td>Total Reproducibility:</td>
-                            <td class="font-bold" style="color: rgb{{interpolate_color(reproducibility_percentage)}}">{{ reproducibility_percentage | round(2) }}%</td >
-                        </tr>
-                    </table>
+                {% set reproducibility_percentage = (reproducible_builds / total_builds * 100) if total_builds > 0 else 0 %}
+
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer"
+                     :class="{ 'ring-2 ring-blue-500 border-blue-500': activeTab === {{loop.index}} }"
+                     @click="selectTab({{loop.index}})">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center">
+                                    <span class="{{ platform | platform_fa }} text-xl text-slate-600"></span>
+                                </div>
+                                <h3 class="text-lg font-semibold text-slate-800">{{ platform | capitalize }}</h3>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold" style="color: rgb{{ interpolate_color(reproducibility_percentage) }}">
+                                    {{ reproducibility_percentage | round(1) }}%
+                                </div>
+                                <div class="text-xs text-slate-500">reproducible</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Recipes</span>
+                                <span class="font-medium text-slate-700">{{ total_recipes }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Total Builds</span>
+                                <span class="font-medium text-slate-700">{{ total_builds }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-slate-500">Reproducible</span>
+                                <span class="font-medium text-green-600">{{ reproducible_builds }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mt-4">
+                            <div class="w-full bg-slate-100 rounded-full h-2">
+                                <div class="h-2 rounded-full transition-all duration-500"
+                                     style="width: {{ reproducibility_percentage }}%; background-color: rgb{{ interpolate_color(reproducibility_percentage) }}"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {% endfor %}
             </div>
+        </section>
+
+        <!-- Chart Section -->
+        <section class="mb-10">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                <h2 class="text-lg font-semibold text-slate-800 mb-4">Reproducibility Trends (Last 10 Days)</h2>
+                {% for platform in by_platform.keys() %}
+                <div x-show="activeTab == {{ loop.index }}" x-cloak>
+                    <canvas id="chart-{{ platform }}" height="100"></canvas>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Legend -->
+        <div class="flex flex-wrap justify-center gap-6 mb-6 text-sm">
+            <div class="flex items-center gap-2">
+                <span class="status-pill bg-green-100 text-green-700">
+                    <i class="{{ reproducible }}"></i> Reproducible
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="status-pill bg-amber-100 text-amber-700">
+                    <i class="{{ non_reproducible }}"></i> Non-reproducible
+                </span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="status-pill bg-red-100 text-red-700">
+                    <i class="{{ failure }}"></i> Build Failed
+                </span>
+            </div>
         </div>
 
-        <div>
-            {% for platform in by_platform.keys() %}
-            <canvas id="chart-{{ platform }}" x-show="activeTab == {{ loop.index }}"></canvas>
-            {% endfor %}
-        </div>
-        <div class="inline-flex gap-4 border py-3 px-4 bg-gray-50 rounded-xl">
-            <div>Reproducible: <i class="{{ reproducible }}"></i></div>
-            <span>｜</span>
-            <div>Non-reproducible: <i class="{{ non_reproducible }}"></i></div>
-            <span>｜</span>
-            <div>Failure: <i class="{{ failure }}"></i></div>
-        </div>
+        <!-- Build Tables -->
         {% for platform, builds in by_platform.items() %}
-        <div class="max-w-xl min-w-full py-2 mt-2 mb-6" x-show="activeTab === {{loop.index}}">
-            <table class="min-w-full bg-white border border-gray-300">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr class="border-b">
-                        <th class="py-2 px-4">Recipe Name</th>
-                        <th class="py-2 px-4">Build Status</th>
-                        <th class="py-2 px-4">Rebuild Status</th>
-                        <th class="py-2 px-4">Time</th>
-                        <th class="py-2 px-4">Reason</th>
-                        <th class="py-2 px-4">
-                            Github Action Link
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for build in builds | sort(attribute='build_state, recipe_name') %}
-                    <tr class="border-b border-dashed">
-                        <td class="py-2 px-4">
-                            <span class="{{ build_state_fa(build.build_state, build.rebuild_state) }}"></span>
-                            <b>{{ build.recipe_name }}</b>
-                        </td>
-                        <td class="py-2 px-4">
-                            {{ build.build_state.value | capitalize }}
-                        </td>
-                        <td class="py-2 px-4">
-                            {{ build.rebuild_state.value | capitalize if
-                            build.rebuild_state else 'N/A' }}
-                        </td>
-                        <td class="py-2 px-4" x-data="{ humanTime: timeAgo('{{ build.time }}') }" x-html="humanTime"></td>
-                        <td class="py-2 px-4">
-                            {% if build.reason %}
-                            <button @click="$store.modal.openModalWith($event.target.nextSibling.nextSibling.innerHTML)" class="px-4 py-2 bg-red-500 text-white rounded">Show Error</button>
-                            <pre class="hidden">
-                                {{ build.reason }}
-                            </pre >
-                            {% endif %}
-                        </td>
-                        <td class="py-2 px-4 flex justify-center">
-                            <a href="{{ build.actions_url }}"
-                                class="inline-block transform transition-transform duration-300 hover:translate-x-2 hover:opacity-50 ">
-                                <i class="fa-solid fa-arrow-right text-m"></i>
-                                <i class="fa-brands fa-github text-xl"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+        <section x-show="activeTab === {{loop.index}}" x-cloak class="mb-10">
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+                    <h2 class="text-lg font-semibold text-slate-800">
+                        <span class="{{ platform | platform_fa }} mr-2"></span>
+                        {{ platform | capitalize }} Builds
+                    </h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-slate-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Recipe</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Build</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Rebuild</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Time</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200">
+                            {% for build in builds | sort(attribute='build_state, recipe_name') %}
+                            <tr class="hover:bg-slate-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-3">
+                                        <span class="{{ build_state_fa(build.build_state, build.rebuild_state) }}"></span>
+                                        <span class="font-medium text-slate-900">{{ build.recipe_name }}</span>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if build.build_state.value == 'success' %}
+                                    <span class="status-pill bg-green-100 text-green-700">Success</span>
+                                    {% else %}
+                                    <span class="status-pill bg-red-100 text-red-700">Failed</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if build.rebuild_state %}
+                                        {% if build.rebuild_state.value == 'success' %}
+                                            {% if build.equal_hash %}
+                                            <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                            {% else %}
+                                            <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                            {% endif %}
+                                        {% else %}
+                                        <span class="status-pill bg-red-100 text-red-700">Failed</span>
+                                        {% endif %}
+                                    {% else %}
+                                    <span class="text-slate-400 text-sm">N/A</span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                    x-data="{ humanTime: timeAgo('{{ build.time }}') }"
+                                    x-text="humanTime"></td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center gap-2">
+                                        {% if build.reason %}
+                                        <button @click="$store.modal.openModalWith($event.target.closest('button').nextElementSibling.textContent)"
+                                                class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                                            <i class="fa-solid fa-circle-info"></i>
+                                            Error
+                                        </button>
+                                        <span class="hidden">{{ build.reason }}</span>
+                                        {% endif %}
+                                        {% if build.actions_url %}
+                                        <a href="{{ build.actions_url }}" target="_blank"
+                                           class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                            <i class="fa-brands fa-github"></i>
+                                            CI
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
         {% endfor %}
     </div>
-</body>
+</div>
 
 <script>
-
-    const config = {
+    const chartConfig = {
         type: 'line',
         options: {
             responsive: true,
+            maintainAspectRatio: true,
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Rebuild Statistics',
-                    font: {
-                        size: 16 // Change this value to the desired font size
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { size: 12 }
                     }
                 },
                 tooltip: {
-                    mode: 'index'
-                },
-                legend: {
-                    labels: {
-                        font: {
-                            size: 16 // Change this value to the desired font size
-                        }
-                    },
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                    padding: 12,
+                    cornerRadius: 8
                 }
             },
             interaction: {
@@ -287,83 +262,59 @@
             },
             scales: {
                 x: {
-                    title: {
-                        display: true,
-                        text: 'Date',
-                        font: {
-                            size: 16 // Change this value to the desired font size
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 14 // Change this value to the desired font size
-                        }
-                    }
+                    grid: { display: false },
+                    ticks: { font: { size: 11 } }
                 },
                 y: {
-                    stacked: false,
                     beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Number of Success(es)',
-                        font: {
-                            size: 16 // Change this value to the desired font size
-                        }
-                    },
-                    ticks: {
-                        font: {
-                            size: 14 // Change this value to the desired font size
-                        }
-                    }
+                    grid: { color: 'rgba(0,0,0,0.05)' },
+                    ticks: { font: { size: 11 } }
                 }
             }
         }
     };
 
     {% for platform in by_platform.keys() %}
-    // Change the title of the chart
-    const data_{{platform}} = {
-        labels: {{ dates | tojson }},
-        datasets: [
-            {
-                label: 'Reproducible',
-                data: {{ counts_per_platform[platform].rebuilds | tojson }},
-                fill: true,
-            },
-            {
-                label: 'Builds',
-                data: {{ counts_per_platform[platform].builds | tojson }},
-                fill: true,
-            },
-            {
-                label: 'Total Builds',
-                data: {{ counts_per_platform[platform].total_builds | tojson }},
-                fill: false
-            },
-            {
-                label: 'Total Recipes',
-                data: {{ counts_per_platform[platform].total_recipes | tojson }},
-                fill: false,
-                borderDash: [10, 5],
-            },
-        ]
-    };
-    const config_{{ platform }} = {
-      ...config,
-      options: {
-        ...config.options,
-        plugins: {
-          ...config.options.plugins,
-          title: {
-            ...config.options.plugins.title,
-            text: 'Rebuild Statistics for {{ platform | capitalize }}',
-          },
-        },
-      },
-      data: data_{{platform}},
-    };
-    const chart_{{ platform }} = new Chart(document.getElementById("chart-{{ platform }}"), config_{{ platform }});
+    new Chart(document.getElementById("chart-{{ platform }}"), {
+        ...chartConfig,
+        data: {
+            labels: {{ dates | tojson }},
+            datasets: [
+                {
+                    label: 'Reproducible',
+                    data: {{ counts_per_platform[platform].rebuilds | tojson }},
+                    borderColor: '#22c55e',
+                    backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Successful Builds',
+                    data: {{ counts_per_platform[platform].builds | tojson }},
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    fill: true,
+                    tension: 0.3
+                },
+                {
+                    label: 'Total Builds',
+                    data: {{ counts_per_platform[platform].total_builds | tojson }},
+                    borderColor: '#94a3b8',
+                    borderDash: [5, 5],
+                    fill: false,
+                    tension: 0.3
+                },
+                {
+                    label: 'Total Recipes',
+                    data: {{ counts_per_platform[platform].total_recipes | tojson }},
+                    borderColor: '#e2e8f0',
+                    borderDash: [10, 5],
+                    fill: false,
+                    tension: 0.3
+                }
+            ]
+        }
+    });
     {% endfor %}
 </script>
-
-</html>
+{% endblock %}
