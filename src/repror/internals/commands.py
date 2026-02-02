@@ -105,6 +105,12 @@ def calculate_hash(conda_file: Path):
 
 def find_conda_file(build_folder: Path) -> Path:
     """Find the conda file in the build folder. Return the first one found ( which currently is not *the* correct way )."""
+    # First check directly in the build folder (glob ** may not match root level)
+    conda_files = glob.glob(str(build_folder) + "/*.conda")
+    if conda_files:
+        return Path(conda_files[0])
+
+    # Then check subdirectories
     conda_files = glob.glob(str(build_folder) + "/**/*.conda", recursive=True)
     if conda_files:
         return Path(conda_files[0])

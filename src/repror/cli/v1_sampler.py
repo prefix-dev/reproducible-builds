@@ -760,8 +760,14 @@ def rebuild_v1_package(
     try:
         rebuilt_file = find_conda_file(rebuild_dir)
         rebuild_hash = calculate_hash(rebuilt_file)
+        print(f"[dim]Found rebuilt package: {rebuilt_file}[/dim]")
     except FileNotFoundError:
-        pass
+        # List directory contents for debugging
+        if rebuild_dir.exists():
+            contents = list(rebuild_dir.iterdir())
+            print(f"[dim]Rebuild dir contents ({rebuild_dir}): {contents}[/dim]")
+        else:
+            print(f"[dim]Rebuild dir does not exist: {rebuild_dir}[/dim]")
 
     # If no package was produced and return code is non-zero, it's a real failure
     if rebuilt_file is None and output.return_code != 0:
