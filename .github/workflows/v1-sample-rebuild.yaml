@@ -67,7 +67,7 @@ jobs:
   rebuild-v1-packages:
     needs: generate-v1-packages
     if: ${{ needs.generate-v1-packages.outputs.matrix != '[]' }}
-    name: v1-${{ matrix.package.name }}-${{ matrix.os }}
+    name: v1-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.os }}
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -110,7 +110,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v1-patch-${{ matrix.package.name }}-${{ matrix.os }}
+          name: v1-patch-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.os }}
           path: build_info/v1/
           if-no-files-found: ignore
 
@@ -118,7 +118,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v1-diff-${{ matrix.package.name }}-${{ matrix.os }}
+          name: v1-diff-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.os }}
           path: build_info/v1/diffs/
           if-no-files-found: ignore
 
@@ -189,6 +189,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: prefix-dev/setup-pixi@v0.8.1
         with:
@@ -214,8 +216,10 @@ jobs:
         continue-on-error: true
         run: |
           echo "=== Downloaded Diffs ==="
-          find docs/diffs -name "*.html" 2>/dev/null | head -20 || echo "No diffs found"
-          echo "Total diff files: $(find docs/diffs -name "*.html" 2>/dev/null | wc -l)"
+          find docs/diffs -type f -name "*.html" 2>/dev/null | head -20 || echo "No diffs found"
+          echo "Total diff files: $(find docs/diffs -type f -name "*.html" 2>/dev/null | wc -l)"
+          echo "=== Directory structure ==="
+          find docs/diffs -type d 2>/dev/null || echo "No dirs"
 
       - name: Generate HTML pages
         run: |
@@ -227,13 +231,8 @@ jobs:
           ls -la docs/
           if [ -d "docs/diffs" ]; then
             echo "=== Diffs directory ==="
-            ls -la docs/diffs/ | head -20
+            find docs/diffs -type f | head -30
           fi
-
-      - name: Update remote docs
-        if: github.ref == 'refs/heads/main'
-        run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
 
       - name: Commit diffs to repository
         if: github.ref == 'refs/heads/main'
@@ -242,15 +241,25 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
           # Add the diffs directory if it exists and has files
-          if [ -d "docs/diffs" ] && [ "$(find docs/diffs -name '*.html' 2>/dev/null | wc -l)" -gt 0 ]; then
+          if [ -d "docs/diffs" ] && [ "$(find docs/diffs -type f -name '*.html' 2>/dev/null | wc -l)" -gt 0 ]; then
             git add docs/diffs/
-            git diff --staged --quiet || git commit -m "Update diffoscope HTML reports"
-            git push || echo "Nothing to push or push failed"
+            if ! git diff --staged --quiet; then
+              git commit -m "Update diffoscope HTML reports"
+              git push
+              echo "Diffs committed and pushed"
+            else
+              echo "No changes to commit"
+            fi
           else
             echo "No diff files to commit"
           fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update remote docs via API
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Pull latest changes (including diffs we just pushed)
+          git pull --rebase || true
+          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
 
   summarize-results:
     runs-on: ubuntu-latest
