@@ -77,21 +77,26 @@ class GithubAPI:
         message: str,
         remote_branch: Optional[str] = None,
     ):
-        """Update a file in a GitHub repository and commit the changes."""
+        """Update or create a file in a GitHub repository and commit the changes."""
         url = f"https://api.github.com/repos/{self.owner}/contents/{file_path}"
         headers = {
             "Authorization": f"Bearer {self.token}",
             "Accept": "application/vnd.github.v3+json",
         }
 
+        # Try to get existing file SHA (needed for updates)
+        sha = None
         response = requests.get(
             url, headers=headers, params={"ref": remote_branch or self.branch}
         )
-        response.raise_for_status()
-        data = response.json()
-        sha = data["sha"]
+        if response.status_code == 200:
+            data = response.json()
+            sha = data["sha"]
+        elif response.status_code != 404:
+            # Raise for errors other than "not found"
+            response.raise_for_status()
 
-        # Update the file
+        # Update or create the file
         message = f"{message} at {file_path}"
         if isinstance(content, str):
             content_encoded = base64.b64encode(content.encode()).decode()
@@ -103,8 +108,11 @@ class GithubAPI:
             "committer": {"name": "repror_bot", "email": "repror_bot@prefix.dev"},
             "branch": self.branch,
             "content": content_encoded,
-            "sha": sha,
         }
+
+        # Include SHA only if file exists (for update)
+        if sha:
+            payload["sha"] = sha
 
         response = requests.put(url, headers=headers, json=payload)
         response.raise_for_status()

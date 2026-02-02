@@ -51,11 +51,11 @@ jobs:
             SEED_ARG="--seed $SEED"
           fi
 
-          # Generate matrix with full package info for linux-64
+          # Generate matrix with full package info for noarch (faster rebuilds)
           # The generate-matrix command outputs JSON to stdout, status to stderr
           MATRIX_JSON=$(pixi run repror v1 generate-matrix \
             --size "$SAMPLE_SIZE" \
-            --subdir linux-64 \
+            --subdir noarch \
             --max-age-days "$MAX_AGE" \
             $SEED_ARG)
 
