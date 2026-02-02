@@ -254,6 +254,38 @@ class PackageInfo:
     url: str
     sha256: str
     size: int
+    timestamp: Optional[int] = None  # Unix timestamp in milliseconds
+
+    def to_dict(self) -> dict:
+        """Convert to dictionary for JSON serialization."""
+        return {
+            "name": self.name,
+            "version": self.version,
+            "build": self.build,
+            "build_number": self.build_number,
+            "subdir": self.subdir,
+            "filename": self.filename,
+            "url": self.url,
+            "sha256": self.sha256,
+            "size": self.size,
+            "timestamp": self.timestamp,
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "PackageInfo":
+        """Create from dictionary."""
+        return cls(
+            name=data["name"],
+            version=data["version"],
+            build=data["build"],
+            build_number=data["build_number"],
+            subdir=data["subdir"],
+            filename=data["filename"],
+            url=data["url"],
+            sha256=data["sha256"],
+            size=data["size"],
+            timestamp=data.get("timestamp"),
+        )
 
 
 @dataclass
@@ -269,6 +301,7 @@ class V1RebuildResult:
     original_hash: Optional[str] = None
     rebuild_hash: Optional[str] = None
     error_message: Optional[str] = None
+    diff_path: Optional[Path] = None  # Path to diffoscope HTML output
 
 
 def fetch_feedstock_stats(url: str = FEEDSTOCK_STATS_URL) -> FeedstockStats:
@@ -363,7 +396,150 @@ def find_package_in_repodata(
         url=url,
         sha256=info.get("sha256", ""),
         size=info.get("size", 0),
+        timestamp=info.get("timestamp"),
     )
+
+
+def find_recent_v1_packages(
+    v1_packages: list[str],
+    repodata: dict,
+    subdir: str,
+    max_age_days: int = 10,
+) -> list[PackageInfo]:
+    """Find V1 packages that were built recently.
+
+    Args:
+        v1_packages: List of V1 package names
+        repodata: Repodata dictionary
+        subdir: Conda subdir
+        max_age_days: Maximum age of packages in days
+
+    Returns:
+        List of PackageInfo for recent V1 packages
+    """
+    import time
+
+    now_ms = int(time.time() * 1000)
+    max_age_ms = max_age_days * 24 * 60 * 60 * 1000
+    cutoff_ms = now_ms - max_age_ms
+
+    packages = repodata.get("packages.conda", {})
+    v1_set = set(v1_packages)
+
+    recent_packages: list[PackageInfo] = []
+
+    for filename, info in packages.items():
+        name = info.get("name")
+        if name not in v1_set:
+            continue
+
+        timestamp = info.get("timestamp")
+        if timestamp is None or timestamp < cutoff_ms:
+            continue
+
+        url = f"{CONDA_FORGE_BASE}/{subdir}/{filename}"
+        pkg_info = PackageInfo(
+            name=info["name"],
+            version=info["version"],
+            build=info.get("build", ""),
+            build_number=info.get("build_number", 0),
+            subdir=subdir,
+            filename=filename,
+            url=url,
+            sha256=info.get("sha256", ""),
+            size=info.get("size", 0),
+            timestamp=timestamp,
+        )
+        recent_packages.append(pkg_info)
+
+    # Sort by timestamp descending (most recent first)
+    recent_packages.sort(key=lambda p: p.timestamp or 0, reverse=True)
+
+    return recent_packages
+
+
+def run_diffoscope(
+    original: Path,
+    rebuilt: Path,
+    package_name: str,
+    platform_name: str,
+) -> Optional[Path]:
+    """Run diffoscope to compare two packages.
+
+    Saves the HTML diff to build_info/v1/diffs/{platform}/{package}_diff.html
+    and prints a text summary to the log.
+
+    Args:
+        original: Path to the original .conda package
+        rebuilt: Path to the rebuilt .conda package
+        package_name: Name of the package (for output filename)
+        platform_name: Platform name (for output directory)
+
+    Returns:
+        Path to the HTML diff output, or None if diffoscope failed
+    """
+    import shutil
+
+    diffoscope_bin = shutil.which("diffoscope")
+    if not diffoscope_bin:
+        logger.warning("diffoscope not found in PATH")
+        return None
+
+    # Save to persistent location for artifact upload
+    output_dir = Path("build_info/v1/diffs") / platform_name
+    output_dir.mkdir(parents=True, exist_ok=True)
+    html_output = output_dir / f"{package_name}_diff.html"
+    text_output = output_dir / f"{package_name}_diff.txt"
+
+    print(f"[dim]Running diffoscope to compare packages...[/dim]")
+
+    try:
+        # Run diffoscope with both HTML and text output
+        result = subprocess.run(
+            [
+                diffoscope_bin,
+                "--html",
+                str(html_output),
+                "--text",
+                str(text_output),
+                "--max-text-report-size",
+                "50000",  # Limit text output to 50KB
+                "--max-diff-block-lines",
+                "100",  # Limit diff blocks
+                str(original),
+                str(rebuilt),
+            ],
+            capture_output=True,
+            text=True,
+            timeout=300,  # 5 minute timeout
+        )
+
+        # diffoscope returns 1 if files differ, 0 if identical
+        if result.returncode in (0, 1):
+            if html_output.exists():
+                print(f"[green]Diffoscope HTML saved to {html_output}[/green]")
+
+            # Print text summary to log (first 50 lines)
+            if text_output.exists():
+                print(f"\n[bold yellow]Diffoscope Summary:[/bold yellow]")
+                with open(text_output) as f:
+                    lines = f.readlines()
+                    for line in lines[:50]:
+                        print(f"  {line.rstrip()}")
+                    if len(lines) > 50:
+                        print(f"  [dim]... ({len(lines) - 50} more lines, see {text_output})[/dim]")
+
+            return html_output if html_output.exists() else None
+        else:
+            logger.warning(f"diffoscope failed: {result.stderr}")
+            return None
+
+    except subprocess.TimeoutExpired:
+        logger.warning("diffoscope timed out")
+        return None
+    except Exception as e:
+        logger.warning(f"diffoscope error: {e}")
+        return None
 
 
 def download_package(pkg_info: PackageInfo, dest_dir: Path) -> Optional[Path]:
@@ -642,6 +818,11 @@ def rebuild_v1_package(
 
     is_reproducible = original_hash == rebuild_hash
 
+    # Run diffoscope if not reproducible
+    diff_path: Optional[Path] = None
+    if not is_reproducible:
+        diff_path = run_diffoscope(original_file, rebuilt_file, pkg_info.name, platform)
+
     # Save successful rebuild
     v1_rebuild = V1Rebuild(
         package_name=pkg_info.name,
@@ -669,6 +850,7 @@ def rebuild_v1_package(
         reproducible=is_reproducible,
         original_hash=original_hash,
         rebuild_hash=rebuild_hash,
+        diff_path=diff_path,
     )
 
 
@@ -902,6 +1084,103 @@ def sample(
         patch=patch,
     )
     print_summary(results)
+
+
+@app.command()
+def rebuild_one(
+    package_info_json: Annotated[
+        str, typer.Option("--package-info", help="Package info as JSON string")
+    ],
+    actions_url: Annotated[
+        Optional[str], typer.Option(help="GitHub Actions URL for tracking")
+    ] = None,
+    patch: Annotated[
+        bool, typer.Option(help="Save to patch files instead of database (for CI)")
+    ] = False,
+):
+    """
+    Rebuild a single package from a package info JSON.
+
+    This command is used by CI to rebuild a package with a deterministic URL,
+    avoiding the need to re-download repodata in each job.
+    """
+    pkg_info = PackageInfo.from_dict(json.loads(package_info_json))
+
+    print(f"[bold]Rebuilding {pkg_info.name} {pkg_info.version}[/bold]")
+    print(f"[dim]URL: {pkg_info.url}[/dim]")
+
+    platform = platform_name()
+    plat_version = platform_version()
+
+    with tempfile.TemporaryDirectory() as tmp_dir:
+        work_dir = Path(tmp_dir)
+        result = rebuild_v1_package(
+            pkg_info, work_dir, platform, plat_version, actions_url, patch
+        )
+
+        if result is None:
+            print(f"[yellow]Skipped: not built with rattler-build[/yellow]")
+            return
+
+        if result.rebuild_success:
+            if result.reproducible:
+                print(f"[green]✓ Reproducible![/green]")
+            else:
+                print(f"[yellow]✗ Not reproducible[/yellow]")
+                print(f"  Original hash: {result.original_hash}")
+                print(f"  Rebuild hash:  {result.rebuild_hash}")
+                if result.diff_path:
+                    print(f"  Diff: {result.diff_path}")
+        elif result.download_success:
+            print(f"[red]✗ Rebuild failed: {result.error_message}[/red]")
+        else:
+            print(f"[red]✗ Download failed: {result.error_message}[/red]")
+
+
+@app.command()
+def generate_matrix(
+    sample_size: Annotated[
+        int, typer.Option("--size", "-n", help="Number of packages to sample")
+    ] = 20,
+    seed: Annotated[
+        Optional[int],
+        typer.Option("--seed", "-s", help="Random seed for reproducible sampling"),
+    ] = None,
+    subdir: Annotated[
+        str, typer.Option("--subdir", help="Conda subdir (e.g., linux-64)")
+    ] = "linux-64",
+    max_age_days: Annotated[
+        int, typer.Option("--max-age-days", help="Maximum age of packages in days")
+    ] = 10,
+):
+    """
+    Generate a JSON matrix of packages for CI.
+
+    Outputs a JSON array of package info objects that can be used as a GitHub Actions matrix.
+    Only outputs to stdout (no status messages) so it can be captured cleanly.
+    """
+    stats = fetch_feedstock_stats()
+    repodata = fetch_repodata(subdir)
+
+    # Find recent V1 packages
+    recent_packages = find_recent_v1_packages(
+        stats.v1_packages, repodata, subdir, max_age_days
+    )
+
+    _print_status(f"[dim]Found {len(recent_packages)} recent V1 packages (last {max_age_days} days)[/dim]")
+
+    if seed is not None:
+        random.seed(seed)
+
+    # Sample from recent packages
+    if sample_size >= len(recent_packages):
+        sampled = recent_packages
+    else:
+        sampled = random.sample(recent_packages, sample_size)
+
+    # Output JSON array of package info
+    matrix = [pkg.to_dict() for pkg in sampled]
+    print(json.dumps(matrix))
 
 
 @app.command()

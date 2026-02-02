@@ -10,9 +10,10 @@ on:
       seed:
         description: "Random seed for reproducible sampling (optional)"
         required: false
-      packages:
-        description: "Specific packages to test (comma-separated, overrides sample_size)"
+      max_age_days:
+        description: "Maximum age of packages in days"
         required: false
+        default: "10"
 
   schedule:
     # Run daily at 3 AM UTC
@@ -28,7 +29,7 @@ jobs:
   generate-v1-packages:
     runs-on: ubuntu-latest
     outputs:
-      packages: ${{ steps.generate-matrix.outputs.packages }}
+      matrix: ${{ steps.generate-matrix.outputs.matrix }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,62 +44,37 @@ jobs:
         run: |
           SAMPLE_SIZE="${{ github.event.inputs.sample_size || '20' }}"
           SEED="${{ github.event.inputs.seed }}"
-          PACKAGES="${{ github.event.inputs.packages }}"
+          MAX_AGE="${{ github.event.inputs.max_age_days || '10' }}"
 
-          if [ -n "$PACKAGES" ]; then
-            # User specified packages - convert comma-separated to JSON array
-            PACKAGES_JSON=$(echo "$PACKAGES" | python3 -c "import sys, json; print(json.dumps([p.strip() for p in sys.stdin.read().split(',') if p.strip()]))")
-          else
-            # Random sample
-            PACKAGES_JSON=$(pixi run python << EOF
-          import json
-          import random
-          import sys
-          sys.path.insert(0, 'src')
-
-          from repror.cli.v1_sampler import fetch_feedstock_stats, fetch_repodata
-
-          sample_size = int("$SAMPLE_SIZE")
-          seed_str = "$SEED"
-          subdir = 'linux-64'
-
-          stats = fetch_feedstock_stats()
-          repodata = fetch_repodata(subdir)
-
-          if seed_str:
-              random.seed(int(seed_str))
-
-          available_names = {
-              info.get("name")
-              for info in repodata.get("packages.conda", {}).values()
-          }
-          v1_available = [p for p in stats.v1_packages if p in available_names]
-
-          if sample_size >= len(v1_available):
-              package_list = v1_available
-          else:
-              package_list = random.sample(v1_available, sample_size)
-
-          print(json.dumps(package_list))
-          EOF
-          )
+          SEED_ARG=""
+          if [ -n "$SEED" ]; then
+            SEED_ARG="--seed $SEED"
           fi
 
-          echo "packages=$PACKAGES_JSON" >> "$GITHUB_OUTPUT"
-          echo "Generated package list: $PACKAGES_JSON"
+          # Generate matrix with full package info for linux-64
+          # The generate-matrix command outputs JSON to stdout, status to stderr
+          MATRIX_JSON=$(pixi run repror v1 generate-matrix \
+            --size "$SAMPLE_SIZE" \
+            --subdir linux-64 \
+            --max-age-days "$MAX_AGE" \
+            $SEED_ARG)
+
+          echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
+          echo "Generated matrix with $(echo "$MATRIX_JSON" | jq length) packages"
         env:
           LOG_LEVEL: WARNING
 
   rebuild-v1-packages:
     needs: generate-v1-packages
-    if: fromJson(needs.generate-v1-packages.outputs.packages)[0] != null
-    name: v1-${{ matrix.package }}-${{ matrix.os }}
+    if: ${{ needs.generate-v1-packages.outputs.matrix != '[]' }}
+    name: v1-${{ matrix.package.name }}-${{ matrix.os }}
     continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
-        package: ${{ fromJson(needs.generate-v1-packages.outputs.packages) }}
-        os: [ubuntu-latest, macos-latest]
+        package: ${{ fromJson(needs.generate-v1-packages.outputs.matrix) }}
+        os: [ubuntu-latest]
+        # Note: macOS packages have different subdirs, would need separate matrix generation
 
     runs-on: ${{ matrix.os }}
 
@@ -111,18 +87,6 @@ jobs:
           pixi-version: "latest"
           cache: true
 
-      - name: Get subdir for this OS
-        id: get-subdir
-        run: |
-          if [[ "${{ matrix.os }}" == "ubuntu-latest" ]]; then
-            echo "subdir=linux-64" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            echo "subdir=osx-arm64" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            echo "subdir=win-64" >> "$GITHUB_OUTPUT"
-          fi
-        shell: bash
-
       - name: Create conda-forge build directory structure
         run: |
           # rattler-build rebuild tries to use the original build paths from conda-forge
@@ -133,9 +97,10 @@ jobs:
 
       - name: Rebuild V1 package
         run: |
-          pixi run repror v1 sample \
-            --package "${{ matrix.package }}" \
-            --subdir "${{ steps.get-subdir.outputs.subdir }}" \
+          # Pass package info as JSON directly - no need to re-fetch repodata
+          PACKAGE_INFO='${{ toJson(matrix.package) }}'
+          pixi run repror v1 rebuild-one \
+            --package-info "$PACKAGE_INFO" \
             --actions-url "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" \
             --patch
         env:
@@ -145,8 +110,16 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v1-patch-${{ matrix.package }}-${{ matrix.os }}
+          name: v1-patch-${{ matrix.package.name }}-${{ matrix.os }}
           path: build_info/v1/
+          if-no-files-found: ignore
+
+      - name: Upload diff artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v1-diff-${{ matrix.package.name }}-${{ matrix.os }}
+          path: build_info/v1/diffs/
           if-no-files-found: ignore
 
   patch-v1-db:
