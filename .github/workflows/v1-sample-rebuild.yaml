@@ -19,6 +19,12 @@ on:
     # Run daily at 3 AM UTC
     - cron: '0 3 * * *'
 
+# Permissions for GitHub Pages deployment and releases
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
 env:
   RATTLER_BUILD_ENABLE_GITHUB_INTEGRATION: true
   REPRO_DB_NAME: repro.db
@@ -67,7 +73,7 @@ jobs:
   rebuild-v1-packages:
     needs: generate-v1-packages
     if: ${{ needs.generate-v1-packages.outputs.matrix != '[]' }}
-    name: v1-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.os }}
+    name: ${{ matrix.package.subdir }}/${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.package.build }}
     continue-on-error: true
     strategy:
       fail-fast: false
@@ -110,7 +116,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v1-patch-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.os }}
+          name: v1-patch-${{ matrix.package.subdir }}-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.package.build }}
           path: build_info/v1/
           if-no-files-found: ignore
 
@@ -118,7 +124,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: v1-diff-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.os }}
+          name: v1-diff-${{ matrix.package.subdir }}-${{ matrix.package.name }}-${{ matrix.package.version }}-${{ matrix.package.build }}
           path: build_info/v1/diffs/
           if-no-files-found: ignore
 
@@ -232,26 +238,52 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: List uploaded diffs
-        continue-on-error: true
-        run: |
-          echo "=== Diffs in release ==="
-          gh release view diffs --json assets -q '.assets[].name' | head -30 || echo "No diffs release"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Generate HTML pages
         run: |
           pixi run repror generate-html
 
-      - name: Update remote docs via API
-        if: github.ref == 'refs/heads/main'
+      - name: Copy diffs to docs folder
         run: |
-          REPROR_UPDATE_TOKEN=${{ secrets.GITHUB_TOKEN }} pixi run repror generate-html --update-remote
+          if [ -d "diffs_staging" ]; then
+            # Preserve subdir structure: diffs_staging/{subdir}/{name}-{version}-{build}_diff.html
+            # -> docs/diffs/{subdir}/{name}-{version}-{build}_diff.html
+            find diffs_staging -type f -name "*.html" | while read -r file; do
+              # Get the parent directory name (subdir like linux-64, noarch, etc.)
+              subdir=$(basename "$(dirname "$file")")
+              mkdir -p "docs/diffs/$subdir"
+              cp "$file" "docs/diffs/$subdir/"
+            done
+            echo "Copied diffs to docs/diffs/:"
+            find docs/diffs -name "*.html" | head -20
+          fi
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/
+
+  deploy-pages:
+    runs-on: ubuntu-latest
+    needs: generate-html
+    if: github.ref == 'refs/heads/main'
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
 
   summarize-results:
     runs-on: ubuntu-latest
-    needs: generate-html
+    needs: [generate-html, deploy-pages]
     if: always()
     steps:
       - name: Checkout code
