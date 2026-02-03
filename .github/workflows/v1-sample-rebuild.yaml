@@ -7,6 +7,10 @@ on:
         description: "Number of V1 packages to sample"
         required: true
         default: "20"
+      subdir:
+        description: "Conda subdir to sample from (noarch, linux-64, osx-arm64, osx-64, win-64)"
+        required: false
+        default: "noarch"
       seed:
         description: "Random seed for reproducible sampling (optional)"
         required: false
@@ -49,6 +53,7 @@ jobs:
         id: generate-matrix
         run: |
           SAMPLE_SIZE="${{ github.event.inputs.sample_size || '20' }}"
+          SUBDIR="${{ github.event.inputs.subdir || 'noarch' }}"
           SEED="${{ github.event.inputs.seed }}"
           MAX_AGE="${{ github.event.inputs.max_age_days || '10' }}"
 
@@ -57,12 +62,12 @@ jobs:
             SEED_ARG="--seed $SEED"
           fi
 
-          # Generate matrix with full package info for noarch (faster rebuilds)
+          # Generate matrix with full package info
           # The generate-matrix command outputs JSON to stdout, status to stderr
           # shellcheck disable=SC2086
           MATRIX_JSON=$(pixi run repror v1 generate-matrix \
             --size "$SAMPLE_SIZE" \
-            --subdir noarch \
+            --subdir "$SUBDIR" \
             --max-age-days "$MAX_AGE" \
             $SEED_ARG)
 
@@ -80,10 +85,9 @@ jobs:
       fail-fast: false
       matrix:
         package: ${{ fromJson(needs.generate-v1-packages.outputs.matrix) }}
-        os: [ubuntu-latest]
-        # Note: macOS packages have different subdirs, would need separate matrix generation
 
-    runs-on: ${{ matrix.os }}
+    # Select runner based on package subdir
+    runs-on: ${{ (matrix.package.subdir == 'osx-arm64' && 'macos-14') || (matrix.package.subdir == 'osx-64' && 'macos-13') || (matrix.package.subdir == 'win-64' && 'windows-latest') || 'ubuntu-latest' }}
 
     steps:
       - name: Checkout code

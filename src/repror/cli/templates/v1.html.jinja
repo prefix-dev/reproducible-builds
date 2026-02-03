@@ -60,7 +60,7 @@
                         of rattler-build to check if we get an identical result.
                     </p>
                     <p class="mt-2 text-sm text-blue-800">
-                        Click on "View Diff" to see detailed differences when packages don't match.
+                        Click on "Hash Mismatch" to view the diffoscope report showing detailed differences.
                     </p>
                 </div>
             </div>
@@ -145,7 +145,15 @@
                                 {% if rebuild.is_reproducible %}
                                 <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
                                 {% elif rebuild.state.value == 'success' %}
-                                <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                {% set diff_filename = rebuild.package_name ~ "-" ~ rebuild.version ~ "-" ~ (rebuild.build_string or "unknown") ~ "_diff.html" %}
+                                {% set diff_subdir = rebuild.subdir or "unknown" %}
+                                {% set diff_url = "https://prefix-dev.github.io/reproducible-builds/diffs/" ~ diff_subdir ~ "/" ~ diff_filename %}
+                                <a href="{{ diff_url }}" target="_blank"
+                                   class="status-pill bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors inline-flex items-center gap-1"
+                                   title="View diffoscope report">
+                                    Hash Mismatch
+                                    <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                                </a>
                                 {% else %}
                                 <span class="status-pill bg-red-100 text-red-700">Failed</span>
                                 {% endif %}
