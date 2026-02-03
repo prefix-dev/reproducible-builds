@@ -97,20 +97,20 @@
             <!-- Stats Overview -->
             <div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold">119</div>
+                    <div class="text-3xl font-bold">138</div>
                     <div class="text-sm text-slate-300">Total Tested</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-blue-400">85</div>
+                    <div class="text-3xl font-bold text-blue-400">103</div>
                     <div class="text-sm text-slate-300">Successful Rebuilds</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-green-400">40</div>
+                    <div class="text-3xl font-bold text-green-400">55</div>
                     <div class="text-sm text-slate-300">Reproducible</div>
                 </div>
                 <div class="bg-white/10 backdrop-blur rounded-xl p-4 text-center">
-                    <div class="text-3xl font-bold text-red-400">
-                        47.1%
+                    <div class="text-3xl font-bold text-amber-400">
+                        53.4%
                     </div>
                     <div class="text-sm text-slate-300">Reproducibility Rate</div>
                 </div>
@@ -184,6 +184,1219 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-times-circle text-red-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">jdtls</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">1.56.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-red-100 text-red-700">Failed</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:54:15.263188') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/jdtls-1.56.0-hc364b38_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+                                    <button @click="$store.modal.openModalWith($event.target.closest('button').nextElementSibling.textContent)"
+                                            class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-red-700 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                                        <i class="fa-solid fa-circle-info"></i>
+                                        Error
+                                    </button>
+                                    <span class="hidden">/rattler-build_jdtls_1769715673/work
+ │ │ × error   Prefix: /home/conda/feedstock_root/build_artifacts/bld/rattler-build_jdtls_1769715673/host_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehol
+ │ │ × error   Build prefix: /home/conda/feedstock_root/build_artifacts/bld/rattler-build_jdtls_1769715673/build_env
+ │ │ × error 
+ │ │ × error To run the script manually, use the following command:
+ │ │ × error 
+ │ │ × error   cd "/home/conda/feedstock_root/build_artifacts/bld/rattler-build_jdtls_1769715673/work" && ./conda_build.sh
+ │ │ × error 
+ │ │ × error To run commands interactively in the build environment:
+ │ │ × error 
+ │ │ × error   cd "/home/conda/feedstock_root/build_artifacts/bld/rattler-build_jdtls_1769715673/work" && source build_env.sh
+ │ │
+ │ ╰─────────────────── (took 3 minutes)
+ │
+ ╰─────────────────── (took 3 minutes)
+Error:   × Script failed to execute
+
+</span>
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-not-equal text-amber-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">semantic-release</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">25.0.3</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:51:37.841389') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/semantic-release-25.0.3-hee61e0b_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+                                    
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/semantic-release-25.0.3_diff.html"
+                                       target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                                       title="View detailed diff">
+                                        <i class="fa-solid fa-code-compare"></i>
+                                        View Diff
+                                    </a>
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">rslib</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.19.4</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:51:06.594981') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/rslib-0.19.4-hee61e0b_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-not-equal text-amber-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">netron</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">8.8.8</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:51:04.458382') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/netron-8.8.8-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+                                    
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/netron-8.8.8_diff.html"
+                                       target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                                       title="View detailed diff">
+                                        <i class="fa-solid fa-code-compare"></i>
+                                        View Diff
+                                    </a>
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">dagster</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">1.12.13</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:51:01.143754') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/dagster-1.12.13-pyhac95a24_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">auto-round</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.9.7</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:59.324939') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/auto-round-0.9.7-pyh7aac422_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">skl2onnx</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">1.20.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:58.409408') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/skl2onnx-1.20.0-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">pytmd</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">3.0.2</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:58.397381') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/pytmd-3.0.2-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-not-equal text-amber-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">gwpy</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">4.0.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-amber-100 text-amber-700">Hash Mismatch</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:57.626695') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/gwpy-4.0.0-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+                                    
+                                    
+                                    <a href="https://htmlpreview.github.io/?https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/gwpy-4.0.0_diff.html"
+                                       target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                                       title="View detailed diff">
+                                        <i class="fa-solid fa-code-compare"></i>
+                                        View Diff
+                                    </a>
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">acachecontrol</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.3.7</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:57.457601') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/acachecontrol-0.3.7-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">copier</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">9.11.3</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:57.102773') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/copier-9.11.3-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">sqlmodel</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.0.32</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:56.970746') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/sqlmodel-0.0.32-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">locust</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">2.43.2</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:56.660161') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/locust-2.43.2-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">create-qwik</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">1.19.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:56.009414') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/create-qwik-1.19.0-hfa286de_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">mdformat-frontmatter</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">2.0.10</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:55.591444') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/mdformat-frontmatter-2.0.10-pyhcf101f3_1.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">pyodide-build</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.31.2</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:55.346102') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/pyodide-build-0.31.2-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">pyserde</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.29.1</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:54.779558') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/pyserde-0.29.1-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">dask</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">2025.9.2</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:54.605271') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/dask-2025.9.2-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-3">
+                                    
+                                    <i class="fa-solid fa-check-circle text-green-500"></i>
+                                    
+                                    <span class="font-medium text-slate-900">genai-prices</span>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600 font-mono">0.0.52</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-sm text-slate-600">
+                                    <span class="fa-brands fa-linux mr-1"></span>
+                                    linux
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="text-xs text-slate-500 font-mono">
+                                    
+                                    rattler-build 0.55.1
+                                    
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                
+                                <span class="status-pill bg-green-100 text-green-700">Reproducible</span>
+                                
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500"
+                                x-data="{ humanTime: timeAgo('2026-02-03 03:50:54.384421') }"
+                                x-text="humanTime"></td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center gap-2">
+                                    <!-- Link to original package -->
+                                    <a href="https://conda.anaconda.org/conda-forge/noarch/genai-prices-0.0.52-pyhcf101f3_0.conda" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-orange-700 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+                                       title="Download original package">
+                                        <i class="fa-solid fa-download"></i>
+                                        Package
+                                    </a>
+
+                                    <!-- Diff link (if not reproducible and state is success) -->
+                                    
+
+                                    <!-- Error reason -->
+                                    
+
+                                    <!-- GitHub Actions link -->
+                                    
+                                    <a href="https://github.com/prefix-dev/reproducible-builds/actions/runs/21616197570" target="_blank"
+                                       class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-slate-600 bg-slate-100 rounded-lg hover:bg-slate-200 transition-colors">
+                                        <i class="fa-brands fa-github"></i>
+                                        CI
+                                    </a>
+                                    
+                                </div>
+                            </td>
+                        </tr>
                         
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
@@ -8705,6 +9918,57 @@ Error:   × Script failed to execute
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-slate-200">
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-medium text-slate-900">semantic-release</span>
+                                <span class="text-slate-500 text-sm ml-2">25.0.3</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded font-mono">
+                                    8ac3bd9af28a68d2...
+                                </code>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded font-mono">
+                                    4b1f06d3b3438ae9...
+                                </code>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-medium text-slate-900">netron</span>
+                                <span class="text-slate-500 text-sm ml-2">8.8.8</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded font-mono">
+                                    3e8cce6329e69e61...
+                                </code>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded font-mono">
+                                    7752c7a4033290e6...
+                                </code>
+                            </td>
+                        </tr>
+                        
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="font-medium text-slate-900">gwpy</span>
+                                <span class="text-slate-500 text-sm ml-2">4.0.0</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded font-mono">
+                                    516718a8758f8acd...
+                                </code>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <code class="text-xs text-amber-600 bg-amber-50 px-2 py-1 rounded font-mono">
+                                    5ebc554377c26743...
+                                </code>
+                            </td>
+                        </tr>
                         
                         <tr class="hover:bg-slate-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
