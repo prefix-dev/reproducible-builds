@@ -492,7 +492,7 @@ def run_diffoscope(
     html_output = output_dir / f"{diff_basename}.html"
     text_output = output_dir / f"{diff_basename}.txt"
 
-    print(f"[dim]Running diffoscope to compare packages...[/dim]")
+    print("[dim]Running diffoscope to compare packages...[/dim]")
 
     try:
         # Run diffoscope with both HTML and text output
@@ -522,7 +522,7 @@ def run_diffoscope(
 
             # Print text summary to log (first 50 lines)
             if text_output.exists():
-                print(f"\n[bold yellow]Diffoscope Summary:[/bold yellow]")
+                print("\n[bold yellow]Diffoscope Summary:[/bold yellow]")
                 with open(text_output) as f:
                     lines = f.readlines()
                     for line in lines[:50]:
@@ -1143,14 +1143,14 @@ def rebuild_one(
         )
 
         if result is None:
-            print(f"[yellow]Skipped: not built with rattler-build[/yellow]")
+            print("[yellow]Skipped: not built with rattler-build[/yellow]")
             return
 
         if result.rebuild_success:
             if result.reproducible:
-                print(f"[green]✓ Reproducible![/green]")
+                print("[green]✓ Reproducible![/green]")
             else:
-                print(f"[yellow]✗ Not reproducible[/yellow]")
+                print("[yellow]✗ Not reproducible[/yellow]")
                 print(f"  Original hash: {result.original_hash}")
                 print(f"  Rebuild hash:  {result.rebuild_hash}")
                 if result.diff_path:

@@ -1,7 +1,6 @@
 import subprocess
 
 from repror.internals.db import PROD_DB
-from repror.internals.git import github_api
 from repror.internals.print import print
 from repror.internals.patcher import (
     aggregate_build_patches,

@@ -26,7 +26,6 @@ from sqlmodel import (
 )
 
 from repror.internals.recipe import clone_remote_recipe
-from .print import print
 
 
 def _print_status(msg: str) -> None:

@@ -163,6 +163,14 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Migrate database schema
+        run: |
+          # Add new columns if they don't exist (for backwards compatibility)
+          if [ -f "repro.db" ]; then
+            sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN subdir TEXT;" 2>/dev/null || echo "subdir column already exists"
+            sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN build_string TEXT;" 2>/dev/null || echo "build_string column already exists"
+          fi
+
       - name: Merge V1 patches to database
         run: |
           pixi run python << 'EOF'
@@ -207,6 +215,13 @@ jobs:
           gh release download database --pattern 'repro.db' --clobber || echo "No database release found"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Migrate database schema
+        run: |
+          if [ -f "repro.db" ]; then
+            sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN subdir TEXT;" 2>/dev/null || true
+            sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN build_string TEXT;" 2>/dev/null || true
+          fi
 
       - name: Download all diff artifacts
         uses: actions/download-artifact@v4
@@ -300,6 +315,13 @@ jobs:
           gh release download database --pattern 'repro.db' --clobber || echo "No database release found"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Migrate database schema
+        run: |
+          if [ -f "repro.db" ]; then
+            sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN subdir TEXT;" 2>/dev/null || true
+            sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN build_string TEXT;" 2>/dev/null || true
+          fi
 
       - name: Generate summary
         run: |
