@@ -171,6 +171,53 @@ jobs:
             sqlite3 repro.db "ALTER TABLE v1_rebuild ADD COLUMN build_string TEXT;" 2>/dev/null || echo "build_string column already exists"
           fi
 
+      - name: Backfill missing subdir and build_string
+        run: |
+          if [ -f "repro.db" ]; then
+            pixi run python << 'EOF'
+          import sqlite3
+          import re
+
+          conn = sqlite3.connect('repro.db')
+          cursor = conn.cursor()
+
+          # Find records with NULL subdir or build_string
+          cursor.execute("""
+              SELECT id, original_url FROM v1_rebuild
+              WHERE subdir IS NULL OR build_string IS NULL
+          """)
+          rows = cursor.fetchall()
+
+          if not rows:
+              print("No records to backfill")
+          else:
+              print(f"Backfilling {len(rows)} records...")
+
+          for row_id, url in rows:
+              # URL format: https://conda.anaconda.org/conda-forge/{subdir}/{name}-{version}-{build}.conda
+              # Extract subdir from path segment before filename
+              match = re.search(r'/([^/]+)/([^/]+)\.conda$', url)
+              if match:
+                  subdir = match.group(1)
+                  filename = match.group(2)
+                  # Extract build string: filename is {name}-{version}-{build}
+                  # Build string is everything after the last hyphen before version pattern
+                  parts = filename.rsplit('-', 2)
+                  if len(parts) >= 3:
+                      build_string = parts[2]
+                  else:
+                      build_string = None
+
+                  cursor.execute("""
+                      UPDATE v1_rebuild SET subdir = ?, build_string = ? WHERE id = ?
+                  """, (subdir, build_string, row_id))
+
+          conn.commit()
+          print(f"Backfilled {len(rows)} records")
+          conn.close()
+          EOF
+          fi
+
       - name: Merge V1 patches to database
         run: |
           pixi run python << 'EOF'
