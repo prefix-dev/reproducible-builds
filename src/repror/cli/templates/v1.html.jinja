@@ -165,9 +165,10 @@
 
                                     <!-- Diff link (if not reproducible and state is success) -->
                                     {% if not rebuild.is_reproducible and rebuild.state.value == 'success' %}
-                                    {% set diff_filename = rebuild.package_name ~ "-" ~ rebuild.version ~ "_diff.html" %}
-                                    {% set diff_url = "https://github.com/prefix-dev/reproducible-builds/releases/download/diffs/" ~ diff_filename %}
-                                    <a href="https://htmlpreview.github.io/?{{ diff_url }}"
+                                    {% set diff_filename = rebuild.package_name ~ "-" ~ rebuild.version ~ "-" ~ (rebuild.build_string or "unknown") ~ "_diff.html" %}
+                                    {% set diff_subdir = rebuild.subdir or "unknown" %}
+                                    {% set diff_url = "https://prefix-dev.github.io/reproducible-builds/diffs/" ~ diff_subdir ~ "/" ~ diff_filename %}
+                                    <a href="{{ diff_url }}"
                                        target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
                                        title="View detailed diff">

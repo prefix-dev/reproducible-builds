@@ -665,6 +665,8 @@ def rebuild_v1_package(
         v1_rebuild = V1Rebuild(
             package_name=pkg_info.name,
             version=pkg_info.version,
+            subdir=pkg_info.subdir,
+            build_string=pkg_info.build,
             original_url=pkg_info.url,
             original_hash=pkg_info.sha256,
             state=BuildState.FAIL,
@@ -713,6 +715,8 @@ def rebuild_v1_package(
             v1_rebuild = V1Rebuild(
                 package_name=pkg_info.name,
                 version=pkg_info.version,
+                subdir=pkg_info.subdir,
+                build_string=pkg_info.build,
                 original_url=pkg_info.url,
                 original_hash=original_hash,
                 state=BuildState.FAIL,
@@ -775,6 +779,8 @@ def rebuild_v1_package(
         v1_rebuild = V1Rebuild(
             package_name=pkg_info.name,
             version=pkg_info.version,
+            subdir=pkg_info.subdir,
+            build_string=pkg_info.build,
             original_url=pkg_info.url,
             original_hash=original_hash,
             state=BuildState.FAIL,
@@ -805,6 +811,8 @@ def rebuild_v1_package(
         v1_rebuild = V1Rebuild(
             package_name=pkg_info.name,
             version=pkg_info.version,
+            subdir=pkg_info.subdir,
+            build_string=pkg_info.build,
             original_url=pkg_info.url,
             original_hash=original_hash,
             state=BuildState.FAIL,
@@ -841,6 +849,8 @@ def rebuild_v1_package(
     v1_rebuild = V1Rebuild(
         package_name=pkg_info.name,
         version=pkg_info.version,
+        subdir=pkg_info.subdir,
+        build_string=pkg_info.build,
         original_url=pkg_info.url,
         original_hash=original_hash,
         rebuild_hash=rebuild_hash,

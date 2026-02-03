@@ -200,6 +200,10 @@ class V1Rebuild(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     package_name: str
     version: str
+    # Conda subdir (e.g., linux-64, noarch, osx-arm64)
+    subdir: Optional[str] = None
+    # Build string (e.g., py_0, h123abc_0)
+    build_string: Optional[str] = None
     original_url: str
     original_hash: str
     rebuild_hash: Optional[str] = None
