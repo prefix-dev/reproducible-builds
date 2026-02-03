@@ -59,6 +59,7 @@ jobs:
 
           # Generate matrix with full package info for noarch (faster rebuilds)
           # The generate-matrix command outputs JSON to stdout, status to stderr
+          # shellcheck disable=SC2086
           MATRIX_JSON=$(pixi run repror v1 generate-matrix \
             --size "$SAMPLE_SIZE" \
             --subdir noarch \
@@ -98,7 +99,7 @@ jobs:
           # rattler-build rebuild tries to use the original build paths from conda-forge
           # We need to create these directories with write permissions
           sudo mkdir -p /home/conda/feedstock_root/build_artifacts
-          sudo chown -R $USER:$USER /home/conda
+          sudo chown -R "$USER:$USER" /home/conda
         if: runner.os == 'Linux'
 
       - name: Rebuild V1 package
@@ -372,7 +373,7 @@ jobs:
 
       - name: Generate summary
         run: |
-          pixi run python << 'EOF' >> $GITHUB_STEP_SUMMARY
+          pixi run python << 'EOF' >> "$GITHUB_STEP_SUMMARY"
           import sys
           sys.path.insert(0, 'src')
 

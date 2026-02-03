@@ -88,7 +88,7 @@ def install_rattler_build_version(version: str) -> Optional[Path]:
     print(f"[dim]Installing rattler-build {version} via pixi global...[/dim]")
 
     try:
-        result = subprocess.run(
+        subprocess.run(
             [
                 "pixi",
                 "global",

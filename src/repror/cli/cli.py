@@ -16,16 +16,6 @@ from repror.internals.print import print
 from repror.internals import patch_database
 from repror.internals.rattler_build import rattler_build_hash
 
-
-def _print_status(msg: str) -> None:
-    """Print status message to stderr to avoid interfering with stdout capture."""
-    import sys
-    from rich.console import Console
-
-    console = Console(file=sys.stderr)
-    console.print(msg)
-
-
 # Different CLI commands
 from . import build_recipe as build
 from . import generate_recipes as generate
@@ -37,6 +27,15 @@ from .utils import pixi_root_cli, platform_name, reproducible_table
 
 from ..internals.options import global_options
 from ..internals.config import load_all_recipes
+
+
+def _print_status(msg: str) -> None:
+    """Print status message to stderr to avoid interfering with stdout capture."""
+    import sys
+    from rich.console import Console
+
+    console = Console(file=sys.stderr)
+    console.print(msg)
 
 
 app = typer.Typer(no_args_is_help=True, pretty_exceptions_enable=False)

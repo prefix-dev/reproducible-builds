@@ -91,7 +91,7 @@ jobs:
     needs: setup-rattler-build
     if: github.event_name != 'workflow_dispatch'
     outputs:
-      recipe: ${{ steps.generate-matrix.outputs.recipes }}
+      recipe: ${{ steps.generate-recipe-names.outputs.recipes }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -174,9 +174,8 @@ jobs:
       - name: Build recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
-          # shellcheck disable=SC1012
           pixi global install m2-patch
-          pixi run repror build-recipe ${{ matrix.recipe_name }} ${{ github.event.inputs.force == 'true' && '--force' || '' }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          pixi run repror build-recipe ${{ matrix.recipe_name }} ${{ github.event.inputs.force == 'true' && '--force' || '' }} --rattler-build-exe .rb-clone/target/release/rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Set timezone to Los Angeles
         if: matrix.os == 'ubuntu-latest'
@@ -198,11 +197,10 @@ jobs:
       - name: Rebuild recipes and track if hash is equal
         if: matrix.os == 'windows-latest'
         run: |
-          # shellcheck disable=SC1012
-          pixi run rebuild-recipe ${{ matrix.recipe_name }} ${{ github.event.inputs.force == 'true' && '--force' || '' }} --rattler-build-exe .rb-clone\target\release\rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          pixi run rebuild-recipe ${{ matrix.recipe_name }} ${{ github.event.inputs.force == 'true' && '--force' || '' }} --rattler-build-exe .rb-clone/target/release/rattler-build.exe --patch --actions-url https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Upload results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: build-info
@@ -224,7 +222,7 @@ jobs:
           pixi-version: "latest"
 
       # Cache might be empty
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: build-info
