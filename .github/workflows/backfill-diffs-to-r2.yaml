@@ -1,0 +1,135 @@
+name: Backfill Diffs to R2
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (don't actually upload)"
+        required: false
+        default: "false"
+        type: boolean
+
+permissions:
+  contents: read
+
+env:
+  REPRO_DB_NAME: repro.db
+
+jobs:
+  backfill-diffs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: "latest"
+          cache: true
+
+      - name: Download database from release
+        run: |
+          gh release download database --pattern 'repro.db' --clobber
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Download existing diffs from GitHub release
+        continue-on-error: true
+        run: |
+          mkdir -p github_diffs
+          gh release download diffs --dir github_diffs --pattern '*.html' || echo "No diffs release found"
+          echo "Downloaded $(ls github_diffs/*.html 2>/dev/null | wc -l) diff files"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Organize diffs by subdir using database
+        run: |
+          pixi run python << 'EOF'
+          import sqlite3
+          import os
+          import shutil
+          from pathlib import Path
+
+          # Connect to database to get subdir info
+          conn = sqlite3.connect('repro.db')
+          cursor = conn.cursor()
+
+          # Get all non-reproducible packages with their subdirs
+          cursor.execute("""
+              SELECT package_name, version, build_string, subdir
+              FROM v1_rebuild
+              WHERE state = 'success'
+              AND original_hash != rebuild_hash
+              AND subdir IS NOT NULL
+          """)
+
+          # Build a lookup: (name, version, build) -> subdir
+          subdir_lookup = {}
+          for name, version, build, subdir in cursor.fetchall():
+              key = f"{name}-{version}-{build}_diff.html"
+              subdir_lookup[key] = subdir
+
+          conn.close()
+
+          # Organize files
+          github_diffs = Path("github_diffs")
+          organized_diffs = Path("organized_diffs")
+
+          if not github_diffs.exists():
+              print("No github_diffs directory found")
+              exit(0)
+
+          for diff_file in github_diffs.glob("*.html"):
+              filename = diff_file.name
+
+              # Try to find subdir from database
+              if filename in subdir_lookup:
+                  subdir = subdir_lookup[filename]
+              else:
+                  # Try to extract subdir from filename if it contains it
+                  # Some old files might have format: subdir--name-version-build_diff.html
+                  if "--" in filename:
+                      subdir = filename.split("--")[0]
+                      filename = filename.split("--", 1)[1]
+                  else:
+                      # Default to noarch if we can't determine
+                      subdir = "noarch"
+
+              # Create subdir and copy file
+              dest_dir = organized_diffs / subdir
+              dest_dir.mkdir(parents=True, exist_ok=True)
+              dest_file = dest_dir / filename
+              shutil.copy(diff_file, dest_file)
+              print(f"  {subdir}/{filename}")
+
+          print(f"\nOrganized {sum(1 for _ in organized_diffs.rglob('*.html'))} files")
+          EOF
+
+      - name: List organized diffs
+        run: |
+          echo "=== Organized diffs ==="
+          find organized_diffs -name "*.html" | head -50 || echo "No organized diffs"
+
+      - name: Upload to R2
+        if: ${{ github.event.inputs.dry_run != 'true' }}
+        run: |
+          if [ -d "organized_diffs" ]; then
+            echo "=== Uploading diffs to R2 ==="
+            aws s3 sync organized_diffs/ s3://reproducible-builds-diffs/ \
+              --endpoint-url https://e1a7cde76f1780ec06bac859036dbaf7.r2.cloudflarestorage.com \
+              --exclude "*" --include "*.html"
+            echo "Done uploading diffs to R2"
+          else
+            echo "No diffs to upload"
+          fi
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+
+      - name: Dry run summary
+        if: ${{ github.event.inputs.dry_run == 'true' }}
+        run: |
+          echo "=== DRY RUN - Would upload these files ==="
+          find organized_diffs -name "*.html" | while read f; do
+            echo "  s3://reproducible-builds-diffs/${f#organized_diffs/}"
+          done

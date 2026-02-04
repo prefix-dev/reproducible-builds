@@ -289,7 +289,7 @@ jobs:
           if [ -d "diffs_staging" ]; then
             echo "=== Uploading diffs to R2 ==="
             # Sync diffs to R2, preserving subdir structure
-            aws s3 sync diffs_staging/ s3://reproducible-builds-diff/ \
+            aws s3 sync diffs_staging/ s3://reproducible-builds-diffs/ \
               --endpoint-url https://e1a7cde76f1780ec06bac859036dbaf7.r2.cloudflarestorage.com \
               --exclude "*" --include "*.html"
             echo "Done uploading diffs to R2"
