@@ -283,46 +283,26 @@ jobs:
           path: diffs_staging/
           merge-multiple: true
 
-      - name: Upload diffs to release
+      - name: Upload diffs to R2
         if: github.ref == 'refs/heads/main'
         run: |
-          # Create diffs release if it doesn't exist
-          gh release view diffs || gh release create diffs --title "Diffoscope Reports" --notes "Auto-updated diffoscope HTML reports for non-reproducible packages"
-
-          # Find and upload all diff HTML files
           if [ -d "diffs_staging" ]; then
-            echo "=== Uploading diffs to release ==="
-            find diffs_staging -type f -name "*.html" | while read -r file; do
-              # Get just the filename for the asset name
-              basename=$(basename "$file")
-              echo "Uploading: $basename"
-              gh release upload diffs "$file" --clobber || echo "Failed to upload $file"
-            done
-            echo "Done uploading diffs"
+            echo "=== Uploading diffs to R2 ==="
+            # Sync diffs to R2, preserving subdir structure
+            aws s3 sync diffs_staging/ s3://reproducible-builds-diff/ \
+              --endpoint-url https://e1a7cde76f1780ec06bac859036dbaf7.r2.cloudflarestorage.com \
+              --exclude "*" --include "*.html"
+            echo "Done uploading diffs to R2"
           else
             echo "No diffs to upload"
           fi
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
 
       - name: Generate HTML pages
         run: |
           pixi run repror generate-html
-
-      - name: Copy diffs to docs folder
-        run: |
-          if [ -d "diffs_staging" ]; then
-            # Preserve subdir structure: diffs_staging/{subdir}/{name}-{version}-{build}_diff.html
-            # -> docs/diffs/{subdir}/{name}-{version}-{build}_diff.html
-            find diffs_staging -type f -name "*.html" | while read -r file; do
-              # Get the parent directory name (subdir like linux-64, noarch, etc.)
-              subdir=$(basename "$(dirname "$file")")
-              mkdir -p "docs/diffs/$subdir"
-              cp "$file" "docs/diffs/$subdir/"
-            done
-            echo "Copied diffs to docs/diffs/:"
-            find docs/diffs -name "*.html" | head -20
-          fi
 
       - name: Upload Pages artifact
         if: github.ref == 'refs/heads/main'

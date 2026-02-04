@@ -16,6 +16,7 @@ from repror.internals.db import (
     get_total_successful_builds_and_rebuilds,
     get_v1_rebuild_data,
     get_v1_rebuild_stats,
+    get_v1_rebuild_stats_before,
 )
 from repror.internals.git import github_api
 from repror.internals.print import print
@@ -211,11 +212,26 @@ def render_v1_html(env: Environment, docs_folder: Path) -> str:
     rebuilds = get_v1_rebuild_data()
     stats = get_v1_rebuild_stats()
 
+    # Generate trend data for the last 14 days
+    start = datetime.now() - timedelta(days=13)
+    end_of_day = datetime(start.year, start.month, start.day, 23, 59, 59)
+    timestamps = [end_of_day + timedelta(days=i) for i in range(0, 14)]
+
+    trend_stats = [get_v1_rebuild_stats_before(time) for time in timestamps]
+    trend_data = {
+        "dates": [time.strftime("%Y-%m-%d") for time in timestamps],
+        "total": [s.total for s in trend_stats],
+        "successful": [s.successful for s in trend_stats],
+        "reproducible": [s.reproducible for s in trend_stats],
+        "rate": [s.reproducibility_rate for s in trend_stats],
+    }
+
     template = env.get_template("v1.html.jinja")
 
     html_content = template.render(
         rebuilds=rebuilds,
         stats=stats,
+        trend_data=trend_data,
         platform_fa=platform_fa,
         interpolate_color=interpolate_color,
     )

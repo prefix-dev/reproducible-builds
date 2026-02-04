@@ -66,6 +66,49 @@
             </div>
         </div>
 
+        <!-- Reproducibility Trend Chart -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 mb-8">
+            <h2 class="text-lg font-semibold text-slate-800 mb-4">
+                <i class="fa-solid fa-chart-line mr-2 text-blue-500"></i>
+                Reproducibility Trend (Last 14 Days)
+            </h2>
+            <div class="h-64">
+                <canvas id="v1-trend-chart"></canvas>
+            </div>
+        </div>
+
+        <!-- Try It Yourself Section -->
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-6 mb-8" x-data="{ copied: false }">
+            <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                    <i class="fa-solid fa-terminal text-emerald-500 text-xl"></i>
+                </div>
+                <div class="flex-1">
+                    <h3 class="font-semibold text-emerald-900">Try It Yourself</h3>
+                    <p class="mt-1 text-sm text-emerald-800">
+                        You can verify reproducibility locally using <code class="bg-emerald-100 px-1 rounded">rattler-build rebuild</code>.
+                        Click on a package URL below or copy the command template:
+                    </p>
+                    <div class="mt-3 bg-slate-800 rounded-lg p-4 font-mono text-sm text-slate-100 relative group">
+                        <button @click="navigator.clipboard.writeText('rattler-build rebuild &lt;PACKAGE_URL&gt;'); copied = true; setTimeout(() => copied = false, 2000)"
+                                class="absolute top-2 right-2 px-2 py-1 text-xs bg-slate-700 hover:bg-slate-600 rounded transition-colors"
+                                :class="{ 'bg-green-600': copied }">
+                            <span x-show="!copied"><i class="fa-regular fa-copy mr-1"></i>Copy</span>
+                            <span x-show="copied" x-cloak><i class="fa-solid fa-check mr-1"></i>Copied!</span>
+                        </button>
+                        <span class="text-emerald-400">rattler-build</span> rebuild <span class="text-amber-300">&lt;PACKAGE_URL&gt;</span>
+                    </div>
+                    <p class="mt-3 text-sm text-emerald-700">
+                        <i class="fa-solid fa-lightbulb mr-1"></i>
+                        <strong>Tip:</strong> Click the "Package" button in the table below to get the URL for any package, then run:
+                    </p>
+                    <div class="mt-2 bg-slate-800 rounded-lg p-3 font-mono text-xs text-slate-100 overflow-x-auto">
+                        rattler-build rebuild https://conda.anaconda.org/conda-forge/noarch/example-1.0.0-py_0.conda
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Legend -->
         <div class="flex flex-wrap justify-center gap-6 mb-6 text-sm">
             <div class="flex items-center gap-2">
@@ -147,7 +190,7 @@
                                 {% elif rebuild.state.value == 'success' %}
                                 {% set diff_filename = rebuild.package_name ~ "-" ~ rebuild.version ~ "-" ~ (rebuild.build_string or "unknown") ~ "_diff.html" %}
                                 {% set diff_subdir = rebuild.subdir or "unknown" %}
-                                {% set diff_url = "https://prefix-dev.github.io/reproducible-builds/diffs/" ~ diff_subdir ~ "/" ~ diff_filename %}
+                                {% set diff_url = "https://reproducible-builds-diff.prefiks.dev/" ~ diff_subdir ~ "/" ~ diff_filename %}
                                 <a href="{{ diff_url }}" target="_blank"
                                    class="status-pill bg-amber-100 text-amber-700 hover:bg-amber-200 transition-colors inline-flex items-center gap-1"
                                    title="View diffoscope report">
@@ -175,7 +218,7 @@
                                     {% if not rebuild.is_reproducible and rebuild.state.value == 'success' %}
                                     {% set diff_filename = rebuild.package_name ~ "-" ~ rebuild.version ~ "-" ~ (rebuild.build_string or "unknown") ~ "_diff.html" %}
                                     {% set diff_subdir = rebuild.subdir or "unknown" %}
-                                    {% set diff_url = "https://prefix-dev.github.io/reproducible-builds/diffs/" ~ diff_subdir ~ "/" ~ diff_filename %}
+                                    {% set diff_url = "https://reproducible-builds-diff.prefiks.dev/" ~ diff_subdir ~ "/" ~ diff_filename %}
                                     <a href="{{ diff_url }}"
                                        target="_blank"
                                        class="inline-flex items-center gap-1 px-3 py-1.5 text-xs font-medium text-purple-700 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
@@ -266,4 +309,95 @@
         {% endif %}
     </div>
 </div>
+
+<script>
+    // V1 Reproducibility Trend Chart
+    const v1TrendCtx = document.getElementById('v1-trend-chart');
+    if (v1TrendCtx) {
+        new Chart(v1TrendCtx, {
+            type: 'line',
+            data: {
+                labels: {{ trend_data.dates | tojson }},
+                datasets: [
+                    {
+                        label: 'Reproducibility Rate (%)',
+                        data: {{ trend_data.rate | tojson }},
+                        borderColor: 'rgb(34, 197, 94)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: 'Total Tested',
+                        data: {{ trend_data.total | tojson }},
+                        borderColor: 'rgb(59, 130, 246)',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5],
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        label: 'Reproducible',
+                        data: {{ trend_data.reproducible | tojson }},
+                        borderColor: 'rgb(16, 185, 129)',
+                        backgroundColor: 'transparent',
+                        borderDash: [2, 2],
+                        tension: 0.3,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false
+                },
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                if (context.dataset.label === 'Reproducibility Rate (%)') {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + '%';
+                                }
+                                return context.dataset.label + ': ' + context.parsed.y;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        min: 0,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Reproducibility Rate (%)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        min: 0,
+                        title: {
+                            display: true,
+                            text: 'Package Count'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

@@ -489,3 +489,31 @@ def get_v1_rebuild_stats(platform: Optional[str] = None) -> V1RebuildStats:
             reproducible=reproducible,
             failed=failed,
         )
+
+
+def get_v1_rebuild_stats_before(before_time: datetime) -> V1RebuildStats:
+    """Get V1 rebuild statistics for records created before the given timestamp."""
+    with get_session() as session:
+        base_query = select(func.count(V1Rebuild.id)).where(
+            col(V1Rebuild.timestamp) <= before_time
+        )
+
+        total = session.exec(base_query).one()
+
+        successful_query = base_query.where(V1Rebuild.state == BuildState.SUCCESS)
+        successful = session.exec(successful_query).one()
+
+        reproducible_query = base_query.where(
+            V1Rebuild.state == BuildState.SUCCESS,
+            V1Rebuild.original_hash == V1Rebuild.rebuild_hash,
+        )
+        reproducible = session.exec(reproducible_query).one()
+
+        failed = total - successful
+
+        return V1RebuildStats(
+            total=total,
+            successful=successful,
+            reproducible=reproducible,
+            failed=failed,
+        )
