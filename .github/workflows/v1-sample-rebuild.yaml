@@ -8,7 +8,7 @@ on:
         required: true
         default: "20"
       subdir:
-        description: "Conda subdir to sample from (noarch, linux-64, osx-arm64, osx-64, win-64)"
+        description: "Comma-separated conda subdirs to sample from (noarch,linux-64,osx-arm64,win-64)"
         required: false
         default: "noarch"
       seed:
@@ -53,7 +53,8 @@ jobs:
         id: generate-matrix
         run: |
           SAMPLE_SIZE="${{ github.event.inputs.sample_size || '20' }}"
-          SUBDIR="${{ github.event.inputs.subdir || 'noarch' }}"
+          # For scheduled runs, sample from multiple subdirs; for manual runs, use input
+          SUBDIRS="${{ github.event.inputs.subdir || 'noarch,linux-64,osx-arm64,win-64' }}"
           SEED="${{ github.event.inputs.seed }}"
           MAX_AGE="${{ github.event.inputs.max_age_days || '10' }}"
 
@@ -62,17 +63,26 @@ jobs:
             SEED_ARG="--seed $SEED"
           fi
 
-          # Generate matrix with full package info
-          # The generate-matrix command outputs JSON to stdout, status to stderr
-          # shellcheck disable=SC2086
-          MATRIX_JSON=$(pixi run repror v1 generate-matrix \
-            --size "$SAMPLE_SIZE" \
-            --subdir "$SUBDIR" \
-            --max-age-days "$MAX_AGE" \
-            $SEED_ARG)
+          # Sample from each subdir and merge results
+          ALL_PACKAGES="[]"
+          IFS=',' read -ra SUBDIR_ARRAY <<< "$SUBDIRS"
+          for SUBDIR in "${SUBDIR_ARRAY[@]}"; do
+            SUBDIR=$(echo "$SUBDIR" | xargs)  # trim whitespace
+            echo "Sampling from subdir: $SUBDIR"
+            # shellcheck disable=SC2086
+            SUBDIR_JSON=$(pixi run repror v1 generate-matrix \
+              --size "$SAMPLE_SIZE" \
+              --subdir "$SUBDIR" \
+              --max-age-days "$MAX_AGE" \
+              $SEED_ARG 2>/dev/null) || SUBDIR_JSON="[]"
 
-          echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
-          echo "Generated matrix with $(echo "$MATRIX_JSON" | jq length) packages"
+            COUNT=$(echo "$SUBDIR_JSON" | jq length)
+            echo "  Found $COUNT packages for $SUBDIR"
+            ALL_PACKAGES=$(echo "$ALL_PACKAGES $SUBDIR_JSON" | jq -s 'add')
+          done
+
+          echo "matrix=$ALL_PACKAGES" >> "$GITHUB_OUTPUT"
+          echo "Generated matrix with $(echo "$ALL_PACKAGES" | jq length) packages total"
         env:
           LOG_LEVEL: WARNING
 
@@ -98,13 +108,25 @@ jobs:
           pixi-version: "latest"
           cache: true
 
-      - name: Create conda-forge build directory structure
+      - name: Create conda-forge build directory structure (Linux)
         run: |
           # rattler-build rebuild tries to use the original build paths from conda-forge
           # We need to create these directories with write permissions
           sudo mkdir -p /home/conda/feedstock_root/build_artifacts
           sudo chown -R "$USER:$USER" /home/conda
         if: runner.os == 'Linux'
+
+      - name: Create conda-forge build directory structure (macOS)
+        run: |
+          sudo mkdir -p /Users/conda/feedstock_root/build_artifacts
+          sudo chown -R "$USER" /Users/conda
+        if: runner.os == 'macOS'
+
+      - name: Create conda-forge build directory structure (Windows)
+        run: |
+          mkdir -p D:/bld
+        shell: bash
+        if: runner.os == 'Windows'
 
       - name: Rebuild V1 package
         run: |

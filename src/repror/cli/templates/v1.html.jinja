@@ -171,8 +171,8 @@
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="text-sm text-slate-600">
-                                    <span class="{{ rebuild.platform_name | platform_fa }} mr-1"></span>
-                                    {{ rebuild.platform_name }}
+                                    <span class="{{ (rebuild.subdir or rebuild.platform_name) | subdir_fa }} mr-1"></span>
+                                    {{ rebuild.subdir or rebuild.platform_name }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">

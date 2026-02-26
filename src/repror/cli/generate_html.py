@@ -53,6 +53,22 @@ def get_platform_fa(platform):
         return "fa-solid fa-question"
 
 
+def get_subdir_fa(subdir):
+    """Get FontAwesome icon class for a conda subdir or platform name."""
+    if not subdir:
+        return "fa-solid fa-question"
+    if subdir.startswith("win") or subdir == "windows":
+        return "fa-brands fa-windows"
+    elif subdir.startswith("osx") or subdir == "darwin":
+        return "fa-brands fa-apple"
+    elif subdir == "noarch":
+        return "fa-solid fa-globe"
+    elif subdir.startswith("linux") or subdir == "linux":
+        return "fa-brands fa-linux"
+    else:
+        return "fa-solid fa-question"
+
+
 reproducible = "fa-solid fa-thumbs-up text-green-600"
 failure = "fa-solid fa-times text-red-600"
 non_reproducible = "fa-solid fa-thumbs-down text-red-300"
@@ -117,6 +133,7 @@ def create_jinja_env() -> Environment:
         loader=FileSystemLoader(searchpath=Path(__file__).parent / "templates")
     )
     env.filters["platform_fa"] = platform_fa
+    env.filters["subdir_fa"] = get_subdir_fa
     return env
 
 
