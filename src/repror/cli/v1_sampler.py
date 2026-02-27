@@ -1164,14 +1164,14 @@ def rebuild_one(
 @app.command()
 def generate_matrix(
     sample_size: Annotated[
-        int, typer.Option("--size", "-n", help="Number of packages to sample")
+        int, typer.Option("--size", "-n", help="Number of packages to sample per subdir")
     ] = 20,
     seed: Annotated[
         Optional[int],
         typer.Option("--seed", "-s", help="Random seed for reproducible sampling"),
     ] = None,
     subdir: Annotated[
-        str, typer.Option("--subdir", help="Conda subdir (e.g., linux-64)")
+        str, typer.Option("--subdir", help="Comma-separated conda subdirs (e.g., linux-64,noarch,osx-arm64)")
     ] = "linux-64",
     max_age_days: Annotated[
         int, typer.Option("--max-age-days", help="Maximum age of packages in days")
@@ -1182,29 +1182,33 @@ def generate_matrix(
 
     Outputs a JSON array of package info objects that can be used as a GitHub Actions matrix.
     Only outputs to stdout (no status messages) so it can be captured cleanly.
+    Accepts comma-separated subdirs to sample from multiple platforms.
     """
     stats = fetch_feedstock_stats()
-    repodata = fetch_repodata(subdir)
-
-    # Find recent V1 packages
-    recent_packages = find_recent_v1_packages(
-        stats.v1_packages, repodata, subdir, max_age_days
-    )
-
-    _print_status(f"[dim]Found {len(recent_packages)} recent V1 packages (last {max_age_days} days)[/dim]")
 
     if seed is not None:
         random.seed(seed)
 
-    # Sample from recent packages
-    if sample_size >= len(recent_packages):
-        sampled = recent_packages
-    else:
-        sampled = random.sample(recent_packages, sample_size)
+    subdirs = [s.strip() for s in subdir.split(",")]
+    all_sampled = []
 
-    # Output JSON array of package info to stdout (use builtin print, not rich)
+    for sd in subdirs:
+        repodata = fetch_repodata(sd)
+        recent_packages = find_recent_v1_packages(
+            stats.v1_packages, repodata, sd, max_age_days
+        )
+        _print_status(f"[dim]Found {len(recent_packages)} recent V1 packages for {sd} (last {max_age_days} days)[/dim]")
+
+        if sample_size >= len(recent_packages):
+            sampled = recent_packages
+        else:
+            sampled = random.sample(recent_packages, sample_size)
+
+        all_sampled.extend(sampled)
+
+    # Output compact JSON to stdout (use builtin print, not rich)
     import builtins
-    matrix = [pkg.to_dict() for pkg in sampled]
+    matrix = [pkg.to_dict() for pkg in all_sampled]
     builtins.print(json.dumps(matrix))
 
 

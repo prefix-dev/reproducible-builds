@@ -63,26 +63,17 @@ jobs:
             SEED_ARG="--seed $SEED"
           fi
 
-          # Sample from each subdir and merge results
-          ALL_PACKAGES="[]"
-          IFS=',' read -ra SUBDIR_ARRAY <<< "$SUBDIRS"
-          for SUBDIR in "${SUBDIR_ARRAY[@]}"; do
-            SUBDIR=$(echo "$SUBDIR" | xargs)  # trim whitespace
-            echo "Sampling from subdir: $SUBDIR"
-            # shellcheck disable=SC2086
-            SUBDIR_JSON=$(pixi run repror v1 generate-matrix \
-              --size "$SAMPLE_SIZE" \
-              --subdir "$SUBDIR" \
-              --max-age-days "$MAX_AGE" \
-              $SEED_ARG 2>/dev/null) || SUBDIR_JSON="[]"
+          # generate-matrix now accepts comma-separated subdirs natively
+          # and outputs compact single-line JSON
+          # shellcheck disable=SC2086
+          MATRIX_JSON=$(pixi run repror v1 generate-matrix \
+            --size "$SAMPLE_SIZE" \
+            --subdir "$SUBDIRS" \
+            --max-age-days "$MAX_AGE" \
+            $SEED_ARG)
 
-            COUNT=$(echo "$SUBDIR_JSON" | jq length)
-            echo "  Found $COUNT packages for $SUBDIR"
-            ALL_PACKAGES=$(echo "$ALL_PACKAGES $SUBDIR_JSON" | jq -s 'add')
-          done
-
-          echo "matrix=$ALL_PACKAGES" >> "$GITHUB_OUTPUT"
-          echo "Generated matrix with $(echo "$ALL_PACKAGES" | jq length) packages total"
+          echo "matrix=$MATRIX_JSON" >> "$GITHUB_OUTPUT"
+          echo "Generated matrix with $(echo "$MATRIX_JSON" | jq length) packages total"
         env:
           LOG_LEVEL: WARNING
 
