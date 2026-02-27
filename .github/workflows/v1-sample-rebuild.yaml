@@ -120,6 +120,7 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Rebuild V1 package
+        shell: bash
         run: |
           # Pass package info as JSON directly - no need to re-fetch repodata
           PACKAGE_INFO='${{ toJson(matrix.package) }}'
