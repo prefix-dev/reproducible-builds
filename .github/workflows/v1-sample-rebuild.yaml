@@ -10,7 +10,7 @@ on:
       subdir:
         description: "Comma-separated conda subdirs to sample from (noarch,linux-64,osx-arm64,win-64)"
         required: false
-        default: "noarch"
+        default: "noarch,linux-64,osx-arm64,win-64"
       seed:
         description: "Random seed for reproducible sampling (optional)"
         required: false
